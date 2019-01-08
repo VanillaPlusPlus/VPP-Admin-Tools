@@ -88,17 +88,17 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 #### Admin Tools:
 ##### Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.
 - Object Manager:
- - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
-  - No restart is needed.
+  - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
+   - No restart is needed.
 - Item Manager:
- - Give the ability to spawn items inside of the world.
+  - Give the ability to spawn items inside of the world.
 - Weather Manager:
- - Gives the ability to change weather conditions on the fly, and change their chances.
+  - Gives the ability to change weather conditions on the fly, and change their chances.
 - Player Manager:
- - Give's the ability to call commands on other players on the server.
-  - Commands: To be determined...
+  - Give's the ability to call commands on other players on the server.
+   - Commands: To be determined...
 - Server Manager:
- - Give's the ability to edit server xml files on the fly, and in-game.
+  - Give's the ability to edit server xml files on the fly, and in-game.
  
 #### Client Utilities:
 
