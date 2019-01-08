@@ -15,9 +15,10 @@
 	    - [Manual](#manual)
 - [Configuration](#configuration)
 - [Features](#features)
-    - [In game Map](#in-game-map)
-	- [Custom Ladout & Spawn Menu](#custom-ladout--spawn-menu)
-	- [Customized loadouts using the AdminTool](#customized-loadouts-using-the-admintool)
+    - [Spawn Menu](#spawn-menu)
+    - [Admin Tools](#admin-tools)
+    - [Client Utilities](#client-utilities)
+    - [Server Events](#server-events)
 	- [Enable/Disable Stamina](#enabledisable-stamina)
 	- [Spawn Custom Buildings](#spawn-custom-buildings)
 	- [Chatbased Admin Tools](#chatbased-admin-tools)
@@ -30,8 +31,6 @@
 
 Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience by implementing features, and tools which help communities customize their expirence while still allowing for that vanilla DayZ feel.
 
-For a full list of features  please see the [Features](#).
-
 ## Installation:
 
 ### Client:
@@ -43,8 +42,6 @@ For a full list of features  please see the [Features](#).
 
 ### Server:
 
-#### Manual:
-
 - [Download Vanilla++](https://github.com/Da0ne/DZMods/archive/master.zip)
 - Go into the servers root folder and unpack the folders ```@VanillaPlusPlus``` and ```mpmissions``` there.
 - Go inside of the ```@VanillaPlusPlus``` folder, and copy the contents of the ```Keys``` folder into the ```keys``` folder located in your server's root folder.
@@ -55,7 +52,6 @@ For a full list of features  please see the [Features](#).
 - Go inside the copied folder and copy it's ´JacobMango.bikey´ file into the server's keys folder, located in the server root folder.
 - Change your startup following start-up commandlines to include
 ``` -mod=@VanillaPlusPlus;@RPCFramework -config=server_files\serverDZ.cfg -profiles=server_files -name=myServerName -scrAllowFileWrite ```
-
 
 #### ViLAYER:
 
