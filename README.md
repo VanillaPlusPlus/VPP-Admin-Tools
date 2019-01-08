@@ -101,13 +101,13 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 <img src="https://camo.githubusercontent.com/7d5c3d78885238d604afaf40e8f716d828a6430a/68747470733a2f2f737465616d75736572696d616765732d612e616b616d616968642e6e65742f7567632f3936333130343532383634333232313332362f443734433742423243413238393143393531383639433637394633463444313344453137374536392f3f696e746572706f6c6174696f6e3d6c616e637a6f732d6e6f6e65266f75747075742d666f726d61743d6a706567266f75747075742d7175616c6974793d3935266669743d696e7369646525374336333725334133353826636f6d706f736974652d746f3d2a2c2a253743363337253341333538266261636b67726f756e642d636f6c6f723d626c61636b" alt="ingamemap" height="auto" width="400px">
 
 - In-game Map:
- - This gives everyone an in-game map with the ability to place markers. It also shows the player where they are currently located at.
+  - This gives everyone an in-game map with the ability to place markers. It also shows the player where they are currently located at.
  
 #### Server Events:
 - Infected Hordes:
- - Spawns hordes of zombies at a configurable time interval, has the ability to have more than one active horde at a time.
+  - Spawns hordes of zombies at a configurable time interval, has the ability to have more than one active horde at a time.
 - Supply Drop:
- - Spawns a supply plane at a configurable time interval, and drops off a supply crate with configurable loot.
+  - Spawns a supply plane at a configurable time interval, and drops off a supply crate with configurable loot.
  
 #### Customized loadouts using the AdminTool:
 - This feature allows the server owner to create loadouts for fresh spawns to spawn with by adding your desired items to \ScriptedMods\LoadOuts\RandomlyGenerated OR Enable Static Loadouts via the Tuneables.c.
