@@ -69,16 +69,17 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 
 #### Spawn Menu:
 - Spawn Points:
- - Can be configured to allow players to pick spawn, or choose randomly; also, can force only random spawn points.
- - Cooldown System:
-  - Gives Admins control over how often a player can use a given spawnpoint, can be disabled to not have a cooldown.
+ 	- Can be configured to allow players to pick spawn, or choose randomly; also, can force only random spawn points.
+- Cooldown System:
+  	- Gives Admins control over how often a player can use a given spawnpoint, can be disabled to not have a cooldown.
+
 - Loadouts:
-   - Static:
-    - Allows the player to pick from a list of premade loadouts.
-   - Advanced:
-    - Allows the player to pick items from a list for each slot on the player.
-   - Normal:
-    - Spawns user with default clothing, and items.
+	- Static:
+		- Allows the player to pick from a list of premade loadouts.
+	- Advanced:
+  		- Allows the player to pick items from a list for each slot on the player.
+	- Normal:
+  		- Spawns user with default clothing, and items.
 
 #### Admin Tools:
 **Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.**
