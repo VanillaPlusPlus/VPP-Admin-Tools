@@ -24,7 +24,6 @@
 	- [Chatbased Admin Tools](#chatbased-admin-tools)
 	- [Player Score/Kill Activity Tracker](#player-scorekill-activity-tracker)
 	- [Chatbased Kill Messages](#chatbased-kill-messages)
-- [Images](#images)
 - [Credits](#credits)
 
 ## What is Vanilla++:
