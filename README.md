@@ -86,7 +86,7 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
     - Spawns user with default clothing, and items.
 
 #### Admin Tools:
-##### Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.
+**Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.**
 - Object Manager:
   - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
    - No restart is needed.
