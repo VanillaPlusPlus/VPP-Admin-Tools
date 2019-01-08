@@ -1,4 +1,4 @@
-Copyright(c) [2018], [VanillaPlusPlus]
+Copyright&copy; 2018, VanillaPlusPlus
 
 Permission to distribute this software for any purpose with or without fee is hereby prohibited; however, the permission to use, copy, modify is granted provided that the above
 copyright notice and this permission notice appear in all copies.
