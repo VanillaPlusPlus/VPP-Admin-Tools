@@ -41,6 +41,7 @@ Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience 
 
 ### Server:
 
+
 - [Download Vanilla++](https://github.com/Da0ne/DZMods/archive/master.zip)
 - Go into the servers root folder and unpack the folders ```@VanillaPlusPlus``` and ```mpmissions``` there.
 - Go inside of the ```@VanillaPlusPlus``` folder, and copy the contents of the ```Keys``` folder into the ```keys``` folder located in your server's root folder.
