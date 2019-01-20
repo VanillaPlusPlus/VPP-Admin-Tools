@@ -28,7 +28,7 @@
 
 ## What is Vanilla++:
 
-Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience by implementing features, and tools which help communities customize their expirence while still allowing for that vanilla DayZ feel.
+Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience by implementing a collection of features, and tools which help communities customize their expirence while still allowing for that vanilla DayZ feel.
 
 ## Installation:
 
@@ -36,8 +36,10 @@ Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience 
 
 - If you are a player and want to play on Vanilla++ servers, please subscribe to [our steam workshop release](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068), as well as,  our dependency [RPCFramework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
 
-- Use the DayZ Launcher, or by changing your startup following start-up commandlines to include:
-``` -mod=@VanillaPlusPlus;@RPCFramework ```
+- Use the DayZ Launcher and load @VanillaPlusPlus, and @RPCFramework, or by adding the following to your start-up commandline:
+```c
+-mod=@RPCFramework;@VanillaPlusPlus; -profiles=Client
+```
 
 ### Server:
 
@@ -92,14 +94,14 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
   - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
    - No restart is needed.
 - Item Manager:
-  - Give the ability to spawn items inside of the world.
+  - Spawn items inside of the world.
 - Weather Manager:
   - Gives the ability to change weather conditions on the fly, and change their chances.
 - Player Manager:
   - Give's the ability to call commands on other players on the server.
-   - Commands: To be determined...
 - Server Manager:
-  - Give's the ability to edit server xml files on the fly, and in-game.
+  - Edit server XML files on the fly, and in-game.
+  - Customize server events.
  
 #### Client Utilities:
 
@@ -136,5 +138,5 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 ## Credits:
 
 - @Sen ( @zalexki zalexki ) from DayZModders Discord Server for the KillScore system https://github.com/zalexki
-- @Slluxx for teaching @GravityWolfNotAmused how not to suck at readme.md files.
+- @Slluxx for teaching @GravityWolfNotAmused how not to suck at readme.md files. I still suck at readme.md files.
 - Github User Moondarker for /refuel cmd added, /spawncar modified to spawn car in dir of admin view (Admin Tools)
