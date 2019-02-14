@@ -20,7 +20,6 @@
     - [Client Utilities](#client-utilities)
     - [Server Events](#server-events)
 	- [Enable/Disable Stamina](#enabledisable-stamina)
-	- [Spawn Custom Buildings](#spawn-custom-buildings)
 	- [Chatbased Admin Tools](#chatbased-admin-tools)
 	- [Player Score/Kill Activity Tracker](#player-scorekill-activity-tracker)
 	- [Chatbased Kill Messages](#chatbased-kill-messages)
@@ -53,7 +52,8 @@ Vanilla++ is a DayZ workshop add-on which aims to extend the Vanilla experience 
 - On your DayZ Launcher, go into the ```Mods``` right click ```RPCFramework```, and select open folder. If you are prompted with a warning, click I understand. Copy the ```@RPCFramework``` folder to your servers root folder.
 - Go inside the copied folder and copy it's ´JacobMango.bikey´ file into the server's keys folder, located in the server root folder.
 - Change your startup following start-up commandlines to include
-``` -mod=@VanillaPlusPlus;@RPCFramework -config=server_files\serverDZ.cfg -profiles=server_files -name=myServerName -scrAllowFileWrite ```
+``` -mod=@VanillaPlusPlus;@RPCFramework -config=server_files\serverDZ.cfg -profiles=server_files -name=myServerName ```
+- Go inside of SuperAdmins.txt and add your steamid and name as directed.
 
 #### ViLAYER:
 
@@ -82,38 +82,40 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 
 - Loadouts:
 	- Static:
-		- Allows the player to pick from a list of premade loadouts.
+		- Pick from a list of premade loadouts.
 	- Advanced:
-  		- Allows the player to pick items from a list for each slot on the player.
+  		- Pick items from a list for each slot on the player.
 	- Normal:
   		- Spawns user with default clothing, and items.
 
 #### Admin Tools:
 **Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.**
 - Object Manager:
-  - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
-   - No restart is needed.
+  - Coming Soon.
 - Item Manager:
-  - Spawn items inside of the world.
+  - Coming Soon.
 - Weather Manager:
-  - Gives the ability to change weather conditions on the fly, and change their chances.
+  - Coming Soon.
 - Player Manager:
-  - Give's the ability to call commands on other players on the server.
+  - Call commands, and manager other players on the server.
 - Server Manager:
   - Edit server XML files on the fly, and in-game.
-  - Customize server events.
+  - Customize server events, and other settings.
  
 #### Client Utilities:
 
 <img src="https://camo.githubusercontent.com/7d5c3d78885238d604afaf40e8f716d828a6430a/68747470733a2f2f737465616d75736572696d616765732d612e616b616d616968642e6e65742f7567632f3936333130343532383634333232313332362f443734433742423243413238393143393531383639433637394633463444313344453137374536392f3f696e746572706f6c6174696f6e3d6c616e637a6f732d6e6f6e65266f75747075742d666f726d61743d6a706567266f75747075742d7175616c6974793d3935266669743d696e7369646525374336333725334133353826636f6d706f736974652d746f3d2a2c2a253743363337253341333538266261636b67726f756e642d636f6c6f723d626c61636b" alt="ingamemap" height="auto" width="400px">
 
+- Admin ESP:
+  - See play information from a far, or on a select player.
+
 - In-game Map:
   - This gives everyone an in-game map with the ability to place markers. It also shows the player where they are currently located at.
- 
+  
 #### Server Events:
 - Infected Hordes:
   - Spawns hordes of zombies at a configurable time interval, has the ability to have more than one active horde at a time.
-- Supply Drop:
+- Supply Drop: *Disabled, but packaged*
   - Spawns a supply plane at a configurable time interval, and drops off a supply crate with configurable loot.
  
 #### Customized loadouts using the AdminTool:
