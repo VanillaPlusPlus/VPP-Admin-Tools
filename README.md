@@ -4,6 +4,12 @@
 # DayZ Vanilla++ Mod v0.5
 
 ### Update v0.5 Change log: 
+-IMPORTATN FOR SERVER OWNERS: add the following in your server.cfg file! Make sure you don't have any duplicates or else it will error
+		3DMapMarkers      = 1;   //Set to 0 to restrict all players from placing 3D Markers
+		LobbyMaxTime 	  = 285; //The time set for the spawn scene
+		LoginTime	  = 10;  //Time in seconds for the log in sequence ( only when theres a saved player )
+		respawnTime       = 120; //Respawn Time
+		
 - Added admin UI toolset ( server manager, player manager, weather manager, object builder, )
 - Fix many bugs (too many to list, honestly i forgot what it was) the whole mod was re-written again because it was trash.
 - The Admin tools bring in a shit load of features ( too many to list cbf )
