@@ -2,10 +2,10 @@
 
 class AdminTools extends VPPModuleManager
 {
-	ref TeleportLocations m_TPLocations;
+	ref VPPTeleportLocations m_TPLocations;
 	override void Init()
 	{
-		m_VPPConfig = new ref TeleportLocations();
+		m_VPPConfig = new ref VPPTeleportLocations();
 		Class.CastTo(m_TPLocations, m_VPPConfig);
 	}
 	
