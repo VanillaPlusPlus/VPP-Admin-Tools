@@ -8,24 +8,34 @@ Mission CreateCustomMission(string path)
 
 void main()
 {
+	//INIT WEATHER BEFORE ECONOMY INIT------------------------
 	Weather weather = g_Game.GetWeather();
+	weather.MissionWeather(false);    // false = use weather controller from Weather.c
+	weather.GetOvercast().Set( Math.RandomFloatInclusive(0.4, 0.6), 1, 0);
+	weather.GetRain().Set( 0, 0, 1);
+	weather.GetFog().Set( Math.RandomFloatInclusive(0.05, 0.1), 1, 0);
 
-	weather.GetOvercast().SetLimits( 0.0 , 1.0 );
-	weather.GetRain().SetLimits( 0.0 , 1.0 );
-	weather.GetFog().SetLimits( 0.0 , 0.25 );
+	//DATE RESET AFTER ECONOMY INIT-------------------------
+	int year, month, day, hour, minute;
+	int reset_month = 9, reset_day = 20;
+	GetGame().GetWorld().GetDate(year, month, day, hour, minute);
 
-	weather.GetOvercast().SetForecastChangeLimits( 0.0, 0.2 );
-	weather.GetRain().SetForecastChangeLimits( 0.0, 0.1 );
-	weather.GetFog().SetForecastChangeLimits( 0.15, 0.45 );
-
-	weather.GetOvercast().SetForecastTimeLimits( 1800 , 1800 );
-	weather.GetRain().SetForecastTimeLimits( 600 , 600 );
-	weather.GetFog().SetForecastTimeLimits( 1800 , 1800 );
-
-	weather.GetOvercast().Set( Math.RandomFloatInclusive(0.0, 0.3), 0, 0);
-	weather.GetRain().Set( Math.RandomFloatInclusive(0.0, 0.2), 0, 0);
-	weather.GetFog().Set( Math.RandomFloatInclusive(0.0, 0.1), 0, 0);
-	
-	weather.SetWindMaximumSpeed(15);
-	weather.SetWindFunctionParams(0.1, 0.3, 50);
+    if ((month == reset_month) && (day < reset_day))
+    {
+        GetGame().GetWorld().SetDate(year, reset_month, reset_day, hour, minute);
+    }
+    else
+    {
+        if ((month == reset_month + 1) && (day > reset_day))
+        {
+            GetGame().GetWorld().SetDate(year, reset_month, reset_day, hour, minute);
+        }
+        else
+        {
+            if ((month < reset_month) || (month > reset_month + 1))
+            {
+                GetGame().GetWorld().SetDate(year, reset_month, reset_day, hour, minute);
+            }
+        }
+    }
 }
