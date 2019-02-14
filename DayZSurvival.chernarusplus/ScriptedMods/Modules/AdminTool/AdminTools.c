@@ -708,9 +708,9 @@ class AdminTools extends VPPModuleManager
         	if (sender != NULL && m_TPLocations != NULL && PermitManager.Cast(m_MissionServer.GetModule(PermitManager)).VerifyIdentity(sender))
         	{
                 m_TPLocations.load();
-                ref array<ref TeleportLocation> m_TeleportLocations = m_TPLocations.getLocationArray();
+                ref array<ref VPPTeleportLocation> m_TeleportLocations = m_TPLocations.getLocationArray();
                 ref map<string, vector> m_TpInfo = new map<string, vector>;
-                foreach(TeleportLocation location : m_TeleportLocations)
+                foreach(VPPTeleportLocation location : m_TeleportLocations)
                 {
                     m_TpInfo.Insert(location.getName(),location.getLocation());
                 }
