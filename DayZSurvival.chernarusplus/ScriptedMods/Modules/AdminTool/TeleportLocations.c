@@ -1,21 +1,21 @@
-class TeleportLocations extends VPPConfig{
+class VPPTeleportLocations extends VPPConfig{
 	const static string SETTINGS_FILE = "$profile:\\TeleportLocation.json";
 	private ref array<ref VPPTeleportLocation> m_TeleportLocations;
-	void TeleportLocations(){
+	void VPPTeleportLocations(){
 		m_TeleportLocations = new array<ref VPPTeleportLocation>;
 	}
 
 	override void save()
 	{
 		super.save();
-		JsonFileLoader<ref TeleportLocations>.JsonSaveFile(SETTINGS_FILE, this);
+		JsonFileLoader<ref VPPTeleportLocations>.JsonSaveFile(SETTINGS_FILE, this);
 	}
 
 	override void load()
 	{
 		super.load();
 		if (FileExist(SETTINGS_FILE)) {
-			JsonFileLoader<ref TeleportLocations>.JsonLoadFile(SETTINGS_FILE, this);
+			JsonFileLoader<ref VPPTeleportLocations>.JsonLoadFile(SETTINGS_FILE, this);
 		}else{
 			Print("TeleportLocations.json not found. Creating...");
 			createDefaults();
