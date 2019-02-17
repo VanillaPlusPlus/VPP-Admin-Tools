@@ -4,7 +4,7 @@
 # DayZ Vanilla++ Mod v0.5
 
 ### Update v0.5 Change log: 
--IMPORTATN FOR SERVER OWNERS: add the following in your server.cfg file! Make sure you don't have any duplicates or else it will error
+-IMPORTANT FOR SERVER OWNERS: add the following in your server.cfg file! Make sure you don't have any duplicates or else it will error
 
 ```c
 3DMapMarkers      = 1;   //Set to 0 to restrict all players from placing 3D Markers
