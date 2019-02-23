@@ -31,7 +31,7 @@ respawnTime       = 120; //Respawn Time
 - Select players via ESP
 - Object Manager
 - AC130 Supply drops/crash events ( Needs UI. System is in place and can be configured to spawn )
-- Zombie Hordes missing loot spawn configuration ( requires UI ) 
+- Zombie Hordes loot spawn configuration ( UI System ) loot can be manually configured via .json in profile folder
 - Many more little things that will eventually be completed and added in future updates ( time is a bitch )
 - Safe zones
 
