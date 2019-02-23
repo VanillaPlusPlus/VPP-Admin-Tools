@@ -1,8 +1,8 @@
-class Permission {
+class VPPPermission {
 	private string name;
 	private bool state;
 
-	void Permission(string name, bool state){
+	void VPPPermission(string name, bool state){
 		this.name = name;
 		this.state = state;
 	}

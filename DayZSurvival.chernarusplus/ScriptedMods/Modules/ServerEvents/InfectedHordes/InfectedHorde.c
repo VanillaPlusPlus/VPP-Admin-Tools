@@ -15,7 +15,7 @@ class InfectedHorde{
 	private ref array<Object> m_SpawnedZombieObjs;
 	private ref array<EntityAI> m_SpawnedZombieAI;
 	
-	void InfectedHorde(vector zoneLocation, int maxInfected, int minInfected, ref array<string> zombieClasses, bool canSpawnSpecial){
+	void InfectedHorde(vector zoneLocation, int maxInfected, int minInfected, ref array<string> zombieClasses, bool canSpawnSpecial, bool canDropLoot, ref array<string> LootDrops,ref array<string> WeaponDrops, bool dropType){
 		m_SpawnedZombieObjs = new array<Object>;
 		m_SpawnedZombieAI = new array<EntityAI>;
 		zonePos = zoneLocation;
@@ -37,6 +37,13 @@ class InfectedHorde{
 						zombieAI.SetObjectMaterial( 0, "DZ\\data\\data\\laser.rvmat" );
 						zombieAI.SetObjectMaterial( 1, "DZ\\data\\data\\laser.rvmat" );
 						zombieAI.SetObjectMaterial( 2, "DZ\\data\\data\\laser.rvmat" );
+					}
+					
+					if (canDropLoot){
+						ZombieBase baseClass;
+						if (Class.CastTo(baseClass, zombieAI)){
+							baseClass.AttachEventHandle(LootDrops,WeaponDrops,Math.RandomIntInclusive(0,1),dropType);
+						}
 					}
 				}
 			}

@@ -16,14 +16,18 @@ class InfectedHordeConfig{
 	private int INT_INFECTEDHORDE_TIME;
 	private int INT_INFECTEDHORDE_DESPAWNTIME;
 	private int MAX_HORDES;
-
+	
+	private bool LOOT_DROP_TYPE = false; //false to drop on ground
+	private bool DROP_LOOT = true;
 	private bool SENDBROADCASTMESSAGE;
 	private bool CANSPAWNSPECIALINFECTED;
-
+	
+	private ref array<string> m_WeaponDropTypes;
+	private ref array<string> m_LootDropTypes;
 	private ref map<string, vector> m_HordePositions;
 
 	void InfectedHordeConfig(){
-		m_HordePositions = new map<string, vector>;
+		m_HordePositions  = new map<string, vector>;
 
 		GetRPCManager().AddRPC("RPC_InfectHordeServer", "addInfectedZone", this, SingeplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_InfectHordeServer", "removeInfectedZone", this, SingeplayerExecutionType.Server);
@@ -41,7 +45,6 @@ class InfectedHordeConfig{
 		} else{
 			Print("No Config found, creating json for " + ClassName());
 			createDefaults();
-			save();
 		}
 	}
 
@@ -111,13 +114,15 @@ class InfectedHordeConfig{
 	}
 
 	void createDefaults(){
-		INT_MAX_ZOMBIES      = 65; 
-		INT_MIN_ZOMBIES      = 25; 
-		INT_INFECTEDHORDE_TIME = 1800;		 //Pause time between each horde spawn
-		INT_INFECTEDHORDE_DESPAWNTIME = 2100; //LifeTime
-		MAX_HORDES = 1;
-		SENDBROADCASTMESSAGE = true;
-		CANSPAWNSPECIALINFECTED = true;
+		INT_MAX_ZOMBIES      		  = 35; 
+		INT_MIN_ZOMBIES      		  = 15; 
+		INT_INFECTEDHORDE_TIME 		  = 900;	//Pause time between each horde spawn
+		INT_INFECTEDHORDE_DESPAWNTIME = 1800;   //LifeTime
+		MAX_HORDES 					  = 2;
+		SENDBROADCASTMESSAGE    	  = true;
+		CANSPAWNSPECIALINFECTED 	  = true;
+		LOOT_DROP_TYPE				  = false;
+		DROP_LOOT					  = true;
 
 		m_HordePositions.Insert( "Severograd", "8428 0 12767" ); //string Name of location, vector centre position
         m_HordePositions.Insert( "Stary", "6046 0 7733" );
@@ -138,6 +143,13 @@ class InfectedHordeConfig{
         m_HordePositions.Insert( "Zelenogorsk South", "2572 0 5105" );
         m_HordePositions.Insert( "Zelenogorsk North", "2741 0 5416" );
 		m_HordePositions.Insert( "Novaya Petrovka", "3395 0 13013" );
+		
+		m_WeaponDropTypes = new array<string>;
+		m_LootDropTypes   = new array<string>;
+		
+		m_WeaponDropTypes.Insert("AKM");
+		m_LootDropTypes.Insert("Cannabis");
+		
 		save();
 	}
 
@@ -171,7 +183,7 @@ class InfectedHordeConfig{
         }
 		return "0 0 0";
 	}
-	
+
 	string getHordeZoneLocationName(vector location)
 	{
 		for (int i = 0; i < m_HordePositions.Count(); ++i)
@@ -182,9 +194,24 @@ class InfectedHordeConfig{
 			{
 				return pointName;
 			}
-			i++;
 		}
-		return "NULL";
+		return "Unkown Location";
+	}
+	
+	ref array<string> getWeaponDropTypes(){
+		return m_WeaponDropTypes;
+	}
+	
+	ref array<string> getLootDropTypes(){
+		return m_LootDropTypes;
+	}
+	
+	bool getDropType(){
+		return LOOT_DROP_TYPE;
+	}
+
+	bool canDropLoot(){
+		return DROP_LOOT;
 	}
 
 	bool shouldSendBroadcast(){

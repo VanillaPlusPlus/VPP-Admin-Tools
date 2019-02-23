@@ -652,7 +652,7 @@ class DayZSurvival : MissionServer
 
 		player.GetHumanInventory().CreateInInventory( "Battery9V" );
 		
-		itemEnt = EntityAI.Cast(player.GetInventory().CreateInInventory( "Rag" ));
+		itemEnt = EntityAI.Cast(player.GetHumanInventory().CreateInInventory( "Rag" ));
 		itemBs = ItemBase.Cast(itemEnt);
 		if (itemBs != NULL)
 		{

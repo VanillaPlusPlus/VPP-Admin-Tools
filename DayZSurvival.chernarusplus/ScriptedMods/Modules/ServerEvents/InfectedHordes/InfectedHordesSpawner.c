@@ -43,7 +43,7 @@ class InfectedHordesSpawner extends VPPModuleManager
             if(m_hordes.Count() != config.getMaxHordes()){
                 vector spawnPos = config.getHordeZoneLocation();
                 if(spawnPos != "0 0 0"){
-                    ref InfectedHorde insertHorde = new InfectedHorde(spawnPos, config.getMinInfectedCount(), config.getMaxInfectedCount(), config.getZombieClasses(), config.canSpawnSpecialInfected());
+                    ref InfectedHorde insertHorde = new InfectedHorde(spawnPos, config.getMinInfectedCount(), config.getMaxInfectedCount(), config.getZombieClasses(), config.canSpawnSpecialInfected(), config.canDropLoot(),config.getLootDropTypes(),config.getWeaponDropTypes(),config.getDropType());
                     m_hordes.Insert(insertHorde);
                     
                     if(config.shouldSendBroadcast()){

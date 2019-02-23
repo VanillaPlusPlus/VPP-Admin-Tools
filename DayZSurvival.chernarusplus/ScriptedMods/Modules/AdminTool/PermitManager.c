@@ -94,10 +94,10 @@ class PermitManager extends VPPModuleManager
         	if (sender != NULL && VerifyIdentity(sender))
         	{
         		AdminCaches.Cast(m_MissionServer.GetConfigByType(AdminCaches)).removeCacheByGUID(GUID); //Check if this GUID is already listed...deletes it if found
-        		ref array<ref Permission> m_permissions = new array<ref Permission>;
+        		ref array<ref VPPPermission> m_permissions = new array<ref VPPPermission>;
 				foreach(string strPerm : m_Perms)
 				{
-					m_permissions.Insert(new Permission(strPerm, 1));	
+					m_permissions.Insert(new VPPPermission(strPerm, 1));	
 				}
         		AdminCaches.Cast(m_MissionServer.GetConfigByType(AdminCaches)).addCache(GUID, AdminName, m_permissions);
         	}

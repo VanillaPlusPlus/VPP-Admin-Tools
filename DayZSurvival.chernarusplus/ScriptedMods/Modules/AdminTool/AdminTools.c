@@ -26,11 +26,12 @@ class AdminTools extends VPPModuleManager
 		GetRPCManager().AddRPC( "RPC_AdminTools", "GetPlayerPermissions", this, SingeplayerExecutionType.Server );
         GetRPCManager().AddRPC( "RPC_AdminTools", "RemoveAdminByGUID", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "EnableToggles", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_AdminTools", "PhysicsTest", this, SingeplayerExecutionType.Server );
+		//GetRPCManager().AddRPC( "RPC_AdminTools", "PhysicsTest", this, SingeplayerExecutionType.Server );
 		//GetRPCManager().AddRPC( "RPC_AdminTools", "PlaceDrawObj", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "ToggleGodmode", this, SingeplayerExecutionType.Server );
         GetRPCManager().AddRPC( "RPC_AdminTools", "GetPlayerInfo", this, SingeplayerExecutionType.Server );
         GetRPCManager().AddRPC( "RPC_AdminTools", "getItemCount", this, SingeplayerExecutionType.Server );
+        GetRPCManager().AddRPC( "RPC_AdminTools", "DeleteObject", this, SingeplayerExecutionType.Server );
 		//-------------
 	}
 	
@@ -39,14 +40,14 @@ class AdminTools extends VPPModuleManager
 		
 	}
 
-	void DoMeme(Object package)
+	/*void DoMeme(Object package)
 	{
 		dBodySetLinearFactor(package, "1 -2 1");
 		dBodyDestroy( package );
         Print(dBodyGetNumGeoms( package ));
 		autoptr PhysicsGeomDef geoms[] = { PhysicsGeomDef("", dGeomCreateBox( "10 10 12" ), "material/default", 0xffffffff )};
 		dBodyCreateDynamicEx( package, dBodyGetCenterOfMass( package ), 500, geoms );
-	}
+	}*/
 
 	void EnableToggles( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target )
 	{
@@ -64,20 +65,23 @@ class AdminTools extends VPPModuleManager
 	{
         if( type == CallType.Server )
         {
-			PlayerBase AdminPlayer;
-        	AdminPlayer = PlayerBase.Cast( m_MissionServer.GetPlayerByUID(sender.GetPlainId()) );
-			if (AdminPlayer.GodModeStatus())
-			{
-				AdminPlayer.setGodMode(false);
-				m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled ON!",5,2,false,true,"",0,0);
-			}else{
-				AdminPlayer.setGodMode(true);
-				m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled OFF!",5,2,false,true,"",0,0);
-			}
-		}
+            if (sender != NULL && PermitManager.Cast(m_MissionServer.GetModule(PermitManager)).VerifyIdentity(sender))
+            {
+    			PlayerBase AdminPlayer;
+            	AdminPlayer = PlayerBase.Cast( m_MissionServer.GetPlayerByUID(sender.GetPlainId()) );
+    			if (AdminPlayer.GodModeStatus())
+    			{
+    				AdminPlayer.setGodMode(false);
+    				m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled OFF!",5,2,false,true,"",0,0);
+    			}else{
+    				AdminPlayer.setGodMode(true);
+    				m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled ON!",5,2,false,true,"",0,0);
+    			}
+		    }
+        }
 	}
 
-	void PhysicsTest( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target )
+	/*void PhysicsTest( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target )
     {
     	Param1<string> data;
         if ( !ctx.Read( data ) ) return;
@@ -95,6 +99,20 @@ class AdminTools extends VPPModuleManager
             package.SetPosition("7500 800 7500");
 
             GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.DoMeme, 1200, false, package);
+        }
+    }*/
+
+    void DeleteObject(CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target)
+    {
+        if (type == CallType.Server)
+        {
+            if (sender != NULL && PermitManager.Cast(m_MissionServer.GetModule(PermitManager)).VerifyIdentity(sender))
+            {
+                if (target)
+                {
+                    GetGame().ObjectDelete(target);
+                }
+            }
         }
     }
 
@@ -155,7 +173,7 @@ class AdminTools extends VPPModuleManager
         
         if (type == CallType.Server)
         {
-            if (data.param1 != NULL && sender != NULL && PermitManager.Cast(m_MissionServer.GetModule(PermitManager)).VerifyIdentity(sender))
+            if (data.param1 != NULL && data.param1.GetIdentity() != NULL && sender != NULL && PermitManager.Cast(m_MissionServer.GetModule(PermitManager)).VerifyIdentity(sender))
             {
                 string playerName    = data.param1.GetIdentity().GetName();
                 string Steam64ID     = data.param1.GetIdentity().GetPlainId();
@@ -280,7 +298,7 @@ class AdminTools extends VPPModuleManager
         		//Multi-Player Spawn
     		    for (int i = 0; i < m_Guids.Count(); ++i)
     		    {
-    		    	//TargetPlayer = PlayerBase.Cast( m_MissionServer.GetPlayerByUID(m_Guids.Get(i)) );
+    		    	TargetPlayer = PlayerBase.Cast( m_MissionServer.GetPlayerByUID(m_Guids.Get(i)) );
                     //TargetPlayer.ProcessDirectDamage(DT_FIRE_ARM, NULL, "head", "Bullet_556x45", "0 0 0", 100.0);
     		    	
                     if (TargetPlayer != NULL)

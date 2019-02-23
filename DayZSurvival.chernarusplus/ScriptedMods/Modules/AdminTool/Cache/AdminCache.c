@@ -3,17 +3,17 @@
 class AdminCache {
 	private string m_GUID = "";
 	private string m_savedName = "";
-	private ref array<ref Permission> m_Perms;
+	private ref array<ref VPPPermission> m_Perms;
 
-	void AdminCache(string guid, string savedname, ref array<ref Permission> Perms)	{
+	void AdminCache(string guid, string savedname, ref array<ref VPPPermission> Perms)	{
 		m_GUID = guid;
 		m_savedName = savedname;
 		if (Perms) { m_Perms = Perms; }else{ m_Perms = createDefaultPerms(); }
 	}
 
-	private static ref array<ref Permission> createDefaultPerms(){
+	private static ref array<ref VPPPermission> createDefaultPerms(){
 
-		ref array<ref Permission> permissions = new array<ref Permission>;
+		ref array<ref VPPPermission> permissions = new array<ref VPPPermission>;
 		ref array<string> names = {
 			"PlayerManager",
 			"ItemManager",
@@ -23,7 +23,7 @@ class AdminCache {
 		};
 
 		foreach(string s : names){
-			permissions.Insert(new Permission(s, 1));	
+			permissions.Insert(new VPPPermission(s, 1));	
 		}
 		return permissions;
 	}
@@ -31,7 +31,7 @@ class AdminCache {
 	void setPermissionArray(ref array<string> Permissions){
 		for (int i = 0; i < m_Perms.Count(); ++i)
 	    {
-	    	ref Permission perm = m_Perms.Get(i);
+	    	ref VPPPermission perm = m_Perms.Get(i);
     	    for (int x = 0; x < Permissions.Count(); ++x)
     	    {
     	    	if(perm.getName() == Permissions.Get(x))
@@ -43,7 +43,7 @@ class AdminCache {
 	}
 
 	void setPermission(string name, bool newState){
-		foreach(Permission perm : m_Perms){
+		foreach(VPPPermission perm : m_Perms){
 			if(perm.getName() == name){
 				perm.setState(newState);
 			}
@@ -51,7 +51,7 @@ class AdminCache {
 	}
 
 	bool hasPermission(string name){
-		foreach(Permission perm : m_Perms){
+		foreach(VPPPermission perm : m_Perms){
 			if(perm.getName() == name){
 				if(perm.getState()){
 					return true;
@@ -64,7 +64,7 @@ class AdminCache {
 	ref array<string> getAllPermsByGUID(string GUID)
 	{
 		ref array<string> Perms = new array<string>;
-		foreach(Permission perm : m_Perms){
+		foreach(VPPPermission perm : m_Perms){
 			if(getGUID() == GUID){
 				if(perm.getState()){
 					Perms.Insert(perm.getName());

@@ -83,6 +83,8 @@ class AdvancedLoadouts extends VPPModuleManager
 	{
 		if (type == CallType.Server)
         {
+			ConstructLoadouts(false);
+			
 			ref Param1< ref map<string, TStringArray> > map_param;
 			ref map<string, TStringArray> m_LootMap = new map<string, TStringArray>;
 			//Construct map
@@ -488,7 +490,7 @@ class AdvancedLoadouts extends VPPModuleManager
 					}
 					else
 					{
-						itemEnt = player.GetInventory().CreateInInventory( strClassName );
+						itemEnt = player.GetHumanInventory().CreateInInventory( strClassName );
 						itemBs = ItemBase.Cast(itemEnt);
 						if (arrAttachments.Count() >= 1)
 						{
@@ -537,6 +539,7 @@ class AdvancedLoadouts extends VPPModuleManager
 	{
 		PlayerBase player;
 		player = PlayerBase.Cast(m_MissionServer.GetPlayerByUID(UID));
+		if (player != NULL && !player.IsAlive()) return;
 		ref array<string> TmP = new array<string>;
 		TmP.Insert(GetDirByName(LoadOutName));
 
@@ -780,6 +783,14 @@ class AdvancedLoadouts extends VPPModuleManager
 
 		if (VPPSpawnPoints.Cast(m_MissionServer.GetConfigByType(VPPSpawnPoints)).loadOutsType() == "CUSTOMIZABLE_LOADOUTS")
 		{
+			Bags.Clear();
+			Gloves.Clear();
+			Vests.Clear();
+			Tops.Clear();
+			Pants.Clear();
+			Boots.Clear();
+			HeadGear.Clear();
+			Face.Clear();
 			//Load randomized ld items
 			for ( int i = 0; i < LoadoutCatagories.Count(); ++i )
 			{

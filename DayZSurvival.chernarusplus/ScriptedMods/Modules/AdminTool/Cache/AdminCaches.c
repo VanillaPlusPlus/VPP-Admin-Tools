@@ -30,7 +30,7 @@ class AdminCaches extends VPPConfig
 		}else{
 			Print("AdminCache not found. Creating...");
 
-			ref array<ref Permission> permissions = new array<ref Permission>;
+			ref array<ref VPPPermission> permissions = new array<ref VPPPermission>;
 			ref array<string> PermTypes = {
 				"PlayerManager",
 				"ItemManager",
@@ -40,7 +40,7 @@ class AdminCaches extends VPPConfig
 			};
 
 			foreach(string type : PermTypes){
-				permissions.Insert(new Permission(type, 1));	
+				permissions.Insert(new VPPPermission(type, 1));	
 			}
 
 			addCache("76561198420222029", "DaOne", permissions);
@@ -61,7 +61,7 @@ class AdminCaches extends VPPConfig
 		return NULL;
 	}
 
-	void addCache(string guid, string savedname, ref array<ref Permission> Perms){
+	void addCache(string guid, string savedname, ref array<ref VPPPermission> Perms){
 		adminCaches.Insert(new ref AdminCache(guid, savedname, Perms));
 		save();
 	}
