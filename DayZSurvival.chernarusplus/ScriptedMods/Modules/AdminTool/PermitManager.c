@@ -130,12 +130,12 @@ class PermitManager extends VPPModuleManager
         }
 	}
 
-	bool HasPermission( string AdminGUID, string PermissionType )
+	bool HasPermission( string AdminGUID, string VPPPermissionType )
 	{
 		ref array<string> m_Perms = AdminCaches.Cast(m_MissionServer.GetConfigByType(AdminCaches)).getPermissions(AdminGUID);
 		foreach(string perm : m_Perms)
 		{
-			if (perm == PermissionType)
+			if (perm == VPPPermissionType)
 			{
 				return true;
 			}
