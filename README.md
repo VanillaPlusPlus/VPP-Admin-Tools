@@ -101,16 +101,6 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 
 <img src="https://camo.githubusercontent.com/f3dd43dbec49013bfca34e551292e0a14dcd7cb3/68747470733a2f2f737465616d75736572696d616765732d612e616b616d616968642e6e65742f7567632f3936333130343532383634333232363336382f323133334345463737413530363837323731453130463236433539314238363532323645414435332f3f696e746572706f6c6174696f6e3d6c616e637a6f732d6e6f6e65266f75747075742d666f726d61743d6a706567266f75747075742d7175616c6974793d3935266669743d696e7369646525374336333725334133353826636f6d706f736974652d746f3d2a2c2a253743363337253341333538266261636b67726f756e642d636f6c6f723d626c61636b" alt="ingamemap" height="auto" width="400px">
 
-<img src="https://i.imgur.com/rTr0rru.jpg
-" alt="ingamemap" height="auto" width="400px">
-
-<img src="https://i.imgur.com/917qywU.jpg
-" alt="ingamemap" height="auto" width="400px">
-
-<img src="https://i.imgur.com/MqaSIN6.jpg
-" alt="ingamemap" height="auto" width="400px">
-
-
 #### Spawn Menu:
 - Spawn Points:
  	- Can be configured to allow players to pick spawn, or choose randomly; also, can force only random spawn points.
