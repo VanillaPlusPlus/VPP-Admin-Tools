@@ -76,6 +76,5 @@ Note: Those who don't have admin/super admin permission will not be able to trig
 
 ## Credits:
 
-- @Sen ( @zalexki zalexki ) from DayZModders Discord Server for the KillScore system https://github.com/zalexki
 - @Slluxx for teaching @GravityWolfNotAmused how not to suck at readme.md files. I still suck at readme.md files.
 - Github User Moondarker for /refuel cmd added, /spawncar modified to spawn car in dir of admin view (Admin Tools)
