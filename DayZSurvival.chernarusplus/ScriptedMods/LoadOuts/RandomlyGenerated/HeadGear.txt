@@ -1,8 +1,0 @@
-BeanieHat_Green
-CowboyHat_Brown
-RadarCap_Black
-PoliceCap
-Ushanka_Green
-FirefightersHelmet_White
-ConstructionHelmet_Yellow
-PrisonerCap

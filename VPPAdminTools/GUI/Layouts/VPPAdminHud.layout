@@ -1,0 +1,3114 @@
+FrameWidgetClass hud_root {
+ visible 1
+ inheritalpha 0
+ ignorepointer 0
+ position -1 -1.49
+ size 0.9915 0.9895
+ halign center_ref
+ valign center_ref
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ priority 0
+ draggable 0
+ {
+  GridSpacerWidgetClass Info_Panel {
+   visible 0
+   disabled 0
+   clipchildren 1
+   ignorepointer 1
+   keepsafezone 0
+   color 0 0 0 0.8824
+   position 112.902 0
+   size 414 171
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scaled 1
+   style DayZDefaultPanel
+   "no focus" 1
+   Padding 8
+   Margin 16
+   "Size To Content V" 1
+   Columns 1
+   Rows 2
+   {
+    TextWidgetClass LabelText {
+     visible 1
+     clipchildren 0
+     inheritalpha 1
+     ignorepointer 1
+     position 188.58101 118.394
+     size 52.4567 49.4856
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text_proportion 0.9
+    }
+    RichTextWidgetClass Info_Content {
+     clipchildren 0
+     inheritalpha 1
+     ignorepointer 1
+     position 392.58096 55.3943
+     size 1 39.0867
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style DayZBold
+     "exact text" 1
+     "size to text v" 1
+     wrap 1
+     "condense whitespace" 1
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_Icons {
+   visible 1
+   color 0 0 0 0.8824
+   position 0 0.57
+   size 107.96 449.78
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style GrungeBorder
+   "no focus" 0
+   {
+    ButtonWidgetClass SettingBtn {
+     clipchildren 0
+     inheritalpha 1
+     color 1 0 0.0118 1
+     position 0.7428 90.62
+     size 82 85
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "no focus" 1
+     {
+      ImageWidgetClass ModManager {
+       ignorepointer 1
+       size 78.66 80.98
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui_vpp image:vpp_icon_settings"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+       nocache 0
+      }
+     }
+    }
+    ButtonWidgetClass PlayerManagerBtn {
+     visible 1
+     color 1 0 0 1
+     position 0.74278 179.752
+     size 82 85
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     {
+      ImageWidgetClass PlayerManager {
+       ignorepointer 1
+       position 1 -0.0001
+       size 74.66 76.98
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui_vpp image:vpp_icon_players"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+       nocache 0
+      }
+     }
+    }
+    ButtonWidgetClass WeatherManagerBtn {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.74278 1.48471
+     size 82 85
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     {
+      ImageWidgetClass WeatherManager {
+       ignorepointer 1
+       size 78.66 76.98
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui_vpp image:vpp_icon_cloud"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+       nocache 0
+      }
+     }
+    }
+    ButtonWidgetClass ItemManagerBtn {
+     color 1 0 0 1
+     position 1.23 267.87997
+     size 82 85
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     {
+      ImageWidgetClass ItemManager {
+       ignorepointer 1
+       position 0 0
+       size 74.66 76.98
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui_vpp image:vpp_icon_item_manager"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+       nocache 0
+      }
+     }
+    }
+    ButtonWidgetClass ObjectEditorBtn {
+     color 1 0 0 1
+     position 0.74278 355.047
+     size 82 85
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     {
+      ImageWidgetClass ObjectEditor {
+       ignorepointer 1
+       size 72.66 74.98
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui_vpp image:vpp_icon_obj_editor"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+       nocache 0
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_Weather {
+   visible 0
+   color 0 0 0 0.8824
+   position 1.83 1.496
+   size 0.4711 0.5094
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 1
+   style GrungeBorder
+   {
+    PanelWidgetClass Splitter_0 {
+     color 1 0 0 1
+     position 0.00034 0.04303
+     size 0.9944 0.0135
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_colorable
+    }
+    TextWidgetClass TitleText_0 {
+     size 0.2338 0.0435
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "WEATHER MANAGER"
+     "text halign" center
+     "text valign" center
+    }
+    SliderWidgetClass SliderTime {
+     color 1 0 0 1
+     position 0.0147 -0.055
+     size 0.0721 0.7317
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style GUI_Black_simple
+     maximum 24
+     current 12
+     vertical 1
+     flipped 1
+    }
+    SliderWidgetClass SliderDate {
+     color 1 0 0 1
+     position 0.0985 -0.055
+     size 0.0721 0.7317
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style GUI_Black_simple
+     maximum 31
+     current 15.5
+     vertical 1
+     flipped 1
+    }
+    SliderWidgetClass SliderOvercast {
+     color 1 0 0 1
+     position 0.1821 -0.055
+     size 0.0721 0.7317
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style GUI_Black_simple
+     maximum 5000
+     current 2500
+     vertical 1
+     flipped 1
+    }
+    SliderWidgetClass SliderFog {
+     color 1 0 0 1
+     position 0.34778 -0.055
+     size 0.0721 0.7317
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style GUI_Black_simple
+     maximum 5000
+     current 2500
+     vertical 1
+     flipped 1
+    }
+    SliderWidgetClass SliderWindForce {
+     color 1 0 0 1
+     position 0.26494 -0.055
+     size 0.0721 0.7317
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style GUI_Black_simple
+     maximum 5000
+     current 2500
+     vertical 1
+     flipped 1
+    }
+    ButtonWidgetClass BtnApplyWeather {
+     color 1 0 0 1
+     position 0.01023 0.02019
+     size 0.17647 0.06484
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Apply"
+    }
+    TextListboxWidgetClass ListPosIH0 {
+     color 1 0 0 1
+     position 0.01187 0.06326
+     size 0.38747 0.74044
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     "title visible" 1
+     colums "Weather Presets:;"
+     lines 1
+     "highlight row" 1
+     font "gui/fonts/MetronBlack16"
+    }
+    ButtonWidgetClass BtnLoadWeatherPrest {
+     color 1 0 0 1
+     position 0.4063 0.86597
+     size 0.155 0.0373
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Load Preset"
+    }
+    ButtonWidgetClass BtnSaveCurrent {
+     color 1 0 0 1
+     position 0.4063 0.826
+     size 0.155 0.0373
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Save Preset"
+    }
+    ButtonWidgetClass BtnSaveCurrent0 {
+     color 1 0 0 1
+     position 0.4063 0.786
+     size 0.155 0.0373
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Delete Preset"
+    }
+    ImageWidgetClass ImgTime {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.023 0.051
+     size 0.052 0.062
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ImageWidgetClass ImgDate {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.11 0.051
+     size 0.052 0.062
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ImageWidgetClass ImgOvercast {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.19 0.051
+     size 0.052 0.062
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ImageWidgetClass ImgWind {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.2744 0.051
+     size 0.052 0.062
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ImageWidgetClass ImgFog {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.3557 0.051
+     size 0.052 0.062
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    EditBoxWidgetClass InputTime {
+     color 1 0 0 1
+     position 0.01465 0.13618
+     size 0.0721 0.046
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "22:15"
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputDate {
+     color 1 0 0 1
+     position 0.098 0.136
+     size 0.0721 0.046
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "28/5/2018"
+     "Use default text" 0
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputOvercast {
+     color 1 0 0 1
+     position 0.1816 0.136
+     size 0.0721 0.046
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "25"
+     "Use default text" 0
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputWindForce {
+     color 1 0 0 1
+     position 0.2644 0.136
+     size 0.0721 0.046
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "55"
+     "Use default text" 0
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputFog {
+     color 1 0 0 1
+     position 0.3473 0.136
+     size 0.0721 0.046
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "55"
+     "Use default text" 0
+     "exact text" 1
+    }
+    ButtonWidgetClass BtnCloseWM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.00739 0.00465
+     size 0.03 0.033
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       position -0.04276 -0.048
+       size 1.04063 1.19759
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_Settings {
+   visible 0
+   color 0 0 0 0.8824
+   position 0 0
+   size 0.798 0.998
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 1
+   style GrungeBorder
+   {
+    PanelWidgetClass Splitter_1 {
+     color 1 0 0 1
+     position 0 46.0523
+     size 1515.60999 7.29
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+    }
+    TextWidgetClass TitleText_1 {
+     position 12.6272 1.48556
+     size 293.862 36.0533
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "SERVER MANAGER"
+    }
+    WrapSpacerWidgetClass DropDownPanel {
+     visible 1
+     clipchildren 0
+     color 0.0157 0.0157 0.0157 0.8824
+     position 0.0035 60.9078
+     size 0.3117 0.0494
+     hexactpos 0
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Colorable
+     "no focus" 0
+    }
+    PanelWidgetClass Panel_XMLEditor {
+     visible 0
+     color 1 0 0 0.8431
+     position 0.01 -65
+     size 0.562 0.752
+     halign right_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ButtonWidgetClass BtnXMLEditorApply {
+       color 1 0 0.0431 1
+       position 9 10
+       size 194.22 41.2496
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Apply Changes"
+       switch normal
+      }
+      EditBoxWidgetClass SearchBoxXML {
+       disabled 0
+       color 1 0 0 1
+       position 6 50
+       size 413.98999 45.0288
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style DefaultBorder
+       "no focus" 0
+       text " Search Item"
+       "Use default text" 1
+       "exact text" 1
+      }
+      TextListboxWidgetClass ItemListBoxXML {
+       position 6 -21
+       size 427.80298 562.37
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       lines 0
+      }
+      TextWidgetClass TxtXMLStatus {
+       position 0.00801 0.00945
+       size 0.779 0.024
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+      }
+      EditBoxWidgetClass InputNominal {
+       color 1 0 0 1
+       position 264.70001 104.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtNominal {
+       position 86.71 103.98901
+       size 151.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Nominal"
+      }
+      TextWidgetClass TxtLifetime {
+       position 86.71 140.98999
+       size 151.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "LifeTime"
+      }
+      EditBoxWidgetClass InputLifetime {
+       color 1 0 0 1
+       position 264.70001 143.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtRestock {
+       position 86.71 177.98999
+       size 151.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Restock"
+      }
+      EditBoxWidgetClass InputRestock {
+       color 1 0 0 1
+       position 264.70001 182.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtMin {
+       position 86.71 218.98999
+       size 151.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Minimum"
+      }
+      EditBoxWidgetClass InputMin {
+       color 1 0 0 1
+       position 264.70001 222.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtQuantmin {
+       position 86.71 258.98999
+       size 151.13 40.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       draggable 0
+       style Bold
+       text "Quantmin"
+      }
+      EditBoxWidgetClass InputQuantmin {
+       color 1 0 0 1
+       position 264.70001 260.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtQuantmax {
+       position 86.71 298.98999
+       size 148.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Quantmax"
+      }
+      EditBoxWidgetClass InputQuantmax {
+       color 1 0 0 1
+       position 264.70001 299.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtCost {
+       position 86.71 337.98999
+       size 148.13 39.0867
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Cost"
+      }
+      EditBoxWidgetClass InputCost {
+       color 1 0 0 1
+       position 264.70001 338.97
+       size 196 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtTitleXML {
+       size 0.256 0.049
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "XML Editor"
+       "size to text h" 0
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnLoadSelected {
+       color 1 0 0.0431 1
+       position 9 56
+       size 194.22 41.2496
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Load Selected"
+       switch normal
+      }
+      ItemPreviewWidgetClass ItemPreviewXML {
+       position 18.3443 162.989
+       size 386.72 249.7
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+      }
+      ImageWidgetClass ImageNominal {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 104
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageLifetime {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 143.97
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageRestock {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 182
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageMin {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 222
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageQuantMin {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 262
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageQuantMax {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 299.97
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageCost {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 338.97
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ButtonWidgetClass BtnGetStats {
+       color 1 0 0.0431 1
+       position 9 100.619
+       size 194.22 41.2496
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Get Item Stats"
+       switch normal
+      }
+      ImageWidgetClass ImageItemStats {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 207.15102 663.06403
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+     }
+    }
+    PanelWidgetClass Panel_InfectedHordes {
+     visible 0
+     color 1 0 0 1
+     position 14.86 65.1516
+     size 856.13995 804.14996
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_black_2
+     {
+      TextWidgetClass TxtTitleIHTitle {
+       visible 1
+       size 0.386 0.049
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "Infected Hordes Config"
+       "size to text h" 0
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMaxZeds {
+       color 1 0 0 1
+       position 285.75 74.1488
+       size 155 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtMaxZeds {
+       ignorepointer 1
+       position 104.59 72.65
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Max Zombies:"
+      }
+      TextWidgetClass TxtZedLocations {
+       position -297.996 56.31319
+       size 239.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Horde Locations:"
+      }
+      EditBoxWidgetClass InputMinZombies {
+       color 1 0 0 1
+       position 285.75 114.15
+       size 155 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtMinZeds {
+       ignorepointer 1
+       position 104.59 111.65
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Min Zombies:"
+      }
+      ButtonWidgetClass BtnApplyIH {
+       color 1 0 0.0431 1
+       position 9 12
+       size 194.22 41.2496
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Apply Changes"
+       switch normal
+      }
+      EditBoxWidgetClass InputLifeTimeIH {
+       color 1 0 0 1
+       position 285.75 152.15001
+       size 155 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtLifeTime {
+       ignorepointer 1
+       position 104.59 150.65001
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Lifetime:"
+      }
+      EditBoxWidgetClass InputPauseTime {
+       color 1 0 0 1
+       position 285.75 192.15001
+       size 155 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtCLTime {
+       ignorepointer 1
+       position 104.59 189.65001
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Cooldown:"
+      }
+      EditBoxWidgetClass InputMaxHordes {
+       color 1 0 0 1
+       position 285.75 231.15001
+       size 155 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "0"
+       "limit visible" 0
+       "Use default text" 0
+       "exact text" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtMaxHordes {
+       ignorepointer 1
+       position 104.59 229.65001
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Max Hordes:"
+      }
+      CheckBoxWidgetClass ChkShowMessage {
+       color 1 0 0 1
+       position 264.31601 308.474
+       size 209.02 25.1105
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Default
+       text "Broadcast Messages"
+       checked 0
+      }
+      TextWidgetClass TxtOther {
+       ignorepointer 1
+       position 103.59 284.64999
+       size 195.13 36.09
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Other:"
+      }
+      CheckBoxWidgetClass ChkSpecialZeds {
+       color 1 0 0 1
+       position 245.32001 343.61002
+       size 172.32001 25.1105
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Default
+       text "Mutant Zombies"
+       checked 0
+      }
+      ButtonWidgetClass BtnShowOnMap {
+       color 1 0 0.0431 1
+       position 653.72003 97.1998
+       size 194.22 41.25
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Edit Positions"
+       switch normal
+      }
+      ImageWidgetClass ImageMaxZeds {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 73
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageMinZeds {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 114
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageLifeTime {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 152
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageCoolDown {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 192
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageMaxHordes {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 231
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageBroadMessage {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 303
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      ImageWidgetClass ImageMutantZeds {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 10 341
+       size 46.37 34
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+      TextWidgetClass TxtIHStatus {
+       position 0.00801 0.00945
+       size 0.779 0.024
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+      }
+      TextListboxWidgetClass ListPosIH {
+       position 8.91338 -35.6533
+       size 420.875 556.06
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       "title visible" 1
+       colums "Location Name:;45;Coordinates:;"
+       lines 1
+       "highlight row" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      ImageWidgetClass ImageInfoPosEdit {
+       inheritalpha 1
+       color 0.9255 0.0431 0.0431 1
+       position 210.533 283.08798
+       size 46.37 34
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       mode blend
+       "src alpha" 1
+       "no wrap" 0
+       stretch 1
+       "flip u" 0
+       "flip v" 0
+       filter 1
+      }
+     }
+    }
+    PanelWidgetClass Panel_SpawnPointsEditor {
+     visible 0
+     color 1 0 0 1
+     position 19.3122 61.39
+     size 621.42505 599.14093
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_black_2
+     {
+      TextWidgetClass TxtTitleSPEditor {
+       size 0.386 0.049
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "Spawn Points Editor"
+       "size to text h" 0
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      TextListboxWidgetClass ListPosSP {
+       position 8.9134 8.08
+       size 371.87997 486.06
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       "title visible" 1
+       colums "Location Name:;45;Coordinates:;"
+       lines 1
+       "highlight row" 1
+       font "gui/fonts/MetronBlack16"
+      }
+      ButtonWidgetClass BtnApplySP {
+       color 1 0 0.0431 1
+       position 9 12
+       size 194.22 41.2496
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Apply Changes"
+       switch normal
+      }
+      ButtonWidgetClass BtnEditPoints {
+       color 1 0 0.0431 1
+       position 9 61
+       size 194.22 41.25
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Edit Points"
+       switch normal
+      }
+      EditBoxWidgetClass InputCooldownSP {
+       color 1 0 0 1
+       position 9 113.015
+       size 121.21999 41.25
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "1800"
+       "Use default text" 0
+       "exact text" 1
+      }
+      TextWidgetClass TxtCooldown {
+       ignorepointer 1
+       position 122.386 119.071
+       size 116.56 27.2022
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "Cooldown:"
+      }
+      TextWidgetClass TxtSPStatus {
+       position 2.97111 9
+       size 406.95999 13
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+      }
+      CheckBoxWidgetClass ChkBoxForcedSpawns {
+       color 1 0 0 1
+       position 1.48556 133.7
+       size 217.35301 19.7744
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Default
+       text "Forced Random Spawns"
+      }
+      CheckBoxWidgetClass ChkBoxStaticLD {
+       color 1 0 0 1
+       position 1.4856 113.7
+       size 217.35301 19.7744
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Default
+       text "Static Loadouts"
+      }
+      CheckBoxWidgetClass ChkBoxRandomLD {
+       color 1 0 0 1
+       position 1.4856 93.7
+       size 217.35301 19.7744
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Default
+       text "Customizable Loadouts"
+      }
+     }
+    }
+    ButtonWidgetClass BtnCloseSM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.0074 0.0047
+     size 0.0267 0.0281
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose3 {
+       ignorepointer 1
+       position -0.02385 -0.03889
+       size 1.2433 1.2959
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_PlayerManager {
+   visible 0
+   clipchildren 1
+   color 0 0 0 0.8824
+   position 697.95001 0.18271
+   size 744.72003 933.39099
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scaled 1
+   draggable 1
+   style GrungeBorder
+   {
+    PanelWidgetClass Splitter_2 {
+     color 1 0 0 1
+     position 0 46.0523
+     size 744.60999 7.29
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+    }
+    TextWidgetClass TitleText_2 {
+     position 31.9394 0
+     size 293.862 36.0533
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "PLAYER MANAGER"
+    }
+    TextListboxWidgetClass PlayerList {
+     inheritalpha 0
+     position 331.27902 -170.09599
+     size 404.535 474.35498
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "title visible" 0
+     colums ""
+     lines 1
+     "highlight row" 0
+     font "gui/fonts/MetronBlack16"
+    }
+    PanelWidgetClass PanelPlayerInfo {
+     clipchildren 1
+     inheritalpha 0
+     color 1 0 0 1
+     position 22.8392 561.20001
+     size 697.18799 345.11002
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_black_2
+     {
+      ButtonWidgetClass BtnCopyID {
+       color 1 0 0 1
+       position 565.61096 4.67175
+       size 124.31001 25.6
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Copy"
+      }
+      ButtonWidgetClass BtnCopyName {
+       color 1 0 0 1
+       position 565.61096 34.3829
+       size 124.31001 25.6
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Copy"
+      }
+      ButtonWidgetClass BtnTpMeTo {
+       color 1 0 0 1
+       position 527.89001 239.63
+       size 160.89999 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Teleport Me To"
+      }
+      ButtonWidgetClass BtnSpectate {
+       color 1 0 0 1
+       position 527.89001 291.13699
+       size 160.89999 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Spectate"
+      }
+      TextWidgetClass TxtHealth {
+       position 45.94571 90.59
+       size 173.138 23.2344
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "100"
+       "size to text h" 1
+      }
+      TextWidgetClass TxtBlood {
+       position 45.9453 115.87
+       size 152.99399 23.2344
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "5000"
+       "size to text h" 1
+      }
+      SliderWidgetClass SliderHealth {
+       color 1 0 0.0627 1
+       position 159.08 92.42
+       size 396.38998 18.2888
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style GUI_Black_simple
+       current 100
+       vertical 0
+       flipped 0
+      }
+      SliderWidgetClass SliderBlood {
+       color 1 0 0 1
+       position 159.084 117.672
+       size 396.38998 18.2888
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style GUI_Black_simple
+       maximum 5000
+       current 5000
+       vertical 0
+       flipped 0
+      }
+      ButtonWidgetClass BtnSetHealth {
+       color 1 0 0 1
+       position 565.60999 92.81001
+       size 124.31001 18.29
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Set"
+      }
+      ButtonWidgetClass BtnSetBlood {
+       color 1 0 0 1
+       position 565.60999 118.83
+       size 124.31001 18.29
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Set"
+      }
+      MultilineEditBoxWidgetClass TxtPlayerName {
+       visible 1
+       clipchildren 1
+       ignorepointer 1
+       position 6.786 34.38
+       size 553.58002 24.2311
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style DayZBold
+       text "NAME: DaOne"
+       font "gui/fonts/MetronBlack16"
+      }
+      TextWidgetClass TxtShock {
+       position 44.6023 141.52701
+       size 152.99399 23.2344
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Bold
+       text "100"
+       "size to text h" 1
+      }
+      SliderWidgetClass SliderShock {
+       color 1 0 0 1
+       position 159.084 143.67001
+       size 396.38998 18.2888
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style GUI_Black_simple
+       current 100
+       vertical 0
+       flipped 0
+      }
+      ButtonWidgetClass BtnSetShock {
+       color 1 0 0 1
+       position 565.60999 143.83
+       size 124.31001 18.29
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Set"
+      }
+      ImageWidgetClass IconHealth {
+       position 4.31796 85.6414
+       size 30.5417 26.5129
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui image:iconHealth0"
+       mode blend
+       "src alpha" 1
+      }
+      ImageWidgetClass IconBlood {
+       position 4.31796 113.843
+       size 30.5417 26.5129
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui image:iconBlood0"
+       mode blend
+       "src alpha" 1
+      }
+      ImageWidgetClass IconShock {
+       position -7.7685 135.43999
+       size 57.4006 42.6283
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_inventory image:electricity"
+       mode blend
+       "src alpha" 1
+      }
+      ButtonWidgetClass BtnKill {
+       color 1 0 0 1
+       position 363.17999 190.12001
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Kill"
+      }
+      ButtonWidgetClass BtnSendMessage {
+       color 1 0 0 1
+       position 363.17999 239.63
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Send Message"
+      }
+      ButtonWidgetClass BtnHeal {
+       color 1 0 0 1
+       position 198.461 190.12001
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Heal"
+      }
+      ButtonWidgetClass BtnTeleportManager {
+       color 1 0 0 1
+       position 198.461 239.63
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "TP Manager"
+      }
+      ButtonWidgetClass BtnTpTo {
+       disabled 0
+       color 1 0 0 1
+       position 527.896 190.117
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Teleport To Me"
+       switch normal
+      }
+      MultilineEditBoxWidgetClass TxtPlayerGUID {
+       visible 1
+       clipchildren 1
+       ignorepointer 1
+       position 6.786 4.67
+       size 553.58002 24.2311
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style DayZBold
+       text "GUID: 4204206969"
+       font "gui/fonts/MetronBlack16"
+      }
+      ButtonWidgetClass BtnKick {
+       color 1 0 0 1
+       position 362.45999 291.14001
+       size 160.903 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Kick Player(s)"
+      }
+      ButtonWidgetClass BtnShowPlayerOnMap {
+       color 1 0 0 1
+       position 199.45999 291.14001
+       size 159.89999 42.54
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Editor
+       text "Admin Map"
+      }
+     }
+    }
+    ButtonWidgetClass BtnRefreshList {
+     disabled 0
+     color 1 0 0 1
+     position 7.07127 59.3985
+     size 150.58 30
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Refresh List"
+     "disabled text color" 1 0 0 1
+    }
+    ButtonWidgetClass BtnSelectAll {
+     visible 1
+     color 1 0 0 1
+     position 7.07127 93.34051
+     size 150.58 30
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Select All"
+     switch normal
+    }
+    TextWidgetClass TxtSelectedNum {
+     position 157.98 60.83
+     size 170.28 28.9254
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Selected: 0"
+     "exact text" 1
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
+    }
+    ButtonWidgetClass BtnPermissions {
+     color 1 0 0 1
+     position 7.07 128.34
+     size 150.58 30
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Permissions"
+     "disabled text color" 1 0 0 1
+     switch normal
+    }
+    ButtonWidgetClass BtnClosePM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.00739 0.00465
+     size 0.03675 0.02807
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose2 {
+       ignorepointer 1
+       position -0.02385 -0.03889
+       size 1.24334 1.29589
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+    CheckBoxWidgetClass ToggleESP {
+     color 1 0 0 1
+     position -243.55 414.39294
+     size 178.729 25.7166
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "ESP Toggle"
+    }
+    CheckBoxWidgetClass ESPType {
+     color 1 0 0 1
+     position -243.55 388.38998
+     size 178.729 25.7166
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Minimal ESP"
+    }
+    ImageWidgetClass PlayerManagerInfoImg {
+     inheritalpha 1
+     color 1 0 0 1
+     position 0.2472 0.06
+     size 0.052 0.042
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_Teleport {
+   visible 0
+   color 0 0 0 0.8824
+   position 1338.60999 94.02339
+   size 0.18 0.626
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 1
+   style GrungeBorder
+   {
+    PanelWidgetClass Splitter_3 {
+     color 1 0 0 1
+     position 0 44.05
+     size 339.61002 7.29
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+    }
+    TextWidgetClass TitleText_3 {
+     visible 1
+     position 0.003 0.007
+     size 248.81 30.2351
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "TELEPORT MANAGER"
+     "exact text" 1
+     "text halign" center
+    }
+    TextListboxWidgetClass TeleportList {
+     position -2.22833 59.4223
+     size 309.45898 484.75299
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "title visible" 1
+     colums "Location Name:;45;Coordinates:;"
+     lines 1
+     "highlight row" 1
+     font "gui/fonts/MetronBlack16"
+    }
+    TextWidgetClass TxtX {
+     position 5.97 236.20399
+     size 70.28 36.1156
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "X:"
+     "size to text h" 0
+    }
+    TextWidgetClass TxtZ {
+     position 5.97 274.82797
+     size 70.28 36.1156
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Z:"
+     "size to text h" 0
+    }
+    TextWidgetClass TxtY {
+     position 5.97 4.4567
+     size 70.28 36.1156
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Y:"
+     "size to text h" 0
+    }
+    EditBoxWidgetClass InputX {
+     visible 1
+     color 1 0 0 1
+     position 31.7145 552.711
+     size 100.46 36.1155
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "Use default text" 0
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputZ {
+     color 1 0 0 1
+     position 31.9853 591.336
+     size 100.46 36.12
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "Use default text" 0
+     "exact text" 1
+    }
+    EditBoxWidgetClass InputY {
+     color 1 0 0 1
+     position 31.9853 629.33997
+     size 100.46 36.12
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     "Use default text" 0
+     "exact text" 1
+    }
+    ButtonWidgetClass BtnTPSelectedP {
+     color 1 0 0 1
+     position 10 44
+     size 194.13 33.6317
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "TP Selected Player(s)"
+    }
+    ButtonWidgetClass BtnTPMe {
+     color 1 0 0 1
+     position 10 83
+     size 194.13 33.6317
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Teleport"
+    }
+    ButtonWidgetClass BtnMapTP {
+     visible 0
+     color 1 0 0 1
+     position 10 7
+     size 194.13 33.6317
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Map Teleport"
+    }
+    ButtonWidgetClass BtnCloseTPM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.02384 0.00628
+     size 0.0667 0.0281
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose1 {
+       ignorepointer 1
+       position -0.02385 -0.03889
+       size 1.2433 1.2959
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_ItemManager {
+   visible 0
+   ignorepointer 0
+   color 0 0 0 0.8824
+   position 539 84
+   size 0.451 0.836
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 1
+   style GrungeBorder
+   {
+    PanelWidgetClass Splitter_4 {
+     ignorepointer 1
+     color 1 0 0 1
+     position 0 46.0523
+     size 861.60999 7.29
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+    }
+    TextWidgetClass TitleText_4 {
+     ignorepointer 1
+     position 0 0
+     size 0.341 0.04
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "ITEM MANAGER"
+     "text halign" center
+     "text valign" center
+    }
+    TextListboxWidgetClass ItemListBox {
+     position 0.013 -0.049
+     size 0.498 0.629
+     halign right_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     lines 0
+    }
+    EditBoxWidgetClass SearchInputBox {
+     disabled 0
+     color 1 0 0 1
+     position 198.55 73.88
+     size 0.482 0.05
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style DefaultBorder
+     "no focus" 0
+     text " Search Item"
+     "Use default text" 1
+     "exact text" 1
+    }
+    ButtonWidgetClass ButtonSpawnGround {
+     color 1 0 0.0431 1
+     position 16.971 19.7995
+     size 0.225 0.046
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "On Ground"
+     switch normal
+    }
+    PanelWidgetClass PanelItemProperties {
+     visible 1
+     color 1 0 0 1
+     position 16.9697 722.55499
+     size 0.964 0.108
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      TextWidgetClass TxtCondition {
+       ignorepointer 1
+       position 5.05518 5.16925
+       size 0.19 0.424
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "Condition:"
+       "text halign" center
+       "text valign" center
+      }
+      XComboBoxWidgetClass ComboCondition {
+       color 1 0 0 1
+       position 5.2294 51.6257
+       size 0.333 0.336
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style Default
+       items "Pristine;Worn;Damaged;Badly Damaged;Ruined"
+      }
+      TextWidgetClass TxtQuantity {
+       ignorepointer 1
+       position 282.06 5.1693
+       size 0.19 0.424
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "Quantity:"
+       "text halign" center
+       "text valign" center
+      }
+      EditBoxWidgetClass InputQuantity {
+       visible 1
+       color 1 0 0 1
+       position -51.9726 19.7995
+       size 0.189 0.347
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       "Use default text" 0
+       "exact text" 1
+      }
+      CheckBoxWidgetClass ChkBoxOnCursor {
+       position 194.45 18.3852
+       size 0.286 0.351
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style Default
+       text "Crosshair Position"
+      }
+      TextWidgetClass TxtOtherOptions {
+       ignorepointer 1
+       position 0.593 0.054
+       size 0.111 0.424
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "Other:"
+       "text valign" center
+      }
+     }
+    }
+    ItemPreviewWidgetClass ItemPreviewWidget {
+     position -0.25 -0.046
+     size 0.438 0.454
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    ButtonWidgetClass ButtonSpawnInventory {
+     color 1 0 0.0431 1
+     position 216.97 19.7995
+     size 0.225 0.046
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "In Inventory"
+     switch normal
+    }
+    CheckBoxWidgetClass CheckSpnOnPlayers {
+     visible 1
+     color 1 0 0.0431 1
+     position 173 25
+     size 0.32808 0.03764
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Default
+     text "Selected Player(s)"
+    }
+    TextWidgetClass TxtSpawnType {
+     ignorepointer 1
+     position 27 22
+     size 0.178 0.046
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "Spawn:"
+     "text halign" center
+     "text valign" center
+    }
+    XComboBoxWidgetClass ComboCatagory {
+     color 1 0 0 1
+     position 5.25 173.19
+     size 430.77002 34
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+    }
+    TextWidgetClass TxtCatagory {
+     ignorepointer 1
+     position -0.085 0.282
+     size 0.183 0.046
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "Catagory:"
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnCloseIM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.00739 0.00465
+     size 0.03675 0.02807
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose0 {
+       ignorepointer 1
+       position -0.02385 -0.03889
+       size 1.24334 1.29589
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_Permissions {
+   visible 0
+   color 0 0 0 0.8824
+   position 239.87601 2.75751
+   size 451.07999 596.17096
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   draggable 1
+   style GrungeBorder
+   {
+    TextWidgetClass TitleText_5 {
+     position 0 0
+     size 0.792 0.06
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "PERMISSIONS MANAGER"
+     "text halign" center
+     "text valign" center
+    }
+    TextWidgetClass Txt_5 {
+     position 7.2871 162.07001
+     size 261.20801 39.3753
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Weather Settings:"
+     "exact text" 0
+     "text valign" center
+    }
+    XComboBoxWidgetClass ComboWeatherManager {
+     color 1 0 0 1
+     position 7.79 204.18001
+     size 307.97 39.09
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Default
+     items "DISALLOW;ALLOW"
+    }
+    XComboBoxWidgetClass ComboServerSettings {
+     color 1 0 0 1
+     position 7.79 291.32999
+     size 307.97299 39.0867
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     items "DISALLOW;ALLOW"
+    }
+    XComboBoxWidgetClass ComboPlayerManager {
+     color 1 0 0 1
+     position 7.79 375.32999
+     size 307.97299 39.0867
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     items "DISALLOW;ALLOW"
+    }
+    XComboBoxWidgetClass ComboItemManager {
+     color 1 0 0 1
+     position 7.79 459.32999
+     size 307.97299 39.0867
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     items "DISALLOW;ALLOW"
+    }
+    XComboBoxWidgetClass ComboObjectEditor {
+     color 1 0 0 1
+     position 7.79 542.33002
+     size 307.97 39.0867
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     items "DISALLOW;ALLOW"
+    }
+    TextWidgetClass Txt_6 {
+     position 7.2871 248.07001
+     size 261.20801 39.3753
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Server Settings:"
+     "exact text" 0
+     "text valign" center
+    }
+    TextWidgetClass Txt_7 {
+     position 7.2871 333.07001
+     size 261.20801 39.3753
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Player Manager:"
+     "exact text" 0
+     "text valign" center
+    }
+    TextWidgetClass Txt_8 {
+     position 7.2871 416.07001
+     size 261.20801 39.3753
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Item Manager:"
+     "exact text" 0
+     "text valign" center
+    }
+    TextWidgetClass Txt_0 {
+     position 7.2871 501.07001
+     size 261.20801 39.3753
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Object Editor:"
+     "exact text" 0
+     "text valign" center
+    }
+    TextWidgetClass TxtGUID {
+     position 4.17087 45.769
+     size 441.57999 32.4432
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "GUID (Steam 64): 76561198420222029"
+     "text valign" center
+    }
+    TextWidgetClass TxtName {
+     position 4.17 80.77
+     size 413.58398 32.4432
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "Name: DaOne"
+     "text valign" center
+    }
+    ButtonWidgetClass BtnApplyPerms {
+     color 1 0 0 1
+     position 7.79 15.09
+     size 121.38701 39.09
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "APPLY"
+    }
+    PanelWidgetClass RedLine {
+     color 1 0 0 1
+     position 1 33
+     size 450 7.29
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+    }
+    ButtonWidgetClass BtnRemoveAdmin {
+     color 1 0 0 1
+     position 7.79 62.09
+     size 121.38701 39.09
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Remove"
+    }
+    ImageWidgetClass ImageHelpPerms {
+     inheritalpha 0
+     color 0.9255 0.0431 0.0431 1
+     position 10.4584 106.009
+     size 45.8661 36.4761
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ButtonWidgetClass BtnClosePERM {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.0174 0.00722
+     size 0.0667 0.0381
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose6 {
+       ignorepointer 1
+       position -0.0238 -0.0389
+       size 1.24334 1.29589
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass Panel_MapTeleport {
+   visible 0
+   color 0 0 0 0.8824
+   position 0 0
+   size 1319.64001 957.16089
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style GrungeBorder
+   {
+    MapWidgetClass TPMapWidget {
+     position 0 20
+     size 1286 899
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+    }
+    CheckBoxWidgetClass ChkBoxTPSelected {
+     color 1 0 0 1
+     position 8.16297 7.82663
+     size 272.42999 24.2311
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Teleport Selected Player(s)"
+    }
+    ButtonWidgetClass BtnRefreshMap {
+     visible 1
+     color 1 0 0 1
+     position 293.16 7.8266
+     size 272.42996 24.2311
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Refresh Players"
+    }
+    ButtonWidgetClass BtnCloseTPMap {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.00739 0.00465
+     size 0.0267 0.0281
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose4 {
+       ignorepointer 1
+       position -0.05019 -0.07339
+       size 1.2433 1.2959
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  SmartPanelWidgetClass MessageInputUI {
+   visible 0
+   color 0 0 0 0.8824
+   position 0 0
+   size 563.48901 187.642
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style GrungeBorder
+   {
+    EditBoxWidgetClass BoxInputTitle {
+     disabled 0
+     inheritalpha 0
+     color 1 0 0 1
+     position 5.9422 -46
+     size 546.97003 44
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Message Title"
+     "limit visible" 1
+     "Default text color" 0.9725 0.9725 0.9725 1
+     "Use default text" 1
+     "exact text" 1
+    }
+    EditBoxWidgetClass BoxInputMessage {
+     visible 1
+     disabled 0
+     inheritalpha 0
+     color 1 0 0 1
+     position 5.94 20
+     size 547.97003 87
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scaled 1
+     style Editor
+     text "Message"
+     "limit visible" 0
+     "Default text color" 0.9725 0.9725 0.9725 1
+     "Use default text" 1
+     "exact text" 1
+    }
+    ButtonWidgetClass BtnConfirmMessage {
+     color 1 0 0 1
+     position 436.84 160.92
+     size 118.59 20.66
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Send Message"
+    }
+    ButtonWidgetClass BtnCloseMSG {
+     clipchildren 1
+     color 1 0 0 1
+     position 0.02035 0.01135
+     size 0.0567 0.0981
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose5 {
+       ignorepointer 1
+       position -0.05202 -0.04976
+       size 1.2433 1.2959
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

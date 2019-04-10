@@ -1,0 +1,139 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position -98.92439 -27.87
+ size 1600.37 1022.38
+ halign center_ref
+ valign center_ref
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ {
+  PanelWidgetClass BackGround {
+   ignorepointer 0
+   position -35.6535 -44.5667
+   size 0.9559 0.9095
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+   {
+    MapWidgetClass LeMapWidget {
+     ignorepointer 0
+     position 16.3951 40.67
+     size 0.9673 0.9085
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+    }
+    ButtonWidgetClass BackBtn1 {
+     clipchildren 1
+     color 1 0 0 1
+     position 1490.65002 7.66179
+     size 27 29
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       position -1.53881 -1.02548
+       size 40.5144 44.9711
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui image:Close"
+       mode blend
+       "src alpha" 1
+      }
+     }
+    }
+    ButtonWidgetClass BtnApply {
+     color 1 0 0.0431 1
+     position 12 6
+     size 107.21999 25.25
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Apply"
+     switch normal
+    }
+    EditBoxWidgetClass InputNewPos {
+     color 1 0 0 1
+     position 231 6
+     size 247 25.25
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "New Position Name"
+     "limit visible" 0
+     "Use default text" 0
+     "exact text" 1
+     font "gui/fonts/MetronBlack16"
+    }
+    TextWidgetClass TxtXMLStatus {
+     position 0.5385 0.0063
+     size 0.149 0.024
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "Enter New Location Name:"
+    }
+    ImageWidgetClass ImageHelp {
+     inheritalpha 0
+     color 0.9255 0.0431 0.0431 1
+     position 715.25 892.23999
+     size 38.26 31.96
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scaled 1
+     mode blend
+     "src alpha" 1
+     "no wrap" 0
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     filter 1
+    }
+    ButtonWidgetClass BtnClearAll {
+     color 1 0 0.0431 1
+     position 121 6
+     size 107.21999 25.25
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Editor
+     text "Clear All"
+     switch normal
+    }
+   }
+  }
+ }
+}

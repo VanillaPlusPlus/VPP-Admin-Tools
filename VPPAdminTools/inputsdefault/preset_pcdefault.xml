@@ -1,0 +1,5 @@
+<preset>
+    <input name="UAUISelectPlayer">
+        <btn name="kF" />
+    </input>
+</preset>

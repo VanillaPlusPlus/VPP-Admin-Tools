@@ -1,3 +1,0 @@
-##Make sure to not leave any spaces between each number, same goes with the name! (The name does not have to match real) (You can add a comment under any line by using ## MAKE SURE YOU DONT ADD ## in the same line as the admin info!)
-76561198420222029|DaOne
-##(Example comment) Admin above is sometimes abusive! -Owner

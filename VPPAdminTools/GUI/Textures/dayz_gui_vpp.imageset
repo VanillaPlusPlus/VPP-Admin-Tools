@@ -1,0 +1,68 @@
+ImageSetClass {
+ Name "dayz_gui_vpp"
+ RefSize 1920 1080
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{534691EE0479871E}VPPAdminTools/GUI/Textures/dayz_gui_vpp.edds"
+  }
+ }
+ Images {
+  ImageSetDefClass vpp_white {
+   Name "vpp_white"
+   Pos 1019 3
+   Size 869 528
+   Flags 0
+  }
+  ImageSetDefClass vpp_white_solo {
+   Name "vpp_white_solo"
+   Pos 1025 368
+   Size 860 158
+   Flags 0
+  }
+  ImageSetDefClass vpp_black {
+   Name "vpp_black"
+   Pos 5 3
+   Size 873 511
+   Flags 0
+  }
+  ImageSetDefClass vpp_black_solo {
+   Name "vpp_black_solo"
+   Pos 14 361
+   Size 848 146
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_cloud {
+   Name "vpp_icon_cloud"
+   Pos 8 612
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_item_manager {
+   Name "vpp_icon_item_manager"
+   Pos 147 611
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_obj_editor {
+   Name "vpp_icon_obj_editor"
+   Pos 294 608
+   Size 134 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_settings {
+   Name "vpp_icon_settings"
+   Pos 434 604
+   Size 135 107
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_players {
+   Name "vpp_icon_players"
+   Pos 579 603
+   Size 126 109
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}

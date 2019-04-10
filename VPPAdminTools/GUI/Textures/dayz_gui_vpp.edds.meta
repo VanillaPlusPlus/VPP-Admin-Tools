@@ -1,0 +1,18 @@
+MetaFileClass {
+ Name "{534691EE0479871E}VPPAdminTools/GUI/Textures/dayz_gui_vpp.edds"
+ Author "daone-pc"
+ ChangeDate 1221453197
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "Vanilla_logo2_Edited.tga"
+   FormatCompress Copy
+   TiledTexture 0
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}
