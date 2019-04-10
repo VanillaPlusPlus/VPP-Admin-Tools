@@ -26,9 +26,9 @@ Vanilla++ is a DayZ workshop add-on which aims to add administration tools by im
 
 - If you are a player and want to play on Vanilla++ servers, please subscribe to [our steam workshop release](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068), as well as,  our dependency [Community Framework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
 
-- Use the DayZ Launcher and load @VanillaPlusPlus, and @CommunityFramework, or by adding the following to your start-up commandline:
+- Use the DayZ Launcher and load @VPPAdminTools, and @CommunityFramework, or by adding the following to your start-up commandline:
 ```c
--mod=@CommunityFramework;@VanillaPlusPlus;
+-mod=@CommunityFramework;@VPPAdminTools;
 ```
 
 ### Server:
