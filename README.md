@@ -1,5 +1,5 @@
 
-<img src="https://i.imgur.com/hoU9hex.png" align="right" alt="Headerlogo" height="auto" width="400px">
+<img src="https://i.imgur.com/Ys3Abet.png" align="right" alt="Headerlogo" height="auto" width="400px">
 
 # DayZ Vanilla++ Admin Tools v0.6
 
