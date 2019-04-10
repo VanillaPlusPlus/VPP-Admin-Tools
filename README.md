@@ -41,6 +41,8 @@ Vanilla++ is a DayZ workshop add-on which aims to add administration tools by im
 - Change your startup to include the following following start-up commandlines arguments:
 ``` -mod=@CommunityFramework;@VPPAdminTools; -profiles=serverLogs```
 
+Note: SuperAdmins.txt, and all json files should be located inside of your profiles folder.
+
 #### ViLAYER:
 
 For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), can auto install the mod via the `AddonManager`.</br>Special thanks goes to the Vilayer team!
