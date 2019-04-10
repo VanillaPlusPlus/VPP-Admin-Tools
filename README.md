@@ -47,7 +47,7 @@ For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), ca
 
 <img src="https://ci5.googleusercontent.com/proxy/yE1RaRsPdehe3Y5lTBg3K2UmKkKYBPUl4HOLneY8hzalp34EayGB0c8qeUxsz4W_vaGETV57DzOYC1huj7bvJmDlyfIodhIE2p07uyLeVuvkyCvCOmKg=s0-d-e1-ft#https://www.vilayer.com/templates/ColoNode/html/img/logo_dark.png" alt="vilayer logo" width="auto" height="300px">
 
-<img src="https://i.imgur.com/9ZJkD4P.png" alt="KeybindMenu" width="299px" height="423px">
+<img src="https://i.imgur.com/9ZJkD4P.png" alt="KeybindMenu" width="423px" height="299px">
 
 #### KeyBinding Menu:
 - Allows each client to specifiy how they wish for the admin menu to be triggered, and other base function. 
