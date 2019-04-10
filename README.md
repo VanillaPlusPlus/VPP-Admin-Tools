@@ -34,7 +34,7 @@ Vanilla++ is a DayZ workshop add-on which aims to add administration tools by im
 ### Server:
 
 
-- [Subscribe to workshop addon](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068) && [Community Framework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
+- [Subscribe to workshop addon](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068) and [Community Framework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
 - Launch DayZ launcher, Find @VPPAdminTools, right click, and click "Open Folder"
 - Take the @VPPAdminTools, and @CommunityFramework folders, and copy them to the server's root directory.
 - Take the contents of the Keys folder, which is located inside of both CommunityFramework, and VPPAdminTools, and move those files to the Keys folder, located in the server's root directory.
