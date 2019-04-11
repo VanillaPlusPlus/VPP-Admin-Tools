@@ -70,7 +70,7 @@ Note: Those who don't have admin/super admin permission will not be able to trig
   - Edit server XML files on the fly, and in-game.
 
 #### Chatbased Admin Tools + UI Toolset:
-- This feature allows the server owner to add Steam 64 IDs into a text file, allowing those users to login using the password set inside of the server.cfg. This file is located in (THIS SHOULD BE USED BY THE HIGHEST ADMIN TIER, YOU CAN SET OTHER PERMISSIONS VIA THE ADMIN TOOLS)\DayZSurvival.chernarusplus\ScriptedMods\SuperAdmins.txt
+- This feature allows the server owner to add Steam 64 IDs into a text file, allowing those users to login using the password set inside of the server.cfg. This file is located in (THIS SHOULD BE USED BY THE HIGHEST ADMIN TIER, YOU CAN SET OTHER PERMISSIONS VIA THE ADMIN TOOLS) in your DayZ Server profile folder (Where your logs are created and stored) file name is: SuperAdmins.txt
 
 - An admin can login by typing the following into DayZ's chat system: ```#login mypassword```
 
