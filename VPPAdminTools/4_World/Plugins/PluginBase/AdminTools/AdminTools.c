@@ -70,10 +70,32 @@ class AdminTools extends PluginBase
     			if (AdminPlayer.GodModeStatus())
     			{
     				AdminPlayer.setGodMode(false);
-    				//m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled OFF!",5,2,false,true,"",0,0);
+                    g_Game.SendMessage(
+                     false,
+                     sender,
+                     "Admin Tools: ",
+                     "God mode toggled OFF!",
+                     5,
+                     2,
+                     false,
+                     true,
+                     "",
+                     0,
+                     0);
     			}else{
     				AdminPlayer.setGodMode(true);
-    				//m_MissionServer.SendMessage(false,sender,"Admin Tools: ","God mode toggled ON!",5,2,false,true,"",0,0);
+                     g_Game.SendMessage(
+                     false,
+                     sender,
+                     "Admin Tools: ",
+                     "God mode toggled ON!",
+                     5,
+                     2,
+                     false,
+                     true,
+                     "",
+                     0,
+                     0);
     			}
 		    }
         }
@@ -470,7 +492,18 @@ class AdminTools extends PluginBase
     		    		//Global, Identity ,Title, Message, Duration, FadeIn Time, Force show, DoFadeIn , Imagepath, Size X, Size Y
     		    		PlayerIdentity TargetIdentity;
     		    		TargetIdentity = PlayerIdentity.Cast( TargetPlayer.GetIdentity() );
-						//m_MissionServer.SendMessage(false,TargetIdentity,data.param1,data.param2,10,2,false,true,"",0,0);
+                        g_Game.SendMessage(
+                         false,
+                         TargetIdentity,
+                         data.param1,
+                         data.param2,
+                         10,
+                         2,
+                         false,
+                         true,
+                         "",
+                         0,
+                         0);
     		    	}
     		    }
         	}
