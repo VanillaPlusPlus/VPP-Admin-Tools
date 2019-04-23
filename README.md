@@ -43,6 +43,8 @@ Vanilla++ is a DayZ workshop add-on which aims to add administration tools by im
 
 Note: SuperAdmins.txt, and all json files should be located inside of your profiles folder.
 
+**WARNING: If you do not see SuperAdmins.txt, or any of our json files in the profiles location then check your file permissions for the folder.**
+
 #### ViLAYER:
 
 For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), can auto install the mod via the `AddonManager`.</br>Special thanks goes to the Vilayer team!
