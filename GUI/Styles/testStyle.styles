@@ -1,0 +1,56 @@
+<WidgetStyles>
+    <Widget Name="ScrollWidget">
+        <Style Name="Custom_0" Font="gui/fonts/AmorSerifPro-Bold12" ImageSet="rover_imageset" Color="4294967295">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="ButtonBottom" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="ButtonLeft" />
+                <Item Name="LeftBottom" Image="ButtonLeftBottom" />
+                <Item Name="LeftTop" Image="ButtonLeftTop" />
+                <Item Name="Right" Image="ButtonRight" />
+                <Item Name="RightBottom" Image="ButtonRightBottom" />
+                <Item Name="RightTop" Image="ButtonRightTop" />
+                <Item Name="Top" Image="ButtonTop" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="SmartPanelWidget">
+        <Style Name="new_bg" Font="" ImageSet="dayz_gui_vpp" Color="4278190080">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Overlay" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="bottom1" />
+                <Item Name="Center" Image="center" />
+                <Item Name="Left" Image="left1" />
+                <Item Name="LeftBottom" Image="bottomLeft" />
+                <Item Name="LeftTop" Image="topLeft" />
+                <Item Name="Overlay" Image="fill" />
+                <Item Name="Right" Image="right1" />
+                <Item Name="RightBottom" Image="bottomRight" />
+                <Item Name="RightTop" Image="topRight" />
+                <Item Name="Top" Image="top1" />
+            </State>
+        </Style>
+    </Widget>
+</WidgetStyles>

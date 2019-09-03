@@ -1,0 +1,131 @@
+PanelWidgetClass rootFrame {
+ color 0 0 0 1
+ size 0.45 0.45
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ style rover_sim_colorable
+ {
+  ButtonWidgetClass panel_close {
+   ignorepointer 0
+   position 0 0
+   size 0.064 0.11
+   halign right_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ImageWidgetClass button_close {
+     ignorepointer 1
+     color 0.8235 0.8235 0.8235 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     imageTexture "{0824EF46ED4B1CCD}gui/textures/dz_inv_x_ca.edds"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+    }
+   }
+  }
+  TextWidgetClass text_title {
+   ignorepointer 1
+   position 0.05 0
+   size 0.9 0.12
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   text "BUILDING SET ATTRIBUTES"
+   font "gui/fonts/etelkatextpro22"
+   "exact text" 1
+   "size to text h" 0
+   "text valign" center
+  }
+  PanelWidgetClass panel_redline {
+   ignorepointer 1
+   color 1 0 0 1
+   position 0 0.12
+   size 1 0.007
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_colorable
+  }
+  GridSpacerWidgetClass panel_content {
+   ignorepointer 0
+   position 0.05 0.18
+   size 0.9 0.5
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   "Size To Content H" 1
+   Columns 1
+   Rows 2
+   {
+    EditBoxWidgetClass InputSetName {
+     size 1 0.198
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Building Set Name"
+     "Use default text" 0
+     "exact text" 1
+     font "gui/fonts/Metron-Italic16"
+    }
+    CheckBoxWidgetClass checkbox_active {
+     color 1 0 0 1
+     size 0.102 0.288
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Set Active (Spawn)"
+     font "gui/fonts/Metron-Italic16"
+    }
+   }
+  }
+  PanelWidgetClass panel_buttons {
+   ignorepointer 0
+   position 0 0.01
+   size 0.98 0.12
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ButtonWidgetClass button_ok {
+     size 0.5 0.8
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "OK"
+     font "gui/fonts/metron"
+    }
+   }
+  }
+ }
+}

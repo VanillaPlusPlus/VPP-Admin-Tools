@@ -1,0 +1,139 @@
+PanelWidgetClass rootFrame {
+ position 0.05 0
+ size 0.261 0.16245
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ scriptclass "PopUpCreatePreset"
+ style rover_sim_black_2
+ {
+  ButtonWidgetClass panel_close {
+   ignorepointer 0
+   position 0.01 0.01
+   size 0.069 0.103
+   halign right_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+  }
+  TextWidgetClass text_title {
+   ignorepointer 1
+   position 0.01 0.01
+   size 0.9 0.12
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   text "NEW PRESET ATTRIBUTES"
+   font "gui/fonts/Metron-BoldItalic16"
+   "exact text" 1
+   "size to text h" 0
+   "text valign" center
+  }
+  PanelWidgetClass panel_redline {
+   ignorepointer 1
+   position 0 0.12
+   size 0.99 0.007
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+  }
+  GridSpacerWidgetClass panel_content {
+   ignorepointer 0
+   position 0.01 0.25
+   size 0.9 0.75
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   Padding 25
+   "Size To Content H" 1
+   "Size To Content V" 1
+   Columns 2
+   {
+    TextWidgetClass text_name {
+     ignorepointer 0
+     position 0 0
+     size 0.27 0.212
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Name:"
+     font "gui/fonts/etelkatextpro22"
+     "exact text" 1
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
+    }
+    PanelWidgetClass PanelWidget0 {
+     ignorepointer 1
+     position 0 0
+     size 0.82 0.65
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     {
+      EditBoxWidgetClass editbox_name {
+       size 0.99 0.7
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "preset name"
+       "exact text" 1
+       font "gui/fonts/Metron-BoldItalic16"
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass panel_buttons {
+   ignorepointer 0
+   position 0 0.01
+   size 0.98 0.2
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ButtonWidgetClass button_cancel {
+     position 0 0.1
+     size 0.25 0.8
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Cancel"
+     font "gui/fonts/Metron-BoldItalic14"
+    }
+    ButtonWidgetClass button_save {
+     position 0 0.1
+     size 0.25 0.8
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "Save"
+     font "gui/fonts/Metron-BoldItalic14"
+    }
+   }
+  }
+ }
+}

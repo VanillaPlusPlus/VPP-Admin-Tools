@@ -1,0 +1,325 @@
+FrameWidgetClass rootPermissionsEditor {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "PERMISSIONS EDITOR"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PaneAvailablePerms {
+     ignorepointer 1
+     position 0.02 0.05
+     size 0.46 0.85
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title_perms {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.98 0.053
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_perms {
+         ignorepointer 0
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Available Permissions"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+         {
+          CheckBoxWidgetClass chkAllPerms {
+           position 0.02 0
+           size 0.079 0.65
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+          }
+         }
+        }
+       }
+      }
+      ScrollWidgetClass ScrollerPermissions {
+       ignorepointer 0
+       position 0 0.08
+       size 0.98 0.907
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass SpacerPermissions {
+         ignorepointer 1
+         keepsafezone 1
+         size 0.988 0.98
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 1
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PaneUserGroups {
+     ignorepointer 1
+     position 0.01 0.05
+     size 0.5 0.9
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title_groups {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.99 0.043
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_players_info {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "User Groups"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ScrollWidgetClass ScrollerUserGroups {
+       ignorepointer 0
+       position 0 0.05
+       size 0.98 0.938
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass SpacerUserGroups {
+         ignorepointer 1
+         size 0.988 0.98
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 1
+         Margin 1
+         "Size To Content H" 1
+         "Size To Content V" 1
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    GridSpacerWidgetClass GridActionButtons {
+     ignorepointer 1
+     position 0.02 0
+     size 0.468 0.205
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Colorable
+     Padding 5
+     Margin 10
+     "Size To Content H" 1
+     "Size To Content V" 1
+     Rows 5
+     {
+      ButtonWidgetClass btnCreateGroup {
+       color 0.4275 0.2941 0.2588 1
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Create Group"
+      }
+      ButtonWidgetClass btnDeleteGroup {
+       color 0.4275 0.2941 0.2588 1
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Delete Group"
+      }
+      ButtonWidgetClass btnSaveChanges {
+       color 0.4275 0.2941 0.2588 1
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Update Permissions"
+      }
+      ButtonWidgetClass btnAddMembers {
+       color 0.4275 0.2941 0.2588 1
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass ""
+       style Editor
+       text "Add Member(s)"
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,156 @@
+PanelWidgetClass rootFrame {
+ position 0.15 0
+ size 0.3 0.32
+ halign right_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ scriptclass "PopUpNewPositionEditor"
+ style rover_sim_black_2
+ {
+  TextWidgetClass text_title {
+   ignorepointer 1
+   position 0.01 0
+   size 0.9 0.12
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   text "NEW POSITION ATTRIBUTES"
+   font "gui/fonts/etelkatextpro22"
+   "exact text" 1
+   "size to text h" 0
+   "text valign" center
+  }
+  PanelWidgetClass panel_redline {
+   ignorepointer 1
+   position 0 0.12
+   size 0.99 0.007
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+  }
+  GridSpacerWidgetClass panel_content {
+   ignorepointer 0
+   position 0.01 0.25
+   size 0.9 0.71
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   "Size To Content H" 1
+   "Size To Content V" 1
+   Columns 2
+   {
+    TextWidgetClass text_name {
+     ignorepointer 0
+     position 0.02 0.044
+     size 0.18 0.212
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Name:"
+     font "gui/fonts/etelkatextpro16"
+     "exact text" 1
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
+    }
+    PanelWidgetClass PanelWidget0 {
+     ignorepointer 1
+     position 0 0
+     size 0.8 0.35
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     {
+      EditBoxWidgetClass editbox_name {
+       position 0 0
+       size 1 0.7
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "position name"
+       "exact text" 1
+       font "gui/fonts/Metron-BoldItalic16"
+      }
+     }
+    }
+    TextWidgetClass text_pos {
+     ignorepointer 0
+     position 0.02 0.044
+     size 0.28 0.212
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Position:"
+     font "gui/fonts/etelkatextpro16"
+     "exact text" 1
+     "size to text h" 0
+     "text valign" center
+    }
+    EditBoxWidgetClass edit_pos {
+     ignorepointer 0
+     position 0.022 0.044
+     size 0.8 0.35
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "7500,0,7500"
+     "limit visible" 0
+     "exact text" 1
+     font "gui/fonts/Metron-BoldItalic16"
+    }
+   }
+  }
+  PanelWidgetClass panel_buttons {
+   ignorepointer 0
+   position 0 0.01
+   size 0.98 0.12
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ButtonWidgetClass button_cancel {
+     position 0 0.1
+     size 0.25 0.8
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Cancel"
+     font "gui/fonts/metron"
+    }
+    ButtonWidgetClass button_save {
+     position 0 0.1
+     size 0.25 0.8
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Editor
+     text "Save"
+     font "gui/fonts/metron"
+    }
+   }
+  }
+ }
+}

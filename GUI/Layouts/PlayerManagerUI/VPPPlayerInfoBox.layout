@@ -1,0 +1,401 @@
+PanelWidgetClass PanelPlayerDetails {
+ ignorepointer 1
+ keepsafezone 1
+ position 0 0
+ size 1 1
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ style rover_sim_black_2
+ {
+  GridSpacerWidgetClass player_info_content {
+   ignorepointer 1
+   color 0 0 0 0
+   size 1 0
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style DayZDefaultPanelBottom
+   Padding 4
+   Margin 6
+   "Size To Content V" 1
+   content_halign center
+   Columns 1
+   Rows 9
+   {
+    FrameWidgetClass PlayerNameFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass PlayerNameLabel {
+       ignorepointer 1
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "Name:"
+       font "gui/fonts/Metron-BoldItalic14"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      TextWidgetClass Name {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "GravityWolfNotAmused"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerGUIDFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass GUIDLabel {
+       ignorepointer 1
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "Steam64 ID:"
+       font "gui/fonts/Metron-BoldItalic14"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      TextWidgetClass SteamID {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "6942069420"
+       font "gui/fonts/Metron-Italic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerIDFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass IDLabel {
+       ignorepointer 1
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "GUID:"
+       font "gui/fonts/Metron-BoldItalic14"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      TextWidgetClass Guid {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "54654654654654654657897987"
+       font "gui/fonts/Metron-Italic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerUserGroupFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass UGLabel {
+       ignorepointer 1
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "User Group:"
+       font "gui/fonts/Metron-BoldItalic14"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      TextWidgetClass UserGroup {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "none"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerHealthFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgHealth {
+       ignorepointer 1
+       position 0 0
+       size 0.1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:iconHealth0"
+       mode additive
+       "src alpha" 1
+       "no wrap" 1
+       stretch 0
+       filter 1
+      }
+      TextWidgetClass Health {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "100"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerBloodFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgBlood {
+       ignorepointer 1
+       position 0 0
+       size 0.1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:iconBlood0"
+       mode additive
+       "src alpha" 1
+       "no wrap" 1
+       stretch 0
+       filter 1
+      }
+      TextWidgetClass Blood {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "5000"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerShockFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgShock {
+       ignorepointer 1
+       position 0 0
+       size 0.1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_inventory image:electricity"
+       mode additive
+       "src alpha" 1
+       "no wrap" 1
+       stretch 0
+       filter 1
+      }
+      TextWidgetClass Shock {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "100"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass PlayerHandsFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgInHands {
+       ignorepointer 1
+       position 0 0
+       size 0.1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_inventory image:hands"
+       mode additive
+       "src alpha" 1
+       "no wrap" 1
+       stretch 0
+       filter 1
+      }
+      TextWidgetClass Weapon {
+       ignorepointer 1
+       size 1 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "AKM"
+       font "gui/fonts/Metron-BoldItalic12"
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    FrameWidgetClass CopyInfoFrame {
+     ignorepointer 1
+     position 0 0
+     size 48 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ButtonWidgetClass btnCopyInfo {
+       ignorepointer 0
+       color 0.9333 0.0863 0.0863 1
+       size 0.5 1
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Copy Information"
+       font "gui/fonts/Metron-BoldItalic12"
+      }
+     }
+    }
+   }
+  }
+ }
+}

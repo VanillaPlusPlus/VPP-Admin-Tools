@@ -1,0 +1,854 @@
+FrameWidgetClass rootMenuServerManager {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   priority 10
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "SERVER MANAGER"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PageScroller {
+     ignorepointer 0
+     position 0 0.01
+     size 0.98 0.937
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      PanelWidgetClass ActivityPanel {
+       position 0.0143 0.0191
+       size 0.6395 0.8249
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        MapWidgetClass ActivityMap {
+         visible 1
+         keepsafezone 0
+         position -0.0022 0
+         size 0.9863 0.9249
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass ""
+        }
+        TextWidgetClass ActivityLabel {
+         ignorepointer 1
+         position -0.00935 0
+         size 0.04929 0.0368
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Activity Map"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        ButtonWidgetClass RefreshMapActivity {
+         position -0.00187 0.0078
+         size 0.98625 0.02845
+         halign center_ref
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Refresh Activity"
+         {
+          CheckBoxWidgetClass ChkBoxUpdateActivity {
+           position 0.01 0
+           size 0.23 1
+           halign right_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Auto Update Activity"
+           font "gui/fonts/Metron-BoldItalic"
+          }
+         }
+        }
+       }
+      }
+      PanelWidgetClass ScriptLoader {
+       ignorepointer 1
+       color 1 1 1 0.7843
+       position 0.0143 0.0191
+       size 0.328 0.46
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        TextWidgetClass LabelScriptLoader {
+         ignorepointer 1
+         size 0.218 0.068
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Script Loader"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        WrapSpacerWidgetClass ScriptLoaderButtons {
+         ignorepointer 1
+         position 0.0146 0
+         size 0.9698 0.15
+         halign right_ref
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Empty
+         Padding 5
+         Margin 5
+         content_valign bottom
+         {
+          ButtonWidgetClass BtnReleaseScript {
+           disabled 1
+           size 0.3 0.35
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Release"
+          }
+          ButtonWidgetClass BtnViewScript {
+           disabled 1
+           size 0.3 0.35
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "View"
+          }
+          ButtonWidgetClass BtnWriteScript {
+           size 0.3 0.35
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Write"
+          }
+          ButtonWidgetClass BtnLoadScript {
+           disabled 1
+           size 0.3 0.35
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Load"
+          }
+          ButtonWidgetClass BtnRefreshScriptList {
+           disabled 0
+           size 0.3 0.35
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Refresh List"
+          }
+         }
+        }
+        PanelWidgetClass SLDropDownPanel {
+         ignorepointer 1
+         position 0 0.07
+         size 0.968 0.769
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         {
+          WrapSpacerWidgetClass ScriptsDropDown {
+           visible 1
+           clipchildren 0
+           color 0.0157 0.0157 0.0157 0.8824
+           size 1 0.1
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Colorable
+           "no focus" 0
+          }
+         }
+        }
+       }
+      }
+      PanelWidgetClass AdminloginPanel {
+       ignorepointer 1
+       color 1 1 1 0.7843
+       position 0.0145 0.09
+       size 0.328 0.215
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        ImageWidgetClass admin_login_header {
+         ignorepointer 1
+         color 0.6706 0.6706 0.6706 0.8784
+         position 0 4
+         size 0.9799 32
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         image0 "set:dayz_gui image:container_header"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         {
+          TextWidgetClass admin_login_text {
+           ignorepointer 1
+           position 0 0
+           size 1 26
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style Normal
+           text "Admin Login"
+           font "gui/fonts/sdf_MetronLight42"
+           "exact text" 1
+           "exact text size" 20
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        WrapSpacerWidgetClass WraperLoginAdmin {
+         ignorepointer 1
+         size 1 0.541
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Margin 10
+         content_valign center
+         {
+          TextWidgetClass LablePassword {
+           ignorepointer 1
+           size 0.178 0.352
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Password:"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+          EditBoxWidgetClass InputAdminPassword {
+           color 1 0 0 1
+           position 0 0
+           size 0.91 0.352
+           halign right_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style DefaultBorder
+           "no focus" 0
+           text "***********"
+           "Use default text" 1
+           "exact text" 1
+          }
+         }
+        }
+        ButtonWidgetClass BtnAdminLogin {
+         position 0 0.07
+         size 0.9 0.12
+         halign center_ref
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Login"
+        }
+       }
+      }
+      PanelWidgetClass BorderMonitor {
+       ignorepointer 1
+       position 0.015 0.01
+       size 0.327 0.283
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        GridSpacerWidgetClass server_stats_root {
+         visible 1
+         ignorepointer 1
+         color 1 1 1 0
+         position 0.008 0
+         size 1 1
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         priority 3
+         style outline
+         Padding 0
+         Margin 0
+         "Size To Content V" 1
+         Columns 1
+         Rows 2
+         {
+          GridSpacerWidgetClass server_stats_content {
+           ignorepointer 1
+           color 0 0 0 0
+           position 0 36
+           size 1 0
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style DayZDefaultPanelBottom
+           Padding 1
+           Margin 6
+           "Size To Content V" 1
+           Columns 1
+           Rows 5
+           {
+            FrameWidgetClass ServerFPS {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass ServerFPSLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Server FPS:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass ServerFPSInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass PlayerCount {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass PlayerCountLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Online Players:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass PlayerCountInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass UpTime {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass UpTimeLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Server Up Time:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass UpTimeInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "0d 0h 0m 0s"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass MemoryUsed {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass MemoryUsedLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Memory Used:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass MemoryUsedInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass NetworkOut {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass NetworkOutLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Network out Kbps:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass NetworkOutInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass NetworkIn {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass NetworkInLabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Network In Kbps:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass NetworkInInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+            FrameWidgetClass ActiveAI {
+             ignorepointer 1
+             position 0 0
+             size 48 20
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             {
+              TextWidgetClass ActiveAILabel {
+               ignorepointer 1
+               size 1 1
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "Active AIs:"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+              TextWidgetClass ActiveAIInput {
+               ignorepointer 1
+               size 1 1
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               text "null"
+               "size to text h" 1
+               "size to text v" 0
+               "text halign" center
+               "text valign" center
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+        ImageWidgetClass server_stats_header {
+         ignorepointer 1
+         color 0.6706 0.6706 0.6706 0.7843
+         size 0.9862 29
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         image0 "set:dayz_gui image:container_header"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         {
+          TextWidgetClass title_servermonitor_text {
+           ignorepointer 1
+           position 0 0
+           size 0.98 20
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style Normal
+           text "Server Status Monitor"
+           font "gui/fonts/sdf_MetronLight42"
+           "exact text" 1
+           "exact text size" 20
+           "text halign" center
+           "text valign" center
+           {
+            CheckBoxWidgetClass ToggleServerMonitor {
+             position 0 0
+             size 0.077 1
+             halign right_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    WrapSpacerWidgetClass ButtonsQuickCommands {
+     ignorepointer 1
+     position 0.01074 0.01341
+     size 0.6429 0.1483
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Empty
+     Padding 10
+     Margin 10
+     content_halign center
+     content_valign center
+     {
+      ButtonWidgetClass BtnRestartServer {
+       color 1 0 0 1
+       size 0.25 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Restart Server"
+      }
+      ButtonWidgetClass BtnLockServer {
+       color 1 0 0 1
+       size 0.25 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Lock Server"
+      }
+      ButtonWidgetClass BtnKickAll {
+       color 1 0 0 1
+       size 0.25 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Kick All Players"
+      }
+      ButtonWidgetClass BtnViewAdmLog {
+       visible 0
+       color 1 0 0 1
+       size 0.25 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "View Logs"
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,130 @@
+PanelWidgetClass PanelEntry {
+ ignorepointer 1
+ keepsafezone 1
+ position 0 0
+ size 1 0.08
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ style rover_sim_black_2
+ {
+  GridSpacerWidgetClass entry_content {
+   ignorepointer 0
+   color 0 0 0 0
+   size 1 0
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style DayZDefaultPanelBottom
+   Padding 4
+   Margin 6
+   "Size To Content V" 1
+   Columns 1
+   Rows 5
+   {
+    FrameWidgetClass ItemFrame {
+     ignorepointer 0
+     position 0 0
+     size 48 23
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass ItemName {
+       ignorepointer 1
+       position 0 0
+       size 0.78 1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Item Display Name"
+       font "gui/fonts/Metron22"
+       "text valign" center
+      }
+      ButtonWidgetClass btnDeleteItem {
+       color 1 0 0 1
+       position 0.075 0
+       size 0.065 0.7
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       {
+        ImageWidgetClass iconDel {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui_vpp image:vpp_icon_trash"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+        }
+       }
+      }
+      CheckBoxWidgetClass Active {
+       position 0.005 0
+       size 0.075 0.85
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       font "gui/fonts/Metron22"
+      }
+      ButtonWidgetClass btnEditItem {
+       color 1 0 0 1
+       position 0.147 0
+       size 0.065 0.7
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass ""
+       {
+        ImageWidgetClass iconEdit {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_feedback"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

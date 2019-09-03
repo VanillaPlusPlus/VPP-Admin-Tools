@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<modded_inputs>
+    <inputs>
+        <actions>
+            <input name="UAFocusOnGame" loc="(Hold) Focus on Game if menu open" />
+            <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
+            <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
+            <input name="UADeleteObjCrosshair" loc="Delete Object at Crosshair" />
+            <input name="UAToggleGodMode" loc="Toggle GodMode" />
+            <input name="UAToggleFreeCam" loc="Toggle Free Camera" />
+            <input name="UAExitSpectate" loc="Exit Spectate Mode" />
+			<input name="UASelectObject" loc="Select & move world objects (Object Manager)" />
+			<input name="UARotateInc" loc="Increment Axis (Object Manager)" />
+			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
+			<!--Free Cam Controls-->
+			<input name="UACamForward" loc="Camera move forward" />
+			<input name="UACamBackward" loc="Camera move backward" />
+			<input name="UACamRight" loc="Camera move right" />
+			<input name="UACamLeft" loc="Camera move left" />
+			<input name="UACamUp" loc="Camera move up/ascend" />
+			<input name="UACamDown" loc="Camera move down/descend" />
+			<input name="UACamTurbo" loc="Camera turbo" />
+			<input name="UACamShiftLeft" loc="Camera shift left" />
+			<input name="UACamShiftRight" loc="Camera shift right" />
+			<input name="UACamShiftUp" loc="Camera shift up" />
+			<input name="UACamShiftDown" loc="Camera shift down" />
+			<input name="UACamSpeedAdd" loc="Camera Speed increase" />
+			<input name="UACamSpeedDeduct" loc="Camera speed reduce" />
+			<input name="UACamRelease" loc="" visible="false" />
+			<!--------------------->
+        </actions>
+    </inputs>
+    <preset>
+		<input name="UAToggleFreeCam">
+            <btn name="kBackspace">
+            </btn>
+        </input>
+		<input name="UAFocusOnGame">
+            <btn name="kTab">
+            </btn>
+        </input>
+		<input name="UAExitSpectate">
+            <btn name="kPrior">
+            </btn>
+        </input>
+		<input name="UASelectObject">
+            <btn name="mBLeft">
+            </btn>
+        </input>
+		<input name="UARotateInc">
+            <btn name="mBLeft">
+            </btn>
+        </input>
+		<input name="UARotateDec">
+            <btn name="mBRight">
+            </btn>
+        </input>
+        <input name="UAToggleAdminTools"> </input>
+		<input name="UATeleportToCrosshair"> </input>
+		<input name="UADeleteObjCrosshair"> </input>
+		<input name="UAToggleGodMode"> </input>
+		<!--Free Cam Controls Inputs-->
+		<input name="UACamForward">
+            <btn name="kW">
+            </btn>
+        </input>
+		<input name="UACamBackward">
+            <btn name="kS">
+            </btn>
+        </input>
+		<input name="UACamRight">
+            <btn name="kD">
+            </btn>
+        </input>
+		<input name="UACamLeft">
+            <btn name="kA">
+            </btn>
+        </input>
+		<input name="UACamUp">
+            <btn name="kQ">
+            </btn>
+        </input>
+		<input name="UACamDown">
+            <btn name="kZ">
+            </btn>
+        </input>
+		<input name="UACamTurbo">
+            <btn name="kLShift">
+            </btn>
+        </input>
+		<input name="UACamShiftLeft">
+            <btn name="mLeft">
+            </btn>
+        </input>
+		<input name="UACamShiftRight">
+            <btn name="mRight">
+            </btn>
+        </input>
+		<input name="UACamShiftUp">
+            <btn name="mUp">
+            </btn>
+        </input>
+		<input name="UACamShiftDown">
+            <btn name="mDown">
+            </btn>
+        </input>
+		<input name="UACamSpeedAdd">
+            <btn name="mWheelUp">
+            </btn>
+        </input>
+		<input name="UACamSpeedDeduct">
+            <btn name="mWheelDown">
+            </btn>
+        </input>
+		<input name="UACamRelease">
+            <btn name="kLControl">
+            </btn>
+        </input>
+		<!--------------------->
+    </preset>
+</modded_inputs>

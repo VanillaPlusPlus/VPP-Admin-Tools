@@ -1,0 +1,74 @@
+GridSpacerWidgetClass rootFrame {
+ visible 0
+ ignorepointer 1
+ color 0 0 0 0.8824
+ position 0 0
+ size 0.18 0.13
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style DayZDefaultPanelSides
+ Padding 3
+ Margin 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Columns 1
+ Rows 2
+ {
+  SmartPanelWidgetClass Header {
+   ignorepointer 0
+   color 0 0 0 1
+   position 0 0
+   size 1 0.13
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     position 0.01 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "Tool Tip:"
+     font "gui/fonts/MetronBlack-Italic22"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+  MultilineTextWidgetClass ContentText {
+   clipchildren 1
+   ignorepointer 1
+   size 1 0.88
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style DayZNormal
+   text "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
+   "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
+   "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."
+   font "gui/fonts/Metron-Italic22"
+   "text offset" 15 0
+   "exact text" 1
+   "size to text h" 1
+   "size to text v" 1
+   wrap 1
+   "strip newlines" 1
+  }
+ }
+}

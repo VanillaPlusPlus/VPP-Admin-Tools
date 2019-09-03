@@ -1,0 +1,518 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "ESP TOOLS"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelFilter {
+     ignorepointer 1
+     position 0.01 0.04
+     size 0.52 0.54
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.97 0.063
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Filters"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+        CheckBoxWidgetClass chkSelectAll {
+         position 0.0285 0.02
+         size 0.5 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+        }
+       }
+      }
+      ScrollWidgetClass Scroller {
+       ignorepointer 0
+       position 0 0.06
+       size 0.97 0.92
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        GridSpacerWidgetClass SpacerParent {
+         ignorepointer 1
+         keepsafezone 0
+         size 0.988 0.98
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 3
+         Margin 5
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelSelectedItems {
+     ignorepointer 1
+     size 0.45 0.92
+     halign right_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title_Items {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.97 0.043
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_Items {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Selected Items"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+        ButtonWidgetClass delAllItems {
+         color 0.8196 0.1294 0.1294 1
+         size 0.25 0.84
+         halign right_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Delete All"
+        }
+        ButtonWidgetClass removeAllItems {
+         size 0.25 0.84
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Clear List"
+        }
+       }
+      }
+      ScrollWidgetClass ScrollerItems {
+       ignorepointer 0
+       position 0 0.06
+       size 0.97 0.92
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass SpacerParentItems {
+         ignorepointer 1
+         keepsafezone 0
+         size 0.988 0.98
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 3
+         Margin 5
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass PanelActions {
+   ignorepointer 1
+   position 0.01 0.04
+   size 0.52 0.362
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+   {
+    ImageWidgetClass info_title_ {
+     ignorepointer 1
+     color 0.6706 0.6706 0.6706 0.8784
+     position 0 0.005
+     size 0.97 0.1
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     image0 "set:dayz_gui image:container_header"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+     {
+      TextWidgetClass title_text_ {
+       ignorepointer 1
+       position 0 0
+       size 0.99 1.303
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Normal
+       text "Actions"
+       font "gui/fonts/sdf_MetronLight42"
+       "exact text" 1
+       "exact text size" 22
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    GridSpacerWidgetClass ButtonsWraper {
+     ignorepointer 1
+     position 0 0
+     size 0.98 0.78
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     Padding 10
+     Margin 5
+     "Size To Content V" 1
+     content_halign center
+     content_valign bottom
+     Columns 2
+     Rows 8
+     {
+      ButtonWidgetClass btnToggle {
+       color 1 0 0 1
+       position 0 0.04
+       size 0.9 0.15
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Toggle"
+       font "gui/fonts/Metron-Bold16"
+      }
+      ButtonWidgetClass btnClear {
+       color 1 0 0 1
+       position 0 0.2
+       size 0.9 0.15
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Clear"
+       font "gui/fonts/Metron-Bold16"
+      }
+      CheckBoxWidgetClass ChkUseNameFilter {
+       ignorepointer 0
+       position 0.029 0.062
+       size 0.137 0.178
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Filter By Item Type:"
+       font "gui/fonts/Metron-Bold16"
+      }
+      EditBoxWidgetClass InputClassNameFilter {
+       position 0.026 0.062
+       size 0.126 0.178
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       "no focus" 0
+       text "class name"
+       "Use default text" 1
+       "exact text" 1
+       font "gui/fonts/Metron-Italic16"
+      }
+      TextWidgetClass txtUpdateInteral {
+       ignorepointer 1
+       size 0.181 0.17
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Update Interval:"
+       font "gui/fonts/Metron-Bold22"
+       "exact text" 1
+       "text halign" center
+       "text valign" center
+      }
+      EditBoxWidgetClass InputUpdateInterval {
+       position 0.026 0.062
+       size 0.126 0.178
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       "no focus" 0
+       text "5"
+       "Use default text" 1
+       "exact text" 1
+       font "gui/fonts/Metron-Italic16"
+      }
+      TextWidgetClass txt {
+       ignorepointer 1
+       position 0 0
+       size 0.181 0.17
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Show Detailed ESP:"
+       font "gui/fonts/Metron-Bold22"
+       "exact text" 1
+       "text halign" center
+       "text valign" center
+      }
+      CheckBoxWidgetClass ChkShowDetailed {
+       ignorepointer 0
+       position 0.029 0.062
+       size 0.137 0.178
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       font "gui/fonts/Metron-Bold16"
+      }
+     }
+    }
+    ImageWidgetClass ImgInfo {
+     ignorepointer 0
+     color 1 0 0 1
+     position 0.012 0.01
+     size 0.0825 0.13
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scriptclass "ToolTipHandler"
+     image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+    }
+    PanelWidgetClass OutlineSlider {
+     ignorepointer 1
+     position 0 0.05
+     size 0.97 0.166
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      SliderWidgetClass SliderRadius {
+       color 0.7176 0.1412 0.1412 1
+       size 0.98 0.5
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "SliderEventHandler"
+       style GUI_Black
+       maximum 1000
+       current 500
+       vertical 0
+       flipped 0
+       {
+        TextWidgetClass SliderRadiusDisplay {
+         ignorepointer 1
+         size 0.086 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "Radius:[500]"
+         font "gui/fonts/Metron"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

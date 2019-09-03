@@ -1,0 +1,1347 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "WEATHER MANAGER"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelTime {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0.01 0.23
+     size 0.4 0.332
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass timePanel_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.99 0.073
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_timepanel_text {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "World Time"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass EditBoxesWrapper {
+       ignorepointer 1
+       size 2 0.912
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 10
+       Margin 10
+       "Size To Content H" 1
+       "Size To Content V" 1
+       Columns 2
+       Rows 4
+       {
+        TextWidgetClass txtHour {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Hour:"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        EditBoxWidgetClass EditHour {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "0"
+        }
+        TextWidgetClass txtMinute {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Minute:"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        EditBoxWidgetClass EditMinute {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "0"
+        }
+        TextWidgetClass txtDay {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Day:"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        EditBoxWidgetClass EditDay {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "0"
+        }
+        TextWidgetClass txtMonth {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Month:"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        EditBoxWidgetClass EditMonth {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "0"
+        }
+        TextWidgetClass txtYear {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "Year:"
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+        EditBoxWidgetClass EditYear {
+         size 0.3 0.1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "0"
+        }
+       }
+      }
+      ButtonWidgetClass BtnSetDate {
+       position 0 0.02
+       size 0.83 0.08
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Apply"
+      }
+     }
+    }
+    PanelWidgetClass PanelPresets {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0.01 0.0402
+     size 0.57 0.522
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass PanelPresets_Title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.002
+       size 0.99 0.043
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_presets_text {
+         ignorepointer 1
+         position 0 0
+         size 0.99 0.892
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Presets"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PresetsDropDownPanel {
+       ignorepointer 1
+       position 0.00017 0.05
+       size 0.96834 0.698
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        WrapSpacerWidgetClass TimePresetsDropDown {
+         visible 1
+         clipchildren 0
+         color 0.0157 0.0157 0.0157 0.8824
+         position 0.00541 0.00751
+         size 0.49 0.1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Colorable
+         "no focus" 0
+        }
+        WrapSpacerWidgetClass WeatherPresetsDropDown {
+         visible 1
+         clipchildren 0
+         color 0.0157 0.0157 0.0157 0.8824
+         position 0.00648 0.00736
+         size 0.49 0.1
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Colorable
+         "no focus" 0
+        }
+       }
+      }
+      PanelWidgetClass PanelBg0 {
+       ignorepointer 1
+       position 0.016 0.01
+       size 0.48 0.231
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        WrapSpacerWidgetClass SpacerButtonsTimePresets {
+         ignorepointer 1
+         color 0 0 0 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Empty
+         Padding 5
+         Margin 16
+         "Size To Content H" 1
+         "Size To Content V" 1
+         {
+          ButtonWidgetClass BtnApplyTimePreset {
+           position 0.11491 0.14146
+           size 0.4413 0.2037
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Apply Preset"
+          }
+          ButtonWidgetClass BtnSaveTimePreset {
+           position 0 0.02
+           size 0.4413 0.2037
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Save"
+          }
+          ButtonWidgetClass BtnDeleteWeatherPreset {
+           color 0.8235 0.0941 0.0941 1
+           position 0 0.02
+           size 0.4413 0.2037
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Delete Preset"
+           "text color" 1 0 0 1
+          }
+          ImageWidgetClass ImgInfoTimePreset {
+           ignorepointer 0
+           color 1 0 0 1
+           position 0 0
+           size 0.12 0.2037
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "ToolTipHandler"
+           image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+         }
+        }
+        CheckBoxWidgetClass ChkBoxWorldOrCustom {
+         position 0.26 0
+         size 0.463 0.141
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         "no focus" 1
+         text "Use Current Time"
+        }
+       }
+      }
+      PanelWidgetClass PanelBg1 {
+       ignorepointer 1
+       position 0.016 0.01
+       size 0.48 0.231
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        WrapSpacerWidgetClass SpacerButtonsWeatherPresets {
+         ignorepointer 1
+         color 0 0 0 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Empty
+         Padding 5
+         Margin 16
+         {
+          ButtonWidgetClass BtnApplyWeatherPreset {
+           position -0.06091 0.1449
+           size 0.4413 0.2037
+           halign right_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Apply Preset"
+          }
+          ButtonWidgetClass spacerbutton {
+           visible 1
+           disabled 1
+           inheritalpha 0
+           ignorepointer 1
+           position -0.0496 0
+           size 0.3408 0.2
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           "no focus" 0
+          }
+          ButtonWidgetClass BtnSaveWeatherPreset {
+           position -0.13332 0
+           size 0.17336 0.2
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Save"
+          }
+          EditBoxWidgetClass EditPresetName {
+           position 0.08685 0
+           size 0.6137 0.2
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Enter Name"
+           "Use default text" 1
+           "exact text" 1
+          }
+          ButtonWidgetClass BtnDeleteTimePreset {
+           color 0.8235 0.0941 0.0941 1
+           position 0 0.02
+           size 0.4413 0.2037
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "Delete Selected"
+           "text color" 1 0 0 1
+          }
+          ImageWidgetClass ImgInfoWeatherPreset {
+           ignorepointer 0
+           color 1 0 0 1
+           size 0.12 0.2037
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "ToolTipHandler"
+           image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelInfo {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0.01 0.04
+     size 0.4 0.182
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass Info_Panel {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.99 0.143
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_info_txt {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Information"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass info_stats_content {
+       inheritalpha 0
+       ignorepointer 1
+       color 0 0 0 0.7059
+       position 0 0
+       size 0.985 0.06931
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style DayZDefaultPanelRight
+       Padding 12
+       Margin 6
+       "Size To Content V" 1
+       Columns 2
+       Rows 5
+       {
+        FrameWidgetClass WeatherTime {
+         ignorepointer 1
+         position 0 0
+         size 48 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass WeatherTimeLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "Time:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass WeatherTimeInput {
+           ignorepointer 1
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        FrameWidgetClass WorldDate {
+         ignorepointer 1
+         position 0 0
+         size 48 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass WorldDateLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "Date:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass WorldDateInput {
+           ignorepointer 1
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        FrameWidgetClass RainValue {
+         ignorepointer 1
+         position 0 0
+         size 48 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass RainValueLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style Normal
+           text "Rain:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass RainValueInput {
+           ignorepointer 1
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        FrameWidgetClass OverCast {
+         ignorepointer 1
+         position 0 0
+         size 48 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass OverCastLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "Overcast:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass OverCastInput {
+           ignorepointer 1
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        FrameWidgetClass FogValue {
+         ignorepointer 1
+         position 0 0
+         size 48 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass FogLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "Fog:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass FogInput {
+           ignorepointer 1
+           position 0 0
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        FrameWidgetClass WindForce {
+         ignorepointer 1
+         position 0 0
+         size 49 23.3345
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          TextWidgetClass WindForceLabel {
+           ignorepointer 1
+           size 1 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "Wind Force:"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+          TextWidgetClass WindForceInput {
+           ignorepointer 1
+           size 1 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           text "null"
+           "size to text h" 1
+           "size to text v" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    ButtonWidgetClass BtnSetWeather {
+     position 0 0.01
+     size 0.45 0.04
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     text "Apply"
+    }
+    PanelWidgetClass PanelWeatherConfig {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0 0.0633
+     size 0.98 0.3697
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass weathercfg_title_img {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position -0.00029 0.01
+       size 0.99566 0.11583
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_sliders_text0 {
+         ignorepointer 1
+         position -0.00432 0
+         size 1.0085 1.669
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Weather Configuration"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass SpacerPanels {
+       ignorepointer 1
+       size 1.093 0.664
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 10
+       Margin 8
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       content_valign center
+       Columns 2
+       Rows 4
+       {
+        PanelWidgetClass PanelRain {
+         ignorepointer 0
+         keepsafezone 0
+         position 0 0
+         size 0.453 0.653
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style rover_sim_black_2
+         {
+          SliderWidgetClass SliderRain {
+           color 0.9098 0.1412 0.1412 1
+           position 0 0.17
+           size 0.95 0.25
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "SliderEventHandler"
+           style GUI_Black
+           vertical 0
+           flipped 0
+           {
+            TextWidgetClass LabelRain {
+             ignorepointer 1
+             size 1 0.45
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             style Bold
+             text "Rain:[50]"
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          EditBoxWidgetClass EditRainRate {
+           position 0.02 0.33
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          EditBoxWidgetClass EditRainDur {
+           position 0.02 0.15
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          TextWidgetClass DurationLabel {
+           ignorepointer 1
+           position 0.03296 0.14906
+           size 0.22412 0.15
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Duration:"
+          }
+          TextWidgetClass RateOfChangeLabel {
+           ignorepointer 1
+           position -0.0328 0.33
+           size 0.3901 0.15
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Rate Of Change:"
+          }
+         }
+        }
+        PanelWidgetClass PanelOvercast {
+         ignorepointer 1
+         size 0.45 0.65
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style rover_sim_black_2
+         {
+          SliderWidgetClass SliderOvercast {
+           clipchildren 1
+           color 0.9098 0.1412 0.1412 1
+           position 0 0.17
+           size 0.95 0.25
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "SliderEventHandler"
+           style GUI_Black
+           vertical 0
+           flipped 0
+           {
+            TextWidgetClass LabelOvercast {
+             clipchildren 1
+             ignorepointer 1
+             size 1 0.45
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             style Bold
+             text "Overcast:[50]"
+             "exact text" 0
+             "size to text h" 0
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          EditBoxWidgetClass EditOvercastRate {
+           position 0.02 0.33
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          EditBoxWidgetClass EditOvercastDur {
+           position 0.02 0.15
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          TextWidgetClass DurationLabel0 {
+           ignorepointer 1
+           position 0.03296 0.14906
+           size 0.22412 0.15
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Duration:"
+          }
+          TextWidgetClass RateOfChangeLabel0 {
+           ignorepointer 1
+           position -0.03535 0.32635
+           size 0.3901 0.15
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Rate Of Change:"
+          }
+         }
+        }
+        PanelWidgetClass PanelFog {
+         ignorepointer 1
+         size 0.45 0.65
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style rover_sim_black_2
+         {
+          SliderWidgetClass SliderFog {
+           color 0.9098 0.1412 0.1412 1
+           position 0 0.17
+           size 0.95 0.25
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "SliderEventHandler"
+           style GUI_Black
+           vertical 0
+           flipped 0
+           {
+            TextWidgetClass LabelFog {
+             ignorepointer 1
+             size 1 0.45
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             style Bold
+             text "Fog:[50]"
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          EditBoxWidgetClass EditFogRate {
+           position 0.02 0.33
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          EditBoxWidgetClass EditFogDur {
+           position 0.02 0.15
+           size 0.29 0.15
+           halign right_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "EditBoxEventHandler"
+           style Editor
+           "no focus" 0
+           text "1"
+           "Use default text" 0
+           "exact text" 0
+           font "gui/fonts/AmorSerifPro22"
+          }
+          TextWidgetClass DurationLabel2 {
+           ignorepointer 1
+           position 0.03296 0.1372
+           size 0.22412 0.16582
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Duration:"
+          }
+          TextWidgetClass RateOfChangeLabel2 {
+           ignorepointer 1
+           position -0.03444 0.31211
+           size 0.3901 0.15791
+           halign center_ref
+           valign bottom_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Rate Of Change:"
+          }
+         }
+        }
+        PanelWidgetClass PanelWindForce {
+         ignorepointer 1
+         size 0.45 0.65
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style rover_sim_black_2
+         {
+          SliderWidgetClass SliderWindForce {
+           color 0.9098 0.1412 0.1412 1
+           position 0 0.17
+           size 0.95 0.25
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           scriptclass "SliderEventHandler"
+           style GUI_Black
+           vertical 0
+           flipped 0
+           {
+            TextWidgetClass LabelWindForce {
+             ignorepointer 1
+             position 0 0
+             size 1 0.45
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             style Bold
+             text "WindForce:[50]"
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

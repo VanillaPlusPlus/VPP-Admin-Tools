@@ -1,0 +1,366 @@
+WindowWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "TELEPORT MANAGER"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelMap {
+     ignorepointer 1
+     position 0.01 0.04
+     size 0.6 0.95
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      MapWidgetClass MapWidget {
+       size 0.98 0.98
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+      }
+     }
+    }
+    PanelWidgetClass PanelSavedPositions {
+     ignorepointer 1
+     position 0.01 0.04
+     size 0.375 0.6
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.99 0.063
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Saved Positions"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+        CheckBoxWidgetClass chkSelectAll {
+         position 0.0265 0.02
+         size 0.5 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+        }
+        ButtonWidgetClass btnRefresh {
+         color 0.6196 0.0784 0.0784 1
+         position 0.01 0
+         size 0.2 0.83
+         halign right_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Colorable
+         text "Refresh"
+        }
+       }
+      }
+      ScrollWidgetClass Scroller {
+       ignorepointer 0
+       position 0 0.06
+       size 0.97 0.92
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass SpacerParent {
+         ignorepointer 1
+         keepsafezone 0
+         size 0.988 0.98
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 15
+         Margin 1
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelActions {
+     ignorepointer 1
+     position 0.01 0.01
+     size 0.375 0.342
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass info_title__ {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.99 0.123
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text__ {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Actions"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass GridActions {
+       ignorepointer 1
+       position 0 0.04
+       size 0.957 0.872
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 5
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_valign center
+       Columns 1
+       Rows 6
+       {
+        ButtonWidgetClass btnAddPos {
+         color 0.0078 0.702 0.1686 1
+         size 0.154 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Add New Position"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass btnEditPos {
+         size 0.154 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Edit Selected Position"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass BtnRemove {
+         color 0.9059 0.2235 0.2235 1
+         size 0.154 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Delete Selected Position(s)"
+         font "gui/fonts/Metron-Bold14"
+        }
+        PanelWidgetClass Spacer {
+         ignorepointer 1
+         size 0.154 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+        }
+        CheckBoxWidgetClass ChkTpSelected {
+         color 0.9216 0.0157 0.0157 1
+         size 1 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Teleport Selected Player(s)"
+         font "gui/fonts/Metron-Bold16"
+        }
+        ButtonWidgetClass btnTeleport {
+         size 0.154 0.15
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Teleport to Position"
+         font "gui/fonts/Metron-Bold14"
+        }
+       }
+      }
+      ImageWidgetClass ImgInfo {
+       ignorepointer 0
+       color 1 0 0 1
+       position 0.005 0.01
+       size 0.1025 0.14
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ToolTipHandler"
+       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

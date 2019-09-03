@@ -1,0 +1,991 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ size 0.45 0.65
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    SmartPanelWidgetClass Header {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.03
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style GrungeBorder
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "PLAYER MANAGER"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelButtons {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0.01 0.01
+     size 0.48 0.39
+     halign right_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass timePanel_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.995 0.073
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Actions"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ImageWidgetClass ImgInfo {
+       ignorepointer 1
+       color 1 0 0 1
+       position 0.0065 0.085
+       size 0.07 0.1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+      }
+      GridSpacerWidgetClass ButtonsSpacer {
+       ignorepointer 1
+       size 0.86 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 20
+       Margin 10
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_valign center
+       Rows 8
+       {
+        ButtonWidgetClass ActionHeal {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Heal Player(s)"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionKill {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Kill Player(s)"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionTpToMe {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Teleport To Me"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionSendMessage {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Send Message"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionTpMeTo {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Teleport Me To"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionKickPlayer {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Kick Player(s)"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionBanPlayer {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         text "Ban Player(s)"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionSpectate {
+         color 0.6667 0.1686 0.1529 1
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Spectate Player"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionMakeInvis {
+         color 0.6667 0.1686 0.1529 1
+         position 0 0
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "Make Invisible"
+         font "gui/fonts/Metron-Bold14"
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelPlayers {
+     ignorepointer 1
+     position 0.01 0.068
+     size 0.48 0.517
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ScrollWidgetClass PlayerList {
+       ignorepointer 0
+       keepsafezone 0
+       position 0 0.03
+       size 0.95 0.9
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style blank
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass Grid_1 {
+         visible 1
+         ignorepointer 1
+         keepsafezone 1
+         position 0 0.01
+         size 1 1
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 1
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+        GridSpacerWidgetClass Grid_2 {
+         visible 1
+         ignorepointer 1
+         keepsafezone 1
+         position 0 -0.01
+         size 1 1
+         halign center_ref
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 1
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         content_valign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+      ImageWidgetClass player_list_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.97 0.073
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_players {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Player List"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      CheckBoxWidgetClass ChkSelectAllPlayers {
+       position 0.0325 0.01
+       size 0.061 0.068
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       font "gui/fonts/Metron-BoldItalic58"
+      }
+      ButtonWidgetClass BtnRefreshPlayerList {
+       color 0.6824 0.1373 0.1373 1
+       position 0.01 0.01
+       size 0.22 0.06
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style EmptyHighlight
+       text "Refresh"
+      }
+     }
+    }
+    PanelWidgetClass PanelPlayerInfo {
+     ignorepointer 1
+     position 0.01 0.068
+     size 0.48 0.517
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass player_info_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.97 0.073
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_players_info {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Player Details"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ScrollWidgetClass PlayerInfoScroll {
+       clipchildren 1
+       ignorepointer 0
+       position 0 0.03
+       size 0.95 0.86
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style blank
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass GridPlayerInfo {
+         clipchildren 0
+         ignorepointer 1
+         keepsafezone 0
+         size 1 1
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scaled 1
+         "no focus" 1
+         "Ignore invisible" 0
+         Padding 0
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         content_halign center
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    ButtonWidgetClass btnFnAddPlayersToGrp {
+     visible 0
+     color 0.8784 0.1216 0.0392 1
+     position 0.05 0.072
+     size 0.4 0.024
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scriptclass "ConfirmationEventHandler"
+     style Editor
+     text "Add Selected Players To Group"
+    }
+    EditBoxWidgetClass SearchInputBox {
+     color 0.9176 0.0314 0.0314 1
+     position 0.01 0.035
+     size 0.98 0.03
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style DefaultBorder
+     "no focus" 0
+     text "Search For Player"
+     "Use default text" 1
+     "exact text" 1
+     font "gui/fonts/Metron-Italic16"
+    }
+    PanelWidgetClass PanelSliders {
+     ignorepointer 1
+     color 1 1 1 0.7059
+     position 0.01 0.01
+     size 0.48 0.39
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass timePanel_title_slider {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.01
+       size 0.995 0.073
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_sliders {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.353
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Modifiers"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 22
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass SlidersSpacer {
+       ignorepointer 1
+       position 0.03 0
+       size 1 1
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Colorable
+       Padding 10
+       Margin 1
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       content_valign center
+       Columns 2
+       Rows 5
+       {
+        ImageWidgetClass IconHealth {
+         ignorepointer 1
+         size 0.07 0.12
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:iconHealth0"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+        }
+        SliderWidgetClass SliderHealth {
+         color 0.7176 0.1412 0.1412 1
+         position 0.026 0.037
+         size 0.8 0.11
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style GUI_Black
+         vertical 0
+         flipped 0
+         {
+          TextWidgetClass SliderHealthDisplay {
+           ignorepointer 1
+           size 0.086 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Health:[50]"
+           font "gui/fonts/Metron"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ImageWidgetClass IconBlood {
+         ignorepointer 1
+         size 0.07 0.12
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:iconBlood0"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+        }
+        SliderWidgetClass SliderBlood {
+         color 0.7176 0.1412 0.1412 1
+         position 0.026 0.037
+         size 0.8 0.11
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style GUI_Black
+         maximum 5000
+         current 2500
+         {
+          TextWidgetClass SliderBloodDisplay {
+           ignorepointer 1
+           size 0.086 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Blood:[2500]"
+           font "gui/fonts/Metron"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ImageWidgetClass IconShock {
+         ignorepointer 1
+         size 0.07 0.12
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_inventory image:electricity"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+        }
+        SliderWidgetClass SliderShock {
+         color 0.7176 0.1412 0.1412 1
+         position 0.026 0.037
+         size 0.8 0.11
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style GUI_Black
+         {
+          TextWidgetClass SliderShockDisplay {
+           ignorepointer 1
+           size 0.086 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Shock:[50]"
+           font "gui/fonts/Metron"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ImageWidgetClass IconWater {
+         ignorepointer 1
+         size 0.07 0.12
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:iconThirsty0"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+        }
+        SliderWidgetClass SliderWater {
+         color 0.7176 0.1412 0.1412 1
+         position 0.026 0.037
+         size 0.8 0.11
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style GUI_Black
+         maximum 5000
+         current 2500
+         {
+          TextWidgetClass SliderWaterDisplay {
+           ignorepointer 1
+           size 0.086 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Water:[2500]"
+           font "gui/fonts/Metron"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ImageWidgetClass IconEnergy {
+         ignorepointer 1
+         size 0.07 0.12
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:iconHungry0"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+        }
+        SliderWidgetClass SliderEnergy {
+         color 0.7176 0.1412 0.1412 1
+         position 0.026 0.037
+         size 0.8 0.11
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style GUI_Black
+         maximum 20000
+         step 10
+         current 10000
+         {
+          TextWidgetClass SliderEnergyDisplay {
+           ignorepointer 1
+           size 0.086 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Energy:[10000]"
+           font "gui/fonts/Metron"
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyHealth {
+       color 1 0 0 1
+       position 0.01 0.17
+       size 0.07 0.1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImgApply {
+         ignorepointer 1
+         position 0 0
+         size 0.75 0.75
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:MarkDone"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         "Transition width" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyBlood {
+       color 1 0 0 1
+       position 0.01 0.32
+       size 0.07 0.1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImgApply0 {
+         ignorepointer 1
+         size 0.75 0.75
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:MarkDone"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         "Transition width" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyShock {
+       color 1 0 0 1
+       position 0.01 0
+       size 0.07 0.1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImgApply1 {
+         ignorepointer 1
+         size 0.75 0.75
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:MarkDone"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         "Transition width" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyWater {
+       color 1 0 0 1
+       position 0.01 0.31
+       size 0.07 0.1
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImgApply2 {
+         ignorepointer 1
+         size 0.75 0.75
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:MarkDone"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         "Transition width" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyEnergy {
+       color 1 0 0 1
+       position 0.01 0.17
+       size 0.07 0.1
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImgApply3 {
+         ignorepointer 1
+         size 0.75 0.75
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:MarkDone"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         "Transition width" 1
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

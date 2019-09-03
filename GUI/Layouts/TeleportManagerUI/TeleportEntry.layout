@@ -1,0 +1,75 @@
+PanelWidgetClass PanelData {
+ ignorepointer 1
+ keepsafezone 1
+ position 0 0
+ size 1 0.05
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ style rover_sim_black_2
+ {
+  GridSpacerWidgetClass content {
+   ignorepointer 0
+   color 0 0 0 0
+   size 1 0
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style DayZDefaultPanelBottom
+   Padding 4
+   Margin 6
+   "Size To Content V" 1
+   Columns 1
+   Rows 5
+   {
+    FrameWidgetClass Frame {
+     ignorepointer 0
+     position 0 0
+     size 48 23
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      CheckBoxWidgetClass CheckBox {
+       ignorepointer 0
+       size 1 0.9
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "Chernogorsk"
+       font "gui/fonts/AmorSerifPro-Bold16"
+      }
+      TextWidgetClass CoordsInput {
+       ignorepointer 1
+       size 0.042 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "7500,300,7500"
+       font "gui/fonts/Metron-Bold14"
+       "exact text" 0
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+   }
+  }
+ }
+}

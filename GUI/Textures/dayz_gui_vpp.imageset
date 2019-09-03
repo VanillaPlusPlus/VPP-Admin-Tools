@@ -1,0 +1,92 @@
+ImageSetClass {
+ Name "dayz_gui_vpp"
+ RefSize 1920 1080
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{534691EE0479871E}VPPAdminTools/GUI/Textures/dayz_gui_vpp.edds"
+  }
+ }
+ Images {
+  ImageSetDefClass vpp_white {
+   Name "vpp_white"
+   Pos 1019 3
+   Size 856 528
+   Flags 0
+  }
+  ImageSetDefClass vpp_white_solo {
+   Name "vpp_white_solo"
+   Pos 1022 370
+   Size 851 158
+   Flags 0
+  }
+  ImageSetDefClass vpp_black {
+   Name "vpp_black"
+   Pos 5 3
+   Size 895 511
+   Flags 0
+  }
+  ImageSetDefClass vpp_black_solo {
+   Name "vpp_black_solo"
+   Pos 14 361
+   Size 883 146
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_cloud {
+   Name "vpp_icon_cloud"
+   Pos 13 612
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_item_manager {
+   Name "vpp_icon_item_manager"
+   Pos 151 611
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_obj_editor {
+   Name "vpp_icon_obj_editor"
+   Pos 296 609
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_settings {
+   Name "vpp_icon_settings"
+   Pos 433 608
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_players {
+   Name "vpp_icon_players"
+   Pos 580 606
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_perms_editor {
+   Name "vpp_icon_perms_editor"
+   Pos 897 607
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_teleport_manager {
+   Name "vpp_icon_teleport_manager"
+   Pos 731 605
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_bans_editor {
+   Name "vpp_icon_bans_editor"
+   Pos 1074 607
+   Size 128 102
+   Flags 0
+  }
+  ImageSetDefClass vpp_icon_trash {
+   Name "vpp_icon_trash"
+   Pos 40 749
+   Size 45 53
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}

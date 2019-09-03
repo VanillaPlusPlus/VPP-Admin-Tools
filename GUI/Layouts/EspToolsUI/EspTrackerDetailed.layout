@@ -1,0 +1,184 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0.7843
+ position 0 0
+ size 0.5 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style DayZDefaultPanel
+ Padding 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 7
+ {
+  TextWidgetClass Name {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Name:"
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  TextWidgetClass NameInput {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Dumb Twat"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ImageWidgetClass IconHealth {
+   position 4.32 85.64
+   size 20 15
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:dayz_gui image:iconHealth0"
+   mode blend
+   "src alpha" 1
+   "no wrap" 0
+   stretch 0
+   "flip v" 0
+   filter 0
+  }
+  SliderWidgetClass HealthInput {
+   color 0.7647 0.1843 0.1843 1
+   position 0 0
+   size 100 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style GUI_Black
+   vertical 0
+   flipped 0
+  }
+  ImageWidgetClass IconBlood {
+   position 0.52 116.537
+   size 20 15
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:dayz_gui image:iconBlood0"
+   mode blend
+   "src alpha" 1
+  }
+  SliderWidgetClass BloodInput {
+   color 0.7647 0.1843 0.1843 1
+   position 0 0
+   size 100 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style GUI_Black
+   maximum 5000
+   current 2500
+  }
+  TextWidgetClass GUID {
+   visible 0
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "GUID:"
+   font "gui/fonts/Metron-Bold12"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass GUIDInput {
+   visible 0
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "420420420420420420420"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass GUID64 {
+   visible 1
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Steam64 ID:"
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass GUID64Input {
+   visible 1
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "76561198321354754"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass Distance {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Distance:"
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass DistanceInput {
+   color 0 1 0.0706 1
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "[600m]"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+ }
+}

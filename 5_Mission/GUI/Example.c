@@ -1,0 +1,36 @@
+/*modded class VPPAdminHud
+{
+	override void DefineButtons()
+	{
+		super.DefineButtons();
+		InsertButton("CustomSubMenu" , "set:dayz_gui_vpp image:vpp_icon_obj_editor","This is an example description");
+	}
+};
+
+class CustomSubMenu extends AdminHudSubMenu
+{
+	void CustomSubMenu()
+	{
+		Print("CustomSubMenu()");
+	}
+
+	override void OnCreate(Widget RootW)
+	{
+		super.OnCreate(RootW);
+		
+		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/CustomSubMenu.layout");
+		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
+		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
+		ShowSubMenu(); //Show tab once the class is created !RECOMMENDED TO KEEP!
+	}
+};
+/*
+/* FUNCTIONS SUMMARY */
+
+/* 
+   void InsertButton(string buttonClassName, string icon) 
+   @Param0 given name for the button, important to distinguish from other buttons, also used to determine which button was clicked incase call back method is shared NOTE: This string MUST be unique from other buttons
+   @Param1 icon for your button either direct path or template from .imageset eg: set:dayz_gui_vpp image:vpp_icon_obj_editor image size should be 135px by 135px
+
+   Note: Upon button click, call back will pass two params to your specified method( Widget btnW, string btnName) @Param0: Clicked button  @Param1: button name
+*/

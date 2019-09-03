@@ -1,2 +1,0 @@
-const int VPP_ADMIN_HUD 		  = 3215465487;
-const int VPP_KEYBINDS_MENU       = 3215465489;

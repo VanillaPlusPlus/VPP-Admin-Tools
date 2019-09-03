@@ -1,0 +1,108 @@
+PanelWidgetClass PanelItem {
+ ignorepointer 1
+ keepsafezone 1
+ color 0.9098 0.0118 0.0118 1
+ position 0 0
+ size 1 0.07
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ style rover_sim_black_2
+ {
+  GridSpacerWidgetClass player_content {
+   ignorepointer 0
+   color 0 0 0 0
+   size 1 0
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style DayZDefaultPanelBottom
+   Padding 4
+   Margin 6
+   "Size To Content V" 1
+   Columns 1
+   Rows 5
+   {
+    FrameWidgetClass FFrame {
+     ignorepointer 0
+     position 0 0
+     size 48 20
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      GridSpacerWidgetClass Grid {
+       ignorepointer 1
+       size 0.922 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 15
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       Columns 2
+       Rows 1
+       {
+        ButtonWidgetClass BtnDelete {
+         color 0.8824 0.1059 0.1059 1
+         size 0.1 1
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         {
+          ImageWidgetClass Img {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           image0 "set:dayz_gui image:exit"
+           mode additive
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+           "flip u" 0
+           "Transition width" 0
+          }
+         }
+        }
+        TextWidgetClass ItemName {
+         ignorepointer 0
+         size 1 1
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Item Name"
+         font "gui/fonts/Metron-Bold16"
+         "size to text h" 0
+         "size to text v" 0
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

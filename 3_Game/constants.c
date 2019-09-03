@@ -1,0 +1,2 @@
+const int VPP_ADMIN_HUD 		  = 3215465487;
+const int DRAG_TEST = 45454545454;

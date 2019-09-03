@@ -1,7 +1,0 @@
-<inputs version="101">
-
-    <preset name="user" file="dayz_preset_User.xml" source="pc_default" main="true" user="true"/>
-    <preset name="pc_default" file="preset_PCDefault.xml"/>
-
-    <input name="UAUISelectPlayer" loc="Select Player (ESP)" />
-</inputs>

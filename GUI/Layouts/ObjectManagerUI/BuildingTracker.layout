@@ -1,0 +1,280 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0.7843
+ position 0 0
+ size 0.5 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style DayZDefaultPanel
+ Padding 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 7
+ {
+  TextWidgetClass Type {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Type:"
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  TextWidgetClass TypeInput {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Test Object"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass Distance {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Distance:"
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass DistanceInput {
+   color 0 1 0.0706 1
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "[600m]"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  GridSpacerWidgetClass GridYPR {
+   inheritalpha 1
+   ignorepointer 0
+   size 0 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   "Size To Content H" 1
+   "Size To Content V" 1
+   content_halign center
+   content_valign center
+   Columns 2
+   Rows 8
+   {
+    TextWidgetClass TxtYaw {
+     inheritalpha 0
+     ignorepointer 1
+     position 2 3
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Yaw:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditYaw {
+     position 3 3
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+    TextWidgetClass TxtPitch {
+     ignorepointer 1
+     position 9 4
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Pitch:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditPitch {
+     position 8 4
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+    TextWidgetClass TxtRoll {
+     ignorepointer 1
+     position 25 5
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Roll:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditRoll {
+     position 23 5
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+   }
+  }
+  GridSpacerWidgetClass GridXZY {
+   inheritalpha 1
+   ignorepointer 0
+   size 0 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   "Size To Content H" 1
+   "Size To Content V" 1
+   content_halign center
+   content_valign center
+   Columns 2
+   Rows 8
+   {
+    TextWidgetClass TxtX {
+     inheritalpha 0
+     ignorepointer 1
+     position 2 3
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "X:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditX {
+     position 3 3
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+    TextWidgetClass TxtZ {
+     ignorepointer 1
+     position 9 4
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Z:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditZ {
+     position 8 4
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+    TextWidgetClass TxtY {
+     ignorepointer 1
+     position 25 5
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Y:"
+     font "gui/fonts/Metron-BoldItalic12"
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass EditY {
+     position 23 5
+     size 65 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style Editor
+     text "0"
+     "exact text" 1
+     font "gui/fonts/Metron-Bold16"
+    }
+   }
+  }
+ }
+}
