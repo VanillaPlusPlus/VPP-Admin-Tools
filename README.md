@@ -1,82 +1,73 @@
 
-<img src="https://i.imgur.com/Ys3Abet.png" align="right" alt="Headerlogo" height="auto" width="400px">
+<img src="https://i.imgur.com/3bu7aN9.png" align="right" alt="Headerlogo" height="128px" width="128px">
 
-# DayZ Vanilla++ Admin Tools v0.6
+# DayZ Vanilla++ Admin Tools v1.0
 
-### Update v0.6 Change log: 
-
-**Join our Discord server:[Invite Link V++](https://discord.gg/pb27wYh)**
-
-## 🚩 Table of Contents
+## Table Of Contents:
 - [What is Vanilla++](#what-is-vanilla)
-- [Installation](#installation)
-	- [Client](#client)
-	- [Server](#server)
-        - [ViLAYER](#vilayer)
-- [Admin Tools](#admin-tools)
-- [Credits](#credits)
+- **Installation:**
+	- [Client](#adding-mod-to-client)
+	- [Server](#adding-mod-to-server)
+		- [Formatting Json Files](#manual-formatting-of-json-files)
+		- [Adding Super Admin](#adding-a-super-admin)
+		- [End](#end)
+	- [Donation Information](#donation-information)
+
+**Patch Notes Verson 0.7:**
+1. Complete Refactor of Module System
+	1. Creation of UI Manager for expandability of the tools.
+	2. Simplification of the Admin Tools installation documentation.
+2. Completely Overhauled Permission System.
+3. Completion of Modules:
+	1. Weather Manager
+	2. Time Manager
+	3. Permission Manager
+	4. Teleport Manager
+	5. Item Manager
+	6. Object Placer
+4. Layout overhaul on all previous layouts, and new menus.
+5. Creation of example external modules. (still Work in Progress)
+	1. Infected Horde Plus
+	2.  Vanilla Plus Plus Map
+	3. Vanilla Spawn Selector
+6. Creation of Developer Documentation for 3rd party expansion of tools. (still Work in Progress)
 
 ## What is Vanilla++:
 
-Vanilla++ is a DayZ workshop add-on which aims to add administration tools by implementing a collection of features, and tools which help communities manager their players.
+Vanilla++ is a DayZ workshop add-on which aims to add administration tools by implementing a collection of features which help communities manage their players while keeping the installation, and configuration simple for new, and advanced users.
 
-## Installation:
+## Adding Mod to Server
 
-### Client:
+First, subscribe to the dependencies: [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036), [VPPNotifications] (https://steamcommunity.com/sharedfiles/filedetails/?id=1680673106) on the Steam Workshop.
 
-- If you are a player and want to play on Vanilla++ servers, please subscribe to [our steam workshop release](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068), as well as,  our dependency [Community Framework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
+Second, launch the normal DayZ launcher, not DayZ SA Launcher, and in the bottom of the window it should verify that you just recently subscribed, and downloaded the mods. Goto the mods tab, right click on VPPAdminTools, and click on Open Folder.
 
-- Use the DayZ Launcher and load @VPPAdminTools, and @CommunityFramework, or by adding the following to your start-up commandline:
-```c
--mod=@CommunityFramework;@VPPAdminTools;
-```
+Inside of the newly opened window, Copy both @VPPAdminTools, @CF and @VPPNotifications from the !Workshop folder to your servers Root Directory. Next, you will have to add these mods to your start up command line. The vanilla process of installing mods is by adding -mod=@CF;@VPPNotifications;@VPPAdminTools to your start up command line (Server). Please make sure that your last mod doesn't end with a semicolon.
 
-### Server:
+Many hosting companies have different methods to adding mods to their server, and you will have to figure out the prefered way to add them to your server. Each hosting company is different.
 
+## Adding Mod to Client
+First, subscribe to [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036) and [VPPNotifications] (https://steamcommunity.com/sharedfiles/filedetails/?id=1680673106) on the Steam Workshop. Steam will force you to download & load the dependencies.
 
-- [Subscribe to workshop addon](https://steamcommunity.com/sharedfiles/filedetails/?id=1578593068) and [Community Framework](https://steamcommunity.com/workshop/filedetails/?id=1559212036)
-- Launch DayZ launcher, Find @VPPAdminTools, right click, and click "Open Folder"
-- Take the @VPPAdminTools, and @CommunityFramework folders, and copy them to the server's root directory.
-- Take the contents of the Keys folder, which is located inside of both CommunityFramework, and VPPAdminTools, and move those files to the Keys folder, located in the server's root directory.
-- Change your startup to include the following following start-up commandlines arguments:
-``` -mod=@CommunityFramework;@VPPAdminTools; -profiles=serverLogs```
+Second, launch the DayZ Launcher. Go to the mod tab, and select CF, VPPNotifications and VPPAdminTools. Click launch, and play.
 
-Note: SuperAdmins.txt, and all json files should be located inside of your profiles folder.
+**Note:**
+Some server owners use DayZ SA launcher, and require you to join the server through the application. Please contact your community staff team for their prefered way to join their server.
 
-**WARNING: If you do not see SuperAdmins.txt, or any of our json files in the profiles location then check your file permissions for the folder.**
+## Manual Formatting of Json Files
 
-#### ViLAYER:
+If you wish to manual edit these Json Configuration Files, please use [JsonEditorOnline](https://jsoneditoronline.org/); however, all configuration, other than setting players as super admin, can be done in-game through the UI with the proper permission group, or by being a super admin.
 
-For those who own a server provide by [Vilayer.com](https://www.Vilayer.com), can auto install the mod via the `AddonManager`.</br>Special thanks goes to the Vilayer team!
+## Adding a Super Admin
 
-<img src="https://ci5.googleusercontent.com/proxy/yE1RaRsPdehe3Y5lTBg3K2UmKkKYBPUl4HOLneY8hzalp34EayGB0c8qeUxsz4W_vaGETV57DzOYC1huj7bvJmDlyfIodhIE2p07uyLeVuvkyCvCOmKg=s0-d-e1-ft#https://www.vilayer.com/templates/ColoNode/html/img/logo_dark.png" alt="vilayer logo" width="auto" height="300px">
+The only file which needs to be manually edited on the server is the SuperAdmins.txt file, which is located in your Profile's Folder inside of: VPPAdminTools/Permissions/SuperAdmins. Inside of this file you will see two steam ID's, these id's are for those who have "God" permissions over UserGroups, and are the only one who can set other users into other usergroups. In order to make yourself super admin, you will need to delete both steam id's, and add your own then restart.
 
-<img src="https://i.imgur.com/9ZJkD4P.png" alt="KeybindMenu" width="423px" height="299px">
+**Note:**
+If you add multiple steam id's each one has to be on it's own line with no empty spaces at the end, or begin of each steam id. You can get your Steam ID: [Here](http://steamid.io/)
 
-#### KeyBinding Menu:
-- Allows each client to specifiy how they wish for the admin menu to be triggered, and other base function. 
-Note: Those who don't have admin/super admin permission will not be able to trigger the admin menu, but they can trigger the keybinding menu.
+## End
+If you have followed these steps correctly, you should be able to get in-game, and press the INSERT key to open the tools. Every button for every module will be on the right side of your screen, and can be opened, and closed by simply clicking on it.
 
-#### Admin Tools:
-**Only Admin with valid permissions will be able to access each section of the menu. SuperAdmin's can change these permissions.**
-- Object Manager:
-  - Gives the ability to place, delete, and save building, and world objects in the world for later loading.
-   - No restart is needed.
-- Item Manager:
-  - Spawn items inside of the world.
-- Weather Manager:
-  - Gives the ability to change weather conditions on the fly, and change their chances.
-- Player Manager:
-  - Give's the ability to call commands on other players on the server.
-- Server Manager:
-  - Edit server XML files on the fly, and in-game.
-
-#### Chatbased Admin Tools + UI Toolset:
-- This feature allows the server owner to add Steam 64 IDs into a text file, allowing those users to login using the password set inside of the server.cfg. This file is located in (THIS SHOULD BE USED BY THE HIGHEST ADMIN TIER, YOU CAN SET OTHER PERMISSIONS VIA THE ADMIN TOOLS) in your DayZ Server profile folder (Where your logs are created and stored) file name is: SuperAdmins.txt
-
-- An admin can login by typing the following into DayZ's chat system: ```#login mypassword```
-
-## Credits:
-
-- @Slluxx for teaching @GravityWolfNotAmused how not to suck at readme.md files. I still suck at readme.md files.
-- Github User Moondarker for /refuel cmd added, /spawncar modified to spawn car in dir of admin view (Admin Tools)
+## Donation Information
+- [DaOne](https://www.paypal.me/duhonez)
+- [GravityWolf](http://paypal.me/GravityWolf)
