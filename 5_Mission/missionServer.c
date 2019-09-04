@@ -15,26 +15,6 @@ modded class MissionServer
 		//======================================
 	}
 	
-	override void OnUpdate(float timeslice)
-	{
-		super.OnUpdate(timeslice);
-	}
-	
-	override void OnClientPrepareEvent(PlayerIdentity identity, out bool useDB, out vector pos, out float yaw, out int preloadTimeout)
-	{
-		if (GetHive())
-		{
-			// use character from database
-			useDB = true;
-		}
-		else
-		{
-			// use following data without database
-			useDB = false;
-			pos = "7500 0 7500";
-			yaw = 0;
-		}
-	}
 	
 	void GetTypesXML( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
@@ -180,10 +160,7 @@ modded class MissionServer
 					// wait for some time before logout and save
 					LogoutInfo params = new LogoutInfo(GetGame().GetTime() + logoutTime * 1000, identity.GetPlainId());
 					m_LogoutPlayers.Insert(player, params);
-					
-					// allow reconnecting to old char
-					GetGame().AddToReconnectCache(identity);
-					
+										
 					// wait until logout timer runs out
 					disconnectNow = false;		
 				}
@@ -201,6 +178,7 @@ modded class MissionServer
 			PlayerDisconnected(player, identity, identity.GetPlainId());
 		}
 	}
+	
 
 	override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
 	{

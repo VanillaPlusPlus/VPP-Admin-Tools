@@ -142,7 +142,9 @@ class PermissionManager extends ConfigurablePlugin
 		{
 			permissions.Insert(perm,VerifyPermission(targetId,perm));
 		}
-		GetRPCManager().SendRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", new Param1<ref map<string,bool>>(permissions), true, GetIdentityById(targetId));
+		autoptr PlayerIdentity pidentity = GetIdentityById(targetId);
+		if (pidentity != null)
+			GetRPCManager().SendRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", new Param1<ref map<string,bool>>(permissions), true, pidentity);
 	}
 	
 	/*

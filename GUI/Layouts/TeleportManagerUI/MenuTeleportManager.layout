@@ -2,7 +2,7 @@ WindowWidgetClass rootFrame {
  clipchildren 1
  color 1 0 0 1
  position 0 0
- size 0.45 0.65
+ size 0.5 0.65
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -86,7 +86,7 @@ WindowWidgetClass rootFrame {
     PanelWidgetClass PanelMap {
      ignorepointer 1
      position 0.01 0.04
-     size 0.6 0.95
+     size 0.628 0.95
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -108,7 +108,7 @@ WindowWidgetClass rootFrame {
     PanelWidgetClass PanelSavedPositions {
      ignorepointer 1
      position 0.01 0.04
-     size 0.375 0.6
+     size 0.35 0.6
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -207,7 +207,7 @@ WindowWidgetClass rootFrame {
     PanelWidgetClass PanelActions {
      ignorepointer 1
      position 0.01 0.01
-     size 0.375 0.342
+     size 0.35 0.342
      valign bottom_ref
      hexactpos 0
      vexactpos 0

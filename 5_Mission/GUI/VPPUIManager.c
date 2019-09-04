@@ -138,7 +138,8 @@ class VPPScriptedMenu extends UIScriptedMenu
 {
 	bool menuStatus; //True == showing
 	bool m_GameFocus;
-	
+	bool m_toggleFocus;
+
 	void ~VPPScriptedMenu()
 	{
 		GetVPPUIManager().DestroyMenuInstanceByType(GetType());
@@ -150,6 +151,23 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (!menuStatus) return;
 		
 		Input input = GetGame().GetInput();
+
+		if (input.LocalDbl("UAFocusOnGame", false))
+		{
+			if (m_toggleFocus)
+				m_toggleFocus = false;
+			else
+				m_toggleFocus = true;
+		}
+
+		if (m_toggleFocus)
+		{
+			//UnlockControls
+			SetFocus(null);
+			UnlockPlayerControl();
+			return;
+		}
+
 		if (input.LocalHold("UAFocusOnGame", false))
 		{
 			if (menuStatus)

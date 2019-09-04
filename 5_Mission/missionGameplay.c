@@ -68,6 +68,13 @@ modded class MissionGameplay
 			{
 				GetRPCManager().SendRPC( "RPC_AdminTools", "ToggleFreeCam", NULL, true);
 			}
+
+			if (input.LocalPress("UASupriseButtSex", false))
+			{
+				array<string> itemTypes = { "barrel_green","Truck_01_WheelDouble","TransitBusWheel","TransitBusWheelDouble","Refridgerator","SeaChest","PowerGenerator","WoodenLog" };
+				GetRPCManager().SendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>("/sph "+itemTypes.GetRandomElement()), true);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ThrowInHands, 1000, false);
+			}
 		}
 		
 		//Spectate mode Exit button
@@ -113,7 +120,6 @@ modded class MissionGameplay
         	if (pe != null && GetGame().GetPlayer().IsAlive())
 			{
 				pe.SetInvisible(data.param1);
-				Print("SetInvisible: "+data.param1);
 			}
         }
 	}
@@ -144,30 +150,11 @@ modded class MissionGameplay
 			}
 		}
 	}
-	
-	override void OnKeyPress(int key)
-	{
-		super.OnKeyPress(key);
-		m_Hud.KeyPress(key);
-		UIScriptedMenu menu;
 		
-		/*
-			Keep for testing ONLY
-		*/
-		
-		/*
-		if ( key == KeyCode.KC_Y)
-		{
-			//GetRPCManager().SendRPC( "RPC_AdminTools", "SpawnBot", new Param1<vector>(g_Game.GetCursorPos()), true);
-			
-			GetRPCManager().SendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>("/sph barrel_green"), true);
-			GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ThrowInHands, 1000, false);
-		}
-		*/
-	}
-	
 	void ThrowInHands()
 	{
+		if (!m_Toggles) return;
+
 		DayZPlayer player = DayZPlayer.Cast(GetGame().GetPlayer());
 		InventoryItem item = InventoryItem.Cast(GetGame().GetPlayer().GetHumanInventory().GetEntityInHands());
 		if( item )

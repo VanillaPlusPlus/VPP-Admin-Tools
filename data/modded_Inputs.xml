@@ -2,7 +2,7 @@
 <modded_inputs>
     <inputs>
         <actions>
-            <input name="UAFocusOnGame" loc="(Hold) Focus on Game if menu open" />
+            <input name="UAFocusOnGame" loc="[Hold] Focus On Game [DoubleTap] to Toggle" />
             <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
             <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
             <input name="UADeleteObjCrosshair" loc="Delete Object at Crosshair" />
@@ -12,6 +12,7 @@
 			<input name="UASelectObject" loc="Select & move world objects (Object Manager)" />
 			<input name="UARotateInc" loc="Increment Axis (Object Manager)" />
 			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
+			<input name="UASupriseButtSex" loc="Assign Me & Press Me ( ͡° ͜ʖ ͡°)" />
 			<!--Free Cam Controls-->
 			<input name="UACamForward" loc="Camera move forward" />
 			<input name="UACamBackward" loc="Camera move backward" />
