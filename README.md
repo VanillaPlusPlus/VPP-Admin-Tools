@@ -13,7 +13,7 @@
 		- [End](#end)
 	- [Donation Information](#donation-information)
 
-**Patch Notes Verson 0.7:**
+**Patch Notes Version 1.0:**
 1. Complete Refactor of Module System
 	1. Creation of UI Manager for expandability of the tools.
 	2. Simplification of the Admin Tools installation documentation.
@@ -51,6 +51,9 @@ First, subscribe to [VPPAdminTools](https://steamcommunity.com/sharedfiles/filed
 
 Second, launch the DayZ Launcher. Go to the mod tab, and select CF, VPPNotifications and VPPAdminTools. Click launch, and play.
 
+## Keybinds
+You need to configure your keybinds via DayZ bind settings to use the tools.
+
 **Note:**
 Some server owners use DayZ SA launcher, and require you to join the server through the application. Please contact your community staff team for their prefered way to join their server.
 
@@ -61,6 +64,13 @@ If you wish to manual edit these Json Configuration Files, please use [JsonEdito
 ## Adding a Super Admin
 
 The only file which needs to be manually edited on the server is the SuperAdmins.txt file, which is located in your Profile's Folder inside of: VPPAdminTools/Permissions/SuperAdmins. Inside of this file you will see two steam ID's, these id's are for those who have "God" permissions over UserGroups, and are the only one who can set other users into other usergroups. In order to make yourself super admin, you will need to delete both steam id's, and add your own then restart.
+
+## Object Builder Controls
+-Left Ctrl to deselect an object
+-Hold left Shift + left/right click to rotate object
+-Hold left Alt + left/right click to move up/down
+-Left Click on object to select
+-Hold left Click to drag/move object.
 
 **Note:**
 If you add multiple steam id's each one has to be on it's own line with no empty spaces at the end, or begin of each steam id. You can get your Steam ID: [Here](http://steamid.io/)
