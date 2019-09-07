@@ -66,11 +66,11 @@ If you wish to manual edit these Json Configuration Files, please use [JsonEdito
 The only file which needs to be manually edited on the server is the SuperAdmins.txt file, which is located in your Profile's Folder inside of: VPPAdminTools/Permissions/SuperAdmins. Inside of this file you will see two steam ID's, these id's are for those who have "God" permissions over UserGroups, and are the only one who can set other users into other usergroups. In order to make yourself super admin, you will need to delete both steam id's, and add your own then restart.
 
 ## Object Builder Controls
--Left Ctrl to deselect an object
--Hold left Shift + left/right click to rotate object
--Hold left Alt + left/right click to move up/down
--Left Click on object to select
--Hold left Click to drag/move object.
+### -Left Ctrl to deselect an object
+### -Hold left Shift + left/right click to rotate object
+### -Hold left Alt + left/right click to move up/down
+### -Left Click on object to select
+### -Hold left Click to drag/move object.
 
 **Note:**
 If you add multiple steam id's each one has to be on it's own line with no empty spaces at the end, or begin of each steam id. You can get your Steam ID: [Here](http://steamid.io/)
