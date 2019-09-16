@@ -139,7 +139,8 @@ modded class MissionGameplay
 				{
 					DestroyFreeCam();
 				}else{
-					CreateFreeCamInstance();
+					if (!GetVPPUIManager().IsTyping())
+						CreateFreeCamInstance();
 				}
 				hic.SetDisabled(IsFreeCamActive());
 			}
