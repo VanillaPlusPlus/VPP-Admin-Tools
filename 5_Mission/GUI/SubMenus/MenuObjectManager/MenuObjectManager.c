@@ -108,6 +108,8 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (!IsSubMenuVisible() && !m_loaded) return;
 		Input input = GetGame().GetInput();
 		
+		if(GetGame().GetMouseState(MouseState.LEFT) & 0x80000000 && g_Game.IsLeftCtrlDown()) return;
+		
 		if (m_SelectedSetData != null)
 			m_btnSaveChanges.Enable(true);
 		else

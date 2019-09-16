@@ -2,11 +2,10 @@ class MenuPlayerManager extends AdminHudSubMenu
 {
 	private bool 						  m_Init;
 	private GridSpacerWidget 			  m_GridPlayerInfo;
-	private GridSpacerWidget 			  m_Grid_1;
-	private int                           m_Grid_1_Count = 0;
-	private GridSpacerWidget 			  m_Grid_2;
-	private int                           m_Grid_2_Count = 0;
-	private GridSpacerWidget              m_CurrentGrid;
+	private GridSpacerWidget 			  m_GridPlayerList;
+	
+	private ref CustomGridSpacer 			m_LastGrid;
+	private ref array<ref CustomGridSpacer> m_DataGrids;
 	
 	private EditBoxWidget				  m_SearchInputBox;
 	private string 			 			  m_searchBoxStr;
@@ -45,6 +44,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_ActionTpToMe;
 	private ButtonWidget m_ActionTpMeTo;
 	private ButtonWidget m_ActionSpectate;
+	private ButtonWidget m_ActionGiveGodmode;
 	//----------------
 	
 	void MenuPlayerManager()
@@ -52,6 +52,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerStats", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "InitSpectate", this, SingleplayerExecutionType.Server);
 		
+		m_DataGrids     = new array<ref CustomGridSpacer>;
 		m_PlayerEntries = new array<ref VPPPlayerEntry>;
 		m_PlayerStats   = new array<ref VPPPlayerStats>;
 	}
@@ -66,8 +67,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
 		
 		m_GridPlayerInfo   	   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "GridPlayerInfo") );
-		m_Grid_1 	   	   	   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "Grid_1") );
-		m_Grid_2			   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "Grid_2") );
+		m_GridPlayerList 	   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "GridPlayerList") );
 		m_PlayerList 	   	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerList") );
 		m_SearchInputBox 	   = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
 		
@@ -109,11 +109,30 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionTpToMe  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionTpToMe"));
 		m_ActionTpMeTo  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionTpMeTo"));
 		m_ActionSpectate  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionSpectate"));
+		
+		m_ActionGiveGodmode    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionGiveGodmode"));
 		//--------------
+		
+		//init first "page"
+		ResetPages();
 		
 		UpdateEntries();
 		ShowSubMenu();
 		m_Init = true;
+	}
+	
+	void ResetPages()
+	{
+		foreach(CustomGridSpacer cusGrid : m_DataGrids){
+			if (cusGrid != null)
+				delete cusGrid;
+		}
+		m_DataGrids = new array<ref CustomGridSpacer>;
+		
+		//init first "page"
+		m_DataGrids.Insert(new CustomGridSpacer(m_GridPlayerList));
+		m_LastGrid = m_DataGrids[0];
+		m_GridPlayerList.Update();
 	}
 	
 	override void OnUpdate(float timeslice)
@@ -159,6 +178,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionSendMessage.Enable(selectedPlayers.Count() >= 1);
 		m_ActionTpToMe.Enable(selectedPlayers.Count() >= 1);
 		m_ActionTpMeTo.Enable(selectedPlayers.Count() == 1);
+		m_ActionGiveGodmode.Enable(selectedPlayers.Count() == 1);
 		m_ActionSpectate.Enable(selectedPlayers.Count() == 1 & !g_Game.IsSpectateMode());
 		
 		//Sliders apply btns
@@ -205,6 +225,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 			
 			case m_BtnRefreshPlayerList:
+			ResetPages();
 			UpdateEntries();
 			break;
 			
@@ -214,6 +235,10 @@ class MenuPlayerManager extends AdminHudSubMenu
 			
 			case m_ActionHeal:
 			GetRPCManager().SendRPC( "RPC_PlayerManager", "HealPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			break;
+			
+			case m_ActionGiveGodmode:
+			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveGodmode", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 			break;
 			
 			case m_ActionSpectate:
@@ -268,9 +293,6 @@ class MenuPlayerManager extends AdminHudSubMenu
 	{
 		super.ShowSubMenu();
 		if (!m_Init) return;
-			//Refresh player list
-			m_Grid_1_Count = 0;
-			m_Grid_2_Count = 0;
 			UpdateEntries();
 		
 	}
@@ -423,25 +445,6 @@ class MenuPlayerManager extends AdminHudSubMenu
 		return uids;
 	}
 	
-	private void IncremnetGrid()
-	{
-		if (m_CurrentGrid == m_Grid_1)
-		{
-			m_Grid_1_Count++;
-		}else{
-			m_Grid_2_Count++;
-		}
-	}
-	
-	private int GetGridCount(GridSpacerWidget grid)
-	{
-		if (grid == m_Grid_1)
-		{
-			return m_Grid_1_Count;
-		}
-		return m_Grid_2_Count;
-	}
-
 	private void UpdateStat(string statType)
 	{
 		autoptr array<ref VPPPlayerEntry> selectedPlayers = GetSelectedPlayers();
@@ -519,6 +522,10 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private void UpdateEntries()
 	{
 		autoptr array<ref VPPUser> playerList = GetPlayerListManager().GetUsers();
+		//for(int x = 0; x < 125; x++)
+		//{
+		//	playerList.Insert(new VPPUser("Player" + x, "420420"+x));
+		//}
 		
 		if(playerList)
 		{
@@ -556,33 +563,36 @@ class MenuPlayerManager extends AdminHudSubMenu
 			string name = player.GetUserName();
 			autoptr VPPPlayerEntry entry = GetPlayerEntry(id);
 			
-			if(GetGridCount(m_Grid_1) == 100)
+			if(m_LastGrid.GetContentCount() == 100)
 			{
-				m_CurrentGrid = m_Grid_2;
-			}else{
-				m_CurrentGrid = m_Grid_1;
+				m_LastGrid = new CustomGridSpacer(m_GridPlayerList);
+			 	m_DataGrids.Insert(m_LastGrid);
 			}
 			
 			if(entry == null)
 			{
-				if(m_SelectAllPlayers.IsChecked())
+				if(m_LastGrid.GetContentCount() < 100)
 				{
-					new_list.Insert(new VPPPlayerEntry(m_CurrentGrid, name, id, true));
-				}else{
-					new_list.Insert(new VPPPlayerEntry(m_CurrentGrid, name, id));
+					ref VPPPlayerEntry NewEntry = new VPPPlayerEntry(m_LastGrid.GetGrid(), name, id, m_SelectAllPlayers.IsChecked());
+					new_list.Insert(NewEntry);
+					m_LastGrid.AddWidget(NewEntry.m_EntryBox);
 				}
-				IncremnetGrid();
+				m_LastGrid.GetGrid().Update();
+				m_GridPlayerList.Update();
 			}
 			else
 			{
-				if(m_SelectAllPlayers.IsChecked())
-				{
-					entry.SetSelected(true);
+				if(m_LastGrid.GetContentCount() == 100){
+					m_LastGrid = new CustomGridSpacer(m_GridPlayerList);
+				 	m_DataGrids.Insert(m_LastGrid);
 				}
+				
+				entry.SetSelected(m_SelectAllPlayers.IsChecked() || entry.IsSelected());
+				entry.RedrawWidgets(m_LastGrid,m_SelectAllPlayers.IsChecked() || entry.IsSelected());
 				new_list.Insert(entry);
 			}
-			m_CurrentGrid.Update();
 			m_PlayerList.Update();
+			m_GridPlayerList.Update();
 		}
         return new_list;
     }

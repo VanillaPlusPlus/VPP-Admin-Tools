@@ -1,8 +1,6 @@
 modded class MissionGameplay
 {
 	private bool  m_Toggles = false;
-	private bool  m_FreeCamStatus;
-	private VPPFreeCam m_freecam;
 	
 	void MissionGameplay()
 	{
@@ -133,24 +131,21 @@ modded class MissionGameplay
         {
 			if (data.param1)
 			{
-				if (m_FreeCamStatus)
+				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+				if( player == null ) return;
+				
+				HumanInputController hic = player.GetInputController();
+				if (IsFreeCamActive())
 				{
-					m_FreeCamStatus = false;
-					m_freecam.SetActive(false);
-					GetGame().GetUIManager().CloseAll();
-					GetGame().ObjectDelete(m_freecam);
-					GetGame().SelectPlayer(null,GetGame().GetPlayer());
+					DestroyFreeCam();
 				}else{
-					m_FreeCamStatus = true;
-					vector pos;
-					MiscGameplayFunctions.GetHeadBonePos(PlayerBase.Cast(GetGame().GetPlayer()), pos);
-					m_freecam = VPPFreeCam.Cast(g_Game.CreateObject( "VPPFreeCam", pos, true ));
-					m_freecam.SetActive(true);
+					CreateFreeCamInstance();
 				}
+				hic.SetDisabled(IsFreeCamActive());
 			}
 		}
 	}
-		
+	
 	void ThrowInHands()
 	{
 		if (!m_Toggles) return;
@@ -172,6 +167,46 @@ modded class MissionGameplay
 		}
 	}
 };
+
+ref VPPFreeCam m_freecam;
+bool m_FreeCamStatus;
+static void CreateFreeCamInstance()
+{
+	vector pos;
+	MiscGameplayFunctions.GetHeadBonePos(PlayerBase.Cast(GetGame().GetPlayer()), pos);
+	m_freecam = VPPFreeCam.Cast(g_Game.CreateObject( "VPPFreeCam", pos, true ));
+	m_freecam.SetActive(true);
+	m_FreeCamStatus = true;
+	GetGame().GetMission().GetHud().Show( false );
+	MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlDisable(INPUT_EXCLUDE_ALL);
+}
+
+static bool IsFreeCamActive()
+{
+	return m_FreeCamStatus;
+}
+
+static void DestroyFreeCam()
+{
+	if (m_freecam == null) return;
+	m_freecam.SetActive(false);
+	m_FreeCamStatus = false;
+	
+	autoptr VPPAdminHud adminMenu;
+	if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
+	{
+		if (adminMenu != null)
+			adminMenu.HideMenu();
+	}
+
+	GetGame().ObjectDelete(m_freecam);
+	GetGame().SelectPlayer(null,GetGame().GetPlayer());
+	GetGame().GetMission().GetHud().Show( true );
+	
+	GetGame().GetInput().ResetGameFocus();
+	GetGame().GetUIManager().ShowCursor(false);
+	MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlEnable();
+}
 
 /*
 modded class MissionMainMenu

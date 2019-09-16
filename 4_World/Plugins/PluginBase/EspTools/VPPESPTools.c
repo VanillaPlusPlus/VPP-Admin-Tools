@@ -25,35 +25,43 @@ class VPPESPTools extends PluginBase
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Deleted ["+copyArray.Count()+"] item(s)!",NotifyTypes.NOTIFY);
 		}
 	}
-	
+		
 	void PlayerESP(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<Object> data;
+		Param1<array<Man>> data;
 		if (!ctx.Read(data)) return;
 		
 		if( type == CallType.Server && data.param1 != null)
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu:PlayerESP")) return;
 			
-			autoptr Man targetPlayer = Man.Cast(data.param1);
-			autoptr PlayerIdentity targetIdentity;
-			if (targetPlayer == null)
-			{
-				Print("TARGET OBJ:: NULL!!");
-				return;
-			}
+			array<Man> players  = new array<Man>;
+			array<ref PlayerStatsData> playerStats = new array<ref PlayerStatsData>;
 			
-			targetIdentity = targetPlayer.GetIdentity();
-			if (targetIdentity == null) return;
-
-			map<string,string> m_Stats = new map<string,string>;
-			m_Stats.Insert("Name",targetIdentity.GetName());
-			m_Stats.Insert("Health",targetPlayer.GetHealth("","").ToString());
-			m_Stats.Insert("Blood",targetPlayer.GetHealth("","Blood").ToString());
-			m_Stats.Insert("Steam64",targetIdentity.GetPlainId());
-			//m_Stats.Insert("GUID",targetIdentity.GetId());
-			autoptr PlayerStatsData statsData = new PlayerStatsData(m_Stats);
-			GetRPCManager().SendRPC( "RPC_VPPESPPlayerTracker", "HandleData", new Param2<ref PlayerStatsData,Object>(statsData,data.param1), true, sender);
+			players = data.param1;
+			
+			foreach(Man targetPlayer : players)
+			{
+				autoptr PlayerIdentity targetIdentity = targetPlayer.GetIdentity();
+				
+				if(!targetIdentity) return;
+				
+				if (targetPlayer == null)
+				{
+					Print("TARGET OBJ:: NULL!!");
+					return;
+				}
+				map<string,string> m_Stats = new map<string,string>;
+				m_Stats.Insert("Name",targetIdentity.GetName());
+				m_Stats.Insert("Health",targetPlayer.GetHealth("","").ToString());
+				m_Stats.Insert("Blood",targetPlayer.GetHealth("","Blood").ToString());
+				m_Stats.Insert("Steam64",targetIdentity.GetPlainId());
+				//m_Stats.Insert("GUID",targetIdentity.GetId());
+				autoptr PlayerStatsData statsData = new PlayerStatsData(m_Stats);
+				
+				playerStats.Insert(statsData);
+			}
+			GetRPCManager().SendRPC( "RPC_VPPESPPlayerTracker", "HandleData", new Param2<array<Man>, array<ref PlayerStatsData>>(data.param1, playerStats), true, sender);
 		}
 	}
 };

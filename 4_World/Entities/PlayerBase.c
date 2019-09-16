@@ -61,7 +61,11 @@ modded class PlayerBase
 
 		if (!IsAlive()) return;
 		SetInvisible(state);
-		SetFlags(EntityFlags.SYNCHRONIZATION_DIRTY, true);
+		if (state){
+			ClearFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true );
+		}else{
+			SetFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true);
+		}
 		SetSynchDirty();
 	}
 	

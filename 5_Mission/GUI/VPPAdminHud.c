@@ -47,15 +47,15 @@ class VPPAdminHud extends VPPScriptedMenu
 		m_Buttons        = new array<ref VPPButton>;
 		
 		/*Base actions: Keep here incase other external modules don't call super on DefineButtons()*/
-		InsertButton("MenuServerManager" , "set:dayz_gui_vpp image:vpp_icon_settings", "Control Server settings, view player activity, restart server, monitor performance & more!");
 		InsertButton("MenuPlayerManager" , "set:dayz_gui_vpp image:vpp_icon_players", "Manage players, teleport,kill,send message,heal,view information about players (guid,name,status) & more");
-		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
-		InsertButton("MenuWeatherManager" , "set:dayz_gui_vpp image:vpp_icon_cloud", "Manage server weather settings, load, create delete presets, set time and change forecast.");
 		InsertButton("MenuItemManager" , "set:dayz_gui_vpp image:vpp_icon_item_manager", "Spawn items on players, on ground, at crosshairs, create, edit and delete item sets & more!");
+		InsertButton("MenuTeleportManager" , "set:dayz_gui_vpp image:vpp_icon_teleport_manager", "Manage teleport presets, add new and edit. Mass teleport players & map teleport.");
 		InsertButton("EspToolsMenu" , "set:dayz_gui image:icon_refresh", "Esp....");
+		InsertButton("MenuServerManager" , "set:dayz_gui_vpp image:vpp_icon_settings", "Control Server settings, view player activity, restart server, monitor performance & more!");
+		InsertButton("MenuWeatherManager" , "set:dayz_gui_vpp image:vpp_icon_cloud", "Manage server weather settings, load, create delete presets, set time and change forecast.");
 		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "Place custom mission objects, create, load, edit presets & more!");
 		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "Manage V++ Server ban list, add, remove, updated issued bans.");
-		InsertButton("MenuTeleportManager" , "set:dayz_gui_vpp image:vpp_icon_teleport_manager", "Manage teleport presets, add new and edit. Mass teleport players & map teleport.");
+		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
 		//InsertButton("MenuLogsViewer" , "set:dayz_gui_vpp image:vpp_icon_settings", "View V++ custom server logs.");
 		//----
 		DefineButtons();

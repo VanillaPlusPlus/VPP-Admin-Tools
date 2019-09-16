@@ -207,25 +207,27 @@ class MenuItemManager extends AdminHudSubMenu
 	
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
-		if (w == m_ComboCatagory) return false;
-		
-		if( button == MouseState.LEFT)
+		if (w == m_ItemListBox)
 		{
-			string typeName;
-			m_ItemListBox.GetItemText(m_ItemListBox.GetSelectedRow(),0,typeName);
-
-			if (g_Game.IsLeftCtrlDown())
+			if( button == MouseState.LEFT)
 			{
-				//Add item to selected preset
-				if (m_SavedPresetsDropDown.GetIndex() == -1 || m_SavedPresetsDropDown.GetText() == "Saved Item Presets" && m_CurrentPresetData == null){
-					GetVPPUIManager().DisplayError("Error Adding Item to Preset: No Preset Selected!");
-					return false;
+				string typeName;
+				m_ItemListBox.GetItemText(m_ItemListBox.GetSelectedRow(),0,typeName);
+	
+				if (g_Game.IsLeftCtrlDown())
+				{
+					//Add item to selected preset
+					if (m_SavedPresetsDropDown.GetIndex() == -1 || m_SavedPresetsDropDown.GetText() == "Saved Item Presets" && m_CurrentPresetData == null){
+						GetVPPUIManager().DisplayError("Error Adding Item to Preset: No Preset Selected!");
+						return false;
+					}
+					m_CurrentPresetData.AddItem(typeName,false);
+					ReloadPresetData();
+				}else{
+					RequestSpawn(true,typeName);
 				}
-				m_CurrentPresetData.AddItem(typeName,false);
-				ReloadPresetData();
-			}else{
-				RequestSpawn(true,typeName);
 			}
+			return true;
 		}
 		return false;
 	}

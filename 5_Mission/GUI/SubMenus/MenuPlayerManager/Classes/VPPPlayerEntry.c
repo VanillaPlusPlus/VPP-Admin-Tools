@@ -18,6 +18,19 @@ class VPPPlayerEntry : VPPPlayerTemplate
         m_PlayerToggle.SetChecked(startCheck);
 		m_IsVisible = true;
     }
+	
+	void RedrawWidgets(CustomGridSpacer newGrid , bool selected = false)
+	{
+		if (m_EntryBox != null)
+       	 	m_EntryBox.Unlink();
+		
+		m_EntryBox = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, newGrid.GetGrid());
+        m_PlayerToggle = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("CheckBox"));
+        m_PlayerToggle.SetText(m_PlayerName);
+        m_PlayerToggle.SetChecked(selected);
+		newGrid.AddWidget(m_EntryBox);
+		m_IsVisible = true;
+	}
     
     void ~VPPPlayerEntry()
     {

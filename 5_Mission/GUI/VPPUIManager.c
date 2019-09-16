@@ -29,9 +29,9 @@ class VPPUIManager extends PluginBase
 				VPPMenu.OnInit();
 				return true;
 			}
-		}else{
-			Print("[VPPUIManager] Unable to create menu: "+menuType.ToString() + " with ID: "+menuID + " Instance is already existing! Use ShowMenu() ?");
 		}
+		
+		Print("[VPPUIManager] Unable to create menu: "+menuType.ToString() + " with ID: "+menuID + " Instance is already existing! Use ShowMenu() ?");
 		return false;
 	}
 	
@@ -117,7 +117,7 @@ class VPPUIManager extends PluginBase
 		if (underCursor != null && (underCursor.GetTypeID() == EditBoxWidgetTypeID || underCursor.GetTypeID() == MultilineEditBoxWidgetTypeID))
 			return true;
 		
-		if (chatInput != null)
+		if (chatInput != null && chatInput.IsVisible())
 			return true;
 		
 		return false;
@@ -155,27 +155,25 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (input.LocalDbl("UAFocusOnGame", false))
 		{
 			if (m_toggleFocus)
+			{
 				m_toggleFocus = false;
+			}
 			else
+			{
 				m_toggleFocus = true;
-		}
-
-		if (m_toggleFocus)
-		{
-			//UnlockControls
-			SetFocus(null);
-			UnlockPlayerControl();
-			return;
+				SetFocus(null);
+				UnlockPlayerControl();
+			}
 		}
 
 		if (input.LocalHold("UAFocusOnGame", false))
 		{
-			if (menuStatus)
+			if (menuStatus && !m_GameFocus)
 			{
 				SetFocus(null);
 				UnlockPlayerControl();
 			}
-		}else{
+		}else if (input.LocalRelease("UAFocusOnGame", false) && !m_toggleFocus && menuStatus){
 			LockPlayerControl();
 		}
 	}
@@ -238,6 +236,8 @@ class VPPScriptedMenu extends UIScriptedMenu
 	{
 		GetVPPUIManager().SetKeybindsStatus(true); //Lock shortcut keys
 		GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
+		GetUApi().ActivateExclude("VPPCamControls");
+		GetUApi().UpdateControls();
 		GetGame().GetUIManager().ShowUICursor( true );
 		GetGame().GetMission().GetHud().Show( false );
 		m_GameFocus = false;
@@ -245,6 +245,10 @@ class VPPScriptedMenu extends UIScriptedMenu
 	
 	void UnlockPlayerControl()
 	{
+		if (IsFreeCamActive())
+		{
+			GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
+		}
 		GetVPPUIManager().SetKeybindsStatus(false); //unlock shortcut keys
 		GetGame().GetMission().PlayerControlEnable();
 		GetGame().GetInput().ResetGameFocus();

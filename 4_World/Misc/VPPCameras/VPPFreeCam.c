@@ -2,8 +2,9 @@ class VPPFreeCam extends Camera
 {
 	//---------
 	protected float CAM_SPEED = 5.0;
+	protected float MAX_CAM_SPEED = 55.0;
 	protected float CAM_BOOST = 10.0;
-	protected float CAM_MOVE_DRAG = 0.9;
+	protected float CAM_MOVE_DRAG = 0.7;
 	protected float CAM_MOUSE_SENSE = 0.4;
 	protected float CAM_SMOOTHNESS = 0.8;
 	protected float CAM_FOV = 1.0;
@@ -39,12 +40,12 @@ class VPPFreeCam extends Camera
 
 		Input input = GetGame().GetInput();
 		
-		float forward  = input.LocalValue( "UAMoveForward" ) - input.LocalValue( "UAMoveBack" );
-		float strafe   = input.LocalValue( "UAMoveRight" ) - input.LocalValue( "UAMoveLeft" );
-		float altitude = input.LocalValue( "UALeanLeft" ) - input.LocalValue( "UACamDown" );
-		float yawDiff = input.LocalValue( "UAAimLeft" ) - input.LocalValue( "UAAimRight" );
-		float pitchDiff = input.LocalValue( "UAAimDown" ) - input.LocalValue( "UAAimUp" );
-		float speedInc = 0;
+		float forward  = input.LocalValue( "UACamForward" ) - input.LocalValue( "UACamBackward" );
+		float strafe   = input.LocalValue( "UACamRight" ) - input.LocalValue( "UACamLeft" );
+		float altitude = input.LocalValue( "UACamUp" ) - input.LocalValue( "UACamDown" );
+		float yawDiff = input.LocalValue( "UACamShiftLeft" ) - input.LocalValue( "UACamShiftRight" );
+		float pitchDiff = input.LocalValue( "UACamShiftDown" ) - input.LocalValue( "UACamShiftUp" );
+		float speedInc = 0.0;
 		autoptr Widget underCursor = GetWidgetUnderCursor();
 		if (underCursor != null && underCursor.GetTypeID() != EditBoxWidgetTypeID)
 		{
@@ -67,7 +68,13 @@ class VPPFreeCam extends Camera
 			if( increaseSpeeds )
 				local_camspeed = local_camspeed * CAM_BOOST;
 		}
-
+		
+		if (local_camspeed >= MAX_CAM_SPEED && !increaseSpeeds){
+			CAM_SPEED = 1.0;
+			Print("SPEED RESET");
+		}
+		
+		
 		vector up = vector.Up;
 		vector direction = GetDirection();
 		vector directionAside = vector.Up * direction;

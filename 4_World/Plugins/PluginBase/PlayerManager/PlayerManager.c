@@ -19,11 +19,12 @@ class PlayerManager extends PluginBase
 		GetRPCManager().AddRPC("RPC_PlayerManager", "TeleportHandle", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "KickPlayer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "BanPlayer", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveGodmode", this, SingeplayerExecutionType.Server );
 	}
 	
 	override void OnInit()
 	{
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.UpdateInvisPlayers, 30000, true);
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.UpdateInvisPlayers, 10000, true);
 	}
 	
 	void UpdateInvisPlayers()
@@ -81,9 +82,12 @@ class PlayerManager extends PluginBase
 			{
 				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:KickPlayer",tgId))
 				{
-					string targetName = GetPermissionManager().GetIdentityById(tgId).GetName();
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+targetName,NotifyTypes.NOTIFY);
-					GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, GetPermissionManager().GetIdentityById(tgId));
+					autoptr PlayerIdentity tempiden = GetPermissionManager().GetIdentityById(tgId);
+					if (tempiden != null)
+					{
+						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+tempiden.GetName(),NotifyTypes.NOTIFY);
+						GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tempiden);
+					}
 				}
 			}
 		}
@@ -103,9 +107,7 @@ class PlayerManager extends PluginBase
 			foreach(string targetId: ids)
 			{
 				if (data.param1) //TeleportToPlayer
-				{
-					if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportToPlayer",targetId)) return;
-					
+				{					
 					GetTeleportManager().GotoPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), self, sender.GetPlainId());
 				}
 				else
@@ -232,20 +234,47 @@ class PlayerManager extends PluginBase
 	{
         if( type == CallType.Server )
         {
-            if (sender != NULL && GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:GodMode"))
+            if (sender && GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:GodMode"))
             {
-    			autoptr PlayerBase AdminPlayer;
-            	AdminPlayer = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
-    			if (AdminPlayer.GodModeStatus())
-    			{
-    				AdminPlayer.setGodMode(false);
-                    GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled OFF!",NotifyTypes.NOTIFY);
-    			}else{
-    				AdminPlayer.setGodMode(true);
-                    GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled ON!",NotifyTypes.NOTIFY);
-    			}
-		    }
+    				autoptr PlayerBase AdminPlayer = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
+				
+					if(AdminPlayer)
+					{
+						if (AdminPlayer.GodModeStatus())
+	                  GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled OFF!",NotifyTypes.NOTIFY);
+		    			else
+		                 GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled ON!",NotifyTypes.NOTIFY);
+		    			
+						AdminPlayer.setGodMode(!AdminPlayer.GodModeStatus());
+					}
+		  		}
         }
+	}
+	
+	void GiveGodmode( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	{
+		Param1<string> data;
+		if (!ctx.Read(data)) return;
+		
+		if( type == CallType.Server )
+        {
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:GiveGodmode",data.param1)) return;
+			
+			autoptr PlayerBase TargetPlayer = GetPermissionManager().GetPlayerBaseByID(data.param1);
+			if(TargetPlayer)
+			{
+				if (TargetPlayer.GodModeStatus()){
+					GetPermissionManager().NotifyPlayer(data.param1,"Admin Revoked your godmode",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Revoked selected players godmode!",NotifyTypes.NOTIFY);
+				}
+		    	else{
+					GetPermissionManager().NotifyPlayer(data.param1,"Admin Gave you GodMode",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Gave selected player godmode!",NotifyTypes.NOTIFY);
+				}
+				
+				TargetPlayer.setGodMode(!TargetPlayer.GodModeStatus());
+			}
+		}
 	}
 	
 	

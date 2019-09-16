@@ -13,6 +13,7 @@ class TeleportManager : ConfigurablePlugin
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "RemoteRemovePreset", this);
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "AddNewPreset", this);
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "EditPreset", this);
+		GetRPCManager().AddRPC( "RPC_TeleportManager", "GetPlayerPositions", this);
 		/*-----*/
 		
 		m_TeleportLocations = new array<ref VPPTeleportLocation>;
@@ -205,6 +206,24 @@ class TeleportManager : ConfigurablePlugin
 	/*
 	 RPC Section
 	*/
+	void GetPlayerPositions(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if( type == CallType.Server )
+		{
+			if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager"))
+			{
+				ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
+				autoptr array<Man>   m_Players = new array<Man>;
+				GetGame().GetWorld().GetPlayerList( m_Players );
+				foreach(Man player : m_Players)
+				{
+					m_List.Insert( new VPPPlayerData(player.GetIdentity().GetName(), player.GetPosition()) );
+				}
+				GetRPCManager().SendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
+			}
+		}
+	}
+	
 	void GetData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if(type == CallType.Server)
@@ -238,7 +257,7 @@ class TeleportManager : ConfigurablePlugin
 			
 			foreach(string id : ids)
 			{
-				if(GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPPlayers",id))
+				if(GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPPlayers"))
 				{
 					if (data.param3 != Vector(0,0,0) && data.param2 == "")
 					TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, GetPermissionManager().GetPlayerBaseByID(id), sender.GetPlainId());

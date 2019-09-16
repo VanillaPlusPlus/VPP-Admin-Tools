@@ -35,6 +35,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
+		GetRPCManager().AddRPC( "RPC_VPPESPPlayerTracker", "HandleData", this, SingeplayerExecutionType.Server );
 		
 		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspToolsMenu.layout");
 		M_SUB_WIDGET.SetHandler(this);
@@ -83,9 +84,41 @@ class EspToolsMenu extends AdminHudSubMenu
 		if (m_UpdateTick >= M_UPDATE_INTERVAL && M_SCAN_ACTIVE)
 		{
 			m_UpdateTick = 0.0;
+			
+			autoptr VPPFilterEntry survivorFilter = this.GetFilter("SurvivorBase");
+			
+			if(survivorFilter && survivorFilter.IsSelected())
+			{				
+				array<Man> players = new array<Man>;
+				players = ClientData.m_PlayerBaseList;
+				array<Man> requestedStats = new array<Man>;
+				
+				foreach(Man man : players)
+				{
+					if (!CheckDuplicateTracker(man))
+					{
+						if(man.GetIdentity())
+						{
+							if(vector.Distance(GetGame().GetPlayer().GetPosition(), man.GetPosition()) <= m_SliderRadius.GetCurrent())
+							{
+								m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"), man.GetIdentity().GetName(), man, true));
+								
+								if(m_ChkShowDetailed.IsChecked())
+								{
+									requestedStats.Insert(man);
+								}
+							}
+						}
+					}
+				}
+				
+				if(m_ChkShowDetailed.IsChecked())
+					GetRPCManager().SendRPC( "RPC_VPPESPTools", "PlayerESP", new Param1<array<Man>>(requestedStats),true,null);
+			}
+			
 			autoptr array<Object> objects = new array<Object>;
 			autoptr Man pilot = GetGame().GetPlayer();
-			if (pilot != null)
+			if (pilot)
 			{
 				GetGame().GetObjectsAtPosition(pilot.GetPosition(), m_SliderRadius.GetCurrent(), objects, null);
 				if (objects)
@@ -105,15 +138,25 @@ class EspToolsMenu extends AdminHudSubMenu
 						if (obj.IsTree())
 							continue;
 						
+						if(obj.IsMan())
+						{
+							Man survivor = Man.Cast(obj);
+							if( survivor && survivor.GetIdentity())
+								continue;
+						}
+						
+						autoptr VPPFilterEntry baseBuildingFilter = this.GetFilter("BaseBuildingBase");
+						
+						if(baseBuildingFilter && baseBuildingFilter.IsSelected())
+						{
+							if(obj.IsKindOf("Fence") || obj.IsKindOf("FenceKit") ||  obj.IsKindOf("Watchtower") || obj.IsKindOf("WatchtowerKit") || obj.IsKindOf("BaseBuildingBase"))
+							{
+								m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"),obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked()) );
+							}
+						}
+						
 						if (!CheckDuplicateTracker(obj))
 						{
-							//Player Check
-							if (obj.IsKindOf("SurvivorBase") && m_ChkShowDetailed.IsChecked()){
-								GetRPCManager().SendRPC( "RPC_VPPESPTools", "PlayerESP", new Param1<Object>(obj),true,null);
-								m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"), "", obj, true) );
-								return;
-							}
-							
 							if (m_ChkUseNameFilter.IsChecked() && m_InputClassNameFilter.GetText() != "")
 							{
 								if (obj.IsKindOf(m_InputClassNameFilter.GetText()))
@@ -186,16 +229,63 @@ class EspToolsMenu extends AdminHudSubMenu
 		return false;
 	}
 	
+	void HandleData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param2<array<Man>,array<ref PlayerStatsData>> data;
+		if (!ctx.Read(data)) return;
+		
+		if( type == CallType.Client)
+		{	
+			autoptr array<Man> men = data.param1;
+			autoptr array<ref PlayerStatsData> stats = data.param2;
+			
+			if(!men || !stats)
+			{
+				Print("Something is null");
+				return;
+			}
+			
+			for(int i = 0; i < men.Count(); i++)
+			{
+				autoptr PlayerStatsData playerStats = stats[i];
+				autoptr Man man = men[i];
+				
+				foreach(VPPESPTracker tracker : m_EspTrackers)
+				{
+					if(man.GetNetworkIDString() == tracker.GetTrackingObject().GetNetworkIDString())
+					{
+						tracker.InitPlayerEspWidget(playerStats);
+					}
+				}
+			}
+		}
+	}
+	
+	
 	void ConfirmDeleteAll(int result)
 	{
 		if (result == DIAGRESULT.YES)
 			DeleteESPItems(null,true);
 	}
 	
+	VPPFilterEntry GetFilter(string name)
+	{
+		foreach(VPPFilterEntry filter : m_FilterEntry)
+		{
+			if(filter.GetFilterName() == name)
+			{
+				return filter;
+			}
+		}
+		return null;
+	}
+	
 	bool CheckFilter(Object obj)
 	{
 		foreach(VPPFilterEntry filter : m_FilterEntry)
 		{
+			if(filter.GetFilterName() == "BaseBuildingBase" || filter.GetFilterName() == "SurvivorBase") continue;
+			
 			if (filter.IsSelected())
 			{
 				if (obj.IsKindOf(filter.GetFilterName()))
@@ -346,14 +436,15 @@ class EspToolsMenu extends AdminHudSubMenu
 	
 	void InitFilters()
 	{
+		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Inventory_Base"));
+		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "BaseBuildingBase"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Rifle_Base"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Pistol_Base"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Ammunition_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Inventory_Base"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Edible_Base"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "DZ_LightAI"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "SurvivorBase"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Transport"));
 		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Clothing_Base"));
+		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Transport"));
 	}
 };

@@ -1,5 +1,6 @@
 class MenuTeleportManager extends AdminHudSubMenu
 {
+	private float 						    updateInterval;
 	private bool 	  	 	 				m_loaded;
 	private ImageWidget						m_ImgInfo;
 	private ScrollWidget	 			    m_Scroller;
@@ -24,6 +25,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	{
 		/*RPCs*/
 		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "HandleData", this);
+		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "UpdateMap", this);
 		/*-----*/
 		
 		m_Entries   = new array<ref TeleportEntry>;
@@ -64,6 +66,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 		
 		GetTeleportPositions();
 		ShowSubMenu();
+		GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
 		m_loaded = true;
 	}
 	
@@ -72,13 +75,19 @@ class MenuTeleportManager extends AdminHudSubMenu
 		super.OnUpdate(timeslice);
 		if (!IsSubMenuVisible() && !m_loaded) return;
 		
+		updateInterval += timeslice;
+		if (updateInterval >= 1.0)
+		{
+			m_Map.ClearUserMarks();
+			m_Map.AddUserMark(GetGame().GetPlayer().GetPosition(), "Me", ARGB(255,255,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+			GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
+			updateInterval = 0.0;
+		}
+		
 		int selectedCount = GetSelected().Count();
 		m_btnEditPos.Enable(selectedCount == 1);
 		m_BtnRemove.Enable(selectedCount >= 1);
 		m_btnTeleport.Enable(selectedCount == 1);
-		
-		m_Map.ClearUserMarks();
-		m_Map.AddUserMark(GetGame().GetPlayer().GetPosition(), "Me", ARGB(255,255,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
 	}
 		
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -96,11 +105,11 @@ class MenuTeleportManager extends AdminHudSubMenu
 			break;
 			
 			case m_btnTeleport:
-			PreformTeleport();
+				PreformTeleport();
 			break;
 			
 			case m_btnAddPos:
-			CreatePositionPopUp(Vector(0,0,0));
+			CreatePositionPopUp(Vector(0, 0, 0));
 			break;
 			
 			case m_btnEditPos:
@@ -111,6 +120,23 @@ class MenuTeleportManager extends AdminHudSubMenu
 		}
 		return false;
 	}
+	
+	void UpdateMap(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param1<ref array<ref VPPPlayerData>> data;
+		if( !ctx.Read( data ) ) return;
+		
+		autoptr array<ref VPPPlayerData> temp = data.param1;
+		if( type == CallType.Client )
+		{
+			m_Map.ClearUserMarks();
+			foreach(VPPPlayerData info : temp)
+			{
+				m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+			}
+		}
+	 }
+	
 	
 	//Called by PopUpNewPositionEditor, by this stage duplication check and proper data check is done.
 	void SaveNewMarker(string name, vector position, bool editMode, string oldName = "", vector oldPosition = "0 0 0")

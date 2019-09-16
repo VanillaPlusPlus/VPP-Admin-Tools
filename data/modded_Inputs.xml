@@ -30,6 +30,23 @@
 			<input name="UACamRelease" loc="" visible="false" />
 			<!--------------------->
         </actions>
+		<!----------Cam controls exclude grp----------->
+		<exclude name="VPPCamControls">
+		<input name="UACamForward"/>
+		<input name="UACamBackward"/>
+		<input name="UACamRight"/>
+		<input name="UACamLeft"/>
+		<input name="UACamUp"/>
+		<input name="UACamDown"/>
+		<input name="UACamTurbo"/>
+		<input name="UACamShiftLeft"/>
+		<input name="UACamShiftRight"/>
+		<input name="UACamShiftUp"/>
+		<input name="UACamShiftDown"/>
+		<input name="UACamSpeedAdd"/>
+		<input name="UACamSpeedDeduct"/>
+		<input name="UACamRelease"/>
+		</exclude>
     </inputs>
     <preset>
 		<input name="UAToggleFreeCam">

@@ -19,9 +19,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 	Object 					   m_TrackerEntity;
 
     void VPPESPTracker( Widget parentWidget, string itemName, Object trackedEntity, bool detailed, bool visible = true ) 
-	{
-		GetRPCManager().AddRPC( "RPC_VPPESPPlayerTracker", "HandleData", this, SingeplayerExecutionType.Server );
-	
+	{	
 		m_ParentWidget = parentWidget;
         m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTracker.layout", parentWidget);
 		m_RootWidget.SetHandler(this);
@@ -50,47 +48,34 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			m_RootWidget.Unlink();
     }
 	
-	void InitPlayerEspWidget()
+	void InitPlayerEspWidget(PlayerStatsData stats)
 	{
 		if (m_RootWidget != null)
 			m_RootWidget.Unlink();
 
 		m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerDetailed.layout", m_ParentWidget);
 		m_RootWidget.SetHandler(this);
-        m_SpacerGrid  = GridSpacerWidget.Cast( m_RootWidget );
+		m_SpacerGrid  = GridSpacerWidget.Cast( m_RootWidget );
 		
-        m_ItemNameWidget   	 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "NameInput" ) );
-        m_ItemDistanceWidget = TextWidget.Cast( m_RootWidget.FindAnyWidget( "DistanceInput" ) );
+		m_ItemNameWidget   	 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "NameInput" ) );
+		m_ItemDistanceWidget = TextWidget.Cast( m_RootWidget.FindAnyWidget( "DistanceInput" ) );
 		m_HealthInput		 = SliderWidget.Cast( m_RootWidget.FindAnyWidget( "HealthInput" ) );
-	    m_BloodInput		 = SliderWidget.Cast( m_RootWidget.FindAnyWidget( "BloodInput" ) );
+		m_BloodInput		 = SliderWidget.Cast( m_RootWidget.FindAnyWidget( "BloodInput" ) );
 		//m_GUIDInput			 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "GUIDInput" ) );
 		m_GUID64Input		 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "GUID64Input" ) );
-        m_RootWidget.Update();
-	}
-	
-	void HandleData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
-	{
-		Param2<ref PlayerStatsData,Object> data;
-		if (!ctx.Read(data)) return;
-		
-		if( type == CallType.Client)
-		{
-			if (data.param2.GetNetworkIDString() == this.m_TrackerEntity.GetNetworkIDString())
-			{
-				InitPlayerEspWidget();
-				m_playerInfo = data.param1;
-				m_ItemNameWidget.SetText( m_playerInfo.GetStat("Name") );
-				m_HealthInput.SetCurrent(m_playerInfo.GetStat("Health").ToFloat());
-				m_BloodInput.SetCurrent(m_playerInfo.GetStat("Blood").ToFloat());
-				//m_GUIDInput.SetText(m_playerInfo.GetStat("GUID"));
-				m_GUID64Input.SetText(m_playerInfo.GetStat("Steam64"));
-			}
-		}
+			
+		m_playerInfo = stats;
+		m_ItemNameWidget.SetText( m_playerInfo.GetStat("Name") );
+		m_HealthInput.SetCurrent(m_playerInfo.GetStat("Health").ToFloat());
+		m_BloodInput.SetCurrent(m_playerInfo.GetStat("Blood").ToFloat());
+		//m_GUIDInput.SetText(m_playerInfo.GetStat("GUID"));
+		m_GUID64Input.SetText(m_playerInfo.GetStat("Steam64"));
+		m_RootWidget.Update();
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
-		if (w == m_CheckBox)
+		if (w != null && w == m_CheckBox)
 		{
 			autoptr EspToolsMenu espManager = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
 			if (m_CheckBox.IsChecked())
@@ -191,7 +176,12 @@ class VPPESPTracker: ScriptedWidgetEventHandler
     void SetMarkerVisible(bool visible) 
 	{
         m_IsMarkerVisible = visible;
-    }
+   }
+	
+	bool IsTrackedObject(Object obj)
+	{
+		return obj.GetNetworkIDString() == m_TrackerEntity.GetNetworkIDString();
+	}
 	
 	Object GetTrackingObject()
 	{

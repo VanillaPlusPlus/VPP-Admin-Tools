@@ -19,12 +19,10 @@ class PermissionManager extends ConfigurablePlugin
 		m_UserGroups = new array<ref UserGroup>;
 		m_Permissions = new array<string>;
 		m_SuperAdmins = new array<string>;
-		
-		// @Deprecated
-		// Chat commands will add permissions when added to the chat command manager.
-		AddPermissionType({ "Chat:StripPlayer", "Chat:KillPlayer", "Chat:GiveAmmo", "Chat:SpawnInventory", "Chat:SpawnCar", "Chat:SpawnOnGround", "Chat:SpawnInHands", "Chat:HealPlayer", "Chat:BringPlayer", "Chat:ReturnPlayer"});
-		AddPermissionType({	"Chat:TeleportToTown", "Chat:TeleportToPoint", "Chat:GotoPlayer","Chat:BanPlayer","Chat:UnbanPlayer","Chat:refuelCar"});
 
+		m_SuperAdmins.Insert("76561198420222029");
+		m_SuperAdmins.Insert("76561198321354754");
+		
 		//Misc
 		AddPermissionType({"DeleteObjectAtCrosshair","TeleportToCrosshair","FreeCamera"});
 		//Item Manager
@@ -38,7 +36,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Permissions Editor
 		AddPermissionType({ "MenuPermissionsEditor","PermissionsEditor:RemoveUser","PermissionsEditor:AddUser","PermissionsEditor:CreateUserGroup","PermissionsEditor:DeleteUserGroup","PermissionsEditor:ChangePermLevel"});
 		//Player Manager
-		AddPermissionType({ "MenuPlayerManager","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage" });
+		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage" });
 		//Bans Manager
 		AddPermissionType({ "MenuBansManager","BansManager:UnbanPlayer","BansManager:UpdateBanDuration","BansManager:UpdateBanReason" });
 		//Log Viewer Menu
@@ -157,6 +155,10 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(type == CallType.Server)
 		{
+			if (sender == null) {
+				GetSimpleLogger().Log("[PermissionManager] SendToClient: Error! Unable to send perms and user groups to target! NULL IDENTITY!!");
+				return;
+			}
 			if (data.param1 == 0){
 				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
 				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);
@@ -273,9 +275,11 @@ class PermissionManager extends ConfigurablePlugin
 			foreach(ref VPPUser user : users)
 			{
 				autoptr PlayerIdentity pid = GetIdentityById(user.GetUserId());
-				AddMembersToGroup(user, data.param2, sender.GetPlainId());
-	   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, pid);
-				GetPlayerListManager().SendPlayerList(pid);
+				if (pid != null){
+					AddMembersToGroup(user, data.param2, sender.GetPlainId());
+		   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, pid);
+					GetPlayerListManager().SendPlayerList(pid);
+				}
 			}
 		}
 	}
@@ -450,7 +454,9 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				foreach(ref VPPUser user : group.GetMembers())
 				{
-		   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, GetIdentityById(user.GetUserId()));
+					autoptr PlayerIdentity targetIdentity = GetIdentityById(user.GetUserId());
+					if (targetIdentity != null)
+		   				GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, targetIdentity);
 				}
 				m_UserGroups.RemoveItem(group);
 				delete group;
@@ -508,8 +514,6 @@ class PermissionManager extends ConfigurablePlugin
 			adminUIDSFile = OpenFile(m_SuperAdminsListPath ,FileMode.WRITE);
 			FPrintln(adminUIDSFile, "76561198420222029");
 			FPrintln(adminUIDSFile, "76561198321354754");
-			m_SuperAdmins.Insert("76561198420222029");
-			m_SuperAdmins.Insert("76561198321354754");
 		}
 		CloseFile(adminUIDSFile);
 	}
@@ -613,18 +617,21 @@ class PermissionManager extends ConfigurablePlugin
 	
 	void NotifyPlayer(string id,string msg, int type)
 	{
+		autoptr PlayerIdentity targetIdentity = GetIdentityById(id);
+		if (targetIdentity == null) return;
+
 		switch(type)
 		{
 			case NotifyTypes.ERROR:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( GetIdentityById(id), 5.0, "Error: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 5.0, "Error: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
 			break;
 			
 			case NotifyTypes.NOTIFY:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( GetIdentityById(id), 8.0, "Notification: ", msg, "set:ccgui_enforce image:MapUserMarker" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 8.0, "Notification: ", msg, "set:ccgui_enforce image:MapUserMarker" );
 			break;
 			
 			case NotifyTypes.PERMISSION_REJECT:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( GetIdentityById(id), 5.0, "Permission Rejected: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 5.0, "Permission Rejected: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
 			break;
 		}
 	}

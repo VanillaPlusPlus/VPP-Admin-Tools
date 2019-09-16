@@ -325,7 +325,7 @@ class MenuServerManager extends AdminHudSubMenu
 			m_ActivityMap.ClearUserMarks();
 			foreach(VPPPlayerData info : temp)
 			{
-				m_ActivityMap.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\data\\Icons\\waypointeditor_CA.paa");
+				m_ActivityMap.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypointeditor_CA.paa");
 			}
 		}
 	 }
