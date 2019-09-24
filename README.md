@@ -13,24 +13,11 @@
 		- [End](#end)
 	- [Donation Information](#donation-information)
 
-**Patch Notes Version 1.0:**
-1. Complete Refactor of Module System
-	1. Creation of UI Manager for expandability of the tools.
-	2. Simplification of the Admin Tools installation documentation.
-2. Completely Overhauled Permission System.
-3. Completion of Modules:
-	1. Weather Manager
-	2. Time Manager
-	3. Permission Manager
-	4. Teleport Manager
-	5. Item Manager
-	6. Object Placer
-4. Layout overhaul on all previous layouts, and new menus.
-5. Creation of example external modules. (still Work in Progress)
-	1. Infected Horde Plus
-	2.  Vanilla Plus Plus Map
-	3. Vanilla Spawn Selector
-6. Creation of Developer Documentation for 3rd party expansion of tools. (still Work in Progress)
+**Patch Notes:**
+
+- [1.0.1](https://github.com/VanillaPlusPlus/VPP-Admin-Tools/releases/tag/1.0.1)
+
+- [1.0.2](https://github.com/VanillaPlusPlus/VPP-Admin-Tools/releases/tag/1.0.2)
 
 ## What is Vanilla++:
 
