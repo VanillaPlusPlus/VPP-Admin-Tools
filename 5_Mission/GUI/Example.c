@@ -24,6 +24,7 @@ class CustomSubMenu extends AdminHudSubMenu
 		ShowSubMenu(); //Show tab once the class is created !RECOMMENDED TO KEEP!
 	}
 };
+*/
 /*
 /* FUNCTIONS SUMMARY */
 

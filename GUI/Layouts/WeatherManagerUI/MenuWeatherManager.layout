@@ -25,64 +25,6 @@ FrameWidgetClass rootFrame {
    style GrungeBorder
    "no focus" 0
    {
-    SmartPanelWidgetClass Header {
-     ignorepointer 0
-     color 0 0 0 1
-     position 0 0
-     size 1 0.03
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     scaled 0
-     draggable 0
-     style GrungeBorder
-     {
-      TextWidgetClass Title {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "WEATHER MANAGER"
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass BtnClose {
-       clipchildren 1
-       color 0 0 0 1
-       size 0.03 1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       {
-        ImageWidgetClass ImageClose {
-         ignorepointer 1
-         size 0.97 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:ccgui_enforce image:Icon28EmptySlot"
-         mode additive
-         "src alpha" 1
-        }
-       }
-      }
-     }
-    }
     PanelWidgetClass PanelTime {
      ignorepointer 1
      color 1 1 1 0.7059
@@ -123,7 +65,7 @@ FrameWidgetClass rootFrame {
          text "World Time"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -170,6 +112,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "0"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass txtMinute {
          size 0.3 0.1
@@ -196,6 +139,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "0"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass txtDay {
          size 0.3 0.1
@@ -222,6 +166,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "0"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass txtMonth {
          size 0.3 0.1
@@ -248,6 +193,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "0"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass txtYear {
          size 0.3 0.1
@@ -274,6 +220,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "0"
+         font "gui/fonts/Metron12"
         }
        }
       }
@@ -288,6 +235,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "Apply"
+       font "gui/fonts/Metron12"
       }
      }
     }
@@ -332,7 +280,7 @@ FrameWidgetClass rootFrame {
          text "Presets"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -416,6 +364,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Apply Preset"
+           font "gui/fonts/Metron12"
           }
           ButtonWidgetClass BtnSaveTimePreset {
            position 0 0.02
@@ -428,6 +377,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Save"
+           font "gui/fonts/Metron12"
           }
           ButtonWidgetClass BtnDeleteWeatherPreset {
            color 0.8235 0.0941 0.0941 1
@@ -441,13 +391,13 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Delete Preset"
-           "text color" 1 0 0 1
+           font "gui/fonts/Metron12"
           }
           ImageWidgetClass ImgInfoTimePreset {
            ignorepointer 0
            color 1 0 0 1
            position 0 0
-           size 0.12 0.2037
+           size 0.12 0.2
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -514,6 +464,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Apply Preset"
+           font "gui/fonts/Metron12"
           }
           ButtonWidgetClass spacerbutton {
            visible 1
@@ -542,6 +493,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Save"
+           font "gui/fonts/Metron12"
           }
           EditBoxWidgetClass EditPresetName {
            position 0.08685 0
@@ -556,6 +508,7 @@ FrameWidgetClass rootFrame {
            text "Enter Name"
            "Use default text" 1
            "exact text" 1
+           font "gui/fonts/Metron12"
           }
           ButtonWidgetClass BtnDeleteTimePreset {
            color 0.8235 0.0941 0.0941 1
@@ -569,12 +522,12 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Delete Selected"
-           "text color" 1 0 0 1
+           font "gui/fonts/Metron12"
           }
           ImageWidgetClass ImgInfoWeatherPreset {
            ignorepointer 0
            color 1 0 0 1
-           size 0.12 0.2037
+           size 0.12 0.2
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -634,7 +587,7 @@ FrameWidgetClass rootFrame {
          text "Information"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -916,6 +869,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "Apply"
+     font "gui/fonts/Metron12"
     }
     PanelWidgetClass PanelWeatherConfig {
      ignorepointer 1
@@ -959,7 +913,7 @@ FrameWidgetClass rootFrame {
          text "Weather Configuration"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -1338,6 +1292,75 @@ FrameWidgetClass rootFrame {
          }
         }
        }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "WEATHER MANAGER"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
       }
      }
     }

@@ -25,64 +25,6 @@ WindowWidgetClass rootFrame {
    style GrungeBorder
    "no focus" 0
    {
-    SmartPanelWidgetClass Header {
-     ignorepointer 0
-     color 0 0 0 1
-     position 0 0
-     size 1 0.03
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     scaled 0
-     draggable 0
-     style GrungeBorder
-     {
-      TextWidgetClass Title {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "ITEM MANAGER"
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass BtnClose {
-       clipchildren 1
-       color 0 0 0 1
-       size 0.03 1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       {
-        ImageWidgetClass ImageClose {
-         ignorepointer 1
-         size 0.97 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:ccgui_enforce image:Icon28EmptySlot"
-         mode additive
-         "src alpha" 1
-        }
-       }
-      }
-     }
-    }
     PanelWidgetClass PanelSearchBox {
      ignorepointer 1
      position 0.01 0.1
@@ -123,7 +65,7 @@ WindowWidgetClass rootFrame {
          text "Item List"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -220,7 +162,7 @@ WindowWidgetClass rootFrame {
      text "Search Keyword"
      "Use default text" 1
      "exact text" 1
-     font "gui/fonts/Metron-Italic22"
+     font "gui/fonts/Metron14"
     }
     PanelWidgetClass PanelItemSets {
      ignorepointer 1
@@ -339,20 +281,20 @@ WindowWidgetClass rootFrame {
            text "Saved Item Sets"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
-           "exact text size" 20
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
           ButtonWidgetClass btnRefresh {
-           color 0.9333 0.0157 0.0157 1
-           position 0.01 0.01
-           size 0.258 1
+           position 0.01 0.1
+           size 0.258 0.8
            halign right_ref
            valign center_ref
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
+           style Editor
            text "Reload"
           }
          }
@@ -393,7 +335,7 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Spawn Preset"
-           font "gui/fonts/Metron-Bold16"
+           font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnCreatePreset {
            color 0 1 0.1843 1
@@ -404,7 +346,7 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Create Preset"
-           font "gui/fonts/Metron-Bold16"
+           font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnDeletePreset {
            color 0.8235 0.0941 0.0941 1
@@ -415,8 +357,7 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Delete Selected Preset"
-           font "gui/fonts/Metron-Bold16"
-           "text color" 1 0 0 1
+           font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnSaveChanges {
            size 0.9 0.15
@@ -426,7 +367,7 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Editor
            text "Save Changes"
-           font "gui/fonts/Metron-Bold16"
+           font "gui/fonts/Metron14"
           }
          }
         }
@@ -459,7 +400,7 @@ WindowWidgetClass rootFrame {
            text "Preset Actions"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
-           "exact text size" 20
+           "exact text size" 14
            "text halign" center
            "text valign" center
           }
@@ -537,7 +478,7 @@ WindowWidgetClass rootFrame {
            text "Items"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -586,7 +527,7 @@ WindowWidgetClass rootFrame {
            text "Spawn Options"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
-           "exact text size" 20
+           "exact text size" 14
            "text halign" center
            "text valign" center
           }
@@ -628,7 +569,6 @@ WindowWidgetClass rootFrame {
           }
           EditBoxWidgetClass InputQuantity {
            visible 1
-           color 1 0 0 1
            size 0.63 0.347
            halign center_ref
            valign center_ref
@@ -660,7 +600,6 @@ WindowWidgetClass rootFrame {
            "text valign" center
           }
           XComboBoxWidgetClass ComboCondition {
-           color 1 0 0 1
            size 0.6 0.22
            halign center_ref
            valign center_ref
@@ -669,7 +608,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Default
-           font "gui/fonts/Metron16"
+           font "gui/fonts/Metron14"
            items "Pristine;Worn;Damaged;Badly Damaged;Ruined"
           }
           TextWidgetClass TxtOtherOptions {
@@ -691,7 +630,6 @@ WindowWidgetClass rootFrame {
            "text valign" center
           }
           XComboBoxWidgetClass ComboPlacement {
-           color 1 0 0 1
            size 0.69 0.22
            halign center_ref
            valign center_ref
@@ -700,7 +638,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Default
-           font "gui/fonts/Metron16"
+           font "gui/fonts/Metron14"
            items "In Inventory;On Ground;At Crosshair"
           }
           TextWidgetClass TxtOnPlayers {
@@ -721,7 +659,6 @@ WindowWidgetClass rootFrame {
            "text valign" center
           }
           CheckBoxWidgetClass ChkOnSelectedPlayers {
-           color 0.9176 0.051 0.051 1
            size 0.63 0.281
            halign center_ref
            valign center_ref
@@ -730,7 +667,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "On Selected Player(s)"
-           font "gui/fonts/Metron16"
+           font "gui/fonts/Metron14"
           }
          }
         }
@@ -748,6 +685,75 @@ WindowWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      font "gui/fonts/Metron-Bold28"
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "ITEM MANAGER"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
+      }
+     }
     }
    }
   }

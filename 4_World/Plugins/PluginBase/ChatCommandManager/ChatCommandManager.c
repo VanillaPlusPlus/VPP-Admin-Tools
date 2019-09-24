@@ -311,7 +311,7 @@ class ChatCommandManager : PluginBase
 						Human human = Human.Cast(self);
 						Car toBeFilled = Car.Cast(human.GetCommand_Vehicle().GetTransport());
 					
-						if(toBeFilled != null) return;
+						if(toBeFilled == null) return;
 					
 						EntityAI carEntity = toBeFilled;
 						carEntity.SetHealth("", "",carEntity.GetMaxHealth());

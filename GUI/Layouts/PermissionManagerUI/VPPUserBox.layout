@@ -1,7 +1,6 @@
 PanelWidgetClass PanelPlayer {
  ignorepointer 1
  keepsafezone 1
- color 0.9333 0.0863 0.0863 1
  size 1 0.15
  halign center_ref
  valign center_ref

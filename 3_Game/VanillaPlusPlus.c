@@ -1,5 +1,7 @@
 modded class DayZGame
 {
+	#define VPP_Admintools_Loaded
+	
 	private bool   m_SpectateStatus;
 	private bool   m_IsLShiftHolding;
 	void DayZGame()

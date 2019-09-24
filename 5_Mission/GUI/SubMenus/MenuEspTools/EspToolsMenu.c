@@ -1,6 +1,6 @@
 class EspToolsMenu extends AdminHudSubMenu
 {
-	private int M_UPDATE_INTERVAL = 5;
+	private int M_UPDATE_INTERVAL = 1;
 	private float            m_UpdateTick;
 	private bool             m_Init;
 	private bool             M_SCAN_ACTIVE;
@@ -12,17 +12,22 @@ class EspToolsMenu extends AdminHudSubMenu
 	private ButtonWidget     m_btnClear;
 	private ButtonWidget     m_removeAllItems;
 	private ButtonWidget     m_delAllItems;
+	private ButtonWidget     m_btnAddNewFilter;
+	private ButtonWidget     m_btnRestore;
 	private CheckBoxWidget   m_chkSelectAll; //Filter checkbox
 	private CheckBoxWidget   m_ChkUseNameFilter;
 	private CheckBoxWidget   m_ChkShowDetailed;
 	private EditBoxWidget    m_InputClassNameFilter;
 	private EditBoxWidget    m_InputUpdateInterval;
 	private ImageWidget      m_ImgInfo;
+	private ScrollWidget     m_ScrollerItems;
+	private ScrollWidget     m_Scroller;
 	
 	private ref array<ref VPPFilterEntry>   m_FilterEntry;
 	private ref array<ref VPPESPItemEntry>  m_EspItemsEntry;
 	private ref array<ref VPPESPTracker>	m_EspTrackers;
 	private ref array<ref CustomGridSpacer> m_DataGrids;
+	private ref array<ref EspFilterProperties> m_FilterProps;
 	
 	void EspToolsMenu()
 	{
@@ -30,6 +35,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_EspItemsEntry = new array<ref VPPESPItemEntry>;
 		m_DataGrids     = new array<ref CustomGridSpacer>;
 		m_EspTrackers   = new array<ref VPPESPTracker>;
+		m_FilterProps   = new array<ref EspFilterProperties>;
 	}
 
 	override void OnCreate(Widget RootW)
@@ -47,6 +53,12 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_SliderRadius = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SliderRadius"));
 		m_btnToggle    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnToggle"));
 		m_btnClear	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnClear"));
+		m_btnRestore   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRestore"));
+		GetVPPUIManager().HookConfirmationDialog(m_btnRestore, M_SUB_WIDGET,this,"RestoreFilters", DIAGTYPE.DIAG_YESNO, "Restore Default?", "Are you sure you wish to restore default filters? (This will not remove any of your custom made filters!)");
+		
+		m_btnAddNewFilter = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnAddNewFilter"));
+		GetVPPUIManager().HookConfirmationDialog(m_btnAddNewFilter, M_SUB_WIDGET,this,"CreateNewFilter", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Create Custom Filter", "Please insert the item type/class name or base class name of item.", true);
+		
 		m_removeAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "removeAllItems"));
 		m_delAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "delAllItems"));
 		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "Delete Items", "Are you sure you wish to delete ALL ITEMS in the list? (You can't revert once you delete this item)");
@@ -57,41 +69,50 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_InputUpdateInterval = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("InputUpdateInterval"));
 		m_ImgInfo = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ImgInfo"));
 		
+		m_ScrollerItems = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ScrollerItems"));
+		m_Scroller = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("Scroller"));
+		
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
 		toolTip.SetTitle("Information:");
 		toolTip.SetContentText("When the toggle button is green it means ESP will scan every second with new data.");
 		
-		InitFilters();
+		LoadSavedFilters();
 		InitEspItemsList();
-		ShowSubMenu();
 		
 		m_Init = true;
+	}
+	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_ScrollerItems.Show(!state);
+		m_Scroller.Show(!state);
 	}
 	
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
-		if (!m_Init && !IsSubMenuVisible()) return;
+		if (!m_Init /*&& !IsSubMenuVisible()*/) return;
 		
 		//Update ESP
 		m_UpdateTick += timeslice;
 		
 		M_UPDATE_INTERVAL = m_InputUpdateInterval.GetText().ToInt();
 		if (M_UPDATE_INTERVAL <= 0)
-			M_UPDATE_INTERVAL = 5;
+			M_UPDATE_INTERVAL = 1;
 		
 		if (m_UpdateTick >= M_UPDATE_INTERVAL && M_SCAN_ACTIVE)
 		{
 			m_UpdateTick = 0.0;
+			m_InputClassNameFilter.GetText().ToLower();
 			
-			autoptr VPPFilterEntry survivorFilter = this.GetFilter("SurvivorBase");
+			autoptr VPPFilterEntry survivorFilter = GetFilter("SurvivorBase");
 			
-			if(survivorFilter && survivorFilter.IsSelected())
-			{				
+			if(survivorFilter && survivorFilter.IsSelected() || (m_ChkUseNameFilter.IsChecked() && m_InputClassNameFilter.GetText() == "survivorbase"))
+			{
 				array<Man> players = new array<Man>;
 				players = ClientData.m_PlayerBaseList;
-				array<Man> requestedStats = new array<Man>;
+				array<string> requestedStats = new array<string>;
 				
 				foreach(Man man : players)
 				{
@@ -101,11 +122,11 @@ class EspToolsMenu extends AdminHudSubMenu
 						{
 							if(vector.Distance(GetGame().GetPlayer().GetPosition(), man.GetPosition()) <= m_SliderRadius.GetCurrent())
 							{
-								m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"), man.GetIdentity().GetName(), man, true));
+								m_EspTrackers.Insert(new VPPESPTracker( man.GetIdentity().GetName(), man, true, survivorFilter.m_Props.color));
 								
 								if(m_ChkShowDetailed.IsChecked())
 								{
-									requestedStats.Insert(man);
+									requestedStats.Insert(man.GetIdentity().GetId());
 								}
 							}
 						}
@@ -113,7 +134,7 @@ class EspToolsMenu extends AdminHudSubMenu
 				}
 				
 				if(m_ChkShowDetailed.IsChecked())
-					GetRPCManager().SendRPC( "RPC_VPPESPTools", "PlayerESP", new Param1<array<Man>>(requestedStats),true,null);
+					GetRPCManager().SendRPC( "RPC_VPPESPTools", "PlayerESP", new Param1<array<string>>(requestedStats),true,null);
 			}
 			
 			autoptr array<Object> objects = new array<Object>;
@@ -138,32 +159,26 @@ class EspToolsMenu extends AdminHudSubMenu
 						if (obj.IsTree())
 							continue;
 						
-						if(obj.IsMan())
-						{
-							Man survivor = Man.Cast(obj);
-							if( survivor && survivor.GetIdentity())
-								continue;
-						}
-						
-						autoptr VPPFilterEntry baseBuildingFilter = this.GetFilter("BaseBuildingBase");
-						
-						if(baseBuildingFilter && baseBuildingFilter.IsSelected())
-						{
-							if(obj.IsKindOf("Fence") || obj.IsKindOf("FenceKit") ||  obj.IsKindOf("Watchtower") || obj.IsKindOf("WatchtowerKit") || obj.IsKindOf("BaseBuildingBase"))
-							{
-								m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"),obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked()) );
-							}
-						}
-						
+						autoptr VPPFilterEntry baseBuildingFilter = GetFilter("BaseBuildingBase");
 						if (!CheckDuplicateTracker(obj))
 						{
+							if (baseBuildingFilter && baseBuildingFilter.IsSelected())
+							{
+								if(obj.IsInherited(Fence) || obj.IsInherited(FenceKit) || obj.IsInherited(Watchtower) || obj.IsInherited(WatchtowerKit) || obj.IsInherited(BaseBuildingBase))
+								{
+									m_EspTrackers.Insert(new VPPESPTracker( obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked(),baseBuildingFilter.m_Props.color) );
+								}
+							}
+						
 							if (m_ChkUseNameFilter.IsChecked() && m_InputClassNameFilter.GetText() != "")
 							{
-								if (obj.IsKindOf(m_InputClassNameFilter.GetText()))
-									m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"),obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked()) );
+								if (obj.IsInherited(m_InputClassNameFilter.GetText().ToType()))
+									m_EspTrackers.Insert(new VPPESPTracker( obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked()) );
 							}else{
-								if (CheckFilter(obj))
-									m_EspTrackers.Insert(new VPPESPTracker( m_RootWidget.FindAnyWidget("Panel_Content"),obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked()) );			
+								autoptr EspFilterProperties filterAttributes = CheckFilter(obj);
+								if (filterAttributes != null){
+									m_EspTrackers.Insert(new VPPESPTracker( obj.GetDisplayName(), obj, m_ChkShowDetailed.IsChecked(), filterAttributes.color) );
+								}			
 							}
 						}
 					}
@@ -205,6 +220,11 @@ class EspToolsMenu extends AdminHudSubMenu
 			foreach(VPPFilterEntry filter : m_FilterEntry)
 				filter.SetSelected(m_chkSelectAll.IsChecked());
 			break;
+						
+			case m_ChkShowDetailed:
+			ClearTrackers();
+			return true;
+			break;
 		}
 		return false;
 	}
@@ -229,30 +249,48 @@ class EspToolsMenu extends AdminHudSubMenu
 		return false;
 	}
 	
+	void RestoreFilters(int result)
+	{
+		if (result == DIAGRESULT.YES)
+		{
+			MakeDefaultFilters();
+			GetVPPUIManager().DisplayNotification("Added Defalut filters!");
+		}
+	}
+	
+	void CreateNewFilter(int result, string userInput)
+	{
+		if (result == DIAGRESULT.OK && userInput != "")
+		{
+			m_FilterProps.Insert( new EspFilterProperties(userInput,ARGB(255,255,255,255)));
+			SaveFilters();
+			GetVPPUIManager().DisplayNotification("New filter added & saved!");
+			
+			m_FilterEntry   = new array<ref VPPFilterEntry>;
+			m_FilterProps   = new array<ref EspFilterProperties>;
+			
+			LoadSavedFilters();
+		}
+	}
+	
 	void HandleData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param2<array<Man>,array<ref PlayerStatsData>> data;
+		Param2<array<string>,array<ref PlayerStatsData>> data;
 		if (!ctx.Read(data)) return;
 		
 		if( type == CallType.Client)
 		{	
-			autoptr array<Man> men = data.param1;
+			autoptr array<string> networkIds = data.param1;
 			autoptr array<ref PlayerStatsData> stats = data.param2;
 			
-			if(!men || !stats)
-			{
-				Print("Something is null");
-				return;
-			}
+			if(networkIds == null || stats == null) return;
 			
-			for(int i = 0; i < men.Count(); i++)
+			for(int i = 0; i < networkIds.Count(); i++)
 			{
 				autoptr PlayerStatsData playerStats = stats[i];
-				autoptr Man man = men[i];
-				
 				foreach(VPPESPTracker tracker : m_EspTrackers)
 				{
-					if(man.GetNetworkIDString() == tracker.GetTrackingObject().GetNetworkIDString())
+					if(networkIds[i] == tracker.GetTrackingObject().GetNetworkIDString())
 					{
 						tracker.InitPlayerEspWidget(playerStats);
 					}
@@ -280,7 +318,8 @@ class EspToolsMenu extends AdminHudSubMenu
 		return null;
 	}
 	
-	bool CheckFilter(Object obj)
+	//return filter props if object matches filter
+	EspFilterProperties CheckFilter(Object obj)
 	{
 		foreach(VPPFilterEntry filter : m_FilterEntry)
 		{
@@ -289,10 +328,10 @@ class EspToolsMenu extends AdminHudSubMenu
 			if (filter.IsSelected())
 			{
 				if (obj.IsKindOf(filter.GetFilterName()))
-					return true;
+					return filter.m_Props;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	//DELETES & removes from list one or all selected items
@@ -434,17 +473,57 @@ class EspToolsMenu extends AdminHudSubMenu
 		InitEspItemsList();
 	}
 	
+	void RemoveFilterProps(EspFilterProperties prop)
+	{
+		m_FilterProps.RemoveItem(prop);
+		SaveFilters();
+		LoadSavedFilters();
+	}
+	
+	void LoadSavedFilters()
+	{
+		m_FilterEntry   = new array<ref VPPFilterEntry>;
+		m_FilterProps   = new array<ref EspFilterProperties>;
+		
+		if (FileExist("$profile:ESPFilters.json"))
+		{
+			JsonFileLoader<ref array<ref EspFilterProperties>>.JsonLoadFile( "$profile:ESPFilters.json", m_FilterProps );
+			InitFilters();
+			return;
+		}
+		MakeDefaultFilters();
+	}
+	
+	void MakeDefaultFilters()
+	{
+		m_FilterProps.Insert( new EspFilterProperties("Inventory_Base",ARGB(255,255,255,255)) );
+		m_FilterProps.Insert( new EspFilterProperties("BaseBuildingBase",ARGB(255,255,255,255)) );
+		m_FilterProps.Insert( new EspFilterProperties("Rifle_Base",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("Pistol_Base",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("Ammunition_Base",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("Edible_Base",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("DZ_LightAI",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("SurvivorBase",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("Clothing_Base",ARGB(255,255,255,255)));
+		m_FilterProps.Insert( new EspFilterProperties("Transport",ARGB(255,255,255,255)));
+		SaveFilters();
+		InitFilters();
+	}
+	
+	void SaveFilters()
+	{
+		JsonFileLoader<ref array<ref EspFilterProperties>>.JsonSaveFile( "$profile:ESPFilters.json", m_FilterProps );
+		
+		//Rescan ESP if active
+		if (M_SCAN_ACTIVE)
+			ClearTrackers();
+	}
+	
 	void InitFilters()
 	{
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Inventory_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "BaseBuildingBase"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Rifle_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Pistol_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Ammunition_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Edible_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "DZ_LightAI"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "SurvivorBase"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Clothing_Base"));
-		m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, "Transport"));
+		m_FilterEntry   = new array<ref VPPFilterEntry>;
+		
+		foreach(ref EspFilterProperties prop: m_FilterProps)
+			m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, prop ,true));
 	}
 };

@@ -6,6 +6,7 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	protected ButtonWidget m_closeButton;
 	protected Widget       m_TitlePanel;
 	protected Widget       m_RootWidget;
+	protected float        m_posX, m_posY;
 	
 	void OnCreate(Widget RootW)
 	{
@@ -18,6 +19,61 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	void OnUpdate(float timeslice)
 	{
 		
+	}
+	
+	void OnWidgetScriptInit(Widget w)
+	{
+		m_RootWidget.SetHandler(this);
+	}
+	
+	override bool OnUpdate(Widget w)
+	{
+		if ( w == m_TitlePanel )
+			m_TitlePanel.SetPos(0, 0, true);
+
+		return true;
+	}
+	
+	override bool OnDrag( Widget w, int x, int y )
+	{
+		if ( w == m_TitlePanel )
+		{
+			M_SUB_WIDGET.GetPos(m_posX, m_posY);
+
+			m_posX = x - m_posX;
+			m_posY = y - m_posY;
+			m_TitlePanel.SetPos( 0, 0, true );
+			m_TitlePanel.SetPos( 0, 0, false );
+			
+			return false;
+		}
+		return true;
+	}
+
+	override bool OnDragging( Widget w, int x, int y, Widget reciever )
+	{
+		if ( w == m_TitlePanel )
+		{
+			SetWindowPos(x - m_posX, y - m_posY);
+			return false;
+		}
+		return true;
+	}
+
+	override bool OnDrop( Widget w, int x, int y, Widget reciever )
+	{
+		if ( w == m_TitlePanel )
+		{
+			SetWindowPos(x - m_posX, y - m_posY);
+			return false;
+		}
+		return true;
+	}
+	
+	void SetWindowPos( int x, int y )
+	{
+		M_SUB_WIDGET.SetPos(x, y, true);
+		m_TitlePanel.SetPos(0, 0, true);
 	}
 	
 	protected Widget CreateWidgets(string path)
@@ -35,6 +91,8 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		m_IsVisible = true;
 		M_SUB_WIDGET.Show(true);
 		M_SUB_WIDGET.Update();
+		autoptr VPPAdminHud rootHud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+		rootHud.SetWindowPriorty(this);
 	}
 	
 	void HideSubMenu()
@@ -42,6 +100,12 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		m_IsVisible = false;
 		M_SUB_WIDGET.Show(false);
 		M_SUB_WIDGET.Update();
+	}
+	
+	//TEMP: use it to hide scrollbars and map widgets when the window is not in focus. Stupid dayz bug
+	void HideBrokenWidgets(bool state)
+	{
+		//true == hide scroll bars etc...
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -56,17 +120,11 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
 	{
-		if ( w == m_TitlePanel)
-		{
-			GetGame().GetDragQueue().Call( this, "UpdateWindowPosition" );
+		autoptr VPPAdminHud rootHud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+		if (rootHud != null && Type() != MenuObjectManager){
+			rootHud.SetWindowPriorty(this);
 			return true;
 		}
 		return false;
-	}
-	
-	void UpdateWindowPosition(int mouse_x, int mouse_y, bool is_dragging )
-	{
-		M_SUB_WIDGET.SetPos( mouse_x, mouse_y);
-		M_SUB_WIDGET.Update();
 	}
 };

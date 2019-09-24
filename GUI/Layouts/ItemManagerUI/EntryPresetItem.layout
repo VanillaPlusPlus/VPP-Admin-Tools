@@ -1,7 +1,6 @@
 PanelWidgetClass PanelItem {
  ignorepointer 1
  keepsafezone 1
- color 0.9098 0.0118 0.0118 1
  position 0 0
  size 1 0.07
  halign center_ref
@@ -74,7 +73,7 @@ PanelWidgetClass PanelItem {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           image0 "set:dayz_gui image:exit"
+           image0 "set:dayz_gui_vpp image:vpp_icon_trash"
            mode additive
            "src alpha" 1
            "no wrap" 1

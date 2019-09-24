@@ -25,64 +25,6 @@ WindowWidgetClass rootFrame {
    style GrungeBorder
    "no focus" 0
    {
-    SmartPanelWidgetClass Header {
-     ignorepointer 0
-     color 0 0 0 1
-     position 0 0
-     size 1 0.03
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     scaled 0
-     draggable 0
-     style GrungeBorder
-     {
-      TextWidgetClass Title {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "TELEPORT MANAGER"
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass BtnClose {
-       clipchildren 1
-       color 0 0 0 1
-       size 0.03 1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       {
-        ImageWidgetClass ImageClose {
-         ignorepointer 1
-         size 0.97 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:ccgui_enforce image:Icon28EmptySlot"
-         mode additive
-         "src alpha" 1
-        }
-       }
-      }
-     }
-    }
     PanelWidgetClass PanelMap {
      ignorepointer 1
      position 0.01 0.04
@@ -157,7 +99,6 @@ WindowWidgetClass rootFrame {
          vexactsize 0
         }
         ButtonWidgetClass btnRefresh {
-         color 0.6196 0.0784 0.0784 1
          position 0.01 0
          size 0.2 0.83
          halign right_ref
@@ -166,7 +107,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style Editor
          text "Refresh"
         }
        }
@@ -317,7 +258,6 @@ WindowWidgetClass rootFrame {
          vexactsize 0
         }
         CheckBoxWidgetClass ChkTpSelected {
-         color 0.9216 0.0157 0.0157 1
          size 1 0.15
          halign center_ref
          valign center_ref
@@ -345,8 +285,9 @@ WindowWidgetClass rootFrame {
       ImageWidgetClass ImgInfo {
        ignorepointer 0
        color 1 0 0 1
-       position 0.005 0.01
-       size 0.1025 0.14
+       position 0.01 0.01
+       size 0.1 0.1
+       halign right_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -357,6 +298,75 @@ WindowWidgetClass rootFrame {
        "src alpha" 1
        "no wrap" 1
        stretch 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "TELEPORT MANAGER"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
       }
      }
     }

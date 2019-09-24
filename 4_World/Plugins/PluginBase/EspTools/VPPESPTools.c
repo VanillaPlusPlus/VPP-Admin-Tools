@@ -28,40 +28,36 @@ class VPPESPTools extends PluginBase
 		
 	void PlayerESP(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<array<Man>> data;
+		Param1<array<string>> data;
 		if (!ctx.Read(data)) return;
 		
 		if( type == CallType.Server && data.param1 != null)
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu:PlayerESP")) return;
 			
-			array<Man> players  = new array<Man>;
-			array<ref PlayerStatsData> playerStats = new array<ref PlayerStatsData>;
+			autoptr array<string> playersIDs = new array<string>;
+			autoptr array<ref PlayerStatsData> playerStats = new array<ref PlayerStatsData>;
+			array<string> networkIds = new array<string>;
 			
-			players = data.param1;
+			playersIDs = data.param1;
 			
-			foreach(Man targetPlayer : players)
+			foreach(string pid : playersIDs)
 			{
-				autoptr PlayerIdentity targetIdentity = targetPlayer.GetIdentity();
+				autoptr PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(pid);
 				
-				if(!targetIdentity) return;
+				if(targetPlayer == null) return;
 				
-				if (targetPlayer == null)
-				{
-					Print("TARGET OBJ:: NULL!!");
-					return;
-				}
 				map<string,string> m_Stats = new map<string,string>;
-				m_Stats.Insert("Name",targetIdentity.GetName());
+				m_Stats.Insert("Name",targetPlayer.GetIdentity().GetName());
 				m_Stats.Insert("Health",targetPlayer.GetHealth("","").ToString());
 				m_Stats.Insert("Blood",targetPlayer.GetHealth("","Blood").ToString());
-				m_Stats.Insert("Steam64",targetIdentity.GetPlainId());
-				//m_Stats.Insert("GUID",targetIdentity.GetId());
+				m_Stats.Insert("Steam64",targetPlayer.GetIdentity().GetPlainId());
 				autoptr PlayerStatsData statsData = new PlayerStatsData(m_Stats);
 				
+				networkIds.Insert(targetPlayer.GetNetworkIDString());
 				playerStats.Insert(statsData);
 			}
-			GetRPCManager().SendRPC( "RPC_VPPESPPlayerTracker", "HandleData", new Param2<array<Man>, array<ref PlayerStatsData>>(data.param1, playerStats), true, sender);
+			GetRPCManager().SendRPC( "RPC_VPPESPPlayerTracker", "HandleData", new Param2<array<string>,array<ref PlayerStatsData>>(networkIds, playerStats), true, sender);
 		}
 	}
 };

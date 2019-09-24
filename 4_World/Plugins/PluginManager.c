@@ -33,6 +33,7 @@ modded class PluginManager
 		{
 			MakeDirectory("$profile:VPPAdminTools");
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins");
+			MakeDirectory("$profile:VPPAdminTools/Exports");
 		}
 	}
 };

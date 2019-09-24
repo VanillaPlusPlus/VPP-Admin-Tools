@@ -10,6 +10,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private EditBoxWidget				  m_SearchInputBox;
 	private string 			 			  m_searchBoxStr;
 	private ScrollWidget				  m_PlayerList;
+	private ScrollWidget				  m_PlayerInfoScroll;
 	private ButtonWidget	 			  m_BtnRefreshPlayerList;
 	private CheckBoxWidget 		  		  m_SelectAllPlayers;
 	private ButtonWidget 				  m_btnFnAddPlayersToGrp;
@@ -69,6 +70,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_GridPlayerInfo   	   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "GridPlayerInfo") );
 		m_GridPlayerList 	   = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "GridPlayerList") );
 		m_PlayerList 	   	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerList") );
+		m_PlayerInfoScroll 	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerInfoScroll") );
 		m_SearchInputBox 	   = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
 		
 		m_SelectAllPlayers 	   = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers") );
@@ -115,10 +117,14 @@ class MenuPlayerManager extends AdminHudSubMenu
 		
 		//init first "page"
 		ResetPages();
-		
 		UpdateEntries();
-		ShowSubMenu();
 		m_Init = true;
+	}
+	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_PlayerList.Show(!state);
+		m_PlayerInfoScroll.Show(!state);
 	}
 	
 	void ResetPages()

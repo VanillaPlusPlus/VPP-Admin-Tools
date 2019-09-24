@@ -1,9 +1,7 @@
 class VPPESPTracker: ScriptedWidgetEventHandler 
 {
     protected Widget           m_RootWidget;
-    protected ref Widget       m_ParentWidget;
     protected GridSpacerWidget m_SpacerGrid;
-	
     protected CheckBoxWidget   m_CheckBox;
     protected TextWidget       m_ItemNameWidget;
     protected TextWidget       m_ItemDistanceWidget;
@@ -11,17 +9,16 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 	protected SliderWidget     m_BloodInput;
 	protected TextWidget       m_GUIDInput;
 	protected TextWidget       m_GUID64Input;
-
     protected string           m_ItemName;
     protected vector	       m_MarkerPositon;
     protected bool             m_IsMarkerVisible;
 	private ref PlayerStatsData m_playerInfo;
+	private PlayerBase player;
 	Object 					   m_TrackerEntity;
 
-    void VPPESPTracker( Widget parentWidget, string itemName, Object trackedEntity, bool detailed, bool visible = true ) 
-	{	
-		m_ParentWidget = parentWidget;
-        m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTracker.layout", parentWidget);
+    void VPPESPTracker(string itemName, Object trackedEntity, bool detailed, int color = -1, bool visible = true ) 
+	{
+        m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTracker.layout", null);
 		m_RootWidget.SetHandler(this);
         m_SpacerGrid       = GridSpacerWidget.Cast( m_RootWidget.FindAnyWidget( "SpacerGrid" ) );
 
@@ -30,20 +27,27 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         m_ItemDistanceWidget = TextWidget.Cast( m_SpacerGrid.FindAnyWidget( "ItemDistance" ) );
 
         m_TrackerEntity    = trackedEntity;
+		
+		if(m_TrackerEntity.IsInherited(PlayerBase))
+		{
+			player = PlayerBase.Cast(m_TrackerEntity);
+		}
         m_ItemName  	   = itemName;
         m_IsMarkerVisible  = visible;
 
         m_ItemNameWidget.SetText( m_ItemName );
+		m_ItemNameWidget.SetColor( color );
         m_SpacerGrid.Update();
         m_ItemNameWidget.Update();
         m_ItemDistanceWidget.Update();
-
-        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.DoUpdate, 1, true);
+		
+		m_RootWidget.SetSort(1023,true);
+		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Insert(this.DoUpdate);
     }
 
     void ~VPPESPTracker() 
 	{
-        GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.DoUpdate);
+		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Remove(this.DoUpdate);
         if (m_RootWidget != null) 
 			m_RootWidget.Unlink();
     }
@@ -53,7 +57,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		if (m_RootWidget != null)
 			m_RootWidget.Unlink();
 
-		m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerDetailed.layout", m_ParentWidget);
+		m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerDetailed.layout", null);
 		m_RootWidget.SetHandler(this);
 		m_SpacerGrid  = GridSpacerWidget.Cast( m_RootWidget );
 		
@@ -61,16 +65,15 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		m_ItemDistanceWidget = TextWidget.Cast( m_RootWidget.FindAnyWidget( "DistanceInput" ) );
 		m_HealthInput		 = SliderWidget.Cast( m_RootWidget.FindAnyWidget( "HealthInput" ) );
 		m_BloodInput		 = SliderWidget.Cast( m_RootWidget.FindAnyWidget( "BloodInput" ) );
-		//m_GUIDInput			 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "GUIDInput" ) );
 		m_GUID64Input		 = TextWidget.Cast( m_RootWidget.FindAnyWidget( "GUID64Input" ) );
 			
 		m_playerInfo = stats;
 		m_ItemNameWidget.SetText( m_playerInfo.GetStat("Name") );
 		m_HealthInput.SetCurrent(m_playerInfo.GetStat("Health").ToFloat());
 		m_BloodInput.SetCurrent(m_playerInfo.GetStat("Blood").ToFloat());
-		//m_GUIDInput.SetText(m_playerInfo.GetStat("GUID"));
 		m_GUID64Input.SetText(m_playerInfo.GetStat("Steam64"));
 		m_RootWidget.Update();
+		m_RootWidget.SetSort(1023,true);
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -107,7 +110,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         return vector.Distance( GetGame().GetPlayer().GetPosition(), startPos );
     }
 
-    void DoUpdate()
+    void DoUpdate(float tDelta)
 	{
 		if (m_TrackerEntity == null)
 		{
@@ -147,6 +150,21 @@ class VPPESPTracker: ScriptedWidgetEventHandler
             m_SpacerGrid.Update();
             m_ItemNameWidget.Update();
             m_ItemDistanceWidget.Update();
+			
+			if(m_playerInfo != null)
+			{
+				if(player != null && !player.IsAlive())
+				{
+					m_HealthInput.SetCurrent(0);
+					m_BloodInput.SetCurrent(0);
+				}
+			
+				if(player != null && player.IsAlive())
+				{
+					m_HealthInput.SetCurrent(player.GetTransferValues().GetHealth() * 100);
+					m_BloodInput.SetCurrent(player.GetTransferValues().GetBlood() * 5000);
+				}
+			}
         }
 		else if (m_RootWidget != NULL) 
 		{

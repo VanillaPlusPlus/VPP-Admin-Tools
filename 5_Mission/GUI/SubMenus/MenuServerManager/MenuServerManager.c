@@ -42,6 +42,11 @@ class MenuServerManager extends AdminHudSubMenu
 		/*-----*/
 	}
 	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_ActivityMap.Show(!state);
+	}
+	
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
@@ -132,7 +137,6 @@ class MenuServerManager extends AdminHudSubMenu
 		
 		GetRPCManager().SendRPC("RPC_ServerManager", "RequestScriptList", NULL, true); //Get Scripts list
 		GetRPCManager().SendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
-		ShowSubMenu();
 		m_loaded = true;
 	}
 		

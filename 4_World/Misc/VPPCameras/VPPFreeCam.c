@@ -2,7 +2,7 @@ class VPPFreeCam extends Camera
 {
 	//---------
 	protected float CAM_SPEED = 5.0;
-	protected float MAX_CAM_SPEED = 55.0;
+	protected float MAX_CAM_SPEED = 75.0;
 	protected float CAM_BOOST = 10.0;
 	protected float CAM_MOVE_DRAG = 0.7;
 	protected float CAM_MOUSE_SENSE = 0.4;
@@ -69,11 +69,8 @@ class VPPFreeCam extends Camera
 				local_camspeed = local_camspeed * CAM_BOOST;
 		}
 		
-		if (local_camspeed >= MAX_CAM_SPEED && !increaseSpeeds){
-			CAM_SPEED = 1.0;
-			Print("SPEED RESET");
-		}
-		
+		if (local_camspeed >= MAX_CAM_SPEED && !increaseSpeeds)
+			CAM_SPEED = 5.0;
 		
 		vector up = vector.Up;
 		vector direction = GetDirection();

@@ -91,7 +91,7 @@ GridSpacerWidgetClass SpacerGrid {
      inheritalpha 0
      ignorepointer 1
      position 2 3
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -105,7 +105,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditYaw {
      position 3 3
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -114,12 +114,12 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
     TextWidgetClass TxtPitch {
      ignorepointer 1
      position 9 4
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -133,7 +133,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditPitch {
      position 8 4
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -142,12 +142,12 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
     TextWidgetClass TxtRoll {
      ignorepointer 1
      position 25 5
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -161,7 +161,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditRoll {
      position 23 5
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -170,7 +170,7 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
    }
   }
@@ -193,7 +193,7 @@ GridSpacerWidgetClass SpacerGrid {
      inheritalpha 0
      ignorepointer 1
      position 2 3
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -207,7 +207,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditX {
      position 3 3
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -216,12 +216,12 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
     TextWidgetClass TxtZ {
      ignorepointer 1
      position 9 4
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -235,7 +235,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditZ {
      position 8 4
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -244,12 +244,12 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
     TextWidgetClass TxtY {
      ignorepointer 1
      position 25 5
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -263,7 +263,7 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditY {
      position 23 5
-     size 65 16
+     size 40 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -272,7 +272,7 @@ GridSpacerWidgetClass SpacerGrid {
      style Editor
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron-Bold16"
+     font "gui/fonts/Metron12"
     }
    }
   }

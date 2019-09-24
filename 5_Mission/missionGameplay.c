@@ -1,6 +1,7 @@
 modded class MissionGameplay
 {
 	private bool  m_Toggles = false;
+	Object targetObj;
 	
 	void MissionGameplay()
 	{
@@ -54,7 +55,19 @@ modded class MissionGameplay
 			
 			if ( input.LocalPress("UADeleteObjCrosshair", false))
 			{
-				GetRPCManager().SendRPC( "RPC_AdminTools", "DeleteObject", NULL, true, NULL, g_Game.getObjectAtCrosshair(1000.0, 1.5,NULL));
+				targetObj = g_Game.getObjectAtCrosshair(1000.0, 1.5,NULL);
+				if (targetObj != null)
+				{
+					//Lock Controls and show mouse cursor 
+					GetVPPUIManager().SetKeybindsStatus(true); //Lock shortcut keys
+					GetGame().GetInput().ChangeGameFocus(1);
+					GetGame().GetUIManager().ShowUICursor( true );
+					PlayerControlDisable(INPUT_EXCLUDE_ALL);
+					
+					//Show confirmation of delete
+					autoptr VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(null,true);
+					dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Delete Object?", "Are you sure you wish to delete: ["+targetObj.GetType()+"]?", this);
+				}
 			}
 			
 			if ( input.LocalPress("UAToggleGodMode", false))
@@ -80,6 +93,22 @@ modded class MissionGameplay
 		{
 			g_Game.ReconnectToCurrentSession();
 			g_Game.SetSpectateMode(false);
+		}
+	}
+	
+	void OnDiagResult(int result)
+	{
+		GetVPPUIManager().SetKeybindsStatus(false); //Lock shortcut keys
+		GetGame().GetUIManager().ShowUICursor( false );
+		GetGame().GetInput().ResetGameFocus();
+		GetGame().GetInput().ChangeGameFocus(-1);
+		PlayerControlEnable();
+		
+		if (result == DIAGRESULT.YES)
+		{
+			//Proceed to delete object at cursor
+			if (targetObj != null)
+				GetRPCManager().SendRPC( "RPC_AdminTools", "DeleteObject", NULL, true, NULL, targetObj);
 		}
 	}
 	
@@ -178,13 +207,18 @@ static void CreateFreeCamInstance()
 	m_freecam = VPPFreeCam.Cast(g_Game.CreateObject( "VPPFreeCam", pos, true ));
 	m_freecam.SetActive(true);
 	m_FreeCamStatus = true;
-	GetGame().GetMission().GetHud().Show( false );
+	//GetGame().GetMission().GetHud().Show( false );
 	MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlDisable(INPUT_EXCLUDE_ALL);
 }
 
 static bool IsFreeCamActive()
 {
 	return m_FreeCamStatus;
+}
+
+static VPPFreeCam GetFreeCamInstance()
+{
+	return m_freecam;
 }
 
 static void DestroyFreeCam()

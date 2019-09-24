@@ -25,64 +25,6 @@ FrameWidgetClass rootPermissionsEditor {
    style GrungeBorder
    "no focus" 0
    {
-    SmartPanelWidgetClass Header {
-     ignorepointer 0
-     color 0 0 0 1
-     position 0 0
-     size 1 0.03
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     scaled 0
-     draggable 0
-     style GrungeBorder
-     {
-      TextWidgetClass Title {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "PERMISSIONS EDITOR"
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass BtnClose {
-       clipchildren 1
-       color 0 0 0 1
-       size 0.03 1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       {
-        ImageWidgetClass ImageClose {
-         ignorepointer 1
-         size 0.97 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:ccgui_enforce image:Icon28EmptySlot"
-         mode additive
-         "src alpha" 1
-        }
-       }
-      }
-     }
-    }
     PanelWidgetClass PaneAvailablePerms {
      ignorepointer 1
      position 0.02 0.05
@@ -123,7 +65,7 @@ FrameWidgetClass rootPermissionsEditor {
          text "Available Permissions"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
          {
@@ -212,7 +154,7 @@ FrameWidgetClass rootPermissionsEditor {
          text "User Groups"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -266,7 +208,6 @@ FrameWidgetClass rootPermissionsEditor {
      Rows 5
      {
       ButtonWidgetClass btnCreateGroup {
-       color 0.4275 0.2941 0.2588 1
        size 0.33 0.2
        halign center_ref
        valign center_ref
@@ -277,9 +218,10 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "Create Group"
+       font "gui/fonts/Metron12"
       }
       ButtonWidgetClass btnDeleteGroup {
-       color 0.4275 0.2941 0.2588 1
+       color 0.8902 0.0784 0.0784 1
        size 0.33 0.2
        halign center_ref
        valign center_ref
@@ -290,9 +232,9 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "Delete Group"
+       font "gui/fonts/Metron12"
       }
       ButtonWidgetClass btnSaveChanges {
-       color 0.4275 0.2941 0.2588 1
        size 0.33 0.2
        halign center_ref
        valign center_ref
@@ -303,9 +245,10 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "Update Permissions"
+       font "gui/fonts/Metron12"
       }
       ButtonWidgetClass btnAddMembers {
-       color 0.4275 0.2941 0.2588 1
+       color 0.0706 0.9294 0.1137 1
        size 0.33 0.2
        halign center_ref
        valign center_ref
@@ -316,6 +259,76 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass ""
        style Editor
        text "Add Member(s)"
+       font "gui/fonts/Metron12"
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "PERMISSIONS EDITOR"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
       }
      }
     }

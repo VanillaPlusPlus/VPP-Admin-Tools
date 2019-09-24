@@ -40,7 +40,6 @@ class MenuLogsViewer extends AdminHudSubMenu
 		GetVPPUIManager().HookConfirmationDialog(m_btnDeleteSelected, M_SUB_WIDGET,this,"DeleteLog", DIAGTYPE.DIAG_YESNO, "Delete Log?", "Are you sure you wish to delete selected log files? Note: log file that is used during runtime will not be deleted!");
 		m_BtnRefreshLogList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnRefreshLogList"));
 		
-		ShowSubMenu();
 		float width;
 		m_HtmlWidget.GetScreenSize(width, m_page_height);
 		m_loaded = true;

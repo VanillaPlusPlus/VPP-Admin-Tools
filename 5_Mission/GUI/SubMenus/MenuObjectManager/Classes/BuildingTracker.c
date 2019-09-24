@@ -55,12 +55,19 @@ class BuildingTracker: ScriptedWidgetEventHandler
         if (m_RootWidget != null) 
 			m_RootWidget.Unlink();
     }
-
-	/*override bool OnClick(Widget w, int x, int y, int button)
-	{
-		return false;
-	}*/
 	
+	void ForceDeleteLocalObj()
+	{
+		if (m_TrackerEntity != null)
+		{
+			//GetGame().ObjectDelete(m_TrackerEntity); Does not work locally on MP objects? some protection behind it??
+			
+			//Hack
+			m_TrackerEntity.SetPosition("0 -5000 0"); //Burry it away
+		}
+	}
+
+
     float CalcDistance() 
 	{
 		vector startPos    = m_TrackerEntity.GetPosition();
@@ -125,6 +132,8 @@ class BuildingTracker: ScriptedWidgetEventHandler
 			UpdateDataBoxes();
 		}
 		
+		if (IsCursorOnEditorBoxs()) return; //Dont update widget pos since its being used
+		
         if (m_TrackerStatus && m_RootWidget != NULL && GetGame().GetPlayer()) 
 		{
 			vector startPos    = m_TrackerEntity.GetPosition();
@@ -163,6 +172,30 @@ class BuildingTracker: ScriptedWidgetEventHandler
             m_RootWidget.Show(false);
         }
     }
+	
+	bool IsCursorOnEditorBoxs()
+	{
+		autoptr EditBoxWidget underCuror = EditBoxWidget.Cast(GetWidgetUnderCursor());
+		if (underCuror == null)
+			return false;
+		
+		switch(underCuror)
+		{
+			case m_EditYaw:
+			case m_EditPitch:
+			case m_EditRoll:
+			case m_EditX:
+			case m_EditZ:
+			case m_EditY:
+			return true;
+			break;
+			
+			default: {
+				return false;
+			}
+		}
+		return false;
+	}
 	
 	void Highlight(bool state)
 	{

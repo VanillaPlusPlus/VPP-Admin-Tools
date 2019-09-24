@@ -6,6 +6,7 @@ class MenuItemManager extends AdminHudSubMenu
 	private EditBoxWidget     		 m_SearchInputBox;
 	private XComboBoxWidget   		 m_ComboCatagory;
 	private TextListboxWidget 		 m_ItemListBox;
+	private ScrollWidget 		 	 m_ScrollerItemList;
 	private ButtonWidget             m_BtnSaveChanges;
 	private ButtonWidget             m_BtnSpawnPreset;
 	private ButtonWidget             m_BtnCreatePreset;
@@ -68,6 +69,7 @@ class MenuItemManager extends AdminHudSubMenu
 		m_SearchInputBox = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
 		m_ComboCatagory  = XComboBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboCatagory") );
 		m_ItemListBox    = TextListboxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemListBox") );
+		m_ScrollerItemList  = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ScrollerItemList") );
 		m_ItemPreview    = ItemPreviewWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemPreview") );
 		m_BtnSaveChanges = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnSaveChanges") );
 		m_BtnSpawnPreset = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnSpawnPreset") );
@@ -96,9 +98,13 @@ class MenuItemManager extends AdminHudSubMenu
 		UpdateFilter();
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		
-		ShowSubMenu();
 		GetRPCManager().SendRPC("RPC_VPPItemManager", "GetData", null, true, null);
 		m_loaded = true;
+	}
+	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_ScrollerItemList.Show(!state);
 	}
 	
 	override void OnUpdate(float timeslice)

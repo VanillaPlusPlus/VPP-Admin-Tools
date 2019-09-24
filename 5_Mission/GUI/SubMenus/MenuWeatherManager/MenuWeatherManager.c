@@ -64,8 +64,6 @@ class MenuWeatherManager extends AdminHudSubMenu
 	
 	void MenuWeatherManager()
 	{
-		Print("MenuWeatherManager()");
-		
 		timePresetNames = new array<string>;
 		weatherPresetNames = new array<string>;
 		
@@ -158,14 +156,21 @@ class MenuWeatherManager extends AdminHudSubMenu
 		m_ImgInfoWeatherPreset.GetScript(toolTip);
 		toolTip.SetTitle("Information:");
 		toolTip.SetContentText("This feature allows you to save weather presets that you can apply when you wish to. Duplicate names are not allowed!\nOpening and closing this menu will refresh the presets list if other admins made any new presets while you had it open.");
-		
-		ShowSubMenu();
 	}
 	
 	override void ShowSubMenu()
 	{
 		RequestTimeData();
 		RequestWeatherData();
+		
+		int year, month, day, hour, minute;
+		GetGame().GetWorld().GetDate(year, month, day, hour, minute);
+		
+		hourInput.SetText(hour.ToString());
+		minInput.SetText(minute.ToString());
+		dayInput.SetText(day.ToString());
+		monthInput.SetText(month.ToString());
+		yearInput.SetText(year.ToString());
 		
 		super.ShowSubMenu();
 	}

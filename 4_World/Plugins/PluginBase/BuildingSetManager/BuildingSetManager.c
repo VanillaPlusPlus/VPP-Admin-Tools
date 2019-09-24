@@ -15,6 +15,7 @@ class BuildingSetManager : ConfigurablePlugin
       GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteDeleteSet", this);
       GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteSaveEdits", this);
       GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteQuickDeleteObject", this);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "ExportSetToCode", this);
       //-------
    }
 
@@ -214,11 +215,14 @@ class BuildingSetManager : ConfigurablePlugin
 			autoptr BuildingSet bSet = GetBuildingSetByName(data.param2);
 			if (bSet != null)
 			{
+				bool wasActive = bSet.GetActive();
+				bSet.SetActive(false);
 				bSet.ClearBuildings();
 				bSet.SetBuildingsArray(data.param1);
+				
+				SaveBuildingSet(bSet);
+				bSet.SetActive(wasActive);
 			}
-			SaveBuildingSet(bSet);
-			bSet.SetActive(bSet.GetActive());
 			
 			//Send new data to client
 			GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
@@ -237,6 +241,18 @@ class BuildingSetManager : ConfigurablePlugin
 		
 		if (data.param1 != null)
 			GetGame().ObjectDelete(data.param1);
+	}
+	
+	void ExportSetToCode(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param1<string> data;
+		if (!ctx.Read(data)) return;
+		
+		autoptr BuildingSet bset = GetBuildingSetByName(data.param1);
+		if (bset != null)
+		{
+			bset.ExportBuildings();
+		}
 	}
    /*
       [End RPC's]

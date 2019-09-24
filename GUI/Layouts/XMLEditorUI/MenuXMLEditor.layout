@@ -1,0 +1,481 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.35 0.55
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.8627
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style GrungeBorder
+   "no focus" 0
+   {
+    PanelWidgetClass content {
+     ignorepointer 1
+     position 0 0
+     size 0.95 0.9
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      EditBoxWidgetClass SearchBoxXML {
+       disabled 0
+       color 1 0 0 1
+       position 0.01 0.003
+       size 0.48 0.048
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style DefaultBorder
+       "no focus" 0
+       text " Search Item"
+       "Use default text" 1
+       "exact text" 1
+       font "gui/fonts/Metron16"
+      }
+      PanelWidgetClass listHugger {
+       ignorepointer 1
+       position 0.01 0.05
+       size 0.48 0.85
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        TextListboxWidgetClass ItemListBoxXML {
+         size 0.95 0.962
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         lines 0
+         font "gui/fonts/Metron14"
+        }
+       }
+      }
+      ButtonWidgetClass BtnGetStats {
+       position 0.01 0.01
+       size 0.204 0.047
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Get Item Stats"
+       switch normal
+      }
+      ButtonWidgetClass BtnLoadSelected {
+       position 0.23 0.01
+       size 0.204 0.047
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Load Selected"
+       switch normal
+      }
+      ButtonWidgetClass BtnXMLEditorApply {
+       position 0.45 0.01
+       size 0.204 0.047
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Apply Changes"
+       switch normal
+      }
+      PanelWidgetClass HuggerEditboxes {
+       ignorepointer 1
+       position 0.01 0.05
+       size 0.485 0.85
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style rover_sim_black_2
+       {
+        GridSpacerWidgetClass GridItems {
+         ignorepointer 1
+         position 0 0.01
+         size 0.82 0.8
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         Columns 2
+         Rows 10
+         {
+          TextWidgetClass TxtNominal {
+           position 0.295 0.241
+           size 0.514 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Nominal:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputNominal {
+           color 1 0 0 1
+           position 0.9 0.243
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtLifetime {
+           position 0.295 0.327
+           size 0.514 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "LifeTime:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputLifetime {
+           color 1 0 0 1
+           position 0.9 0.334
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtRestock {
+           position 0.295 0.412
+           size 0.514 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Restock:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputRestock {
+           color 1 0 0 1
+           position 0.9 0.424
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtMin {
+           position 0.295 0.507
+           size 0.514 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Minimum:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputMin {
+           color 1 0 0 1
+           position 0.9 0.517
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtQuantmin {
+           position 0.295 0.6
+           size 0.514 0.093
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           draggable 0
+           style Bold
+           text "Quantmin:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputQuantmin {
+           color 1 0 0 1
+           position 0.9 0.605
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtQuantmax {
+           position 0.295 0.693
+           size 0.504 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Quantmax:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputQuantmax {
+           color 1 0 0 1
+           position 0.9 0.695
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+          TextWidgetClass TxtCost {
+           position 0.295 0.783
+           size 0.504 0.091
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Bold
+           text "Cost:"
+           font "gui/fonts/Metron22"
+          }
+          EditBoxWidgetClass InputCost {
+           color 1 0 0 1
+           position 0.9 0.785
+           size 0.666 0.081
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Editor
+           text "0"
+           "limit visible" 0
+           "Use default text" 0
+           "exact text" 1
+           font "gui/fonts/MetronBlack16"
+          }
+         }
+        }
+        ItemPreviewWidgetClass ItemPreviewXML {
+         position 0 0.01
+         size 0.959 0.45
+         halign center_ref
+         valign bottom_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+        }
+       }
+      }
+      ImageWidgetClass Panel_Title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0.01 0.003
+       size 0.48 0.048
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_presets_text {
+         ignorepointer 1
+         position 0 0
+         size 1 0.892
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Details"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 16
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ImageWidgetClass ImgInfoWeatherPreset {
+       ignorepointer 0
+       color 1 0 0 1
+       position 0.01 0.01
+       size 0.05 0.05
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ToolTipHandler"
+       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "XML Editor"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -380,8 +380,7 @@ PanelWidgetClass PanelPlayerDetails {
      {
       ButtonWidgetClass btnCopyInfo {
        ignorepointer 0
-       color 0.9333 0.0863 0.0863 1
-       size 0.5 1
+       size 0.5 0.7
        halign center_ref
        valign bottom_ref
        hexactpos 1

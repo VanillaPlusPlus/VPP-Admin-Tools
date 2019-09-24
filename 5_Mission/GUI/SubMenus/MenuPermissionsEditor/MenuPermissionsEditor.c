@@ -49,8 +49,12 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 		
 		m_SavePermissions	 = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges"));
 		GetVPPUIManager().HookConfirmationDialog(m_SavePermissions, M_SUB_WIDGET,this,"ApplyNewPermissions", DIAGTYPE.DIAG_YESNO, "Update Permissions", "Are you sure you wish to update selected group's permissions?");
-		
-		ShowSubMenu();
+	}
+	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_ScrollerPermissions.Show(!state);
+		m_ScrollerUserGroups.Show(!state);
 	}
 	
 	override void OnUpdate(float timeslice)
@@ -115,9 +119,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			autoptr MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
 			if (pManager)
 			{
-				if (!pManager.IsSubMenuVisible())
-					pManager.ShowSubMenu();
-				
+				pManager.ShowSubMenu();
 				pManager.TogglePlayerSelectMode(true);
 				return false;
 			}

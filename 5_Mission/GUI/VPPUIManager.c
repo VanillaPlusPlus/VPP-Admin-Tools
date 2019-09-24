@@ -68,23 +68,31 @@ class VPPUIManager extends PluginBase
 		if (confirmClass) confirmClass.InitEvent(callBack,funcName,diagType,title,msg,parent,allowchars);
 	}
 
-	ref VPPDialogBox CreateDialogBox(Widget parent)
+	ref VPPDialogBox CreateDialogBox(Widget parent, bool forceNull = false)
 	{
+		ref Widget dialog;
+		autoptr VPPDialogBox handler;
+		if (parent == null && forceNull)
+		{
+			dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", null);
+			dialog.GetScript(handler);
+			handler.MakeSmall();
+			return handler;
+		}
+		
 		if (parent != null)
 		{
-			ref Widget dialog;
 			if (parent.FindAnyWidget("Main") == null)
 				dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", parent.FindAnyWidget("PanelConfirmationBox"));
 			else
 				dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", parent.FindAnyWidget("Main"));
 			
-			autoptr VPPDialogBox handler;
 			dialog.GetScript(handler);
 			if (handler != null) return handler;
 		}else{
 			Print("[VPPUIManager] CreateDialogBox() Error unable to create! parent widget is NULL");
 		}
-		return NULL;
+		return null;
 	}
 	
 	void DisplayError(string message, float lifeTime = 5.0, string icon = "set:ccgui_enforce image:Icon40Emergency")
@@ -222,6 +230,8 @@ class VPPScriptedMenu extends UIScriptedMenu
 
 	void HideMenu()
 	{
+		if (GetGame().GetUIManager().GetMenu() == null) return;
+		
 		if (GetGame().GetUIManager().GetMenu().ClassName().ToType() == GetType())
 		{
 			GetGame().GetUIManager().HideScriptedMenu(this);

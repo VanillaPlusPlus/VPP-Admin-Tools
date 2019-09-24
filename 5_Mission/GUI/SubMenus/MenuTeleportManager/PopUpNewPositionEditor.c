@@ -23,6 +23,8 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 		m_Save   = ButtonWidget.Cast(m_root.FindAnyWidget("button_save"));
 		m_editbox_name   = EditBoxWidget.Cast(m_root.FindAnyWidget("editbox_name"));
 		m_edit_pos       = EditBoxWidget.Cast(m_root.FindAnyWidget("edit_pos"));
+		
+		m_root.SetSort(1024,true);
 	}
 	
 	void ~PopUpNewPositionEditor()
@@ -37,7 +39,6 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 		m_Position  = pos;
 		m_editMode  = editMode;
 		m_edit_pos.SetText(g_Game.VectorToString(pos));
-		rootClass.HideMap(true);
 		
 		if (editMode){
 			m_editbox_name.SetText(oldName);
@@ -70,12 +71,10 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 		switch(w)
 		{
 			case m_Close:
-			m_RootClass.HideMap(false);
 			delete this;
 			break;
 			
 			case m_Cancel:
-			m_RootClass.HideMap(false);
 			delete this;
 			break;
 			

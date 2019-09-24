@@ -17,7 +17,7 @@ class VPPButton
 		
 		autoptr ToolTipHandler toolTip;
 		Button.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
+		toolTip.SetTitle(name+":");
 		toolTip.SetContentText(description);
 		toolTip.SetLeftSide(true);
 	}
@@ -129,6 +129,30 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 	}
 	
+	void SetWindowPriorty(AdminHudSubMenu subMenu)
+	{
+		int index = M_SUB_MENUS.Find(subMenu);
+		if (index > -1)
+		{
+			//swap this item to be at first index within array
+			if (index != 0)
+			{
+				M_SUB_MENUS.SwapItems(index, 0);
+				subMenu.HideBrokenWidgets(false);
+				
+				for(int x = 0; x < M_SUB_MENUS.Count(); x++)
+				{
+					//Call to hide any broken widgets TODO: remove once DayZ fixes
+					if (M_SUB_MENUS[x] != subMenu)
+					{
+						M_SUB_MENUS[x].HideBrokenWidgets(true);
+					}
+					M_SUB_MENUS[x].M_SUB_WIDGET.SetSort(M_SUB_MENUS.Count() - x);
+				}
+			}
+		}
+	}
+	
 	/* Function handel base menu buttons (weather,settings,player,object,item) */
 	void HandelClick(Widget btnW, string btnName)
 	{
@@ -156,6 +180,7 @@ class VPPAdminHud extends VPPScriptedMenu
 		{
 			autoptr AdminHudSubMenu menu = AdminHudSubMenu.Cast(subMenuType.Spawn());
 			menu.OnCreate(layoutRoot);
+			menu.ShowSubMenu();
 			M_SUB_MENUS.Insert(menu);
 		}
 	}
@@ -251,6 +276,7 @@ class VPPAdminHud extends VPPScriptedMenu
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
 	{
+		
 		return super.OnMouseButtonDown(w,x,y,button);
 	}
 };

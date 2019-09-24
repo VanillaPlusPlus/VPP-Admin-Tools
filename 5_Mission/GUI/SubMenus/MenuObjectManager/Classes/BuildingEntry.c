@@ -3,15 +3,21 @@ class BuildingEntry : VPPPlayerTemplate
     private TextWidget 	   m_BuildingDisplayNameWidget;
 	private CheckBoxWidget m_StatusCheckBox;
 	private ButtonWidget   m_DeleteItem;
+	private ButtonWidget   m_btnSelect;
+	private ButtonWidget   m_btnEditItem;
     private string 		   m_BuildingDisplayName;
 	private bool   		   m_IsVisible;
 	private ref BuildingTracker m_TrackerWidget;
+	ref SpawnedBuilding    m_SpawnedBuilding;
 	GridSpacerWidget 	   m_Grid;
 	string m_objectID;
 	Object placedObject;
+	
+	private ref BuildingAttributesEditor editor;
     
-    void BuildingEntry(GridSpacerWidget grid, Widget rootWidget, string displayName, string objectID, Object localObj = null)
+    void BuildingEntry(GridSpacerWidget grid, Widget rootWidget, string displayName, string objectID, ref SpawnedBuilding sp, Object localObj = null)
     {
+		m_SpawnedBuilding = sp;
 		m_Grid       = grid;
         m_BuildingDisplayName = displayName;
 		m_objectID   = objectID;
@@ -19,7 +25,9 @@ class BuildingEntry : VPPPlayerTemplate
         m_EntryBox   = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 		m_StatusCheckBox = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("Active"));
 		
-		m_DeleteItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
+		m_DeleteItem  = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
+		m_btnEditItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
+		m_btnSelect   = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnSelect"));
 		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "Are you sure you wish to delete "+displayName+"? (You can't revert once you delete this item!)");
 		
         m_BuildingDisplayNameWidget = TextWidget.Cast(m_EntryBox.FindAnyWidget("ItemName"));
@@ -31,7 +39,7 @@ class BuildingEntry : VPPPlayerTemplate
 		if (localObj != null)
 		{
 			placedObject = localObj;
-			m_TrackerWidget = new BuildingTracker(rootWidget, displayName, localObj, false);
+			m_TrackerWidget = new BuildingTracker(rootWidget, displayName, localObj, true);
 		}else{
 		//Find object using its network ID
 			TStringArray strs = new TStringArray;
@@ -39,9 +47,13 @@ class BuildingEntry : VPPPlayerTemplate
 			autoptr Object trackerObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
 			if (trackerObj != null){
 				placedObject = trackerObj;
-				m_TrackerWidget = new BuildingTracker(rootWidget, displayName, trackerObj, false);
+				m_TrackerWidget = new BuildingTracker(rootWidget, displayName, trackerObj, true);
 			}
 		}
+		
+		//Set to show tracker by defualt 
+		m_StatusCheckBox.SetColor(ARGB(255,0,255,0));
+		m_StatusCheckBox.SetChecked(true);
     }
     
     void ~BuildingEntry()
@@ -52,7 +64,25 @@ class BuildingEntry : VPPPlayerTemplate
 	
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
+		autoptr MenuObjectManager objMenu;
+		
+		if (w == m_btnEditItem)
+		{
+			editor = null;
+			editor = new BuildingAttributesEditor(m_SpawnedBuilding);
+			return true;
+		}
+		
 		if (m_TrackerWidget == null) return false;
+		
+		if (w == m_btnSelect)
+		{
+			objMenu = MenuObjectManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuObjectManager));
+			if (objMenu)
+			{
+				objMenu.SetSelectedObject(placedObject);
+			}
+		}
 		
 		if (w == m_StatusCheckBox)
 		{
@@ -64,6 +94,7 @@ class BuildingEntry : VPPPlayerTemplate
 				m_TrackerWidget.ShowTracker(false);
 			}
 		}
+		
 		return false;
 	}
 	
@@ -75,6 +106,10 @@ class BuildingEntry : VPPPlayerTemplate
 			if (objMenu)
 			{
 				objMenu.RemoveBuilding(placedObject,m_objectID);
+				if (m_TrackerWidget != null)
+				{
+					m_TrackerWidget.ForceDeleteLocalObj();
+				}
 				delete this;
 			}
 		}

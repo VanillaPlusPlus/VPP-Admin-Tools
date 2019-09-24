@@ -41,9 +41,7 @@ class ConfirmationEventHandler extends ScriptedWidgetEventHandler
 				MenuPermissionsEditor.Cast(rootMenu.GetSubMenuByType(MenuPermissionsEditor)).HideScrollWidgets(true);
 			}
 			
-			if (m_CallBackClass.ClassName() == "MenuTeleportManager" )
-				MenuTeleportManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuTeleportManager)).HideMap(true);
-			
+
 			m_diagBox = GetVPPUIManager().CreateDialogBox(m_Parent);
 			m_diagBox.InitDiagBox(m_DiagType,m_Title,m_Message,this);
 			if (m_allowChars) m_diagBox.AllowCharInput();

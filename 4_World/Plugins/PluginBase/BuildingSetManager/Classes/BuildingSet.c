@@ -62,9 +62,11 @@ class BuildingSet
    }
    
    //use only for client when creating new objects
-   void AddBuildingObject(string name, vector pos, vector orientation, bool active, Object activeObj)
+   SpawnedBuilding AddBuildingObject(string name, vector pos, vector orientation, bool active, Object activeObj)
    {
-	 m_Buildings.Insert(new SpawnedBuilding(name, pos, orientation, active, activeObj));
+		ref SpawnedBuilding result = new SpawnedBuilding(name, pos, orientation, active, activeObj);
+		m_Buildings.Insert(result);
+		return result;
    }
 
    void SetBuildingActive(string name, bool active)
@@ -78,16 +80,22 @@ class BuildingSet
          Print("[BuildingSetManager]:: SetBuildingActive: " + name + " is an invalid name.");
    }
 
-   void SetActive(bool active)
-   {
-	  m_IsActive = active;
-	
-      foreach(SpawnedBuilding building : m_Buildings)
-      {
-         building.SetActive(active);
-      }
-   }
-	
+	void SetActive(bool active)
+	{
+		m_IsActive = active;
+		
+		foreach(SpawnedBuilding building : m_Buildings)
+		{
+			if (building != null)
+			{
+				if (m_IsActive)
+					building.SetActive(building.GetActive());
+				else
+		         	building.DestroySpawnedEntity();
+			}
+		}
+	}
+
    array<ref SpawnedBuilding> GetBuildings()
    {
 	 return m_Buildings;
@@ -137,7 +145,46 @@ class BuildingSet
 				GetGame().ObjectDelete(trackerObj);
 		}
 	}
+	
+	void ExportBuildings()
+	{
+		FileHandle m_FileHandle;
+		m_FileHandle = OpenFile("$profile:VPPAdminTools/Exports/"+m_Name+".txt", FileMode.WRITE);
+		if (m_FileHandle == 0) return;
 
+		string function = "void SpawnObject(string objType, vector objPos, vector objOrientation)\n";
+		function 		+= "{\n";
+		function 		+= "\tObject m_Building = Object.Cast(GetGame().CreateObject(objType, objPos));\n";
+		function 		+= "\tif (m_Building == null) return;\n";
+		function 		+= "\tm_Building.SetAffectPathgraph(true, false);\n";
+		function 		+= "\tGetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().UpdatePathgraphRegionByObject, 100, false, m_Building);\n";
+		function 		+= "\tm_Building.SetPosition(objPos);\n";
+		function 		+= "\tm_Building.SetOrientation(objOrientation);\n";
+		function 		+= "}\n\n\n";
+		
+		FPrintln(m_FileHandle, function);
+		
+		foreach(SpawnedBuilding building: m_Buildings)
+		{
+			string format = "SpawnObject( \"" + building.GetTypeName() + "\", \"" + building.GetPosition().ToString(false) + "\", \"" + building.GetOrientation().ToString(false) + "\" );";
+			FPrintln(m_FileHandle, format);
+		}
+		
+		CloseFile(m_FileHandle);
+	}
+
+	SpawnedBuilding GetSpawnedBuilding(SpawnedBuilding compare)
+	{
+	  foreach(SpawnedBuilding building : m_Buildings)
+      {
+         if(building.GetName() == compare.GetName() || building == compare)
+         {
+            return building;
+         }
+      }
+      return null;
+	}
+	
    SpawnedBuilding GetBuildingByName(string name)
    {
       foreach(SpawnedBuilding building : m_Buildings)

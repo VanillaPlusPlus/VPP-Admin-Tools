@@ -24,64 +24,6 @@ FrameWidgetClass rootFrame {
    style GrungeBorder
    "no focus" 0
    {
-    SmartPanelWidgetClass Header {
-     ignorepointer 0
-     color 0 0 0 1
-     position 0 0
-     size 1 0.03
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     scaled 0
-     draggable 0
-     style GrungeBorder
-     {
-      TextWidgetClass Title {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "PLAYER MANAGER"
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass BtnClose {
-       clipchildren 1
-       color 0 0 0 1
-       size 0.03 1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       {
-        ImageWidgetClass ImageClose {
-         ignorepointer 1
-         size 0.97 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:ccgui_enforce image:Icon28EmptySlot"
-         mode additive
-         "src alpha" 1
-        }
-       }
-      }
-     }
-    }
     PanelWidgetClass PanelButtons {
      ignorepointer 1
      color 1 1 1 0.7059
@@ -124,27 +66,11 @@ FrameWidgetClass rootFrame {
          text "Actions"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
        }
-      }
-      ImageWidgetClass ImgInfo {
-       ignorepointer 1
-       color 1 0 0 1
-       position 0.0065 0.085
-       size 0.07 0.1
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
       }
       GridSpacerWidgetClass ButtonsSpacer {
        ignorepointer 1
@@ -163,7 +89,6 @@ FrameWidgetClass rootFrame {
        Rows 8
        {
         ButtonWidgetClass ActionHeal {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -176,7 +101,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionKill {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -190,7 +114,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionTpToMe {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -203,7 +126,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionSendMessage {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -217,7 +139,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionTpMeTo {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -230,7 +151,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionKickPlayer {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -244,7 +164,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionBanPlayer {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -258,7 +177,6 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionSpectate {
-         color 0.6667 0.1686 0.1529 1
          size 0.4 0.19
          halign center_ref
          valign center_ref
@@ -287,7 +205,6 @@ FrameWidgetClass rootFrame {
         }
         ButtonWidgetClass ActionGiveGodmode {
          visible 1
-         color 0.6667 0.1686 0.1529 1
          position 0 0
          size 0.4 0.19
          halign center_ref
@@ -378,7 +295,7 @@ FrameWidgetClass rootFrame {
          text "Player List"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -394,7 +311,6 @@ FrameWidgetClass rootFrame {
        font "gui/fonts/Metron-BoldItalic58"
       }
       ButtonWidgetClass BtnRefreshPlayerList {
-       color 0.6824 0.1373 0.1373 1
        position 0.01 0.01
        size 0.22 0.06
        halign right_ref
@@ -402,7 +318,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style EmptyHighlight
+       style Editor
        text "Refresh"
       }
      }
@@ -447,7 +363,7 @@ FrameWidgetClass rootFrame {
          text "Player Details"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -562,7 +478,7 @@ FrameWidgetClass rootFrame {
          text "Modifiers"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -976,6 +892,75 @@ FrameWidgetClass rootFrame {
          "Transition width" 1
         }
        }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.028
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.03
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style GrungeBorder
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "PLAYER MANAGER"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     size 0.03 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 0.97 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
       }
      }
     }

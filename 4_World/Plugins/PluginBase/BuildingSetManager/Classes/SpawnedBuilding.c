@@ -10,7 +10,7 @@ class SpawnedBuilding
 	private Object m_Building;
 	private string m_NetWorkId;
 
-	void SpawnedBuilding(string name, vector pos, vector orientation, bool isAlive = false, Object obj = null)
+	void SpawnedBuilding(string name, vector pos, vector orientation, bool isAlive = true, Object obj = null)
 	{
 		m_IsActive = isAlive;
 		m_ObjectName = name;
@@ -28,14 +28,18 @@ class SpawnedBuilding
 
 	void ~SpawnedBuilding()
 	{
-		if (m_Building != null){
-			GetGame().ObjectDelete(m_Building);
-		}else{
-			TStringArray strs = new TStringArray;
-			m_NetWorkId.Split( ",",strs );
-			autoptr Object netWrkObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
-			if (netWrkObj != null)
-				GetRPCManager().SendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
+		if (GetGame().IsServer() && GetGame().IsMultiplayer())
+		{
+			if (m_Building != null){
+			DestroySpawnedEntity();
+			}else{
+				TStringArray strs = new TStringArray;
+				m_NetWorkId.Split( ",",strs );
+				autoptr Object netWrkObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
+				GetGame().ObjectDelete(netWrkObj);
+				//if (netWrkObj != null)
+					//GetRPCManager().SendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
+			}
 		}
 	}
 	
@@ -104,7 +108,7 @@ class SpawnedBuilding
 
 		if(!m_IsActive)
 		{
-			GetGame().ObjectDelete(m_Building);
+			DestroySpawnedEntity();
 		}
 
 		if(m_IsActive)
@@ -116,6 +120,12 @@ class SpawnedBuilding
 		}
 	}
 	
+	void DestroySpawnedEntity()
+	{
+		if (m_Building != null)
+			GetGame().ObjectDelete(m_Building);
+	}
+	
 	bool IsObject(Object obj)
 	{
 		if(m_Building)
@@ -124,8 +134,14 @@ class SpawnedBuilding
 		return m_ObjectName == obj.GetDisplayName();
 	}
 	
-	string GetNetworkId()
+	string GetNetworkId(bool clean = false)
 	{
+		if (clean)
+		{
+			string edited = m_NetWorkId;
+			edited.Replace(",", "");
+			return edited;
+		}
 		return m_NetWorkId;
 	}
 

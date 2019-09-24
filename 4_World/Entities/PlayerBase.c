@@ -6,9 +6,9 @@ modded class PlayerBase
 	void PlayerBase()
 	{
 		RegisterNetSyncVariableBool("m_isInvisible");
-		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingeplayerExecutionType.Server );	
+		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingeplayerExecutionType.Server );
 	}
-	
+
 	override void OnConnect()
 	{
 		super.OnConnect();

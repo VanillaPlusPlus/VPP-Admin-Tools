@@ -65,9 +65,14 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_chkSelectAll   = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkSelectAll"));
 		
 		GetTeleportPositions();
-		ShowSubMenu();
 		GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
 		m_loaded = true;
+	}
+	
+	override void HideBrokenWidgets(bool state)
+	{
+		m_Scroller.Show(!state);
+		m_Map.Show(!state);
 	}
 	
 	override void OnUpdate(float timeslice)
@@ -78,8 +83,6 @@ class MenuTeleportManager extends AdminHudSubMenu
 		updateInterval += timeslice;
 		if (updateInterval >= 1.0)
 		{
-			m_Map.ClearUserMarks();
-			m_Map.AddUserMark(GetGame().GetPlayer().GetPosition(), "Me", ARGB(255,255,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
 			GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
 			updateInterval = 0.0;
 		}
@@ -130,8 +133,16 @@ class MenuTeleportManager extends AdminHudSubMenu
 		if( type == CallType.Client )
 		{
 			m_Map.ClearUserMarks();
+			DayZPlayer client = GetGame().GetPlayer();
+
 			foreach(VPPPlayerData info : temp)
 			{
+				if(client != null && client.GetPosition() == info.m_PlayerPos)
+				{
+					m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+					continue;
+				}
+
 				m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
 			}
 		}
@@ -142,7 +153,6 @@ class MenuTeleportManager extends AdminHudSubMenu
 	void SaveNewMarker(string name, vector position, bool editMode, string oldName = "", vector oldPosition = "0 0 0")
 	{
 		delete m_PopUpPositionEditorWidget;
-		HideMap(false);
 		if (editMode)
 			GetRPCManager().SendRPC("RPC_TeleportManager", "EditPreset", new Param4<string,vector,string,vector>(oldName,oldPosition,name,position), true);
 		else
@@ -151,7 +161,6 @@ class MenuTeleportManager extends AdminHudSubMenu
 	
 	void RemovePosition(int result)
 	{
-		HideMap(false);
 		if (result == DIAGRESULT.YES)
 		{
 			autoptr array<ref TeleportEntry> selected = GetSelected();
@@ -189,15 +198,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 				PreformTeleport(true);
 		}
 	}
-	
-	void HideMap(bool state)
-	{
-		if (state)
-			m_Map.Show(false);
-		else
-			m_Map.Show(true);
-	}
-	
+
 	vector ScreenToWorld()
 	{
 		vector world_pos,ScreenToMap,dir,from,to;

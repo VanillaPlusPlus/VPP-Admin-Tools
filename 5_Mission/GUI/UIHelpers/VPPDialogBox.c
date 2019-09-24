@@ -46,12 +46,15 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 		/* All Buttons are hidden on start */
 		m_TitleText = TextWidget.Cast(m_Root.FindAnyWidget("TitleText"));
 		m_Content   = RichTextWidget.Cast(m_Root.FindAnyWidget("ContentText"));
+		
+		m_Root.SetSort(1024,true);
 	}
 	
 	void ~VPPDialogBox()
 	{
 		/*Destroy*/
-		m_Root.Unlink();
+		if (m_Root != null)
+			m_Root.Unlink();
 	}
 	
 	void InitDiagBox(int diagType, string title, string content, Class callBackClass)
@@ -107,6 +110,14 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 	string GetInputText()
 	{
 		return m_InputBox.GetText();
+	}
+	
+	void MakeSmall()
+	{
+		if (m_Root == null) return;
+		float oldX,oldY;
+		m_Root.FindAnyWidget("BorderOutline").GetSize(oldX,oldY);
+		m_Root.FindAnyWidget("BorderOutline").SetSize(oldX - 0.2, oldY - 0.1,true);
 	}
 	
 	private void OnOutCome(int result)

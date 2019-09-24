@@ -14,8 +14,8 @@ FrameWidgetClass rootFrame {
    clipchildren 1
    inheritalpha 0
    color 0 0 0 0.8627
-   position 20 5
-   size 0.495 0.02
+   position 19 5
+   size 0.445 0.02
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -86,64 +86,276 @@ FrameWidgetClass rootFrame {
     }
    }
   }
-  WrapSpacerWidgetClass Hugger {
+  PanelWidgetClass PanelBuildingSets {
+   visible 1
+   clipchildren 0
    ignorepointer 1
-   position 0.01 0.022
-   size 0.5 0.7
+   position 0.01 0.0235
+   size 0.19 0.29
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   scaled 1
-   Padding 0
+   style rover_sim_black
    {
-    PanelWidgetClass PanelBuildingSets {
-     visible 1
-     clipchildren 0
+    ScrollWidgetClass ScrollerBuildingSets {
+     inheritalpha 1
+     ignorepointer 0
+     position 0 0.19
+     size 0.99 0.74
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     "Scrollbar V" 1
+     {
+      GridSpacerWidgetClass ParentGrid {
+       ignorepointer 1
+       position 0 0.01
+       size 0.98 0.98
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 1
+       Margin 1
+       "Size To Content H" 1
+       "Size To Content V" 1
+       Columns 1
+       Rows 100
+      }
+     }
+    }
+    ImageWidgetClass Panel_title_sets {
      ignorepointer 1
-     size 0.41 0.5
+     color 0.6706 0.6706 0.6706 0.8784
+     position 0 0.001
+     size 1 0.063
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     image0 "set:dayz_gui image:container_header"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+     {
+      TextWidgetClass title_saved_sets {
+       ignorepointer 1
+       position 0 0
+       size 0.99 1
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Normal
+       text "Building Sets"
+       font "gui/fonts/sdf_MetronLight42"
+       "exact text" 1
+       "exact text size" 19
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass btnShowBuildingSets {
+       size 0.07 1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass IconShowHide1 {
+         ignorepointer 1
+         color 1 0 0 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_expand"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         "flip u" 0
+        }
+       }
+      }
+      ButtonWidgetClass btnReloadSets {
+       position 0.1 0
+       size 0.2 0.8
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Reload"
+       font "gui/fonts/Metron-Bold14"
+      }
+     }
+    }
+    GridSpacerWidgetClass WarperActionBtns {
+     ignorepointer 1
+     position 0 0.03
+     size 0.95 0.2
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     Padding 5
+     "Size To Content H" 1
+     "Size To Content V" 1
+     content_halign center
+     content_valign center
+     Columns 1
+     Rows 1
+     {
+      ButtonWidgetClass btnCreateNewSet {
+       size 1 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Create New Building Set"
+       font "gui/fonts/Metron-Bold16"
+      }
+      ButtonWidgetClass btnSaveChanges {
+       size 1 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Save Edits"
+       font "gui/fonts/Metron-Bold16"
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass PanelPlaceNew {
+   visible 1
+   ignorepointer 0
+   position 0.2 0.023
+   size 0.255 0.38
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black
+   {
+    ImageWidgetClass title_placeNew {
+     ignorepointer 1
+     color 0.6706 0.6706 0.6706 0.8784
+     position 0 0.005
+     size 1 0.063
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     image0 "set:dayz_gui image:container_header"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+     {
+      TextWidgetClass title_txt_itm_new {
+       ignorepointer 1
+       position 0 0
+       size 0.99 1.303
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Normal
+       text "New Object Attributes"
+       font "gui/fonts/sdf_MetronLight42"
+       "exact text" 1
+       "exact text size" 19
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass btnShowAtts {
+       size 0.07 1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass IconShowHide {
+         ignorepointer 1
+         color 1 0 0 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_expand"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         "flip u" 0
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelItemPreview {
+     visible 1
+     ignorepointer 0
+     position 0.01 0.15
+     size 0.49 0.5
+     halign right_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      style rover_sim_black_2
      {
-      ScrollWidgetClass ScrollerBuildingSets {
-       inheritalpha 1
+      ItemPreviewWidgetClass ItemPreview {
+       visible 0
+       clipchildren 0
        ignorepointer 0
-       position 0 0.14
-       size 0.97 0.79
+       position 0 0.02
+       size 0.95 0.87
        halign center_ref
        valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       "Scrollbar V" 1
-       {
-        GridSpacerWidgetClass ParentGrid {
-         ignorepointer 1
-         position 0 0.01
-         size 0.98 0.98
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         Padding 1
-         Margin 1
-         "Size To Content H" 1
-         "Size To Content V" 1
-         Columns 1
-         Rows 100
-        }
-       }
+       scaled 0
       }
-      ImageWidgetClass Panel_title_sets {
+      ImageWidgetClass title_itemPreview {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.005
-       size 0.986 0.063
+       size 0.97 0.093
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -155,7 +367,56 @@ FrameWidgetClass rootFrame {
        "no wrap" 1
        stretch 1
        {
-        TextWidgetClass title_saved_sets {
+        TextWidgetClass title_txt_itm_prev {
+         ignorepointer 1
+         position 0 0
+         size 0.99 1.303
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "Item Preview"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 14
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelSearchBox {
+     visible 1
+     ignorepointer 1
+     position 0.01 0.02
+     size 0.48 0.83
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass title_itemlist {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.005
+       size 0.96 0.043
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_txt_itm_list {
          ignorepointer 1
          position 0 0
          size 0.99 1
@@ -165,444 +426,75 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Building Sets"
+         text "Item List"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
-         "exact text size" 19
+         "exact text size" 14
          "text halign" center
          "text valign" center
         }
-        ButtonWidgetClass btnShowBuildingSets {
-         size 0.07 1
-         halign right_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass IconShowHide1 {
-           ignorepointer 1
-           color 1 0 0 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui image:icon_expand"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-          }
-         }
-        }
-        ButtonWidgetClass btnReloadSets {
-         position 0.1 0
-         size 0.2 0.6
-         halign right_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "Reload"
-         font "gui/fonts/Metron-Bold14"
-        }
        }
       }
-      GridSpacerWidgetClass WarperActionBtns {
-       ignorepointer 1
-       position 0 0.03
-       size 0.95 0.14
+      TextListboxWidgetClass ItemListBox {
+       position 0 0
+       size 0.98 0.95
        halign center_ref
        valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       Padding 5
-       "Size To Content H" 1
-       "Size To Content V" 1
-       content_halign center
-       content_valign center
-       Columns 1
-       Rows 1
-       {
-        ButtonWidgetClass btnCreateNewSet {
-         size 1 0.35
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "Create New Building Set"
-         font "gui/fonts/Metron-Bold16"
-        }
-        ButtonWidgetClass btnSaveChanges {
-         size 1 0.35
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "Save Edits"
-         font "gui/fonts/Metron-Bold16"
-        }
-       }
+       style Editor
+       lines 0
+       "highlight row" 1
+       font "gui/fonts/Metron-Bold22"
       }
      }
     }
-    PanelWidgetClass PanelPlaceNew {
+    EditBoxWidgetClass SearchInputBox {
      visible 1
-     ignorepointer 0
-     position 0.34776 0.5772
-     size 0.58 0.5
-     halign center_ref
+     color 0.9176 0.0314 0.0314 1
+     position 0.01 0.08
+     size 0.48 0.065
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
-     {
-      ImageWidgetClass title_placeNew {
-       ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
-       position 0 0.005
-       size 0.99 0.063
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       {
-        TextWidgetClass title_txt_itm_new {
-         ignorepointer 1
-         position 0 0
-         size 0.99 1.303
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Normal
-         text "New Object Attributes"
-         font "gui/fonts/sdf_MetronLight42"
-         "exact text" 1
-         "exact text size" 19
-         "text halign" center
-         "text valign" center
-        }
-        ButtonWidgetClass btnShowAtts {
-         size 0.07 1
-         halign right_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass IconShowHide {
-           ignorepointer 1
-           color 1 0 0 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui image:icon_expand"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-          }
-         }
-        }
-       }
-      }
-      PanelWidgetClass PanelItemPreview {
-       visible 1
-       ignorepointer 0
-       position 0.01 0.15
-       size 0.49 0.83
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style rover_sim_black_2
-       {
-        ItemPreviewWidgetClass ItemPreview {
-         visible 0
-         clipchildren 0
-         ignorepointer 0
-         position 0 0.02
-         size 0.95 0.92
-         halign center_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         scaled 0
-        }
-        ImageWidgetClass title_itemPreview {
-         ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
-         position 0 0.005
-         size 0.99 0.043
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:container_header"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
-         {
-          TextWidgetClass title_txt_itm_prev {
-           ignorepointer 1
-           position 0 0
-           size 0.99 1.303
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Normal
-           text "Item Preview"
-           font "gui/fonts/sdf_MetronLight42"
-           "exact text" 1
-           "exact text size" 19
-           "text halign" center
-           "text valign" center
-          }
-         }
-        }
-       }
-      }
-      PanelWidgetClass PanelSearchBox {
-       visible 1
-       ignorepointer 1
-       position 0.01 0.02
-       size 0.48 0.83
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style rover_sim_black_2
-       {
-        ImageWidgetClass title_itemlist {
-         ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
-         position 0 0.005
-         size 0.99 0.043
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:container_header"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
-         {
-          TextWidgetClass title_txt_itm_list {
-           ignorepointer 1
-           position 0 0
-           size 0.99 1.303
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Normal
-           text "Item List"
-           font "gui/fonts/sdf_MetronLight42"
-           "exact text" 1
-           "exact text size" 20
-           "text halign" center
-           "text valign" center
-          }
-         }
-        }
-        TextListboxWidgetClass ItemListBox {
-         position 0 0
-         size 0.98 0.94
-         halign center_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         lines 0
-         "highlight row" 1
-         font "gui/fonts/Metron-Bold22"
-        }
-       }
-      }
-      EditBoxWidgetClass SearchInputBox {
-       visible 1
-       color 0.9176 0.0314 0.0314 1
-       position 0.01 0.08
-       size 0.48 0.065
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DefaultBorder
-       text "Search Keyword"
-       "Use default text" 1
-       "exact text" 1
-       font "gui/fonts/Metron-Italic22"
-      }
-     }
+     style DefaultBorder
+     text "Search Keyword"
+     "Use default text" 1
+     "exact text" 1
+     font "gui/fonts/Metron14"
     }
-    PanelWidgetClass PanelCurrentSet {
-     visible 1
-     ignorepointer 0
-     position 0 0
-     size 0.41 0.5
+    ButtonWidgetClass btnHelp {
+     position 0.03 0.08
+     size 0.45 0.06
+     halign right_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
-     {
-      ImageWidgetClass title_current_set {
-       ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
-       position 0 0.008
-       size 0.981 0.063
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       {
-        TextWidgetClass title_txt_curr_set {
-         ignorepointer 1
-         position 0 0
-         size 0.99 1.303
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Normal
-         text "Selected Set: (Name)"
-         font "gui/fonts/sdf_MetronLight42"
-         "exact text" 1
-         "exact text size" 19
-         "text halign" center
-         "text valign" center
-        }
-        ButtonWidgetClass btnShowCurrSet {
-         size 0.07 1
-         halign right_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass IconShowHide0 {
-           ignorepointer 1
-           color 1 0 0 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui image:icon_expand"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-          }
-         }
-        }
-       }
-      }
-      ScrollWidgetClass ScrollerSetItems {
-       ignorepointer 0
-       position 0 0.02
-       size 0.97 0.9
-       halign center_ref
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       "Scrollbar V" 1
-       {
-        GridSpacerWidgetClass ParentGridItems {
-         ignorepointer 1
-         position 0 0.01
-         size 0.98 0.98
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         Padding 1
-         Margin 1
-         "Size To Content H" 1
-         "Size To Content V" 1
-         Columns 1
-         Rows 100
-        }
-       }
-      }
-     }
+     style Editor
+     text "Help"
     }
     PanelWidgetClass PanelCamera {
      visible 1
      ignorepointer 1
-     position 0.54577 0.42246
-     size 0.29 0.2
-     valign center_ref
+     position 0.01 0.66
+     size 0.49 0.32
+     halign right_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style rover_sim_black
      {
       ImageWidgetClass cam_title {
        inheritalpha 0
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
-       position 0 0.013
-       size 0.97 0.159
+       position 0 0
+       size 1 0.099
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -625,46 +517,18 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "Camera Options"
-         font "gui/fonts/MetronLight16"
+         font "gui/fonts/MetronLight14"
          "exact text" 0
          "exact text size" 22
          "text halign" center
          "text valign" center
         }
-        ButtonWidgetClass btnShowCamOptions {
-         size 0.09 1
-         halign right_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass IconShowHide2 {
-           ignorepointer 1
-           color 1 0 0 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui image:icon_expand"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-          }
-         }
-        }
        }
       }
       ButtonWidgetClass chkFreeCam {
        inheritalpha 1
-       position 0.02 0.17
-       size 0.959 0.12
+       position 0.02 0.13
+       size 0.959 0.14
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -675,8 +539,8 @@ FrameWidgetClass rootFrame {
       }
       ButtonWidgetClass chkTopDowncam {
        inheritalpha 1
-       position 0.02 0.31
-       size 0.959 0.12
+       position 0.02 0.29
+       size 0.959 0.14
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -731,7 +595,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass TxtPitch {
          ignorepointer 1
@@ -759,7 +623,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass TxtRoll {
          ignorepointer 1
@@ -787,7 +651,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/Metron12"
         }
         TextWidgetClass TxtFOV {
          ignorepointer 1
@@ -815,9 +679,115 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/Metron12"
         }
        }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass PanelCurrentSet {
+   visible 1
+   ignorepointer 0
+   position 0.01 0.314
+   size 0.19 0.24
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black
+   {
+    ImageWidgetClass title_current_set {
+     ignorepointer 1
+     color 0.6706 0.6706 0.6706 0.8784
+     position 0 -0.002
+     size 1 0.073
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     image0 "set:dayz_gui image:container_header"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+     {
+      TextWidgetClass title_txt_curr_set {
+       ignorepointer 1
+       position 0 0
+       size 0.99 1.303
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Normal
+       text "Selected Set: (Name)"
+       font "gui/fonts/sdf_MetronLight42"
+       "exact text" 1
+       "exact text size" 16
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass btnShowCurrSet {
+       size 0.07 1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass IconShowHide0 {
+         ignorepointer 1
+         color 1 0 0 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_expand"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         "flip u" 0
+        }
+       }
+      }
+     }
+    }
+    ScrollWidgetClass ScrollerSetItems {
+     ignorepointer 0
+     position 0 0.02
+     size 0.99 0.9
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     "Scrollbar V" 1
+     {
+      GridSpacerWidgetClass ParentGridItems {
+       ignorepointer 1
+       position 0 0.01
+       size 0.98 0.98
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 1
+       Margin 1
+       "Size To Content H" 1
+       "Size To Content V" 1
+       Columns 1
+       Rows 100
       }
      }
     }

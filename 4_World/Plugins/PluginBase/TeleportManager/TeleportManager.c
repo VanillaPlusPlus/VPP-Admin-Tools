@@ -215,10 +215,11 @@ class TeleportManager : ConfigurablePlugin
 				ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
 				autoptr array<Man>   m_Players = new array<Man>;
 				GetGame().GetWorld().GetPlayerList( m_Players );
+				
 				foreach(Man player : m_Players)
-				{
-					m_List.Insert( new VPPPlayerData(player.GetIdentity().GetName(), player.GetPosition()) );
-				}
+					if(player != null)
+						m_List.Insert( new VPPPlayerData(player.GetIdentity().GetName(), player.GetPosition()) );
+				
 				GetRPCManager().SendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
 			}
 		}

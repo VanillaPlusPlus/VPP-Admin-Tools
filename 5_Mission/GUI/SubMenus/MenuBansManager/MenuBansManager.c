@@ -74,7 +74,6 @@ class MenuBansManager extends AdminHudSubMenu
 		
 		GetRPCManager().SendRPC("BanManagerServer", "SendData", null, true);
 		m_loaded = true;
-		ShowSubMenu();
 	}
 	
 	override void OnUpdate(float timeslice)

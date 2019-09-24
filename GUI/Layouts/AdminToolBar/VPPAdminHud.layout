@@ -45,6 +45,7 @@ WindowWidgetClass hud_root {
      {
       WrapSpacerWidgetClass WrapSpacerWidget {
        ignorepointer 0
+       position 0 0
        size 0.75 1
        halign center_ref
        hexactpos 0

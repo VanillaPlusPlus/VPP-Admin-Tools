@@ -31,7 +31,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "Apply"
-     font "gui/fonts/Metron22"
+     font "gui/fonts/Metron12"
     }
     ButtonWidgetClass btnCancel {
      position 0.01 0
@@ -43,7 +43,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "Cancel"
-     font "gui/fonts/Metron22"
+     font "gui/fonts/Metron12"
     }
     CheckBoxWidgetClass PermaTick {
      position 0 0
@@ -56,7 +56,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Default
      text "Ban Permanently"
-     font "gui/fonts/Metron-Bold22"
+     font "gui/fonts/Metron12"
     }
    }
   }
@@ -521,7 +521,7 @@ PanelWidgetClass rootFrame {
      text "Edit Duration"
      font "gui/fonts/sdf_MetronLight42"
      "exact text" 1
-     "exact text size" 22
+     "exact text size" 16
      "text halign" center
      "text valign" center
     }
