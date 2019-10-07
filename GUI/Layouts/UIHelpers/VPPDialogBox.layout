@@ -84,7 +84,7 @@ FrameWidgetClass diagFrame {
        vexactsize 0
        scriptclass ""
        text "This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,"
-       font "gui/fonts/AmorSerifPro48"
+       font "gui/fonts/Metron"
        "exact text" 0
        "size to text h" 1
        "size to text v" 1

@@ -35,7 +35,16 @@ class LogManager : PluginBase
 	void Log(string str)
 	{
 		m_LogFile = OpenFile(m_Logpath, FileMode.APPEND);
-		FPrintln(m_LogFile, str);
+
+		int hour, minute, second;
+		int year, month, day;
+		
+		GetHourMinuteSecondUTC(hour,minute,second);
+		GetYearMonthDayUTC(year,month,day);
+		
+		string timeStamp = string.Format("[%1:%2:%3]--> ",hour.ToString(),minute.ToString(),second.ToString());
+
+		FPrintln(m_LogFile, timeStamp + str);
 		CloseFile(m_LogFile);
 	}
 	

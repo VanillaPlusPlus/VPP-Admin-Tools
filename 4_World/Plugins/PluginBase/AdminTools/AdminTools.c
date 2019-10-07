@@ -3,7 +3,6 @@ class AdminTools extends PluginBase
 	void AdminTools()
 	{
 		//---RPC's-----
-        //GetRPCManager().AddRPC( "RPC_AdminTools", "getItemCount", this, SingeplayerExecutionType.Server );
 		//GetRPCManager().AddRPC( "RPC_AdminTools", "AttachTo", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "DeleteObject", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "TeleportToPosition", this, SingeplayerExecutionType.Server );
@@ -17,7 +16,10 @@ class AdminTools extends PluginBase
         {
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "DeleteObjectAtCrosshair")) return;
                 if (target)
+                {
                     GetGame().ObjectDelete(target);
+                    GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted an object!",sender.GetPlainId(), sender.GetName()));
+                }
         }
     }
 	
@@ -39,56 +41,6 @@ class AdminTools extends PluginBase
 	    target.AddChild( data.param1, -1, false );
 	}
 
-    /*void getItemCount(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
-    {
-        Param1<string> data;
-        if ( !ctx.Read( data ) ) return;
-
-        if (type == CallType.Server)
-        {
-            if (sender != NULL && PermissionManager.Cast(GetPluginManager().GetPluginByType(PermissionManager)).VerifyIdentity(sender))
-            {
-                Print("Starting full map scan for: "+data.param1);
-                //There is no way in hell you are gonna be able to do a scan of 10,000km radius without chewing up 32GB of RAM.
-                autoptr map<Object,vector> FoundItems = new map<Object,vector>;
-                autoptr map<string,vector> ItemPositons = new map<string,vector>;
-                autoptr array<vector> ScanPockets = {
-                "2834.2156 0 5488.2876",
-                "9319.2832 0 3843.0049",
-                "2021.5405 0 12436.389",
-                "6256.8906 0 9233.7744",
-                "7514.8716 0 15166.412",
-                "13267.367 0 15142.394",
-                "11489.976 0 9846.2529",
-                "3206.5044 0 2449.9126",
-                "13831.81 0 3602.8174",
-                "9.15 0 8466.6152",
-                };
-
-                foreach(vector PositionXYZ : ScanPockets)
-                {
-                    Print("Starting scan at pocket: "+PositionXYZ.ToString());
-                    ref array<Object> objects = new array<Object>;
-                    GetGame().GetObjectsAtPosition3D(PositionXYZ, 3500, objects, NULL);
-
-                    for (int i = 0; i < objects.Count(); ++i)
-                    {
-                        Object obj;
-                        obj = Object.Cast( objects.Get(i) );
-                        if (GetGame().ObjectIsKindOf(obj,data.param1) && !FoundItems.Contains(obj))
-                        {
-                            FoundItems.Insert(obj,obj.GetPosition());
-                            ItemPositons.Insert(data.param1 +"_"+ i.ToString(),obj.GetPosition());
-                        }
-                    }
-                    Print("Pocket Location: "+ PositionXYZ.ToString()+" Total Number Found: "+FoundItems.Count().ToString());
-                }
-                ref Param1<ref map<string,vector>> m_Data = new Param1<ref map<string,vector>>(ItemPositons);
-                GetRPCManager().SendRPC( "RPC_ServerSettingsUI", "sortDBData", m_Data, true, sender);
-            }
-        }
-    }
-	*/
 	void TeleportToPosition( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
 		Param1<vector> data;
@@ -113,6 +65,7 @@ class AdminTools extends PluginBase
 			}else{
 				pb.SetPosition(data.param1);
 			}
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Teleported to crosshair position! [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
         }
 	}
 	
@@ -123,6 +76,7 @@ class AdminTools extends PluginBase
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera")) return;
 			
 			GetRPCManager().SendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Toggled Freecam!",sender.GetPlainId(), sender.GetName()));
 		}
 	}
 }

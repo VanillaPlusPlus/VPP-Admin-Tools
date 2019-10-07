@@ -45,6 +45,8 @@ class PermissionManager extends ConfigurablePlugin
 		AddPermissionType({ "MenuTeleportManager","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
 		//ESP tools menu 
 		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP" });
+		//XML Editor menu
+		AddPermissionType({ "MenuXMLEditor" });
 		
 		//-----RPC's-----
 		GetRPCManager().AddRPC("RPC_PermitManager", "EnableToggles", this, SingeplayerExecutionType.Server );

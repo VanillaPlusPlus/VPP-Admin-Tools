@@ -176,8 +176,15 @@ class BansManager extends ConfigurablePlugin
 			Save();
 			
 			//Kick player after ban
-			GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( player.banReason ), true, GetPermissionManager().GetIdentityById(player.Steam64Id));
-			return true;
+			PlayerIdentity identity = GetPermissionManager().GetIdentityById(player.Steam64Id);
+
+			if(identity != null)
+			{
+				GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( player.banReason ), true, identity);
+				return true;
+			}
+			GetSimpleLogger().Log(string.Format("[BansManager]:: AddToBanList: Player [%1] [%2] [%3] Reason:[%4] is already BANNED!",player.playerName,player.Steam64Id,player.GUID,player.banReason));
+
 		}
 		GetSimpleLogger().Log(string.Format("[BansManager]:: AddToBanList: Player [%1] [%2] [%3] Reason:[%4] is already BANNED!",player.playerName,player.Steam64Id,player.GUID,player.banReason));
 		return false;

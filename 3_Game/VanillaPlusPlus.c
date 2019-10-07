@@ -37,7 +37,7 @@ modded class DayZGame
 	void KickClientHandle( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
 		Param1<string> data;
-        if ( !ctx.Read( data ) ) return;
+        if ( !ctx.Read( data ) || sender != null ) return;
 
         if (type == CallType.Client)
         {

@@ -115,7 +115,7 @@ modded class MissionGameplay
 	void EnableToggles( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
 	   	Param1<bool> data;
-        if ( !ctx.Read( data ) ) return;
+        if ( !ctx.Read( data ) || sender != null ) return;
 
         if (type == CallType.Client)
         {
@@ -139,7 +139,7 @@ modded class MissionGameplay
 	void HandleInvisiblity(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<bool> data;
-        if ( !ctx.Read( data ) || !m_Toggles) return;
+        if ( !ctx.Read( data ) || !m_Toggles || sender != null ) return;
 		
 		if (type == CallType.Client)
         {
@@ -154,7 +154,7 @@ modded class MissionGameplay
 	void HandleFreeCam(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<bool> data;
-        if ( !ctx.Read( data ) || !m_Toggles) return;
+        if ( !ctx.Read( data ) || !m_Toggles || sender != null ) return;
 		
 		if (type == CallType.Client)
         {

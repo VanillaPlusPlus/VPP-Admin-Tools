@@ -108,6 +108,7 @@ class ServerManager extends PluginBase
 				m_TimeCounter       = data.param1;
 				m_RestartInProgress = true;
 				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RestartTicker, 1000, true);
+				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just requested a server restart",sender.GetPlainId(), sender.GetName()));
 			}
 			else
 			{
@@ -152,6 +153,7 @@ class ServerManager extends PluginBase
 			
 			autoptr array<Man> players = new array<Man>;
 			GetGame().GetWorld().GetPlayerList(players);
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just kicked all players from the server",sender.GetPlainId(), sender.GetName()));
 			foreach(Man player : players)
 			{
 				autoptr PlayerIdentity identity = player.GetIdentity();

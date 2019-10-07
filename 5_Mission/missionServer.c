@@ -1,31 +1,13 @@
 modded class MissionServer
 {
-	private ref DEXML m_DEXML;
 	private bool m_ServerLocked = false;
 	
 	void MissionServer()
 	{
-		GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
-		
-		m_DEXML = new DEXML;
-		
 		//=============RPC's====================
-		GetRPCManager().AddRPC( "RPC_ReadFromXML", "GetTypesXML", this, SingeplayerExecutionType.Server );	
+		GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_MissionServer", "HandleChatCommand", this, SingeplayerExecutionType.Server );		
 		//======================================
-	}
-	
-	
-	void GetTypesXML( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
-	{
-	    //string ItemClassName, string FieldCatagory
-	    Param2<string,string> data;
-        if ( !ctx.Read( data ) ) return;
-
-        if (type == CallType.Server)
-        {
-			m_DEXML.ReadFromXML(data.param1,data.param2,sender);
-        }
 	}
 	
 	void RequestLockServer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -90,7 +72,8 @@ modded class MissionServer
 	
 	void InvokeKickPlayer(PlayerIdentity identity, string msg)
 	{
-		GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
+		if(identity != null)
+			GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
 	}
 		
 	override void OnClientReconnectEvent(PlayerIdentity identity, PlayerBase player)

@@ -146,7 +146,7 @@ class EspToolsMenu extends AdminHudSubMenu
 				{
 					foreach(Object obj : objects)
 					{
-						if (obj.IsBuilding())
+						if (obj.IsBuilding() && !obj.IsInherited(GardenBase))
 							continue;
 						if (obj.IsRock())
 							continue;

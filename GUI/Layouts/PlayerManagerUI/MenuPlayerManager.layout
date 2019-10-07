@@ -299,6 +299,21 @@ FrameWidgetClass rootFrame {
          "text halign" center
          "text valign" center
         }
+        TextWidgetClass txtPlayerCount {
+         ignorepointer 1
+         position 0.08 0
+         size 0.2 1
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "0"
+         font "gui/fonts/Metron22"
+         "text halign" center
+         "text valign" center
+        }
        }
       }
       CheckBoxWidgetClass ChkSelectAllPlayers {
@@ -411,8 +426,8 @@ FrameWidgetClass rootFrame {
     ButtonWidgetClass btnFnAddPlayersToGrp {
      visible 0
      color 0.8784 0.1216 0.0392 1
-     position 0.05 0.072
-     size 0.4 0.024
+     position 0.05 0.052
+     size 0.4 0.044
      valign center_ref
      hexactpos 0
      vexactpos 0

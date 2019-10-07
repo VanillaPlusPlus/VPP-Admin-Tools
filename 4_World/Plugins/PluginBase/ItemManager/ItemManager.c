@@ -257,6 +257,7 @@ class VPPItemManager: ConfigurablePlugin
 			}
 			Save();
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Saved Changes to preset: "+editPreset.GetPresetName(),NotifyTypes.NOTIFY);
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just edited item preset [%3]",sender.GetPlainId(), sender.GetName(), editPreset.GetPresetName()));
 		}
 	}
 	
@@ -269,6 +270,7 @@ class VPPItemManager: ConfigurablePlugin
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager:SpawnPreset")) return;
 			
 			SpawnItemPreset(data.param1,sender.GetPlainId());
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just spawned an item preset",sender.GetPlainId(), sender.GetName()));
 		}
 	}
 	
@@ -288,6 +290,7 @@ class VPPItemManager: ConfigurablePlugin
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully deleted preset: "+data.param1,NotifyTypes.NOTIFY);
 				GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just deleted the preset [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
 			}
 		}
 	}
@@ -322,6 +325,7 @@ class VPPItemManager: ConfigurablePlugin
 						CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity);
 						break;
 					}
+					GetSimpleLogger().Log("[ItemManager] :: SpawnItem(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] Spawned the preset " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]");
 				}
 			}else{
 				//Self Spawn
@@ -346,6 +350,7 @@ class VPPItemManager: ConfigurablePlugin
 					break;
 				}
 			}
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just spawned an object [%3]",sender.GetPlainId(), sender.GetName(), params.presetName));
 		}
 	}
 	
@@ -366,6 +371,7 @@ class VPPItemManager: ConfigurablePlugin
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully added new preset: "+data.param1,NotifyTypes.NOTIFY);
 			Save();
 			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Created a new item preset",sender.GetPlainId(), sender.GetName()));
 		}
 	}
 	//----------

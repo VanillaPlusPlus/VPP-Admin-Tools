@@ -87,6 +87,7 @@ class PlayerManager extends PluginBase
 					{
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+tempiden.GetName(),NotifyTypes.NOTIFY);
 						GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tempiden);
+						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Kicked player [%3]",sender.GetPlainId(), sender.GetName(), tempiden.GetName()));
 					}
 				}
 			}
@@ -148,6 +149,8 @@ class PlayerManager extends PluginBase
 					m_RPCDelay.Run(2.0,this,"InvokeSpectate", new Param2<string,string>(data.param1,sender.GetPlainId()),false);
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Press (PAGE-UP) to exit spectate!",NotifyTypes.NOTIFY);
 				}
+
+				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] started to spectate player [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
 			}
 		}
 	}
@@ -185,6 +188,7 @@ class PlayerManager extends PluginBase
 					if (targetPlayer != null)
 					{
 						targetPlayer.SetHealth(0);
+						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] executed kill command on [%3]",sender.GetPlainId(), sender.GetName(), id));
 					}
 				}
 			}
@@ -223,6 +227,8 @@ class PlayerManager extends PluginBase
 	                         "",
 	                         0,
 	                         0);
+
+	                        GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] sent a message to [%3]",sender.GetPlainId(), sender.GetName(), pGUID.Get(i)));
 	    		    	}
 	    		    }
 				}
@@ -241,11 +247,12 @@ class PlayerManager extends PluginBase
 					if(AdminPlayer)
 					{
 						if (AdminPlayer.GodModeStatus())
-	                  GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled OFF!",NotifyTypes.NOTIFY);
+	                  	GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled OFF!",NotifyTypes.NOTIFY);
 		    			else
-		                 GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled ON!",NotifyTypes.NOTIFY);
+		                GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled ON!",NotifyTypes.NOTIFY);
 		    			
 						AdminPlayer.setGodMode(!AdminPlayer.GodModeStatus());
+						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just toggled godmode",sender.GetPlainId(), sender.GetName()));
 					}
 		  		}
         }
@@ -273,6 +280,7 @@ class PlayerManager extends PluginBase
 				}
 				
 				TargetPlayer.setGodMode(!TargetPlayer.GodModeStatus());
+				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] gave godmode to [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
 			}
 		}
 	}
@@ -309,6 +317,8 @@ class PlayerManager extends PluginBase
 						targetPlayer.GetStatDiet().Set(targetPlayer.GetStatDiet().GetMax());
 						targetPlayer.GetStatSpecialty().Set(targetPlayer.GetStatSpecialty().GetMax());
 						targetPlayer.SetBleedingBits(0);
+
+						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] healed player [%3]",sender.GetPlainId(), sender.GetName(), id));
 					}
 				}
 			}
@@ -352,6 +362,7 @@ class PlayerManager extends PluginBase
 				targetPlayer.GetStatEnergy().Set(data.param1);
 				break;
 			}
+			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just updated a health stat on [%3]",sender.GetPlainId(), sender.GetName(), data.param2));
 		}
 	}
 		

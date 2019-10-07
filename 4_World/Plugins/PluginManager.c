@@ -13,6 +13,7 @@ modded class PluginManager
 		//----------------------------------------------------------------------
 		//		        Module Class Name 				Client	Server
 		//----------------------------------------------------------------------
+		RegisterPlugin("PluginFileHandler", 			 false, 	true);
 		RegisterPlugin("LogManager",					 false,		true);
 		RegisterPlugin("PermissionManager",			 	 false, 	true);
 		RegisterPlugin("BansManager",			 	 	 false, 	true);
@@ -28,6 +29,7 @@ modded class PluginManager
 		RegisterPlugin("VPPItemManager",		         false,		true);
 		RegisterPlugin("VPPESPTools",		             false,		true);
 		RegisterPlugin("BuildingSetManager", 			 false, 	true);
+		RegisterPlugin("XMLEditor", 			 		 false, 	true);
 		
 		if(GetGame().IsServer() && GetGame().IsMultiplayer())
 		{

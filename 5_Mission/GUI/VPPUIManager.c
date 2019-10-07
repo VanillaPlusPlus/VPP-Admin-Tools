@@ -13,6 +13,21 @@ class VPPUIManager extends PluginBase
 		Print("Client: VPPUIManager Plugin Init!");
 	}
 	
+	void ~VPPUIManager()
+	{
+		if (M_SCRIPTED_UI_INSTANCES)
+		{
+			foreach(VPPScriptedMenu menu : M_SCRIPTED_UI_INSTANCES)
+			{
+				if (menu != null)
+				{
+					Print("~VPPUIManager() :: Delete: "+menu);
+					delete menu;
+				}
+			}
+		}
+	}
+	
 	/*
 		IMPORTANT NOTE: Don't forget to set a const int to use for initing your menu! We are still using vanilla method to insert menu into pool! (due to ease of life with all the click events)
 		Also, make sure to check out class MissionBase! (You need to add your menu to the switch case) -DaOne
@@ -120,8 +135,8 @@ class VPPUIManager extends PluginBase
 	{
 		if (GetGame().GetUIManager().GetMenu() == null) return false;
 		autoptr Widget underCursor = GetWidgetUnderCursor();
-		autoptr ChatInputMenu chatInput = ChatInputMenu.Cast( GetGame().GetUIManager().FindMenu(MENU_CHAT_INPUT) );
-		
+		autoptr UIScriptedMenu chatInput = GetGame().GetUIManager().FindMenu(MENU_CHAT_INPUT);
+				
 		if (underCursor != null && (underCursor.GetTypeID() == EditBoxWidgetTypeID || underCursor.GetTypeID() == MultilineEditBoxWidgetTypeID))
 			return true;
 		
@@ -151,6 +166,7 @@ class VPPScriptedMenu extends UIScriptedMenu
 	void ~VPPScriptedMenu()
 	{
 		GetVPPUIManager().DestroyMenuInstanceByType(GetType());
+		Print("Destroy Menu: "+GetType());
 	}
 	
 	override void Update(float timeslice)

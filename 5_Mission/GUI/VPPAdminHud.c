@@ -56,6 +56,7 @@ class VPPAdminHud extends VPPScriptedMenu
 		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "Place custom mission objects, create, load, edit presets & more!");
 		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "Manage V++ Server ban list, add, remove, updated issued bans.");
 		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
+		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_settings", "Edit types.xml and check loot status on server!");
 		//InsertButton("MenuLogsViewer" , "set:dayz_gui_vpp image:vpp_icon_settings", "View V++ custom server logs.");
 		//----
 		DefineButtons();
@@ -272,11 +273,5 @@ class VPPAdminHud extends VPPScriptedMenu
 			}
 		}
 		return super.OnClick( w, x, y, button );
-	}
-	
-	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
-	{
-		
-		return super.OnMouseButtonDown(w,x,y,button);
 	}
 };

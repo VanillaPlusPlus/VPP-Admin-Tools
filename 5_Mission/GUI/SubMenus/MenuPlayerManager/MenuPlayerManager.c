@@ -3,7 +3,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private bool 						  m_Init;
 	private GridSpacerWidget 			  m_GridPlayerInfo;
 	private GridSpacerWidget 			  m_GridPlayerList;
-	
+	private TextWidget                    m_txtPlayerCount;
 	private ref CustomGridSpacer 			m_LastGrid;
 	private ref array<ref CustomGridSpacer> m_DataGrids;
 	
@@ -72,6 +72,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_PlayerList 	   	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerList") );
 		m_PlayerInfoScroll 	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerInfoScroll") );
 		m_SearchInputBox 	   = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
+		m_txtPlayerCount 	   = TextWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "txtPlayerCount") );
 		
 		m_SelectAllPlayers 	   = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers") );
 		m_BtnRefreshPlayerList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRefreshPlayerList"));
@@ -528,10 +529,6 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private void UpdateEntries()
 	{
 		autoptr array<ref VPPUser> playerList = GetPlayerListManager().GetUsers();
-		//for(int x = 0; x < 125; x++)
-		//{
-		//	playerList.Insert(new VPPUser("Player" + x, "420420"+x));
-		//}
 		
 		if(playerList)
 		{
@@ -562,6 +559,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private array<ref VPPPlayerEntry> Compare(array<ref VPPUser> b)
     {
         autoptr array<ref VPPPlayerEntry> new_list = new array<ref VPPPlayerEntry>;		
+		
+		m_txtPlayerCount.SetText(b.Count().ToString());
 		
 		foreach(VPPUser player : b)
 		{

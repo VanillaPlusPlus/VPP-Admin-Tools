@@ -1,18 +1,41 @@
+class LineElement
+{
+	string data;
+	int    index;
+	
+	void LineElement(string d, int i)
+	{
+		data  = d;
+		index = i;
+	}
+};
+
 class XMLParser
 {
 	/*
 		Author: Vanilla++ DayZ SA Project
-		Note: This script is only desgin to work with a few specific XMLs (DayZ db loot types xmls) 
+		Note: This script is only desgined to work with a few specific XMLs (DayZ db loot types xmls)
+	
+		Example Usage (types.xml only):
+		
+		XMLParser parser = new XMLParser("$CurrentDir:mpmissions\\dayzOffline.utes\\db\\types.xml");
+		if (parser.Load() && parser.VerifyXml())
+		{
+			array<ref LineElement> data = parser.GetElementString("type","AmmoBox");
+			LineElement elementData     = parser.GetElementStringValue("lifetime",data);
+			parser.ReplaceElementValue("lifetime",elementData.index, "123456");
+			
+			parser.SaveChanges();
+		}
 	*/
 	
-	private ref array<string> m_RawLines;
-	private string 			  FILE_PATH;
-	private FileHandle 		  m_FileHandle;
+	private ref array<ref LineElement> m_RawLines; //Hold line + index
+	private string 			           FILE_PATH;
+	private FileHandle 		           m_FileHandle;
 	
 	void XMLParser(string filePath)
 	{
 		FILE_PATH = filePath;
-		Print("Init XMLParser...file: "+filePath);
 	}
 	
 	bool Load()
@@ -20,13 +43,16 @@ class XMLParser
 		m_FileHandle = OpenFile(FILE_PATH, FileMode.READ);
 		if (m_FileHandle == 0) return false;
 		
-		m_RawLines = new array<string>;
+		m_RawLines = new array<ref LineElement>;
 		string line_content = "";
 		int char_count = FGets( m_FileHandle,  line_content );
+		int line_index = 1;
+
 		while ( char_count != -1 )
 		{
-			m_RawLines.Insert(line_content);
+			m_RawLines.Insert(new LineElement(line_content,line_index));
 			char_count = FGets( m_FileHandle,  line_content );
+			line_index++;
 		}
 
 		CloseFile(m_FileHandle);
@@ -40,19 +66,15 @@ class XMLParser
 		
 		if (m_RawLines == null || m_RawLines.Count() < 0) return false;
 		
-		foreach(string line : m_RawLines)
+		foreach(LineElement e : m_RawLines)
 		{
-			if (line.Contains(sTag) && line.Contains(eTag))
-			{
-				Print("Valid Xml file :D");
+			if (e.data.Contains(sTag) && e.data.Contains(eTag))
 				return true;
-			}
 		}
-		Print("Invalid Xml file :(");
 		return false;
 	}
 	
-	array<string> GetElementString(string eName, string param = "")
+	array<ref LineElement> GetElementString(string eName, string param = "")
 	{
 		string sTag, eTag;
 		eTag = "</"+eName+">";
@@ -61,28 +83,91 @@ class XMLParser
 		else
 			sTag = "<"+eName+" name="+"\""+param+"\">";
 			
-		bool   pull = false;
-		autoptr array<string> data = new array<string>;
+		bool pull = false;
+		autoptr array<ref LineElement> data = new array<ref LineElement>;
 		
-		foreach(string line : m_RawLines)
+		foreach(LineElement e : m_RawLines)
 		{
-			if (line.Contains(sTag))
-			{
-				//Hit Start line of tag
-				Print("Hit-Start of Element: "+sTag+" "+eTag);
+			if (e.data.Contains(sTag))
 				pull = true;
-			}
 
-			if (line.Contains(eTag) && pull)
+			if (e.data.Contains(eTag) && pull)
 			{
-				data.Insert(line);
-				Print("Hit-End of Element: "+sTag+" "+eTag);
+				data.Insert(new LineElement(e.data,e.index));
 				break;
 			}
 			
 			if (pull)
-				data.Insert(line);
+				data.Insert(new LineElement(e.data,e.index));
 		}
 		return data;
+	}
+	
+	LineElement GetElementStringValue(string eName, array<ref LineElement> externalData)
+	{
+		LineElement value;
+		bool pull = false;
+		
+		string sTag, eTag;
+		eTag = "</"+eName+">";
+		sTag = "<"+eName+">";
+		
+		foreach(LineElement e : externalData)
+		{
+			string line = e.data;
+			int index   = e.index;
+			if (line.Contains(sTag))
+				pull = true;
+
+			if (line.Contains(eTag) && pull)
+			{
+				value = new LineElement( CleanString(line, eName), index);
+				break;
+			}
+		}
+		return value;
+	}
+	
+	bool ReplaceElementValue(string eName, int line_index, string newValue)
+	{
+		string rawLine   = m_RawLines.Get(line_index - 1).data;
+		string cleanLine = CleanString(rawLine, eName);
+		
+		if (rawLine != "")
+		{
+			while(newValue.Contains("\t"))
+			{
+				newValue.Replace("\t",""); //Remove any extra tabs
+			}
+			string fn  = "\t\t<"+eName+">" + newValue + "</" + eName + ">";
+			m_RawLines.Set(line_index - 1, new LineElement(fn, line_index));
+			return true;
+		}
+		return false;
+	}
+	
+	string CleanString(string input, string elementName)
+	{
+		string eTag = "</"+elementName+">";
+		string sTag = "<"+elementName+">";
+		
+		input.Replace(eTag,"");
+		input.Replace(sTag,"");
+		while(input.Contains(" "))
+		{
+			input.Replace(" ","");
+		}
+		return input;
+	}
+	
+	void SaveChanges()
+	{
+		FileHandle saveFile = OpenFile("$profile:VPPAdminTools/Exports/types.xml", FileMode.WRITE);
+		if (saveFile == 0) return;
+		
+		foreach(LineElement e : m_RawLines)
+			FPrintln(saveFile, e.data);
+		
+		CloseFile(saveFile);
 	}
 };

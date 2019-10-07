@@ -249,10 +249,19 @@ class TeleportManager : ConfigurablePlugin
 
 			if (ids.Count() == 1 && ids[0] == "self" && GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPSelf"))
 			{
+				string logMessage = "[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] teleported to ";
 				if (data.param3 != Vector(0,0,0) && data.param2 == "")
+				{
 					TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId()), sender.GetPlainId());
-					else
+					logMessage = logMessage + data.param3[0].ToString() + "," + data.param3[1].ToString() + "," + data.param3[2].ToString();
+				}
+				else
+				{
 					TeleportToTown(data.param2, GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId()));
+					logMessage = logMessage + data.param2;
+				}
+				
+				GetSimpleLogger().Log(logMessage);
 				return;
 			}
 			
@@ -260,10 +269,14 @@ class TeleportManager : ConfigurablePlugin
 			{
 				if(GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPPlayers"))
 				{
+					PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(id);
+					
 					if (data.param3 != Vector(0,0,0) && data.param2 == "")
-					TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, GetPermissionManager().GetPlayerBaseByID(id), sender.GetPlainId());
-						else
-					TeleportToTown(data.param2, GetPermissionManager().GetPlayerBaseByID(id));
+						TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, targetPlayer, sender.GetPlainId());
+					else
+						TeleportToTown(data.param2, targetPlayer);
+					
+					GetSimpleLogger().Log("[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "]  targeted [" + targetPlayer.GetIdentity().GetName() + " : " + targetPlayer.GetIdentity().GetPlainId() + "] with teleport.");
 				}
 			}
 		}
