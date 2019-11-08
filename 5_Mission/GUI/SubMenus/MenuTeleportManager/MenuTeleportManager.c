@@ -132,18 +132,24 @@ class MenuTeleportManager extends AdminHudSubMenu
 		autoptr array<ref VPPPlayerData> temp = data.param1;
 		if( type == CallType.Client )
 		{
-			m_Map.ClearUserMarks();
-			DayZPlayer client = GetGame().GetPlayer();
+			if(m_Map != null)
+			{			
+				m_Map.ClearUserMarks();
+				DayZPlayer client = GetGame().GetPlayer();
 
-			foreach(VPPPlayerData info : temp)
-			{
-				if(client != null && client.GetPosition() == info.m_PlayerPos)
+				foreach(VPPPlayerData info : temp)
 				{
-					m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
-					continue;
-				}
+					if(m_Map != null)
+					{
+						if(client != null && client.GetPosition() == info.m_PlayerPos)
+						{
+							m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+							continue;
+						}
 
-				m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+						m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+					}
+				}	
 			}
 		}
 	 }
