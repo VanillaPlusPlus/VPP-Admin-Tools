@@ -31,7 +31,7 @@ WindowWidgetClass hud_root {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style GrungeBorder
+   style DayZDefaultPanelBottom
    {
     ScrollWidgetClass ScrollWidget {
      ignorepointer 0
@@ -41,6 +41,7 @@ WindowWidgetClass hud_root {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style blank
      "Scrollbar V" 1
      {
       WrapSpacerWidgetClass WrapSpacerWidget {

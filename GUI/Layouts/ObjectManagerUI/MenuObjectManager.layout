@@ -13,7 +13,7 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.8627
+   color 0 0 0 0.9216
    position 19 5
    size 0.445 0.02
    hexactpos 1
@@ -22,7 +22,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style GrungeNoBorder
+   style DayZDefaultPanelBottom
    "no focus" 0
    {
     SmartPanelWidgetClass Header {
@@ -37,7 +37,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scaled 0
      draggable 0
-     style GrungeBorder
+     style DayZDefaultPanelBottom
      {
       TextWidgetClass Title {
        ignorepointer 1
@@ -233,7 +233,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "Create New Building Set"
-       font "gui/fonts/Metron-Bold16"
+       font "gui/fonts/etelkatextpro"
       }
       ButtonWidgetClass btnSaveChanges {
        size 1 0.35
@@ -245,7 +245,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "Save Edits"
-       font "gui/fonts/Metron-Bold16"
+       font "gui/fonts/etelkatextpro"
       }
      }
     }
@@ -255,7 +255,7 @@ FrameWidgetClass rootFrame {
    visible 1
    ignorepointer 0
    position 0.2 0.023
-   size 0.255 0.38
+   size 0.255 0.53
    hexactpos 0
    vexactpos 0
    hexactsize 0
@@ -266,7 +266,7 @@ FrameWidgetClass rootFrame {
      ignorepointer 1
      color 0.6706 0.6706 0.6706 0.8784
      position 0 0.005
-     size 1 0.063
+     size 1 0.053
      halign center_ref
      hexactpos 0
      vexactpos 0
@@ -328,8 +328,8 @@ FrameWidgetClass rootFrame {
     PanelWidgetClass PanelItemPreview {
      visible 1
      ignorepointer 0
-     position 0.01 0.15
-     size 0.49 0.5
+     position 0.01 0.13
+     size 0.5 0.5
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -338,11 +338,11 @@ FrameWidgetClass rootFrame {
      style rover_sim_black_2
      {
       ItemPreviewWidgetClass ItemPreview {
-       visible 0
+       visible 1
        clipchildren 0
        ignorepointer 0
        position 0 0.02
-       size 0.95 0.87
+       size 0.95 0.82
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -355,7 +355,7 @@ FrameWidgetClass rootFrame {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.005
-       size 0.97 0.093
+       size 0.97 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -386,12 +386,21 @@ FrameWidgetClass rootFrame {
         }
        }
       }
+      CheckBoxWidgetClass chkEnablePreview {
+       position 0.042 0.089
+       size 0.93 0.064
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Enable Preview"
+      }
      }
     }
     PanelWidgetClass PanelSearchBox {
      visible 1
      ignorepointer 1
-     position 0.01 0.02
+     position 0.01 0.04
      size 0.48 0.83
      valign bottom_ref
      hexactpos 0
@@ -454,8 +463,8 @@ FrameWidgetClass rootFrame {
     EditBoxWidgetClass SearchInputBox {
      visible 1
      color 0.9176 0.0314 0.0314 1
-     position 0.01 0.08
-     size 0.48 0.065
+     position 0.01 0.07
+     size 0.48 0.05
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -467,8 +476,8 @@ FrameWidgetClass rootFrame {
      font "gui/fonts/Metron14"
     }
     ButtonWidgetClass btnHelp {
-     position 0.03 0.08
-     size 0.45 0.06
+     position 0.03 0.07
+     size 0.45 0.05
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -480,8 +489,8 @@ FrameWidgetClass rootFrame {
     PanelWidgetClass PanelCamera {
      visible 1
      ignorepointer 1
-     position 0.01 0.66
-     size 0.49 0.32
+     position 0.01 0.64
+     size 0.5 0.32
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -516,7 +525,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Camera Options"
+         text "Options"
          font "gui/fonts/MetronLight14"
          "exact text" 0
          "exact text size" 22
@@ -528,32 +537,32 @@ FrameWidgetClass rootFrame {
       ButtonWidgetClass chkFreeCam {
        inheritalpha 1
        position 0.02 0.13
-       size 0.959 0.14
+       size 0.959 0.1
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        style Editor
        text "Free Camera"
-       font "gui/fonts/Metron-Bold16"
+       font "gui/fonts/etelkatextpro"
       }
       ButtonWidgetClass chkTopDowncam {
        inheritalpha 1
-       position 0.02 0.29
-       size 0.959 0.14
+       position 0.02 0.26
+       size 0.959 0.1
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        style Editor
        text "Top Down View"
-       font "gui/fonts/Metron-Bold16"
+       font "gui/fonts/etelkatextpro"
       }
       GridSpacerWidgetClass GridYPRCamoption {
        inheritalpha 1
        ignorepointer 0
-       position 0 0.05
-       size 0.489 0.51
+       position 0 0.22
+       size 0.469 0.4
        halign center_ref
        valign bottom_ref
        hexactpos 0
@@ -682,6 +691,16 @@ FrameWidgetClass rootFrame {
          font "gui/fonts/Metron12"
         }
        }
+      }
+      CheckBoxWidgetClass chkSnapObjs {
+       position 0.01 0.01
+       size 0.99 0.102
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Snap on Move"
       }
      }
     }

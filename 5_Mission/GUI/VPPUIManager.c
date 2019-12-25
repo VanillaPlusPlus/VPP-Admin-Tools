@@ -276,7 +276,7 @@ class VPPScriptedMenu extends UIScriptedMenu
 			GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
 		}
 		GetVPPUIManager().SetKeybindsStatus(false); //unlock shortcut keys
-		GetGame().GetMission().PlayerControlEnable();
+		GetGame().GetMission().PlayerControlEnable(false);
 		GetGame().GetInput().ResetGameFocus();
 		GetGame().GetUIManager().ShowUICursor( false );
 		GetGame().GetMission().GetHud().Show( true );

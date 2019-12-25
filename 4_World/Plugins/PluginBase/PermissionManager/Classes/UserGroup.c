@@ -4,6 +4,7 @@ class UserGroup
 	private int    		  			   m_permissionLevel;
 	private ref array<ref VPPUser>     m_GroupMembers;
 	private ref array<string>  		   m_Permissions;
+	private bool                       m_ForceSavedName;
 	
 	void UserGroup(string groupName, int permissionLevel, array<string> permissioncatagorys)
 	{
@@ -21,6 +22,16 @@ class UserGroup
 	string GetGroupName()
 	{
 		return m_groupName;
+	}
+
+	bool IsForceSavedName()
+	{
+		return m_ForceSavedName;
+	}
+
+	void SetForceSavedName(bool state)
+	{
+		m_ForceSavedName = state;
 	}
 	
 	void SetPermissionLevel(int level)

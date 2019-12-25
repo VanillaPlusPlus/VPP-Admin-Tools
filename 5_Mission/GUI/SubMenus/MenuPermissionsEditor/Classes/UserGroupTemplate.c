@@ -6,10 +6,11 @@ class UserGroupTemplate : VPPPlayerTemplate
 	private TextWidget 		 m_TotalMembers;
 	private TextWidget 		 m_PermsLevel;
 	private ButtonWidget     m_btnEditPermLevel;
+	private ButtonWidget     m_btnSettings;
 	private CheckBoxWidget   m_SelectGroup;
 	private GridSpacerWidget m_GridSpacer;
 	private ScrollWidget     m_ScrollWidget;
-	
+
 	void UserGroupTemplate(GridSpacerWidget grid, UserGroup group, Widget RootWidget)
 	{
 		m_LayoutPath 	   = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPUserGroupBox.layout";
@@ -22,7 +23,8 @@ class UserGroupTemplate : VPPPlayerTemplate
 		m_ScrollWidget 	   = ScrollWidget.Cast(m_EntryBox.FindAnyWidget("ScrollerUserGroups"));
 		m_btnEditPermLevel = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditPermLevel"));
 		GetVPPUIManager().HookConfirmationDialog(m_btnEditPermLevel, RootWidget,this,"UpdatePermissionLevel", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Edit Permission Level", "Please Insert New Permission Level Value for the user group: "+group.GetGroupName());
-		
+		m_btnSettings = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnSettings"));
+
 		m_group = group;
 		m_PermsLevel.SetText(group.GetPermissionLevel().ToString());
 		m_TotalMembers.SetText(group.GetMembers().Count().ToString());
@@ -34,6 +36,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 		{
 			m_UserBoxes.Insert(new UserBoxTemplate(m_GridSpacer, user.GetUserName(), user.GetUserId(),RootWidget));
 		}
+		m_EntryBox.SetHandler(this);
 	}
 	
 	void ~UserGroupTemplate()
@@ -102,5 +105,46 @@ class UserGroupTemplate : VPPPlayerTemplate
 		//unhide scroll widgets
 		autoptr VPPAdminHud rootMenu = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
 		MenuPermissionsEditor.Cast(rootMenu.GetSubMenuByType(MenuPermissionsEditor)).HideScrollWidgets(false);
+	}
+
+	private Widget 	       settingsRoot;
+	private ButtonWidget   button_cancel;
+	private ButtonWidget   button_save;
+	private CheckBoxWidget chkForceAdminName;
+
+	override bool OnClick(Widget w, int x, int y, int button)
+	{
+		if (w == button_cancel)
+		{
+			if (settingsRoot != null)
+			{
+				settingsRoot.Unlink();
+				return true;
+			}
+		}
+
+		if (w == button_save)
+		{
+			GetRPCManager().SendRPC( "RPC_PermissionManager", "UpdateUserGroupSettings", new Param2<bool,string>(chkForceAdminName.IsChecked(),m_group.GetGroupName()), true);
+			GetRPCManager().SendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(1), true); //Request Updated user groups
+			settingsRoot.Unlink();
+			return true;
+		}
+
+		if (w == m_btnSettings)
+		{
+			if (settingsRoot != null)
+			{
+				settingsRoot.Unlink();
+				return true;
+			}
+			settingsRoot = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/PermissionManagerUI/SettingsPopUp.layout", m_EntryBox);
+			button_cancel = ButtonWidget.Cast(settingsRoot.FindAnyWidget("button_cancel"));
+			button_save = ButtonWidget.Cast(settingsRoot.FindAnyWidget("button_save"));
+			chkForceAdminName = CheckBoxWidget.Cast(settingsRoot.FindAnyWidget("chkForceAdminName"));
+			chkForceAdminName.SetChecked(m_group.IsForceSavedName());
+			return true;
+		}
+		return super.OnClick(w, x, y, button);
 	}
 }

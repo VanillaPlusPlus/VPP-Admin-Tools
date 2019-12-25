@@ -1,0 +1,142 @@
+FrameWidgetClass rootFrame {
+ size 0.9 0.9
+ halign center_ref
+ valign bottom_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass mainPnl {
+   ignorepointer 1
+   size 1 1
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+   {
+    PanelWidgetClass titleBG {
+     ignorepointer 1
+     color 0 0 0 1
+     position 0.002 0.002
+     size 0.995 0.11
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style editor_quad_dark
+    }
+    TextWidgetClass text_title {
+     ignorepointer 1
+     position 0.01 0
+     size 0.9 0.12
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "USER GROUP ATTRIBUTES"
+     font "gui/fonts/etelkatextpro22"
+     "exact text" 1
+     "size to text h" 0
+     "text valign" center
+    }
+    PanelWidgetClass panel_redline {
+     ignorepointer 1
+     position 0 0.12
+     size 0.99 0.007
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+    }
+    PanelWidgetClass panel_buttons {
+     ignorepointer 0
+     position 0 0.01
+     size 0.98 0.12
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style blank
+     {
+      ButtonWidgetClass button_cancel {
+       position 0 0.1
+       size 0.25 0.8
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Cancel"
+       font "gui/fonts/metron"
+      }
+      ButtonWidgetClass button_save {
+       position 0 0.1
+       size 0.25 0.8
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scaled 1
+       style Editor
+       text "Save"
+       font "gui/fonts/metron"
+      }
+     }
+    }
+    GridSpacerWidgetClass panel_content {
+     ignorepointer 0
+     size 0.9 0.71
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     Padding 0
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     content_halign center
+     Columns 2
+     Rows 1
+     {
+      CheckBoxWidgetClass chkForceAdminName {
+       position 0 0
+       size 0.4 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+      }
+      MultilineTextWidgetClass info {
+       ignorepointer 1
+       position 0.012 0.028
+       size 0.632 1
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "[Force Name]: Users within the usergroup will not be able to use the tools if their ingame name is not matching with the name saved within the group"
+       "size to text h" 1
+       "size to text v" 1
+       wrap 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

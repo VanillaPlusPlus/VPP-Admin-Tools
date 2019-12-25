@@ -13,6 +13,10 @@
 			<input name="UARotateInc" loc="Increment Axis (Object Manager)" />
 			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
 			<input name="UASupriseButtSex" loc="Assign Me & Press Me ( ͡° ͜ʖ ͡°)" />
+			<input name="UAToggleCmdConsole" loc="Shortcut key to open commands console" />
+			<input name="UAExecuteCommand" loc="" visible="false" />
+			<input name="UAUPCommand" loc="" visible="false" />
+			<input name="UADOWNCommand" loc="" visible="false" />
 			<!--Free Cam Controls-->
 			<input name="UACamForward" loc="Camera move forward" />
 			<input name="UACamBackward" loc="Camera move backward" />
@@ -72,6 +76,16 @@
 		<input name="UARotateDec">
             <btn name="mBRight">
             </btn>
+        </input>
+		<input name="UAExecuteCommand">
+			<btn name="kReturn"/>
+			<btn name="kNumpadEnter"/>
+        </input>
+		<input name="UAUPCommand">
+			<btn name="kUP"/>
+        </input>
+		<input name="UADOWNCommand">
+			<btn name="kDown"/>
         </input>
         <input name="UAToggleAdminTools"> </input>
 		<input name="UATeleportToCrosshair"> </input>

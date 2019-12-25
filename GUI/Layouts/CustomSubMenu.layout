@@ -1,8 +1,9 @@
 FrameWidgetClass rootFrame {
  clipchildren 1
  color 1 0 0 1
- position 0 0
  size 0.6 0.801
+ halign center_ref
+ valign center_ref
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -13,17 +14,29 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.8627
-   position 0 0
+   color 0 0 0 0.9216
    size 1 1
+   halign center_ref
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 0
    scaled 1
    draggable 0
-   style GrungeBorder
+   style DayZDefaultPanelBottom
    "no focus" 0
+   {
+    CanvasWidgetClass CanvasWidget {
+     ignorepointer 1
+     position 3 25
+     size 1145 835
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+    }
+   }
   }
   PanelWidgetClass Header {
    ignorepointer 0
@@ -48,7 +61,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style GrungeBorder
+   style DayZDefaultPanelBottom
    {
     TextWidgetClass Title {
      ignorepointer 1

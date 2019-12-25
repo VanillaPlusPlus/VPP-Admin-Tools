@@ -83,7 +83,7 @@ class TeleportManager : ConfigurablePlugin
 		m_TeleportLocations.Insert(new VPPTeleportLocation(locationName, pos));
 	}
 	
-	void TeleportToTown(string name, Man teleportee)
+	void TeleportToTown(string name, PlayerBase teleportee)
 	{
 		vector townPos;
 		string lowerInput = name;
@@ -105,10 +105,24 @@ class TeleportManager : ConfigurablePlugin
 			return;
 		}
 		
-		teleportee.SetPosition(townPos);
+		if(teleportee != null)
+		{
+			Transport veh = GetTransportVehicle(teleportee);
+			if ( veh )
+			{
+				vector mat[4];
+				veh.GetTransform(mat);
+				mat[3] = townPos;
+				veh.SetTransform(mat);
+			}
+			else
+			{
+				teleportee.SetPosition(townPos);
+			}
+		}
 	}
 	
-	void BringPlayer(Man broughtPlayer, vector adminPos, string id)
+	void BringPlayer(PlayerBase broughtPlayer, vector adminPos, string id)
 	{
 		if(broughtPlayer != null)
 		{
@@ -124,7 +138,17 @@ class TeleportManager : ConfigurablePlugin
 				}
 				
 				m_ReturnVectors.Insert(identity.GetPlainId(), broughtPlayer.GetPosition());
-				broughtPlayer.SetPosition(adminPos);
+				
+				Transport veh = GetTransportVehicle(broughtPlayer);
+				if ( veh )
+				{
+					vector mat[4];
+					veh.GetTransform(mat);
+					mat[3] = adminPos;
+					veh.SetTransform(mat);
+				}else{
+					broughtPlayer.SetPosition(adminPos);
+				}
 			}
 		}
 	}
@@ -151,7 +175,7 @@ class TeleportManager : ConfigurablePlugin
 		}
 	}
 	
-	void GotoPlayer(Man target, Man self, string id)
+	void GotoPlayer(Man target, PlayerBase self, string id)
 	{
 		if(target != null && target.GetIdentity() != null)
 		{
@@ -162,11 +186,21 @@ class TeleportManager : ConfigurablePlugin
 			}
 			
 			m_ReturnVectors.Insert(id, self.GetPosition());
-			self.SetPosition(target.GetPosition());
+			
+			Transport veh = GetTransportVehicle(self);
+			if ( veh )
+			{
+				vector mat[4];
+				veh.GetTransform(mat);
+				mat[3] = target.GetPosition();
+				veh.SetTransform(mat);
+			}else{
+				self.SetPosition(target.GetPosition());
+			}
 		}
 	}
 	
-	void TeleportToPoint(array<string> args, Man caller, string id)
+	void TeleportToPoint(array<string> args, PlayerBase caller, string id)
 	{
 		if(args.Count() == 3)
 		{
@@ -186,7 +220,16 @@ class TeleportManager : ConfigurablePlugin
 			
 			if(caller != null)
 			{
-				caller.SetPosition(Vector(x, y, z));
+				Transport veh = GetTransportVehicle(caller);
+				if ( veh )
+				{
+					vector mat[4];
+					veh.GetTransform(mat);
+					mat[3] = Vector(x, y, z);
+					veh.SetTransform(mat);
+				}else{
+					caller.SetPosition(Vector(x, y, z));
+				}
 			}
 		}
 	}
@@ -201,6 +244,19 @@ class TeleportManager : ConfigurablePlugin
 				Save();
 			}
 		}
+	}
+	
+	Transport GetTransportVehicle(PlayerBase player)
+	{
+		if ( player.GetCommand_Vehicle() )
+		{
+			Transport veh = player.GetCommand_Vehicle().GetTransport();
+			if (veh != null)
+			{
+				return veh;
+			}
+		}
+		return null;
 	}
 	
 	/*

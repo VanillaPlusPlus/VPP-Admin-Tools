@@ -289,6 +289,16 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			if(!ctx.Read(data)) return;
 			
 			autoptr array<ref UserGroup> input = data.param1;
+			
+			//Delete old--
+			for(int i = 0; i < m_UserGroups.Count(); i++)
+			{
+				autoptr UserGroupTemplate grp = m_UserGroups.Get(i);
+				m_UserGroups.Remove(i);
+				delete grp;
+			}
+			m_UserGroups = new array<ref UserGroupTemplate>;
+			//----
 			foreach(ref UserGroup group : input)
 			{
 				m_UserGroups.Insert(new UserGroupTemplate(m_SpacerUserGroups, group, M_SUB_WIDGET));

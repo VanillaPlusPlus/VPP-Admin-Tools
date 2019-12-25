@@ -20,6 +20,7 @@ class PlayerManager extends PluginBase
 		GetRPCManager().AddRPC("RPC_PlayerManager", "KickPlayer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "BanPlayer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveGodmode", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveUnlimitedAmmo", this, SingeplayerExecutionType.Server );
 	}
 	
 	override void OnInit()
@@ -281,6 +282,32 @@ class PlayerManager extends PluginBase
 				
 				TargetPlayer.setGodMode(!TargetPlayer.GodModeStatus());
 				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] gave godmode to [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+			}
+		}
+	}
+	
+	void GiveUnlimitedAmmo( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	{
+		Param1<string> data;
+		if (!ctx.Read(data)) return;
+		
+		if( type == CallType.Server )
+        {
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:GiveUnlimitedAmmo",data.param1)) return;
+			autoptr PlayerBase TargetPlayer = GetPermissionManager().GetPlayerBaseByID(data.param1);
+			if(TargetPlayer)
+			{
+				if (TargetPlayer.IsUnlimitedAmmo())
+				{
+					GetPermissionManager().NotifyPlayer(data.param1,"Admin Revoked your unlimited ammo",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Revoked selected players unlimited ammo!",NotifyTypes.NOTIFY);
+				}else{
+					GetPermissionManager().NotifyPlayer(data.param1,"Admin Gave you Unlimited Ammo!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Gave selected player Unlimited Ammo!",NotifyTypes.NOTIFY);
+				}
+				
+				TargetPlayer.SetUnlimitedAmmo(!TargetPlayer.IsUnlimitedAmmo());
+				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] gave unlimited ammo to [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
 			}
 		}
 	}

@@ -46,6 +46,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_ActionTpMeTo;
 	private ButtonWidget m_ActionSpectate;
 	private ButtonWidget m_ActionGiveGodmode;
+	private ButtonWidget m_ActionUnlimitedAmmo;
 	//----------------
 	
 	void MenuPlayerManager()
@@ -114,6 +115,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionSpectate  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionSpectate"));
 		
 		m_ActionGiveGodmode    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionGiveGodmode"));
+		m_ActionUnlimitedAmmo  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionUnlimitedAmmo"));
 		//--------------
 		
 		//init first "page"
@@ -186,6 +188,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionTpToMe.Enable(selectedPlayers.Count() >= 1);
 		m_ActionTpMeTo.Enable(selectedPlayers.Count() == 1);
 		m_ActionGiveGodmode.Enable(selectedPlayers.Count() == 1);
+		m_ActionUnlimitedAmmo.Enable(selectedPlayers.Count() == 1);
 		m_ActionSpectate.Enable(selectedPlayers.Count() == 1 & !g_Game.IsSpectateMode());
 		
 		//Sliders apply btns
@@ -246,6 +249,10 @@ class MenuPlayerManager extends AdminHudSubMenu
 			
 			case m_ActionGiveGodmode:
 			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveGodmode", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+			break;
+			
+			case m_ActionUnlimitedAmmo:
+			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveUnlimitedAmmo", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 			break;
 			
 			case m_ActionSpectate:

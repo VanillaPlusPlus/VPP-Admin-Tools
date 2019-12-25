@@ -14,6 +14,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private EditBoxWidget     m_InputQuantmax;
 	private EditBoxWidget     m_InputCost;
 	private EditBoxWidget     m_SearchBoxXML;
+	private CheckBoxWidget    m_chkEnablePreview;
 	
 	private ref ItemScanResultScreen m_MapScreen;
 	
@@ -58,6 +59,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_InputQuantmax = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputQuantmax") );
 		m_InputCost = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputCost") );
 		m_SearchBoxXML = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchBoxXML") );
+		m_chkEnablePreview = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview") );
 		
 		m_BtnXMLEditorApply = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnXMLEditorApply") );
 		GetVPPUIManager().HookConfirmationDialog(m_BtnXMLEditorApply, M_SUB_WIDGET,this,"ApplyChanges", DIAGTYPE.DIAG_YESNO, "Important Notice!", "Are you sure you wish to save changes?\n\nPlease note that these changes don't take effect to the CE automatically, a copy of the newly edited types.xml will be saved in your servers' profile folder!");
@@ -406,30 +408,33 @@ class MenuXMLEditor extends AdminHudSubMenu
 	{
 		if (!IsSubMenuVisible() || !m_Loaded) return;
 		
-		int oRow = m_ItemListBoxXML.GetSelectedRow();
-		string ItemClassName;
-		
-		if (oRow != -1 && oRow != prevRow)
+		if (m_chkEnablePreview.IsChecked())
 		{
-			m_ItemListBoxXML.GetItemText(oRow, 0, ItemClassName);
-			if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
+			int oRow = m_ItemListBoxXML.GetSelectedRow();
+			string ItemClassName;
 			
-			if (m_PreviewObject != null)
-				GetGame().ObjectDelete(m_PreviewObject);
-			
-			m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
-			if (m_PreviewObject != null)
+			if (oRow != -1 && oRow != prevRow)
 			{
-				m_ItemPreviewXML.SetItem( m_PreviewObject );
-				m_ItemPreviewXML.SetModelPosition( Vector(0,0,0.5) );
-				m_ItemPreviewXML.SetModelOrientation( Vector(0,0,0) );
-				m_ItemPreviewXML.SetView( m_ItemPreviewXML.GetItem().GetViewIndex() );
-				m_ItemPreviewXML.Show(true);
-			}else{
-				m_ItemPreviewXML.Show(false);
+				m_ItemListBoxXML.GetItemText(oRow, 0, ItemClassName);
+				if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
+				
+				if (m_PreviewObject != null)
+					GetGame().ObjectDelete(m_PreviewObject);
+				
+				m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
+				if (m_PreviewObject != null)
+				{
+					m_ItemPreviewXML.SetItem( m_PreviewObject );
+					m_ItemPreviewXML.SetModelPosition( Vector(0,0,0.5) );
+					m_ItemPreviewXML.SetModelOrientation( Vector(0,0,0) );
+					m_ItemPreviewXML.SetView( m_ItemPreviewXML.GetItem().GetViewIndex() );
+					m_ItemPreviewXML.Show(true);
+				}else{
+					m_ItemPreviewXML.Show(false);
+				}
+				m_ItemOrientation = Vector(0,0,0);
+				prevRow = oRow;
 			}
-			m_ItemOrientation = Vector(0,0,0);
-			prevRow = oRow;
 		}
 	}
 	

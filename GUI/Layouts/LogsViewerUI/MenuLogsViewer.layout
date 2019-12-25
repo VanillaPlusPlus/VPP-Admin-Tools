@@ -13,7 +13,7 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.8627
+   color 0 0 0 0.9216
    position 0 0
    size 1 1
    hexactpos 1
@@ -22,7 +22,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style GrungeBorder
+   style DayZDefaultPanelBottom
    "no focus" 0
    {
     SmartPanelWidgetClass Header {
@@ -37,7 +37,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scaled 0
      draggable 0
-     style GrungeBorder
+     style DayZDefaultPanelBottom
      {
       TextWidgetClass Title {
        ignorepointer 1

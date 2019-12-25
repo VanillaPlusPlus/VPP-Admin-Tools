@@ -28,7 +28,7 @@ GridSpacerWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style GrungeBorder
+   style blank
    {
     TextWidgetClass Title {
      ignorepointer 1

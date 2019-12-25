@@ -11,6 +11,28 @@ modded class MissionGameplay
 		GetRPCManager().SendRPC( "RPC_PermitManager", "EnableToggles", NULL, true );
 	}
 	
+	//Returns true when opens
+	bool OpenToolBar()
+	{
+		ref VPPAdminHud adminMenu;
+		if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
+		{
+			if (!adminMenu.IsShowing())
+			{
+				adminMenu.ShowMenu();
+				return true;
+			}else{
+				adminMenu.HideMenu();
+				return false;
+			}
+		}else{
+			GetVPPUIManager().CreateMenu(VPPAdminHud,VPP_ADMIN_HUD);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate( timeslice );
@@ -32,15 +54,19 @@ modded class MissionGameplay
 		{
 			if ( input.LocalPress("UAToggleAdminTools", false) && !GetVPPUIManager().IsTyping())
 			{
-				ref VPPAdminHud adminMenu;
-				if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
+				OpenToolBar();
+			}
+			
+			//Shortcut key to the commands console
+			if ( input.LocalPress("UAToggleCmdConsole", false) && !GetVPPUIManager().IsTyping())
+			{
+				if (OpenToolBar())
 				{
-					if (!adminMenu.IsShowing())
-					adminMenu.ShowMenu();
+					autoptr VPPAdminHud rootMenu = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+					if (rootMenu.GetSubMenuByType(MenuCommandsConsole) == null)
+						rootMenu.CreateSubMenu(MenuCommandsConsole);
 					else
-					adminMenu.HideMenu();
-				}else{
-					GetVPPUIManager().CreateMenu(VPPAdminHud,VPP_ADMIN_HUD);
+						MenuCommandsConsole.Cast(rootMenu.GetSubMenuByType(MenuCommandsConsole)).ShowSubMenu();
 				}
 			}
 			
@@ -102,7 +128,7 @@ modded class MissionGameplay
 		GetGame().GetUIManager().ShowUICursor( false );
 		GetGame().GetInput().ResetGameFocus();
 		GetGame().GetInput().ChangeGameFocus(-1);
-		PlayerControlEnable();
+		PlayerControlEnable(false);
 		
 		if (result == DIAGRESULT.YES)
 		{
@@ -196,6 +222,17 @@ modded class MissionGameplay
 			player.GetHumanInventory().ThrowEntity(item, aimOrientation.AnglesToVector(),10000);
 		}
 	}
+
+	override void OnKeyPress(int key) 
+	{
+        VPPScriptedMenu menu = VPPScriptedMenu.Cast(GetUIManager().GetMenu());
+        if (menu != null && key == KeyCode.KC_ESCAPE)
+        {
+        	return;
+        }
+        super.OnKeyPress(key);
+        m_Hud.KeyPress(key);
+    }
 };
 
 ref VPPFreeCam m_freecam;
@@ -240,7 +277,7 @@ static void DestroyFreeCam()
 	
 	GetGame().GetInput().ResetGameFocus();
 	GetGame().GetUIManager().ShowCursor(false);
-	MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlEnable();
+	MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlEnable(false);
 }
 
 /*

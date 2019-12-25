@@ -231,7 +231,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	void PreformTeleport(bool customPos = false)
 	{
 		if (m_ChkTpSelected.IsChecked())
-		{
+		{			
 			autoptr MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
 			if (pManager)
 			{
@@ -242,11 +242,19 @@ class MenuTeleportManager extends AdminHudSubMenu
 						GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,"",ScreenToWorld()), true);
 						else
 						GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
-				}else{
+				}
+				else
+				{
 					GetVPPUIManager().DisplayError("Error Teleporting...No Players selected!");
 				}
-			}else { GetVPPUIManager().DisplayError("Error Teleporting...No Players selected,use Player Manager menu!"); }
-		}else{
+			}
+			else 
+			{ 
+				GetVPPUIManager().DisplayError("Error Teleporting...No Players selected,use Player Manager menu!"); 
+			}
+		}
+		else
+		{
 			if (GetSelected().Count() > 0 && !customPos)
 				GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>({"self"},GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
 			else

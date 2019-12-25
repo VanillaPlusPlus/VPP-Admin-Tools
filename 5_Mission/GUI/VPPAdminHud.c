@@ -50,13 +50,14 @@ class VPPAdminHud extends VPPScriptedMenu
 		InsertButton("MenuPlayerManager" , "set:dayz_gui_vpp image:vpp_icon_players", "Manage players, teleport,kill,send message,heal,view information about players (guid,name,status) & more");
 		InsertButton("MenuItemManager" , "set:dayz_gui_vpp image:vpp_icon_item_manager", "Spawn items on players, on ground, at crosshairs, create, edit and delete item sets & more!");
 		InsertButton("MenuTeleportManager" , "set:dayz_gui_vpp image:vpp_icon_teleport_manager", "Manage teleport presets, add new and edit. Mass teleport players & map teleport.");
-		InsertButton("EspToolsMenu" , "set:dayz_gui image:icon_refresh", "Esp....");
+		InsertButton("EspToolsMenu" , "set:dayz_gui_vpp image:vpp_icon_esp", "ESP/XRay");
+		InsertButton("MenuCommandsConsole" , "set:dayz_gui_vpp image:vpp_icon_cmd_console", "Execute and use shortcut commands!");
 		InsertButton("MenuServerManager" , "set:dayz_gui_vpp image:vpp_icon_settings", "Control Server settings, view player activity, restart server, monitor performance & more!");
 		InsertButton("MenuWeatherManager" , "set:dayz_gui_vpp image:vpp_icon_cloud", "Manage server weather settings, load, create delete presets, set time and change forecast.");
 		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "Place custom mission objects, create, load, edit presets & more!");
 		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "Manage V++ Server ban list, add, remove, updated issued bans.");
 		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
-		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_settings", "Edit types.xml and check loot status on server!");
+		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_xml_editor", "Edit types.xml and check loot status on server!");
 		//InsertButton("MenuLogsViewer" , "set:dayz_gui_vpp image:vpp_icon_settings", "View V++ custom server logs.");
 		//----
 		DefineButtons();

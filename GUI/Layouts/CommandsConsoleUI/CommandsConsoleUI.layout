@@ -1,0 +1,224 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ size 0.25 0.6
+ halign center_ref
+ valign center_ref
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.9216
+   position 0 0
+   size 1 0.76
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style DayZDefaultPanelBottom
+   "no focus" 0
+   {
+    PanelWidgetClass content {
+     ignorepointer 1
+     position 0 0.06
+     size 0.98 0.81
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Outline
+     {
+      ScrollWidgetClass ScrollerFeed {
+       ignorepointer 0
+       size 0.98 0.97
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass GridFeed {
+         ignorepointer 1
+         position 0.01 0
+         size 0.99 0.99
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         Padding 10
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass inputPanel {
+     ignorepointer 1
+     position 0.01 0.01
+     size 0.981 0.111
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Outline
+     {
+      ImageWidgetClass ImgInfo {
+       ignorepointer 0
+       color 1 0 0 1
+       position 0.01 0.04
+       size 0.06 0.45
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ToolTipHandler"
+       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+      }
+      MultilineEditBoxWidgetClass CommandInput {
+       position 0.01 0
+       size 0.92 0.8
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style DayZBold
+       font "gui/fonts/Metron22"
+       "exact text" 0
+       "size to text h" 0
+       "size to text v" 0
+       "text valign" center
+       lines 1
+       "limit visible" 0
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.993 0.038
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+  SmartPanelWidgetClass HeaderTitle {
+   ignorepointer 1
+   color 0 0 0 1
+   position 0 0
+   size 1 0.04
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 0
+   draggable 0
+   style DayZDefaultPanelBottom
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Bold
+     text "Commands Console"
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    ButtonWidgetClass BtnClose {
+     clipchildren 1
+     color 0 0 0 1
+     position 0 -0.05
+     size 0.05 1
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Editor
+     {
+      ImageWidgetClass ImageClose {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:ccgui_enforce image:Icon28EmptySlot"
+       mode additive
+       "src alpha" 1
+      }
+     }
+    }
+   }
+  }
+  ScrollWidgetClass ScrollerSuggest {
+   visible 1
+   ignorepointer 0
+   color 0.1922 0.1922 0.1922 0.9216
+   position -0.01 0.035
+   size 0.98 0.2005
+   halign center_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style Colorable
+   "Scrollbar V" 1
+   {
+    GridSpacerWidgetClass GridSuggest {
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     Padding 3
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     content_halign center
+     Columns 1
+     Rows 100
+    }
+   }
+  }
+ }
+}

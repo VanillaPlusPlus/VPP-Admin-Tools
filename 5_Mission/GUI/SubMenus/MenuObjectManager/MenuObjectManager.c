@@ -8,6 +8,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private ButtonWidget             m_btnCreateNewSet;
 	private ButtonWidget             m_btnSaveChanges;
 	private ButtonWidget             m_btnHelp;
+	private CheckBoxWidget           m_chkSnapObjs;
 	private int 	 		  		 m_RotationX;
 	private int 	 		  		 m_RotationY;
 	private vector   		  		 m_ItemOrientation;
@@ -23,6 +24,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private EditBoxWidget            m_EditFOV;
 	private ButtonWidget             m_btnReloadSets;
 	private GridSpacerWidget         m_ParentGrid;
+	private CheckBoxWidget           m_chkEnablePreview;
 	private ScrollWidget         	 m_ScrollerBuildingSets;
 	private ScrollWidget         	 m_ScrollerSetItems;
 	private ref CustomGridSpacer 	 m_LastGrid;
@@ -73,11 +75,13 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_EditRoll    = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditRollC"));
 		m_EditFOV     = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditFOV"));
 		m_chkFreeCam  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkFreeCam"));
+		m_chkSnapObjs  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkSnapObjs"));
 		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges"));
 		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnHelp"));
 	    m_chkTopDowncam = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkTopDowncam"));
 		m_chkTopDowncam.Enable(false);
 	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnCreateNewSet"));
+		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview"));
 		
 		m_ShowHideButtons = new array<ref Param2<bool,ref ButtonWidget>>;
 		m_SearchInputBox = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
@@ -159,15 +163,18 @@ class MenuObjectManager extends AdminHudSubMenu
 		//Move x,y,z
 		if (!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding() && input.LocalHold("UASelectObject",false) && worldObject != null)
 		{
-			worldObject.PlaceOnSurface();
+			//worldObject.PlaceOnSurface();
 			vector c_pos;
 			vector c_dir;
 			int    c_component;
 			
 			if ( DayZPhysics.RaycastRV( start, end, c_pos, c_dir, c_component, null, worldObject, GetGame().GetPlayer(), false, false ) )
 			{
-				worldObject.SetPosition(c_pos);
-				worldObject.PlaceOnSurface();
+				worldObject.SetPosition(Vector(c_pos[0], worldObject.GetPosition()[1] ,c_pos[2]));
+				if (m_chkSnapObjs.IsChecked())
+				{
+					worldObject.PlaceOnSurface();
+				}
 				FixCollide(worldObject);
 			}
 		}
@@ -340,7 +347,10 @@ class MenuObjectManager extends AdminHudSubMenu
 	{
 		foreach(BuildingEntry entry : m_BuildingEntries){
 			if (entry != null){
-				entry.GetTracker().UpdateDataBoxes(true);
+				if (entry.GetTracker())
+				{
+					entry.GetTracker().UpdateDataBoxes(true);
+				}
 			}
 		}
 	}
@@ -546,30 +556,33 @@ class MenuObjectManager extends AdminHudSubMenu
 	{
 		if (!IsSubMenuVisible() && !m_loaded) return;
 		
-		int oRow = m_ItemListBox.GetSelectedRow();
-		string ItemClassName;
-		
-		if (oRow != -1 && oRow != m_prevRow)
+		if (m_chkEnablePreview.IsChecked())
 		{
-			m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
-			if (GetGame().IsKindOf( ItemClassName, "dz_lightai" )) return;
+			int oRow = m_ItemListBox.GetSelectedRow();
+			string ItemClassName;
 			
-			if (m_PreviewObject != null)
-			GetGame().ObjectDelete(m_PreviewObject);
-			
-			m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
-			if (m_PreviewObject != null)
+			if (oRow != -1 && oRow != m_prevRow)
 			{
-				m_ItemPreview.SetItem( m_PreviewObject );
-				m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
-				m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
-				m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
-				m_ItemPreview.Show(true);
-			}else{
-				m_ItemPreview.Show(false);
+				m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
+				if (GetGame().IsKindOf( ItemClassName, "dz_lightai" )) return;
+				
+				if (m_PreviewObject != null)
+				GetGame().ObjectDelete(m_PreviewObject);
+				
+				m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
+				if (m_PreviewObject != null)
+				{
+					m_ItemPreview.SetItem( m_PreviewObject );
+					m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
+					m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
+					m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
+					m_ItemPreview.Show(true);
+				}else{
+					m_ItemPreview.Show(false);
+				}
+				m_ItemOrientation = Vector(0,0,0);
+				m_prevRow = oRow;
 			}
-			m_ItemOrientation = Vector(0,0,0);
-			m_prevRow = oRow;
 		}
 	}
 	
@@ -661,7 +674,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		else
 			spawnPos = g_Game.GetPosByCursor();
 		
-		if (oRow != -1 && m_SelectedSetData != null)
+		if (oRow != -1 && m_SelectedSetData != null && worldObject == null)
 		{
 			m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
 			int low, high;
@@ -690,9 +703,9 @@ class MenuObjectManager extends AdminHudSubMenu
 	{
 		foreach(ref Param2<bool,ref ButtonWidget> data : m_ShowHideButtons)
 		{
-			if (w == data.param2)
+			if (w != null && w == data.param2)
 			{
-				if (w.GetChildren() != null)
+				if (w != null && w.GetChildren() != null)
 				{
 					autoptr ImageWidget img = ImageWidget.Cast(w.GetChildren());
 					if (img == null) return false;

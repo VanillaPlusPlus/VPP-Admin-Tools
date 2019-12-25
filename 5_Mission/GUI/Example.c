@@ -9,6 +9,8 @@
 
 class CustomSubMenu extends AdminHudSubMenu
 {
+	private CanvasWidget canvas;
+
 	void CustomSubMenu()
 	{
 		Print("CustomSubMenu()");
@@ -21,7 +23,36 @@ class CustomSubMenu extends AdminHudSubMenu
 		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/CustomSubMenu.layout");
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
-		ShowSubMenu(); //Show tab once the class is created !RECOMMENDED TO KEEP!
+		canvas = CanvasWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "CanvasWidget") );
+		ShowSubMenu();
+	}
+	
+	void DrawUpdate(float tDelta)
+	{
+		if (GetGame().GetMouseState(MouseState.LEFT) & 0x80000000)
+		{
+			float wX,wY;
+			float width, height;
+			canvas.GetScreenSize(wX, wY);
+			canvas.GetSize(width, height);
+			int oX, oY;
+			int sX, sY;
+			GetGame().GetMousePos(oX, oY);
+			GetGame().GetScreenSize(sX, sY);
+            float size = 3.5;
+
+			float x = (width + sX)  - (wX + oX);
+            float y = (height + sY) - (wY - oY);
+			
+			Print("x: " + x + " y: " + y);
+			
+            canvas.DrawLine(x, y, x + 6.5, y, size, ARGB(255,255,255,255) );
+		}
+	}
+
+	override void OnUpdate(float timeslice)
+	{
+		
 	}
 };
 */

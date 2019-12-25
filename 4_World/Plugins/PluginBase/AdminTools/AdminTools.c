@@ -52,15 +52,16 @@ class AdminTools extends PluginBase
 			autoptr PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
 			if (pb == null) return;
 			
-			if (pb.IsInVehicle())
+			
+			if ( pb.GetCommand_Vehicle() )
 			{
-				autoptr Transport transportVeh = pb.GetCommand_Vehicle().GetTransport();
-				if (transportVeh != null)
+				Transport veh = pb.GetCommand_Vehicle().GetTransport();
+				if (veh != null)
 				{
-					vector vehTransform[4];
-					transportVeh.GetTransform(vehTransform);
-					vehTransform[3] = data.param1;
-					transportVeh.MoveInTime(vehTransform, 0.1);
+					vector mat[4];
+					veh.GetTransform(mat);
+					mat[3] = data.param1;
+					veh.SetTransform(mat);
 				}
 			}else{
 				pb.SetPosition(data.param1);

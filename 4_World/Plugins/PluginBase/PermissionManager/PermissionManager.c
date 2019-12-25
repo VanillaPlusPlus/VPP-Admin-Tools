@@ -36,7 +36,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Permissions Editor
 		AddPermissionType({ "MenuPermissionsEditor","PermissionsEditor:RemoveUser","PermissionsEditor:AddUser","PermissionsEditor:CreateUserGroup","PermissionsEditor:DeleteUserGroup","PermissionsEditor:ChangePermLevel"});
 		//Player Manager
-		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage" });
+		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo" });
 		//Bans Manager
 		AddPermissionType({ "MenuBansManager","BansManager:UnbanPlayer","BansManager:UpdateBanDuration","BansManager:UpdateBanReason" });
 		//Log Viewer Menu
@@ -47,6 +47,8 @@ class PermissionManager extends ConfigurablePlugin
 		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP" });
 		//XML Editor menu
 		AddPermissionType({ "MenuXMLEditor" });
+		//Commands console menu
+		AddPermissionType({ "MenuCommandsConsole" });
 		
 		//-----RPC's-----
 		GetRPCManager().AddRPC("RPC_PermitManager", "EnableToggles", this, SingeplayerExecutionType.Server );
@@ -55,6 +57,7 @@ class PermissionManager extends ConfigurablePlugin
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteCreateUserGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteDeleteUserGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","UpdateUserGroupPermLvl", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PermissionManager","UpdateUserGroupSettings", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteUpdateGroupPerms", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteAddUsersToGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteRemoveUserFromGroup", this, SingleplayerExecutionType.Server);
@@ -221,6 +224,33 @@ class PermissionManager extends ConfigurablePlugin
 						group.SetPermissionLevel(data.param1);
 						Save();
 						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupPermLvl(): Group: "+group.GetGroupName()+" Permission level changed to: "+data.param1);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	/*
+		Update a user groups settings via RPC
+	*/
+	void UpdateUserGroupSettings(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param2<bool,string> data; //forcesavedname, group name
+		if (!ctx.Read(data)) return;
+
+		if(type == CallType.Server)
+		{
+			if (data.param2 != "")
+			{
+				foreach(UserGroup group : m_UserGroups)
+				{
+					if (group.GetGroupName() == data.param2)
+					{
+						group.SetForceSavedName(data.param1);
+						Save();
+						NotifyPlayer(sender.GetPlainId(),"Settings updated for group: "+group.GetGroupName(),NotifyTypes.NOTIFY);
+						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupSettings(): Group: "+group.GetGroupName()+" Settings changed!");
 						return;
 					}
 				}
@@ -440,10 +470,6 @@ class PermissionManager extends ConfigurablePlugin
 	{
 		CreateUserGroup( "Admins", 1, m_Permissions );
 		AddMembersToGroup(new VPPUser("Fake User 1","76561198321354734"), "Admins");
-		AddMembersToGroup(new VPPUser("Fake User 2","76561198321354724"), "Admins");
-		AddMembersToGroup(new VPPUser("Fake User 3","76561198321354754"), "Admins");
-		AddMembersToGroup(new VPPUser("Fake User 4","765611983213547664"), "Admins");
-		AddMembersToGroup(new VPPUser("DaOne","76561198420222029"), "Admins");
 		
 	    GetSimpleLogger().Log("[PermissionManager]:: CreateDefualtUserGroups(): Created defualt UserGroups.vpp");
 	}
@@ -528,6 +554,16 @@ class PermissionManager extends ConfigurablePlugin
 
 		return false || IsSuperAdmin(id);
 	}
+
+	//Get A user group by user ID
+	UserGroup GetUsergGroup(string id)
+	{
+		foreach(ref UserGroup group : m_UserGroups)
+			if(group.HasMember(id))
+				return group;
+
+		return null;
+	}
 	
 	// @Doc:
 	// @Usage: Check permission to user group. 
@@ -543,6 +579,22 @@ class PermissionManager extends ConfigurablePlugin
 			return false;
 		}
 		
+		//Reject permission if name not matching usergroup
+		autoptr UserGroup userGroup = GetUsergGroup(id);
+		if (userGroup != null)
+		{
+			PlayerIdentity identity = GetIdentityById(id);
+			VPPUser user = userGroup.FindUser(id);
+			if (identity && user)
+			{
+				if (user.GetUserName() != identity.GetName())
+				{
+					NotifyPlayer(id,"Your name does not match the usergroup name!\nYou can't access the tools\nchange your name to: " + user.GetUserName(),NotifyTypes.PERMISSION_REJECT, 15.0);
+					return false;
+				}
+			}
+		}
+
 		if(!HasUserGroup(id))
 		{
 			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
@@ -617,7 +669,7 @@ class PermissionManager extends ConfigurablePlugin
 		return hasPermission;
 	}
 	
-	void NotifyPlayer(string id,string msg, int type)
+	void NotifyPlayer(string id,string msg, int type, float duration = 8.0)
 	{
 		autoptr PlayerIdentity targetIdentity = GetIdentityById(id);
 		if (targetIdentity == null) return;
@@ -625,15 +677,15 @@ class PermissionManager extends ConfigurablePlugin
 		switch(type)
 		{
 			case NotifyTypes.ERROR:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 5.0, "Error: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, duration, "Error: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
 			break;
 			
 			case NotifyTypes.NOTIFY:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 8.0, "Notification: ", msg, "set:ccgui_enforce image:MapUserMarker" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, duration, "Notification: ", msg, "set:ccgui_enforce image:MapUserMarker" );
 			break;
 			
 			case NotifyTypes.PERMISSION_REJECT:
-				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, 5.0, "Permission Rejected: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
+				NotificationSystem.SendNotificationToPlayerIdentityExtended( targetIdentity, duration, "Permission Rejected: ", msg, "set:ccgui_enforce image:Icon40Emergency" );
 			break;
 		}
 	}
@@ -669,13 +721,17 @@ class PermissionManager extends ConfigurablePlugin
 	PlayerIdentity GetIdentityById(string id)
 	{
 		autoptr array<Man> players = new array<Man>;
-       	GetGame().GetWorld().GetPlayerList( players );
+       		GetGame().GetWorld().GetPlayerList( players );
 		
-       	for (int i = 0; i < players.Count(); ++i)
-       	{
-			if (players.Get(i).GetIdentity().GetPlainId() == id || players.Get(i).GetIdentity().GetId() == id)
+		for (int i = 0; i < players.Count(); ++i)
+		{
+			PlayerIdentity identity = players.Get(i).GetIdentity();
+			if (identity != null)
 			{
-				return players.Get(i).GetIdentity();
+				if(identity.GetPlainId() == id || identity.GetId() == id)
+				{
+					return identity;
+				}
 			}
 		}
 		return null;

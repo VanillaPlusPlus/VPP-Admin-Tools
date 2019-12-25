@@ -16,6 +16,7 @@ class MenuItemManager extends AdminHudSubMenu
 	private XComboBoxWidget          m_ComboPlacement;
 	private EditBoxWidget          	 m_InputQuantity;
 	private CheckBoxWidget           m_ChkOnSelectedPlayers;
+	private CheckBoxWidget           m_chkBoxPreview;
 	private Widget 					 m_SavedPresetsWidget;
 	protected ref VPPDropDownMenu 	 m_SavedPresetsDropDown;
 	private ref PopUpCreatePreset  	 m_PopUpPresetCreate;
@@ -80,6 +81,7 @@ class MenuItemManager extends AdminHudSubMenu
 	 	m_ComboPlacement = XComboBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboPlacement") );
 	 	m_InputQuantity  = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputQuantity") );
 		m_ChkOnSelectedPlayers = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkOnSelectedPlayers") );
+		m_chkBoxPreview  = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkBoxPreview") );
 
 		m_ImgInfoAddPreset = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoAddPreset") );
 		autoptr ToolTipHandler toolTip;
@@ -179,6 +181,11 @@ class MenuItemManager extends AdminHudSubMenu
 			case m_btnRefresh:
 			m_CurrentPresetData = null;
 			GetRPCManager().SendRPC("RPC_VPPItemManager", "GetData", null, true, null);
+			break;
+			
+			case m_chkBoxPreview:
+				if (m_chkBoxPreview.IsChecked())
+					UpdatePreviewWidget();
 			break;
 		}
 		return false;
@@ -393,30 +400,36 @@ class MenuItemManager extends AdminHudSubMenu
 	{
 		if (!IsSubMenuVisible() && !m_loaded) return;
 		
-		int oRow = m_ItemListBox.GetSelectedRow();
-		string ItemClassName;
-		
-		if (oRow != -1 && oRow != prevRow)
+		if (m_chkBoxPreview.IsChecked())
 		{
-			m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
-			if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
+			int oRow = m_ItemListBox.GetSelectedRow();
+			string ItemClassName;
 			
-			if (m_PreviewObject != null)
-			GetGame().ObjectDelete(m_PreviewObject);
-			
-			m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
-			if (m_PreviewObject != null)
+			if (oRow != -1 && oRow != prevRow)
 			{
-				m_ItemPreview.SetItem( m_PreviewObject );
-				m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
-				m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
-				m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
-				m_ItemPreview.Show(true);
-			}else{
-				m_ItemPreview.Show(false);
+				m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
+				if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
+				
+				if (m_PreviewObject != null)
+				{
+					m_ItemPreview.SetItem(null);
+					GetGame().ObjectDelete(m_PreviewObject);
+				}
+				
+				m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
+				if (m_PreviewObject != null)
+				{
+					m_ItemPreview.SetItem( m_PreviewObject );
+					m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
+					m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
+					m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
+					m_ItemPreview.Show(true);
+				}else{
+					m_ItemPreview.Show(false);
+				}
+				m_ItemOrientation = Vector(0,0,0);
+				prevRow = oRow;
 			}
-			m_ItemOrientation = Vector(0,0,0);
-			prevRow = oRow;
 		}
 	}
 	

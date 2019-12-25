@@ -1,6 +1,8 @@
 modded class PlayerBase
 {
 	private bool    hasGodmode;
+	private bool    hasUnlimitedAmmo;
+	private bool 	hasFlyinCar;
 	private bool	m_isInvisible;
 	
 	void PlayerBase()
@@ -83,6 +85,58 @@ modded class PlayerBase
 	bool InvisibilityStatus()
 	{
 		return m_isInvisible;
+	}
+	
+	void SetUnlimitedAmmo(bool state)
+	{
+		hasUnlimitedAmmo = state;
+	}
+	
+	bool IsUnlimitedAmmo()
+	{
+		return hasUnlimitedAmmo;
+	}
+	
+	void SetCanFlyCars(bool state)
+	{
+		hasFlyinCar = state;
+	}
+	
+	bool CanFlyCar()
+	{
+		return hasFlyinCar;
+	}
+	
+	void UnlimitedAmmoCheck(Weapon_Base weapon)
+	{
+		if ( IsUnlimitedAmmo() )
+		{
+			Magazine magazine;
+			if ( GetGame().IsServer() )
+			{
+				magazine = weapon.GetMagazine(weapon.GetCurrentMuzzle());
+			
+				if(magazine)
+				{
+					if (magazine.GetAmmoCount() <= 5)
+					{
+						magazine.ServerSetAmmoMax();
+					}
+				}
+			}
+			else
+			{
+				magazine = weapon.GetMagazine(weapon.GetCurrentMuzzle());
+			
+				if(magazine)
+				{
+					if (magazine.GetAmmoCount() <= 5)
+					{
+						magazine.LocalSetAmmoMax();
+					}
+				}
+			}
+		}
 	}
 
 	/*Misc functions*/
