@@ -1,7 +1,7 @@
 
 <img src="https://i.imgur.com/3bu7aN9.png" align="right" alt="Headerlogo" height="128px" width="128px">
 
-# DayZ Vanilla++ Admin Tools v1.0
+# DayZ Vanilla++ Admin Tools v1.1
 
 ## Table Of Contents:
 - [What is Vanilla++](#what-is-vanilla)
