@@ -1,6 +1,8 @@
 class WebHooksManager: ConfigurablePlugin
 {
+	[NonSerialized()]
 	private ref WebHookConnectionManager m_ConnectionManager;
+
 	private ref array<ref WebHook> 		 M_DATA;
 
 	void WebHooksManager()
@@ -79,7 +81,7 @@ class WebHooksManager: ConfigurablePlugin
 						if (hook.SendJoinLeaveLogs())
 						{
 							autoptr JoinLeaveMessage jlm;
-							Class.CastTo( jlm, dataClass)
+							Class.CastTo( jlm, dataClass);
 							
 							m_ConnectionManager.Post(hook.GetURL(), jlm.BuildMessage());
 						}
@@ -115,7 +117,7 @@ class WebHooksManager: ConfigurablePlugin
 	{
 		if(type == CallType.Server && sender)
 		{
-			Param2<int,string> data;
+			ref Param2<int,string> data;
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks:Delete")) 
 				return;
 
@@ -140,7 +142,7 @@ class WebHooksManager: ConfigurablePlugin
 	{
 		if(type == CallType.Server && sender)
 		{
-			Param1<ref WebHook> data;
+			ref Param1<ref WebHook> data;
 
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks:Create")) 
 				return;
@@ -148,8 +150,9 @@ class WebHooksManager: ConfigurablePlugin
 			if (!ctx.Read(data))
 				return;
 
+			ref WebHook webHook = data.param1;
+			M_DATA.Insert( webHook );
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Created new WebHook: " + data.param1.GetName()));
-			M_DATA.Insert( data.param1 );
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"New WebHook: " + data.param1.GetName() + " successfully created and saved!", NotifyTypes.NOTIFY);
 			Save();
 			GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
@@ -160,7 +163,7 @@ class WebHooksManager: ConfigurablePlugin
 	{
 		if(type == CallType.Server && sender)
 		{
-			Param3<int,string,ref WebHook> data;
+			ref Param3<int,string,ref WebHook> data;
 
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks:Edit")) 
 				return;
