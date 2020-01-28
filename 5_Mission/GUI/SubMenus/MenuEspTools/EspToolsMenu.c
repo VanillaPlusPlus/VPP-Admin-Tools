@@ -201,6 +201,7 @@ class EspToolsMenu extends AdminHudSubMenu
 			}else{
 				M_SCAN_ACTIVE = true;
 				m_btnToggle.SetColor(ARGB(255,0,255,0));
+				GetRPCManager().SendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 			}
 			break;
 			

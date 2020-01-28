@@ -53,6 +53,7 @@ class WeatherManager : ConfigurablePlugin
 				input.Insert(ws.GetName());
 			}
 			
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Sent Saved Weather Presets"));
 			GetSimpleLogger().Log("[WeatherManager]:: SendToClient(): Send Data Count is " + input.Count().ToString());
 			GetRPCManager().SendRPC( "RPC_WeatherUI", "HandleWeatherData", new Param1<array<string>>(input), true, sender );
 		}
@@ -76,6 +77,7 @@ class WeatherManager : ConfigurablePlugin
 			string name = data.param5;
 			
 			weatherSettings.Insert(new WeatherSetting(overcast, rain, fog, wind, name));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Saved Preset: " + name));
 			Save();
 		}
 	}
@@ -98,6 +100,7 @@ class WeatherManager : ConfigurablePlugin
 					weatherSettings.RemoveItem(ws);
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Deleted Preset: " + weatherName));
 			Save();
 		}
 	}
@@ -120,6 +123,7 @@ class WeatherManager : ConfigurablePlugin
 			}
 			
 			ApplyWeatherSetting(requestedSetting);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Applying Weather Preset:" + name));
 		}
 	}
 	
@@ -150,6 +154,8 @@ class WeatherManager : ConfigurablePlugin
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"WeatherManager:ApplyWeather")) return;
 			
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Applied weather settings"));
+
 			Param4<array<float>, array<float>, array<float>, float> data;
 			if(!ctx.Read(data)) return;
 			

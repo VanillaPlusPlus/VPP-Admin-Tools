@@ -57,8 +57,8 @@ class VPPAdminHud extends VPPScriptedMenu
 		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "Place custom mission objects, create, load, edit presets & more!");
 		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "Manage V++ Server ban list, add, remove, updated issued bans.");
 		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
+		InsertButton("MenuWebHooks" , "set:dayz_gui_vpp image:vpp_icon_webHooks", "Create and edit webhooks that offload log data. (Currently supports discord only)");
 		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_xml_editor", "Edit types.xml and check loot status on server!");
-		//InsertButton("MenuLogsViewer" , "set:dayz_gui_vpp image:vpp_icon_settings", "View V++ custom server logs.");
 		//----
 		DefineButtons();
 		//Compile Permissions needed by buttons registred.

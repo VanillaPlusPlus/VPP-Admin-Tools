@@ -201,7 +201,7 @@ class ChatCommandManager : PluginBase
 			if(targets == null || targets.Count() == 0) return;
 			
 			autoptr PlayerBase pb;
-			
+
             foreach(Man target : targets)
             {
 				switch(command.GetCommand())
@@ -209,10 +209,12 @@ class ChatCommandManager : PluginBase
                     case "/strip":
 						pb = PlayerBase.Cast(target);
                         pb.RemoveAllItems();
+                        GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, self.GetIdentity().GetName(), "Chat Command Manager: /strip command used on: " + pb.GetIdentity().GetName() + " ID: " + pb.GetIdentity().GetPlainId()));
                     break;
                     
                     case "/kill":
-                    	target.SetHealth(0);                
+                    	target.SetHealth(0);
+                    	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, target.GetIdentity().GetName(), "Chat Command Manager: /kill command used on: " + target.GetIdentity().GetName() + " ID: " + target.GetIdentity().GetPlainId()));                
                     break;
 					                    
                     case "/heal":
@@ -227,24 +229,29 @@ class ChatCommandManager : PluginBase
 						pb.GetStatDiet().Set(pb.GetStatDiet().GetMax());
 						pb.GetStatSpecialty().Set(pb.GetStatSpecialty().GetMax());
 						pb.SetBleedingBits(0);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, pb.GetIdentity().GetName(), "Chat Command Manager: /heal command used on: " + pb.GetIdentity().GetName() + " ID: " + pb.GetIdentity().GetPlainId()));
                     break;
                     
                     case "/bring":
                 		GetTeleportManager().BringPlayer(target, self.GetPosition(), id);
+                		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, self.GetIdentity().GetName(), "Chat Command Manager: /bring command used on: " + target.GetIdentity().GetName() + " ID: " + target.GetIdentity().GetPlainId()));
                     break;
 					
 					case "/return":
 						GetTeleportManager().ReturnPlayer(target, id);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, self.GetIdentity().GetName(), "Chat Command Manager: /return command used on: " + target.GetIdentity().GetName() + " ID: " + target.GetIdentity().GetPlainId()));
 					break;
 					
 					case "/goto":
 						GetTeleportManager().GotoPlayer(target, self, id);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, self.GetIdentity().GetName(), "Chat Command Manager: /goto command used on: " + target.GetIdentity().GetName() + " ID: " + target.GetIdentity().GetPlainId()));
 					break;
 					
 					case "/ban":
 					autoptr PlayerIdentity pid = target.GetIdentity();
 					string banAuthorDetails = string.Format("%1|%2",self.GetIdentity().GetName(),self.GetIdentity().GetPlainId());
 					GetBansManager().AddToBanList(new BannedPlayer(pid.GetName(),pid.GetPlainId(),pid.GetId(),new BanDuration(1990,12,12,12,12),banAuthorDetails,"Banned By VPP Admin Tools"));
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /ban command used on: " + pid.GetName() + " ID: " + pid.GetPlainId()));
 					break;
                 }
             }
@@ -279,6 +286,8 @@ class ChatCommandManager : PluginBase
 						{
 							sedan.Fill(i, sedan.GetFluidCapacity(i));
 						}
+
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /spawncar used on self."));
 	                break;
 					
 					case "/ammo":
@@ -304,6 +313,7 @@ class ChatCommandManager : PluginBase
 								suppressor.SetHealth( suppressor.GetMaxHealth( "", "" ) );
 							}
 							GetGame().RPCSingleParam(self, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>( "Weapon " + weapon.ConfigGetString("displayName") + " Reloaded and Repaired" ), true, self.GetIdentity());
+							GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /ammo used on self."));
 						}
                     break;
 					
@@ -347,6 +357,7 @@ class ChatCommandManager : PluginBase
 						toBeFilled.Fill( CarFluid.BRAKE, brakeReq );
 						toBeFilled.SetSynchDirty();
 						GetPermissionManager().NotifyPlayer(id, carEntity.Type().ToString() + ": reparied & refueled [" +fuelReq+ "L] added, all fluids maxed",NotifyTypes.NOTIFY);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /refuel used on self."));
 					break;
 				}
 				return;
@@ -360,6 +371,7 @@ class ChatCommandManager : PluginBase
             	{
 	                case "/spi":
 						self.GetHumanInventory().CreateInInventory(arg);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /spi used on self. Input:  " + arg));
 	                break;
 	                					
 	                case "/spg":
@@ -378,10 +390,12 @@ class ChatCommandManager : PluginBase
 			                itemBase = ItemBase.Cast( itemEntity );
 			                itemBase.SetupSpawnedItem( itemBase, itemBase.GetMaxHealth("",""), itemBase.GetQuantityMax() );
 			            }
-			            itemEntity.PlaceOnSurface();	
+			            itemEntity.PlaceOnSurface();
+			            GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /spg used on self. Input:  " + arg));
 	                break;
 	                
 	                case "/sph":
+	                	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /sph used on self. Input:  " + arg));
 						if(self.GetHumanInventory().GetEntityInHands() == null)
 							self.GetHumanInventory().CreateInHands(arg);
 						else
@@ -389,15 +403,18 @@ class ChatCommandManager : PluginBase
 	                break;
 	                
 	                case "/tpt":
+	                	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /tpt used on self. Input:  " + arg));
 						GetTeleportManager().TeleportToTown(arg, self);
 	                break;
 					
 					
 					case "/tpp":
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /tpp used on self. Input:  " + args));
 						GetTeleportManager().TeleportToPoint(args, self, id);
 					return;
 					
 					case "/unban":
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(self.GetIdentity().GetPlainId(), self.GetIdentity().GetName(), "Chat Command Manager: /unban used. Input:  " + args));
 						if (GetBansManager().RemoveMultipleFromBanList(args))
 							GetPermissionManager().NotifyPlayer(id,"Successfully Removed ("+args.Count()+") bans from ban list!",NotifyTypes.NOTIFY);
 							else

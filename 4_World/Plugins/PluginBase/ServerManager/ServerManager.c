@@ -15,7 +15,6 @@ class ServerManager extends PluginBase
 		GetRPCManager().AddRPC( "RPC_ServerManager", "RequestLogViewer", this, SingeplayerExecutionType.Server );
 	}
 	
-	
 	void RequestLogViewer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if ( type == CallType.Server )
@@ -108,6 +107,7 @@ class ServerManager extends PluginBase
 				m_TimeCounter       = data.param1;
 				m_RestartInProgress = true;
 				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RestartTicker, 1000, true);
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Requested for server restart in: " + data.param1 + " seconds"));
 				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just requested a server restart",sender.GetPlainId(), sender.GetName()));
 			}
 			else
@@ -163,6 +163,7 @@ class ServerManager extends PluginBase
 					GetSimpleLogger().Log("[ServerManager] RequestKickAllPlayers: Kicking Player: "+identity.GetName());
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Requested to kick all players from server: " + players.Count()));
 		}
 	}
 	

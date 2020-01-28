@@ -234,6 +234,7 @@ class VPPItemManager: ConfigurablePlugin
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager")) return;
 			Load();
 			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Sent saved presets data."));
 		}
 	}
 	
@@ -258,6 +259,7 @@ class VPPItemManager: ConfigurablePlugin
 			Save();
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Saved Changes to preset: "+editPreset.GetPresetName(),NotifyTypes.NOTIFY);
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just edited item preset [%3]",sender.GetPlainId(), sender.GetName(), editPreset.GetPresetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Edited preset: " + editPreset.GetPresetName()));
 		}
 	}
 	
@@ -271,6 +273,7 @@ class VPPItemManager: ConfigurablePlugin
 			
 			SpawnItemPreset(data.param1,sender.GetPlainId());
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just spawned an item preset",sender.GetPlainId(), sender.GetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Spawn preset: " + data.param1.presetName));
 		}
 	}
 	
@@ -291,6 +294,7 @@ class VPPItemManager: ConfigurablePlugin
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully deleted preset: "+data.param1,NotifyTypes.NOTIFY);
 				GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just deleted the preset [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Delete preset: " + data.param1));
 			}
 		}
 	}
@@ -325,7 +329,8 @@ class VPPItemManager: ConfigurablePlugin
 						CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity);
 						break;
 					}
-					GetSimpleLogger().Log("[ItemManager] :: SpawnItem(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] Spawned the preset " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]");
+					GetSimpleLogger().Log("[ItemManager] :: SpawnItem(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] Spawned Item " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]");
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] :: SpawnItem(): Spawned Item " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]"));
 				}
 			}else{
 				//Self Spawn
@@ -334,6 +339,8 @@ class VPPItemManager: ConfigurablePlugin
 				GetSimpleLogger().Log("[VPPItemManager]:: RPC SpawnItem(): FAILED TO SPAWN ITEM BY SENDER: "+sender.GetPlainId()+" PLAYERBASE IS NULL!");
 				return;
 				}
+
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] spawn object on self. item: " + params.presetName));
 					
 				switch(params.placementType)
 				{
@@ -372,6 +379,7 @@ class VPPItemManager: ConfigurablePlugin
 			Save();
 			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Created a new item preset",sender.GetPlainId(), sender.GetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), " Created a new item preset: " + data.param1 ));
 		}
 	}
 	//----------

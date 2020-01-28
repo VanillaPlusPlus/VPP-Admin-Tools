@@ -103,6 +103,9 @@ class ClientPlayerListManager : PluginBase
             {
                 if(user.GetUserId() == id)
                 {
+                    //WebHook Notifications
+                    GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(user.GetUserName(), user.GetUserId(), "left the server!"));
+                    
                     GetRPCManager().SendRPC( "RPC_ClientPlayerList", "ReceiveDeleteData", new Param1<string>(user.GetUserId()), true);
                     m_Users.RemoveItem(user);
                     break;

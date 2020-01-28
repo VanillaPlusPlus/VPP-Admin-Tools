@@ -15,11 +15,13 @@ class AdminTools extends PluginBase
         if (type == CallType.Server)
         {
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "DeleteObjectAtCrosshair")) return;
-                if (target)
-                {
-                    GetGame().ObjectDelete(target);
-                    GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted an object!",sender.GetPlainId(), sender.GetName()));
-                }
+            
+            if (target)
+            {
+            	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Deleted Object @ crosshair: "  + target.GetType()));
+                GetGame().ObjectDelete(target);
+                GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted an object!",sender.GetPlainId(), sender.GetName()));
+            }
         }
     }
 	
@@ -67,6 +69,7 @@ class AdminTools extends PluginBase
 				pb.SetPosition(data.param1);
 			}
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Teleported to crosshair position! [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Teleported to crosshair @ position: " + data.param1));
         }
 	}
 	
@@ -78,6 +81,7 @@ class AdminTools extends PluginBase
 			
 			GetRPCManager().SendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Toggled Freecam!",sender.GetPlainId(), sender.GetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Toggled Freecam"));
 		}
 	}
 }

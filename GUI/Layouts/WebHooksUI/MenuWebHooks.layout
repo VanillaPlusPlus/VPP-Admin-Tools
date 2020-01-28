@@ -1,0 +1,556 @@
+FrameWidgetClass rootFrame {
+ clipchildren 1
+ color 1 0 0 1
+ position 0 0
+ size 0.36 0.55
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ draggable 0
+ {
+  SmartPanelWidgetClass Main {
+   visible 1
+   clipchildren 1
+   inheritalpha 0
+   color 0 0 0 0.9216
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scaled 1
+   draggable 0
+   style DayZDefaultPanelBottom
+   "no focus" 0
+   {
+    SmartPanelWidgetClass HeaderTitle {
+     ignorepointer 0
+     color 0 0 0 1
+     position 0 0
+     size 1 0.0325
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 0
+     draggable 0
+     style DayZDefaultPanelBottom
+     {
+      TextWidgetClass Title {
+       ignorepointer 1
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Bold
+       text "WebHooks Manager"
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 0 0 0 1
+       size 0.03 1
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         size 0.97 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:ccgui_enforce image:Icon28EmptySlot"
+         mode additive
+         "src alpha" 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelLogText {
+     ignorepointer 1
+     position 0.01 0.04
+     size 0.44 0.95
+     halign right_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass log_content_title {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.0025
+       size 0.97 0.05
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_logcont {
+         ignorepointer 1
+         size 0.99 1
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "WebHooks"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 16
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass btnCreateWebhook {
+       position 0 0.01
+       size 0.7 0.05
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Editor
+       text "Create New"
+      }
+      ScrollWidgetClass ScrollerWebhooks {
+       ignorepointer 1
+       position 0 0.06
+       size 0.97 0.88
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       "Scrollbar V" 1
+       {
+        GridSpacerWidgetClass gridWebHooks {
+         ignorepointer 1
+         position 0 0
+         size 0.99 0.995
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         Columns 1
+         Rows 100
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelAttributes {
+     ignorepointer 1
+     position 0.01 0.04
+     size 0.53 0.95
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_black_2
+     {
+      ImageWidgetClass title_atts {
+       ignorepointer 1
+       color 0.6706 0.6706 0.6706 0.8784
+       position 0 0.0025
+       size 0.97 0.05
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       image0 "set:dayz_gui image:container_header"
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       {
+        TextWidgetClass title_text_logcont0 {
+         ignorepointer 1
+         size 0.99 1
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Normal
+         text "WebHook Attributes"
+         font "gui/fonts/sdf_MetronLight42"
+         "exact text" 1
+         "exact text size" 16
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      GridSpacerWidgetClass atts_options_root {
+       visible 1
+       ignorepointer 1
+       position 0 0.05
+       size 0.99 0
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       priority 3
+       Padding 25
+       Margin 0
+       "Size To Content V" 1
+       Columns 1
+       Rows 2
+       {
+        GridSpacerWidgetClass coptions_content {
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0.331
+         size 1 0
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanelSides
+         Padding 10
+         Margin 10
+         "Size To Content V" 1
+         Columns 1
+         Rows 5
+         {
+          FrameWidgetClass webHookOption {
+           ignorepointer 1
+           position 0 0
+           size 29 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Send Kill / Death logs"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass deathKillLogs {
+             ignorepointer 0
+             position 0 0
+             size 0.08 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             checked 0
+            }
+           }
+          }
+          FrameWidgetClass webHookOption0 {
+           ignorepointer 1
+           position 0 0
+           size 20 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label0 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Send Admin Activity Logs"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass adminActivityLog {
+             ignorepointer 0
+             position 0 0
+             size 0.08 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             checked 0
+            }
+           }
+          }
+          FrameWidgetClass webHookOption1 {
+           ignorepointer 1
+           position 0 0
+           size 22 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label1 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Send Player Hit / Damage Logs"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass admHitLog {
+             ignorepointer 0
+             position 0 0
+             size 0.08 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+            }
+           }
+          }
+          FrameWidgetClass webHookOption2 {
+           ignorepointer 1
+           position 0 0
+           size 20 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label2 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Send Player Join / Leave Logs"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass joinLeaveLog {
+             ignorepointer 0
+             position 0 0
+             size 0.08 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             checked 0
+            }
+           }
+          }
+          FrameWidgetClass webHookOption3 {
+           ignorepointer 1
+           position 0 0
+           size 20 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label3 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Name:"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            EditBoxWidgetClass webHookName {
+             ignorepointer 0
+             position 0 0
+             size 0.81 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             style Editor
+             "limit visible" 0
+             "Use default text" 0
+             "exact text" 1
+             font "gui/fonts/MetronBook-Italic22"
+            }
+           }
+          }
+          FrameWidgetClass webHookOption4 {
+           ignorepointer 1
+           position 0 0
+           size 20 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label4 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "URL:"
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            EditBoxWidgetClass urlText {
+             ignorepointer 0
+             position 0 0
+             size 0.81 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             style Editor
+             "limit visible" 0
+             "exact text" 1
+             font "gui/fonts/MetronBook-Italic22"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+      ButtonWidgetClass btnSaveChanges {
+       disabled 0
+       position 0 0.01
+       size 0.7 0.05
+       halign center_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "Save Changes"
+      }
+      PanelWidgetClass panel_info {
+       ignorepointer 1
+       position 0.05 0.15
+       size 0.9 0.3
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass info_image {
+         ignorepointer 1
+         color 1 0 0 1
+         size 32 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+        }
+        MultilineTextWidgetClass info_text {
+         ignorepointer 1
+         position 0.06 0
+         size 0.87 0.38
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZBold
+         text "Currently only Discord WebHooks are supported as the requests format (json) are suited for Discord"
+         font "gui/fonts/Metron-Italic16"
+         "exact text" 1
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+         wrap 1
+         "condense whitespace" 1
+         "strip newlines" 1
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass Header {
+   ignorepointer 0
+   size 0.965 0.028
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   draggable 1
+   style blank
+  }
+ }
+}

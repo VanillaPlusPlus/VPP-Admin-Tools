@@ -1,6 +1,7 @@
 modded class MissionServer
 {
-	private bool m_ServerLocked = false;
+	private float m_LoginTimeMs;
+	private bool  m_ServerLocked = false;
 	
 	void MissionServer()
 	{
@@ -8,6 +9,39 @@ modded class MissionServer
 		GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_MissionServer", "HandleChatCommand", this, SingeplayerExecutionType.Server );		
 		//======================================
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.FindLoginTime, 1500.0, false);
+	}
+
+	private void FindLoginTime()
+	{
+		if (!GetHive())
+		{
+			//No hive, keep timer short.
+			m_LoginTimeMs = 3000.0;
+			return;
+		}
+		string globalsXmlPath = XMLEditor.Cast(GetPluginManager().GetPluginByType(XMLEditor)).GetMissionPath("\\db\\globals.xml");
+		FileHandle file = OpenFile(globalsXmlPath, FileMode.READ);
+		if (file != 0)
+		{
+			string line_content = "";
+			FGets( file,  line_content );
+			while ( line_content != "" )
+			{
+				line_content.ToLower();
+				if (line_content.Contains("<var name=\"timelogin\""))
+				{
+					line_content.Trim();
+					line_content.Replace("<var name=\"timelogin\" type=\"0\" value=\"", "");
+					line_content.Replace("\"/>", "");
+					m_LoginTimeMs = (line_content.ToInt() * 1000) + 5000.0;
+					break;
+				}
+				FGets( file,  line_content );
+			}
+			CloseFile(file);
+		}
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.FindLoginTime);
 	}
 	
 	void RequestLockServer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -20,9 +54,11 @@ modded class MissionServer
 			{
 				m_ServerLocked = false;
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Server is NO LONGER locked!",NotifyTypes.NOTIFY);
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Unlocked the server"));
 			}else{
 				m_ServerLocked = true;
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Server is now locked!",NotifyTypes.NOTIFY);
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Locked the server"));
 			}
 		}
 	}
@@ -46,8 +82,8 @@ modded class MissionServer
 			
 			ClientPrepareEventParams clientPrepareParams;
 			Class.CastTo(clientPrepareParams, params);
-			
-			autoptr BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(clientPrepareParams.param1.GetPlainId());
+
+			ref BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(clientPrepareParams.param1.GetPlainId());
 			if (bannedPlayer != null)
 			{
 				autoptr BanDuration expireDate = bannedPlayer.expirationDate;
@@ -55,25 +91,40 @@ modded class MissionServer
 				if (expireDate.Permanent)
 				{
 					banReason += "\n Expiration Date: Permanent";
-				}else{
+				}
+				else
+				{
 					banReason += string.Format("\n Expiration Date %1/%2/%3  %4%5%6",expireDate.Year.ToString(),expireDate.Month.ToString(),expireDate.Day.ToString(),expireDate.Hour.ToString(),":",expireDate.Minute.ToString());
 				}
-				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, 3000, false, clientPrepareParams.param1,banReason); 
+				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, false, clientPrepareParams.param1.GetPlainId(), banReason); 
 			}
 			
 			if (m_ServerLocked)
 			{
-				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, 3000, false, clientPrepareParams.param1,"Server is Currently Locked!");
+				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, false, clientPrepareParams.param1.GetPlainId(),"Server is Currently Locked!");
 			}
+
+			if (!GetPlayerListManager().HasPlayerInList( clientPrepareParams.param1.GetPlainId() ))
+			{
+				//WebHook Notifications
+				autoptr JoinLeaveMessage data = new JoinLeaveMessage(clientPrepareParams.param1.GetName(), clientPrepareParams.param1.GetPlainId(), "joined the server!");
+				GetWebHooksManager().PostData(JoinLeaveMessage, data);
+			}
+
 		}else{
 			super.OnEvent(eventTypeId,params);
 		}
 	}
 	
-	void InvokeKickPlayer(PlayerIdentity identity, string msg)
+	void InvokeKickPlayer(string id, string msg)
 	{
+		autoptr PlayerIdentity identity = GetPermissionManager().GetIdentityById( id );
 		if(identity != null)
+		{
 			GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
+			Print("InvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayer");
+		}
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
 	}
 		
 	override void OnClientReconnectEvent(PlayerIdentity identity, PlayerBase player)
@@ -161,7 +212,6 @@ modded class MissionServer
 			PlayerDisconnected(player, identity, identity.GetPlainId());
 		}
 	}
-	
 
 	override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
 	{
@@ -172,6 +222,7 @@ modded class MissionServer
 			GetPlayerListManager().RemoveUserServer(uid);
 			Print("PlayerDisconnected:: Updating VPP Sync List! removed: "+uid);
 		}
+	
 		super.PlayerDisconnected(player,identity,uid);
 	}
 }

@@ -86,6 +86,12 @@ ImageSetClass {
    Size 62 62
    Flags 0
   }
+  ImageSetDefClass vpp_icon_webHooks {
+   Name "vpp_icon_webHooks"
+   Pos 1206 33
+   Size 62 62
+   Flags 0
+  }
  }
  Groups {
  }

@@ -4,6 +4,7 @@ class VPPESPTools extends PluginBase
 	{
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "DeleteItems", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "PlayerESP", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_VPPESPTools", "ToggleESP", this, SingeplayerExecutionType.Server );
 	}
 	
 	void DeleteItems(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -17,6 +18,7 @@ class VPPESPTools extends PluginBase
 			
 			autoptr array<Object> copyArray = new array<Object>;
 			copyArray.Copy(data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "Deleted Objects Using ESP tools: total:[" + copyArray.Count() +"]"));
 			foreach(Object obj : copyArray)
 			{
 				if (obj != null)
@@ -24,6 +26,16 @@ class VPPESPTools extends PluginBase
 			}
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Deleted ["+copyArray.Count()+"] item(s)!",NotifyTypes.NOTIFY);
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] deleted objects using ESP",sender.GetPlainId(), sender.GetName()));
+		}
+	}
+
+	void ToggleESP(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if( type == CallType.Server && sender != null)
+		{
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu")) return;
+
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "just toggled ON ESP Tools."));
 		}
 	}
 		

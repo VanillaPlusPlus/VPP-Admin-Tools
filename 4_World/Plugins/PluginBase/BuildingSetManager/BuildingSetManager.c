@@ -153,6 +153,8 @@ class BuildingSetManager : ConfigurablePlugin
 			
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Added New Building set: "+data.param1,NotifyTypes.NOTIFY);
 			GetSimpleLogger().Log("[BuildingSetManager] RemoteAddNewSet() Added new buildingset by user "+sender.GetPlainId() + " name: "+sender.GetName());
+			autoptr AdminActivityMessage rpt = new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BuildingSetManager] RemoteAddNewSet() Added new buildingset: " + data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, rpt);
 			//Send new data to client
 			GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
 		}
@@ -178,6 +180,8 @@ class BuildingSetManager : ConfigurablePlugin
 				SaveBuildingSet(toEdit);
 				//Send new data to client
 				GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
+				autoptr AdminActivityMessage rpt = new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BuildingSetManager] RemoteUpdateSet() Updated buildingset: " + data.param1);
+				GetWebHooksManager().PostData(AdminActivityMessage, rpt);
 				return;
 			}
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Something went wrong! Unable to update set",NotifyTypes.NOTIFY);
@@ -198,6 +202,8 @@ class BuildingSetManager : ConfigurablePlugin
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Deleted building set: "+data.param1,NotifyTypes.NOTIFY);
 			//Send new data to client
 			GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
+			autoptr AdminActivityMessage rpt = new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BuildingSetManager] RemoteDeleteSet() Deleted buildingset: " + data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, rpt);
 			return;
 		}
 		GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Something went wrong! Unable to delete set!",NotifyTypes.NOTIFY);
@@ -227,6 +233,8 @@ class BuildingSetManager : ConfigurablePlugin
 			//Send new data to client
 			GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
 			GetSimpleLogger().Log("[BuildingSetManager] RemoteSaveEdits() Saving & Reloading Building Set:" + bSet.GetName());
+			autoptr AdminActivityMessage rpt = new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BuildingSetManager] RemoteSaveEdits() Saving & Reloading Building Set:" + bSet.GetName());
+			GetWebHooksManager().PostData(AdminActivityMessage, rpt);
 			return;
 		}
 		GetSimpleLogger().Log("[BuildingSetManager] RemoteSaveEdits() Error saving set: "+bSet.GetName());
@@ -252,6 +260,8 @@ class BuildingSetManager : ConfigurablePlugin
 		if (bset != null)
 		{
 			bset.ExportBuildings();
+			autoptr AdminActivityMessage rpt = new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BuildingSetManager] ExportSetToCode() Exported Building Set:" + data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, rpt);
 		}
 	}
    /*

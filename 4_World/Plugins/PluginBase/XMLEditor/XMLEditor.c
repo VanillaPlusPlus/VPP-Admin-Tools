@@ -2,7 +2,7 @@ class XMLEditor extends PluginBase
 {
 	private ref array<string> ELEMENTS = { "nominal", "lifetime", "restock", "min", "quantmin", "quantmax", "cost" };
 	private string XML_PATH 		= "$profile:VPPAdminTools/Exports/types.xml";
-	private string MISSION_XML_PATH = GetMissionPath();
+	private string MISSION_XML_PATH = GetMissionPath("\\db\\types.xml");
 	
 	void XMLEditor()
 	{
@@ -20,7 +20,7 @@ class XMLEditor extends PluginBase
 		}
 	}
 	
-	string GetMissionPath()
+	string GetMissionPath(string endfilePath)
 	{
 		string result;
 		string cfgPath;
@@ -63,7 +63,7 @@ class XMLEditor extends PluginBase
 								{
 									string dirtyName = line.Substring(0,strIndex);
 									dirtyName.Replace("template=\"", "");
-									result = "$CurrentDir:mpmissions\\" + dirtyName + "\\db\\types.xml";
+									result = "$CurrentDir:mpmissions\\" + dirtyName + endfilePath;
 									break;
 								}
 							}
@@ -85,6 +85,8 @@ class XMLEditor extends PluginBase
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
 			
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Requested xml data for item: " + data.param1));
+
 			autoptr XMLParser parser = new XMLParser(XML_PATH);
 			if (parser.Load() && parser.VerifyXml())
 			{
@@ -114,6 +116,8 @@ class XMLEditor extends PluginBase
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
 			
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Saved edits to type.xml"));
+
 			autoptr array<ref Param3<string,string,int>> paramsData = data.param2;
 			string  itemType = data.param1;
 			
@@ -145,6 +149,7 @@ class XMLEditor extends PluginBase
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
 			
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Started a loot scan for item: " + data.param1));
 			ref map<ref Object,vector> FoundItems = new map<ref Object,vector>;
 			ref map<string,vector> ItemPositons = new map<string,vector>;
 			ref array<vector> ScanPockets = GetScanPositions();

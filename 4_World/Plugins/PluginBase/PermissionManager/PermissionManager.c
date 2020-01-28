@@ -39,8 +39,8 @@ class PermissionManager extends ConfigurablePlugin
 		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo" });
 		//Bans Manager
 		AddPermissionType({ "MenuBansManager","BansManager:UnbanPlayer","BansManager:UpdateBanDuration","BansManager:UpdateBanReason" });
-		//Log Viewer Menu
-		AddPermissionType({ "MenuLogsViewer","LogsViewer:ViewLogs" });
+		//WebHooks Menu
+		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
 		//Teleport Manager Menu
 		AddPermissionType({ "MenuTeleportManager","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
 		//ESP tools menu 
@@ -186,7 +186,10 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "PermissionsEditor:CreateUserGroup")) return;
+
 			CreateUserGroup( data.param1, 0, {} );
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Create User Group: " + data.param1));
 		}
 	}
 	
@@ -200,7 +203,10 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "PermissionsEditor:DeleteUserGroup")) return;
+
 			RemoveUserGroupByName(data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Delete User Group: " + data.param1));
 		}
 	}
 	
@@ -214,6 +220,8 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "PermissionsEditor:ChangePermLevel")) return;
+
 			if (data.param1 > -1 && data.param2 != "")
 			{
 				//Find group
@@ -224,6 +232,7 @@ class PermissionManager extends ConfigurablePlugin
 						group.SetPermissionLevel(data.param1);
 						Save();
 						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupPermLvl(): Group: "+group.GetGroupName()+" Permission level changed to: "+data.param1);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated User Group: " +group.GetGroupName()+" Permission level changed to: "+data.param1));
 						return;
 					}
 				}
@@ -241,6 +250,8 @@ class PermissionManager extends ConfigurablePlugin
 
 		if(type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+
 			if (data.param2 != "")
 			{
 				foreach(UserGroup group : m_UserGroups)
@@ -251,6 +262,7 @@ class PermissionManager extends ConfigurablePlugin
 						Save();
 						NotifyPlayer(sender.GetPlainId(),"Settings updated for group: "+group.GetGroupName(),NotifyTypes.NOTIFY);
 						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupSettings(): Group: "+group.GetGroupName()+" Settings changed!");
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated Settings for User Group: " +group.GetGroupName()));
 						return;
 					}
 				}
@@ -269,12 +281,15 @@ class PermissionManager extends ConfigurablePlugin
 		autoptr array<string> tempData = data.param1;
 		if (type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+
 			foreach(UserGroup group : m_UserGroups)
 			{
 				if (group.GetGroupName() == data.param2)
 				{
 					group.SetPermissions(tempData);
 					GetSimpleLogger().Log("[PermissionManager]:: RemoteUpdateGroupPerms(): Group: "+group.GetGroupName()+" Permissions updated");
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated Permissions for User Group: " +group.GetGroupName()));
 					autoptr array<ref VPPUser> grpMembers = group.GetMembers();
 					foreach(ref VPPUser member : grpMembers)
 					{
@@ -299,6 +314,8 @@ class PermissionManager extends ConfigurablePlugin
 		tmp.Copy(data.param1);
 		if (type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "PermissionsEditor:AddUser")) return;
+
 			autoptr array<ref VPPUser> users = new array<ref VPPUser>;
 			foreach(string id, string name : tmp)
 			{
@@ -311,6 +328,7 @@ class PermissionManager extends ConfigurablePlugin
 					AddMembersToGroup(user, data.param2, sender.GetPlainId());
 		   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, pid);
 					GetPlayerListManager().SendPlayerList(pid);
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Adding Users to User Group: " +data.param2 + " User ID: " + user.GetUserId()));
 				}
 			}
 		}
@@ -327,6 +345,8 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if (type == CallType.Server)
 		{
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+
 			foreach(ref UserGroup group : m_UserGroups)
 			{
 				if (group.FindUser(data.param1))
@@ -334,6 +354,7 @@ class PermissionManager extends ConfigurablePlugin
 					group.RemoveMembers(data.param1);
 					NotifyPlayer(sender.GetPlainId(),"Removing User: "+data.param1+" from group: "+group.GetGroupName(),NotifyTypes.NOTIFY);
 					GetSimpleLogger().Log("[PermissionManager]:: RemoteRemoveUserFromGroup(): Removing User: "+data.param1+" from group: "+group.GetGroupName());
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Removing User: " + data.param1 + " from Group: " + group.GetGroupName()));
 					Save();
 					autoptr PlayerIdentity tgIdentity = GetIdentityById(data.param1);
 					if (tgIdentity != null)
@@ -581,7 +602,7 @@ class PermissionManager extends ConfigurablePlugin
 		
 		//Reject permission if name not matching usergroup
 		autoptr UserGroup userGroup = GetUsergGroup(id);
-		if (userGroup != null)
+		if (userGroup != null && userGroup.IsForceSavedName())
 		{
 			PlayerIdentity identity = GetIdentityById(id);
 			VPPUser user = userGroup.FindUser(id);

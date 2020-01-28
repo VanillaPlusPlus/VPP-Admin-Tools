@@ -85,6 +85,7 @@ class BansManager extends ConfigurablePlugin
 			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuBansManager")) return;
 			
 			GetRPCManager().SendRPC("BanManagerClient", "HandleData", new Param1<ref array<ref BannedPlayer>>(m_BanList), true, sender);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Requested ban list"));
 		}
 	}
 	
@@ -98,6 +99,7 @@ class BansManager extends ConfigurablePlugin
 			
 			string id = data.param1;
 			RemoveFromBanList(id);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Removed ban for player ID: " + id));
 		}
 	}
 	
@@ -109,6 +111,7 @@ class BansManager extends ConfigurablePlugin
 			if(!ctx.Read(data)) return;
 
 			RemoveMultipleFromBanList(data.param1);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Removing " + data.param1.Count() + " ban(s)"));
 		}
 	}
 	
@@ -132,6 +135,7 @@ class BansManager extends ConfigurablePlugin
 				}
 			}
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),string.Format("Updated [%1] Ban Duration(s)",arrCount),NotifyTypes.NOTIFY);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Updated Ban Duration for: " + arrCount + " player(s)"));
 			Save();
 		}
 	}
@@ -155,6 +159,7 @@ class BansManager extends ConfigurablePlugin
 				}
 			}
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),string.Format("Updated [%1] Ban Reason(s)",arrCount),NotifyTypes.NOTIFY);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Updated Ban Reasons for: " + arrCount + " player(s)"));
 			Save();
 		}
 	}
@@ -230,7 +235,7 @@ class BansManager extends ConfigurablePlugin
 	//Works with steam64,GUID & name
 	bool IsPlayerBanned(string id)
 	{
-		autoptr BannedPlayer bannedPlayer = GetBannedPlayer(id);
+		ref BannedPlayer bannedPlayer = GetBannedPlayer(id);
 		if (bannedPlayer != null)
 		{
 			if (!CompareTime(bannedPlayer.expirationDate))

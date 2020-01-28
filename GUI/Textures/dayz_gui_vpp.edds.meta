@@ -1,7 +1,7 @@
 MetaFileClass {
  Name "{534691EE0479871E}VPPAdminTools/GUI/Textures/dayz_gui_vpp.edds"
  Author "daone-pc"
- ChangeDate 616359831
+ ChangeDate 1205102646
  Configurations {
   TGAResourceClass PC {
    SourceFile "vppUI.tga"

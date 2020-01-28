@@ -12,6 +12,7 @@ class ConfigurablePlugin : PluginBase
 	void Load();
 	void Save();
 
+	//Currenly used only for the building manager
 	protected void GetFilePaths(inout array<string> m_Files)
 	{
 		FindFileHandle FileSearch;
