@@ -19,6 +19,8 @@
 
 - [1.0.2](https://github.com/VanillaPlusPlus/VPP-Admin-Tools/releases/tag/1.0.2)
 
+- [1.1](https://github.com/VanillaPlusPlus/VPP-Admin-Tools/releases/tag/v1.1)
+
 ## What is Vanilla++:
 
 Vanilla++ is a DayZ workshop add-on which aims to add administration tools by implementing a collection of features which help communities manage their players while keeping the installation, and configuration simple for new, and advanced users.
