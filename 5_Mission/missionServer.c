@@ -107,8 +107,7 @@ modded class MissionServer
 			if (!GetPlayerListManager().HasPlayerInList( clientPrepareParams.param1.GetPlainId() ))
 			{
 				//WebHook Notifications
-				autoptr JoinLeaveMessage data = new JoinLeaveMessage(clientPrepareParams.param1.GetName(), clientPrepareParams.param1.GetPlainId(), "joined the server!");
-				GetWebHooksManager().PostData(JoinLeaveMessage, data);
+				GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(clientPrepareParams.param1.GetName(), clientPrepareParams.param1.GetPlainId(), "joined the server!"));
 			}
 
 		}else{

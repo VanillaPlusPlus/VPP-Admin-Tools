@@ -46,6 +46,9 @@ modded class PluginAdminLog
 			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition() , player.GetIdentity() ) + " HP: [" + player.GetHealth().ToString() + "] ";
 			string HitMessage   = VPPGetHitMessage( damageResult, component, dmgZone, ammo );
 			autoptr HitDamageMessage rpt = new HitDamageMessage();
+
+			if (player.GetIdentity() == null) return;
+
 			rpt.victimName = player.GetIdentity().GetName();
 			rpt.victimId   = player.GetIdentity().GetPlainId();
 
@@ -164,6 +167,9 @@ modded class PluginAdminLog
 		{
 			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition(), player.GetIdentity() );
 			autoptr KillDeathMessage rpt = new KillDeathMessage();
+			
+			if (player.GetIdentity() == null) return;
+
 			rpt.victimName = player.GetIdentity().GetName();
 			rpt.victimGUID = player.GetIdentity().GetPlainId();
 

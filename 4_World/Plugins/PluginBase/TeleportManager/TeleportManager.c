@@ -126,29 +126,26 @@ class TeleportManager : ConfigurablePlugin
 	{
 		if(broughtPlayer != null)
 		{
-			PlayerIdentity identity = broughtPlayer.GetIdentity();
+			string broughtPlayerId = broughtPlayer.GetIdentity().GetPlainId();
 			
-			if(identity != null)
+			if(broughtPlayerId == id)
 			{
-				if(identity.GetPlainId() == id)
-				{
-					GetSimpleLogger().Log("[Teleport Manager]:: BringPlayer(): You cannot bring yourself.");
-					GetPermissionManager().NotifyPlayer(id, "You cannot bring yourself.", NotifyTypes.ERROR);
-					return;
-				}
-				
-				m_ReturnVectors.Insert(identity.GetPlainId(), broughtPlayer.GetPosition());
-				
-				Transport veh = GetTransportVehicle(broughtPlayer);
-				if ( veh )
-				{
-					vector mat[4];
-					veh.GetTransform(mat);
-					mat[3] = adminPos;
-					veh.SetTransform(mat);
-				}else{
-					broughtPlayer.SetPosition(adminPos);
-				}
+				GetSimpleLogger().Log("[Teleport Manager]:: BringPlayer(): You cannot bring yourself.");
+				GetPermissionManager().NotifyPlayer(id, "You cannot bring yourself.", NotifyTypes.ERROR);
+				return;
+			}
+			
+			m_ReturnVectors.Insert(broughtPlayerId, broughtPlayer.GetPosition());
+			
+			Transport veh = GetTransportVehicle(broughtPlayer);
+			if ( veh )
+			{
+				vector mat[4];
+				veh.GetTransform(mat);
+				mat[3] = adminPos;
+				veh.SetTransform(mat);
+			}else{
+				broughtPlayer.SetPosition(adminPos);
 			}
 		}
 	}
@@ -157,10 +154,10 @@ class TeleportManager : ConfigurablePlugin
 	{
 		if(returnedPlayer != null)
 		{
-			PlayerIdentity identity = returnedPlayer.GetIdentity();
-			if(returnedPlayer.IsAlive() && identity != null)
+			string returnedPlayerId = returnedPlayer.GetIdentity().GetPlainId();
+			if(returnedPlayer.IsAlive())
 			{
-				vector returnVector = m_ReturnVectors.Get(identity.GetPlainId());
+				vector returnVector = m_ReturnVectors.Get(returnedPlayerId);
 				
 				if(returnVector == "0 0 0")
 				{
@@ -177,7 +174,7 @@ class TeleportManager : ConfigurablePlugin
 	
 	void GotoPlayer(Man target, PlayerBase self, string id)
 	{
-		if(target != null && target.GetIdentity() != null)
+		if(target != null)
 		{
 			if(target.GetIdentity().GetPlainId() == id)
 			{
@@ -266,17 +263,20 @@ class TeleportManager : ConfigurablePlugin
 	{
 		if( type == CallType.Server )
 		{
-			if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager"))
+			if(sender != null)
 			{
-				ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
-				autoptr array<Man>   m_Players = new array<Man>;
-				GetGame().GetWorld().GetPlayerList( m_Players );
-				
-				foreach(Man player : m_Players)
-					if(player != null)
-						m_List.Insert( new VPPPlayerData(player.GetIdentity().GetName(), player.GetPosition()) );
-				
-				GetRPCManager().SendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
+				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager"))
+				{
+					ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
+					autoptr array<Man>   m_Players = new array<Man>;
+					GetGame().GetWorld().GetPlayerList( m_Players );
+					
+					foreach(Man player : m_Players)
+						if(player != null)
+							m_List.Insert( new VPPPlayerData(player.GetIdentity().GetName(), player.GetPosition()) );
+					
+					GetRPCManager().SendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
+				}
 			}
 		}
 	}
@@ -285,11 +285,14 @@ class TeleportManager : ConfigurablePlugin
 	{
 		if(type == CallType.Server)
 		{
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager")) return;
-			
-			Load();
-			GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
-			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Sent Teleport Presets"));
+			if(sender != null)
+			{
+				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager")) return;
+				
+				Load();
+				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Sent Teleport Presets"));
+			}
 		}
 	}
 	
@@ -299,44 +302,48 @@ class TeleportManager : ConfigurablePlugin
 		if(type == CallType.Server)
 		{
 			if (!ctx.Read(data)) return;
-			
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPPlayers")) return;
-			
-			autoptr array<string> ids = data.param1;
 
-			if (ids.Count() == 1 && ids[0] == "self" && GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPSelf"))
-			{
-				string logMessage = "[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] teleported to ";
-				if (data.param3 != Vector(0,0,0) && data.param2 == "")
+			if(sender != null)
+			{	
+				string senderId = sender.GetPlainId();
+				if(!GetPermissionManager().VerifyPermission(senderId, "TeleportManager:TPPlayers")) return;
+
+				autoptr array<string> ids = data.param1;
+
+				if (ids.Count() == 1 && ids[0] == "self" && GetPermissionManager().VerifyPermission(senderId, "TeleportManager:TPSelf"))
 				{
-					TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId()), sender.GetPlainId());
-					logMessage = logMessage + data.param3[0].ToString() + "," + data.param3[1].ToString() + "," + data.param3[2].ToString();
-				}
-				else
-				{
-					TeleportToTown(data.param2, GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId()));
-					logMessage = logMessage + data.param2;
+					string logMessage = "[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + senderId + "] teleported to ";
+					if (data.param3 != Vector(0,0,0) && data.param2 == "")
+					{
+						TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, GetPermissionManager().GetPlayerBaseByID(senderId), senderId);
+						logMessage = logMessage + data.param3[0].ToString() + "," + data.param3[1].ToString() + "," + data.param3[2].ToString();
+					}
+					else
+					{
+						TeleportToTown(data.param2, GetPermissionManager().GetPlayerBaseByID(senderId));
+						logMessage = logMessage + data.param2;
+					}
+					
+					GetSimpleLogger().Log(logMessage);
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(senderId, sender.GetName(), logMessage));
+					return;
 				}
 				
-				GetSimpleLogger().Log(logMessage);
-				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), logMessage));
-				return;
-			}
-			
-			foreach(string id : ids)
-			{
-				if(GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TPPlayers"))
+				foreach(string id : ids)
 				{
-					PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(id);
-					
-					if (data.param3 != Vector(0,0,0) && data.param2 == "")
-						TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, targetPlayer, sender.GetPlainId());
-					else
-						TeleportToTown(data.param2, targetPlayer);
-					
-					GetSimpleLogger().Log("[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "]  targeted [" + targetPlayer.GetIdentity().GetName() + " : " + targetPlayer.GetIdentity().GetPlainId() + "] with teleport.");
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "]  targeted [" + targetPlayer.GetIdentity().GetName() + " : " + targetPlayer.GetIdentity().GetPlainId() + "] with teleport."));
+					if(GetPermissionManager().VerifyPermission(senderId, "TeleportManager:TPPlayers"))
+					{
+						autoptr PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(id);
+						
+						if (data.param3 != Vector(0,0,0) && data.param2 == "")
+							TeleportToPoint({data.param3[0].ToString(),data.param3[1].ToString(),data.param3[2].ToString()}, targetPlayer, senderId);
+						else
+							TeleportToTown(data.param2, targetPlayer);
+						
+						GetSimpleLogger().Log("[TeleportManager]:: TeleportRemote(): [" + sender.GetName() + " : " + sender.GetPlainId() + "]  targeted [" + targetPlayer.GetIdentity().GetName() + " : " + targetPlayer.GetIdentity().GetPlainId() + "] with teleport.");
+					}
 				}
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(senderId, sender.GetName(), "[TeleportManager] Teleporting " + ids.Count() + " players to position: " + data.param3));
 			}
 		}
 	}
@@ -347,30 +354,35 @@ class TeleportManager : ConfigurablePlugin
 		if(type == CallType.Server)
 		{
 			if (!ctx.Read(data)) return;
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:DeletePreset")) return;
-			
-			autoptr array<string> presetNames = data.param1;
-			int totalDeleted = 0;
-			foreach(string toDelete : presetNames)
+
+			if(sender != null)
 			{
-				foreach(ref VPPTeleportLocation location : m_TeleportLocations)
+				string senderId = sender.GetPlainId();
+				if(!GetPermissionManager().VerifyPermission(senderId, "TeleportManager:DeletePreset")) return;
+				
+				autoptr array<string> presetNames = data.param1;
+				int totalDeleted = 0;
+				foreach(string toDelete : presetNames)
 				{
-					if (location.GetName() == toDelete)
+					foreach(ref VPPTeleportLocation location : m_TeleportLocations)
 					{
-						totalDeleted++;
-						m_TeleportLocations.RemoveItem(location);
-						delete location;
+						if (location.GetName() == toDelete)
+						{
+							totalDeleted++;
+							m_TeleportLocations.RemoveItem(location);
+							delete location;
+						}
 					}
 				}
-			}
-			
-			if (totalDeleted > 0)
-			{
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Sucessfully deleted "+totalDeleted+" saved teleport presets!",NotifyTypes.NOTIFY);
-				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Deleted Preset(s): " + totalDeleted));
-				Save();
-				//send updated list to client
-				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				
+				if (totalDeleted > 0)
+				{
+					GetPermissionManager().NotifyPlayer(senderId,"Sucessfully deleted "+totalDeleted+" saved teleport presets!",NotifyTypes.NOTIFY);
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(senderId, sender.GetName(), "[TeleportManager] Deleted Preset(s): " + totalDeleted));
+					Save();
+					//send updated list to client
+					GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				}
 			}
 		}
 	}
@@ -381,13 +393,17 @@ class TeleportManager : ConfigurablePlugin
 		if(type == CallType.Server)
 		{
 			if (!ctx.Read(data)) return;
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:AddNewPreset")) return;
-			AddLocation(data.param1, data.param2);
-			Save();
-			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Sucessfully added "+data.param1+" preset!",NotifyTypes.NOTIFY);
-			//send updated list to client
-			GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
-			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Added new preset: " + data.param1 + " position: " + data.param2));
+
+			if(sender != null)
+			{
+				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:AddNewPreset")) return;
+				AddLocation(data.param1, data.param2);
+				Save();
+				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Sucessfully added "+data.param1+" preset!",NotifyTypes.NOTIFY);
+				//send updated list to client
+				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Added new preset: " + data.param1 + " position: " + data.param2));
+			}
 		}
 	}
 	
@@ -397,28 +413,32 @@ class TeleportManager : ConfigurablePlugin
 		if(type == CallType.Server)
 		{
 			if (!ctx.Read(data)) return;
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:EditPreset")) return;
-			
-			bool success = false;
-			foreach(ref VPPTeleportLocation location : m_TeleportLocations)
+
+			if(sender != null)
 			{
-				if (location.GetName() == data.param1 && location.GetLocation() == data.param2)
+				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:EditPreset")) return;
+				
+				bool success = false;
+				foreach(ref VPPTeleportLocation location : m_TeleportLocations)
 				{
-					location.SetName(data.param3);
-					location.Setlocation(data.param4);
-					success = true;
+					if (location.GetName() == data.param1 && location.GetLocation() == data.param2)
+					{
+						location.SetName(data.param3);
+						location.Setlocation(data.param4);
+						success = true;
+					}
 				}
-			}
-			
-			if (success)
-			{
-				Save();
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Sucessfully edited "+data.param1+" preset!",NotifyTypes.NOTIFY);
-				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Edited Preset: " + data.param1));
-				//send updated list to client
-				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
-			}else{
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to edited "+data.param1+" preset, something went wrong!",NotifyTypes.ERROR);
+				
+				if (success)
+				{
+					Save();
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Sucessfully edited "+data.param1+" preset!",NotifyTypes.NOTIFY);
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Edited Preset: " + data.param1));
+					//send updated list to client
+					GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				}else{
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to edited "+data.param1+" preset, something went wrong!",NotifyTypes.ERROR);
+				}
 			}
 		}
 	}

@@ -45,11 +45,11 @@ class PlayerManager extends PluginBase
 	
 	void BanPlayer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref array<string>> data; //targets
-        if ( !ctx.Read( data ) ) return;
-		
 		if (type == CallType.Server)
         {
+        	Param1<ref array<string>> data; //targets
+        	if ( !ctx.Read( data ) ) return;
+		
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:BanPlayer")) return;
 			
 			autoptr array<string> ids = data.param1;
@@ -57,7 +57,7 @@ class PlayerManager extends PluginBase
 			{
 				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:BanPlayer",tgId))
 				{
-					autoptr PlayerIdentity pid = GetPermissionManager().GetIdentityById(tgId);
+					ref PlayerIdentity pid = GetPermissionManager().GetIdentityById(tgId);
 					autoptr BanDuration banDuration = GetBansManager().GetCurrentTimeStamp();
 					string banAuthorDetails = string.Format("%1|%2",sender.GetName(),sender.GetPlainId());
 					banDuration.Permanent = true;
@@ -74,18 +74,18 @@ class PlayerManager extends PluginBase
 	
 	void KickPlayer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param2<ref array<string>,string> data; //targets, reason
-        if ( !ctx.Read( data ) ) return;
-		
 		if (type == CallType.Server)
         {
+        	Param2<ref array<string>,string> data; //targets, reason
+        	if ( !ctx.Read( data ) ) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:KickPlayer")) return;
 			autoptr array<string> ids = data.param1;
 			foreach(string tgId : ids)
 			{
 				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:KickPlayer",tgId))
 				{
-					autoptr PlayerIdentity tempiden = GetPermissionManager().GetIdentityById(tgId);
+					ref PlayerIdentity tempiden = GetPermissionManager().GetIdentityById(tgId);
 					if (tempiden != null)
 					{
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+tempiden.GetName(),NotifyTypes.NOTIFY);
@@ -100,11 +100,11 @@ class PlayerManager extends PluginBase
 	
 	void TeleportHandle(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param2<bool,ref array<string>> data; //opertation type,targets
-        if ( !ctx.Read( data ) ) return;
-		
 		if (type == CallType.Server)
         {
+        	Param2<bool,ref array<string>> data; //opertation type,targets
+        	if ( !ctx.Read( data ) ) return;
+			
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportToPlayer") || !GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportPlayerTo")) return;
 			
 			autoptr Man self = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
@@ -127,11 +127,11 @@ class PlayerManager extends PluginBase
 	
 	void SpectatePlayer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		ref Param1<string> data; //target id
-        if ( !ctx.Read( data ) ) return;
-		
 		if (type == CallType.Server)
         {
+        	ref Param1<string> data; //target id
+       	 	if ( !ctx.Read( data ) ) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:SpectatePlayer")) return;
 			
 			if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:SpectatePlayer",data.param1))
@@ -152,7 +152,7 @@ class PlayerManager extends PluginBase
 					m_RPCDelay = new Timer();
 					m_RPCDelay.Run(2.0,this,"InvokeSpectate", new Param2<string,string>(data.param1,sender.GetPlainId()),false);
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Press (PAGE-UP) to exit spectate!",NotifyTypes.NOTIFY);
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Started to spectate player: "+ data.param1 +" Name: " + tgp.GetIdentity().GetName()));
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Started to spectate player: "+ data.param1));
 				}
 
 				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] started to spectate player [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
@@ -167,19 +167,18 @@ class PlayerManager extends PluginBase
 		if (spectateTarget == null) return;
 
 		if (adminPlayer != null){
-			autoptr PlayerIdentity adminIdentity = adminPlayer.GetIdentity();
 			GetGame().ObjectDelete(adminPlayer);
-			GetRPCManager().SendRPC( "RPC_MenuPlayerManager", "InitSpectate", new Param1<Object>(spectateTarget), true, adminIdentity );
+			GetRPCManager().SendRPC( "RPC_MenuPlayerManager", "InitSpectate", new Param1<Object>(spectateTarget), true, adminPlayer.GetIdentity() );
 		}
 	}
 	
 	void KillPlayers(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref array<string>> data;
-        if ( !ctx.Read( data ) ) return;
-
         if (type == CallType.Server)
         {
+        	Param1<ref array<string>> data;
+        	if ( !ctx.Read( data ) ) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:KillPlayers")) return;
 			
 			autoptr array<string> ids = data.param1;
@@ -203,21 +202,20 @@ class PlayerManager extends PluginBase
 	
 	void SendMessage( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
-		Param3<string,string,ref array<string>> data;
-        if ( !ctx.Read( data ) ) return;
-
         if (type == CallType.Server)
         {
+        	Param3<string,string,ref array<string>> data;
+        	if ( !ctx.Read( data ) ) return;
+
         	ref array<string> pGUID = new array<string>;
         	pGUID.Copy(data.param3);
-        	autoptr PlayerIdentity TargetPlayer;
         	if (sender != NULL)
         	{
 				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:SendMessage"))
 				{
 					for (int i = 0; i < pGUID.Count(); ++i)
 	    		    {
-	    		    	TargetPlayer =  GetPermissionManager().GetIdentityById(pGUID.Get(i));
+	    		    	ref PlayerIdentity TargetPlayer =  GetPermissionManager().GetIdentityById(pGUID.Get(i));
 	    		    	if (TargetPlayer != NULL)
 	    		    	{
 	    		    		//Global, Identity ,Title, Message, Duration, FadeIn Time, Force show, DoFadeIn , Imagepath, Size X, Size Y
@@ -268,11 +266,11 @@ class PlayerManager extends PluginBase
 	
 	void GiveGodmode( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
-		Param1<string> data;
-		if (!ctx.Read(data)) return;
-		
 		if( type == CallType.Server )
         {
+        	Param1<string> data;
+			if (!ctx.Read(data)) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:GiveGodmode",data.param1)) return;
 			
 			autoptr PlayerBase TargetPlayer = GetPermissionManager().GetPlayerBaseByID(data.param1);
@@ -297,24 +295,25 @@ class PlayerManager extends PluginBase
 	
 	void GiveUnlimitedAmmo( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
-		Param1<string> data;
-		if (!ctx.Read(data)) return;
-		
 		if( type == CallType.Server )
         {
+        	Param1<string> data;
+			if (!ctx.Read(data)) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:GiveUnlimitedAmmo",data.param1)) return;
 			autoptr PlayerBase TargetPlayer = GetPermissionManager().GetPlayerBaseByID(data.param1);
 			if(TargetPlayer)
 			{
+				string targetPlayerName = TargetPlayer.GetIdentity().GetName();
 				if (TargetPlayer.IsUnlimitedAmmo())
 				{
 					GetPermissionManager().NotifyPlayer(data.param1,"Admin Revoked your unlimited ammo",NotifyTypes.NOTIFY);
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Revoked selected players unlimited ammo!",NotifyTypes.NOTIFY);
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Revoked unlimited ammo status from player: "+ TargetPlayer.GetIdentity().GetName() + " ID: " + data.param1));
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Revoked unlimited ammo status from player: "+ targetPlayerName + " ID: " + data.param1));
 				}else{
 					GetPermissionManager().NotifyPlayer(data.param1,"Admin Gave you Unlimited Ammo!",NotifyTypes.NOTIFY);
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Gave selected player Unlimited Ammo!",NotifyTypes.NOTIFY);
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Gave unlimited ammo status to player: "+ TargetPlayer.GetIdentity().GetName() + " ID: " + data.param1));
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Gave unlimited ammo status to player: "+ targetPlayerName + " ID: " + data.param1));
 				}
 				
 				TargetPlayer.SetUnlimitedAmmo(!TargetPlayer.IsUnlimitedAmmo());
@@ -326,11 +325,14 @@ class PlayerManager extends PluginBase
 	
 	void HealPlayers(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref array<string>> data; // player id's
-		if(!ctx.Read(data)) return;
-		
 		if (type == CallType.Server)
 		{
+			Param1<ref array<string>> data; // player id's
+			if(!ctx.Read(data)) return;
+		
+
+			if (sender == null) return;
+			
 			string adminID  = sender.GetPlainId();
 			if (!GetPermissionManager().VerifyPermission(adminID, "PlayerManager:HealPlayers")) return;
 			
@@ -369,16 +371,19 @@ class PlayerManager extends PluginBase
 	*/
 	void SetPlayerStats(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param3<float,string,string> data; //stat level, player id, stat type
-		if(!ctx.Read(data)) return;
-
 		if (type == CallType.Server)
 		{
+			Param3<float,string,string> data; //stat level, player id, stat type
+			if(!ctx.Read(data)) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:SetPlayerStats") || !GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:SetPlayerStats",data.param2)) return;
 			
 			autoptr PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(data.param2);
 			if (targetPlayer == null) return;
 			
+			string targetPlayerName = targetPlayer.GetIdentity().GetName();
+			string targetPlayerId = targetPlayer.GetIdentity().GetPlainId();
+
 			switch(data.param3)
 			{
 				case "Blood":
@@ -402,25 +407,24 @@ class PlayerManager extends PluginBase
 				break;
 			}
 			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just updated a health stat on [%3]",sender.GetPlainId(), sender.GetName(), data.param2));
-			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Set Player stats on target: " + targetPlayer.GetIdentity().GetPlainId() + " Name: " + targetPlayer.GetIdentity().GetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Set Player stats on target: " + targetPlayerId + " Name: " + targetPlayerName));
 		}
 	}
 		
 	void GetPlayerStats(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<string> data;
-		
-		if(!ctx.Read(data)) return;
-
 		if (type == CallType.Server)
 		{
+			Param1<string> data;
+			if(!ctx.Read(data)) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuPlayerManager")) return;
 			
 			string id = data.param1;
 			autoptr Man playerMan = GetPermissionManager().GetPlayerBaseByID(id);
 			if (playerMan != null && sender != null)
 			{
-				autoptr PlayerIdentity identity = playerMan.GetIdentity();
+				ref PlayerIdentity identity = playerMan.GetIdentity();
 				if (identity != null)
 				{
 					string inHandsName = "";
@@ -453,11 +457,11 @@ class PlayerManager extends PluginBase
 	
 	void RequestInvisibility(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref array<string>> data;
-		if(!ctx.Read(data)) return;
-		
 		if (type == CallType.Server && sender != null)
 		{
+			Param1<ref array<string>> data;
+			if(!ctx.Read(data)) return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:SetPlayerInvisible")) return;
 
 			autoptr array<string> ids = data.param1;
@@ -496,11 +500,11 @@ class PlayerManager extends PluginBase
 	
 	void GetPlayerStatsGroup(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref array<string>> data;
-		if(!ctx.Read(data)) return;
-		
 		if (type == CallType.Server)
 		{
+			Param1<ref array<string>> data;
+			if(!ctx.Read(data)) return;
+
 			ref array<string> UIDS = data.param1;
 			int pcount = UIDS.Count();
 			if (sender != null)
@@ -512,7 +516,7 @@ class PlayerManager extends PluginBase
 					autoptr Man playerMan = GetPermissionManager().GetPlayerBaseByID(id);
 					if (playerMan != null && sender != null)
 					{
-						autoptr PlayerIdentity identity = playerMan.GetIdentity();
+						ref PlayerIdentity identity = playerMan.GetIdentity();
 						if (identity != null)
 						{
 							string inHandsName = "";
