@@ -324,13 +324,14 @@ class PermissionManager extends ConfigurablePlugin
 			foreach(ref VPPUser user : users)
 			{
 				autoptr PlayerIdentity pid = GetIdentityById(user.GetUserId());
-				if (pid != null){
+				if (pid != null)
+				{
 					AddMembersToGroup(user, data.param2, sender.GetPlainId());
 		   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, pid);
 					GetPlayerListManager().SendPlayerList(pid);
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Adding Users to User Group: " +data.param2 + " User ID: " + user.GetUserId()));
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Adding Users to User Group: " +data.param2 + " Total: " + users.Count()));
 		}
 	}
 	

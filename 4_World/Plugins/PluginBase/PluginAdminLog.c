@@ -197,23 +197,34 @@ modded class PluginAdminLog
 			else if ( source.IsWeapon() || source.IsMeleeWeapon() )  // player
 			{
 				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyParent() );
-				string PlayerPrefix2 = "";
-				if(m_Source)
+				string name;
+				string guid;
+
+				if(m_Source != null && m_Source.GetIdentity() != null)
 				{
+					name = m_Source.GetIdentity().GetName();
+					guid = m_Source.GetIdentity().GetPlainId();
+					
+					string PlayerPrefix2 = "";
+
 					PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() , m_Source.GetIdentity() );
-				}
-				
-				if ( source.IsMeleeWeapon() )
-				{	
-					rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();	
+					
+					if ( source.IsMeleeWeapon() )
+					{	
+						rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();	
+					}
+					else
+					{
+						m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
+						rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with [" + source.GetDisplayName() + "] from [" + m_Distance + "] meters ";
+					}
+					rpt.killerName = name;
+					rpt.killerGUID = guid;
 				}
 				else
 				{
-					m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
-					rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with [" + source.GetDisplayName() + "] from [" + m_Distance + "] meters ";
+					rpt.details = PlayerPrefix + " killed by: " + source.GetType();
 				}
-				rpt.killerName = m_Source.GetIdentity().GetName();
-				rpt.killerGUID = m_Source.GetIdentity().GetPlainId();
 			}
 			else
 			{

@@ -231,11 +231,10 @@ class PlayerManager extends PluginBase
 	                         "",
 	                         0,
 	                         0);
-
 	                        GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] sent a message to [%3]",sender.GetPlainId(), sender.GetName(), pGUID.Get(i)));
-	                        GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Sent message "+ data.param2 +" to: " + pGUID.Get(i) + " Name: " + TargetPlayer.GetName()));
 	    		    	}
 	    		    }
+	    		    GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Sent message "+ data.param2 +" to " + pGUID.Count() + " Players"));
 				}
         	}
         }
