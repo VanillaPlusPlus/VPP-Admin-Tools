@@ -114,7 +114,7 @@ class BuildingSetManager : ConfigurablePlugin
 	{
 		if(type == CallType.Server)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager", "", false)) return;
 
 			GetRPCManager().SendRPC("RPC_MenuObjectManager","HandleData", new Param1<ref array<string>>(GetSetsNames()),true,sender);
 		}
@@ -127,7 +127,7 @@ class BuildingSetManager : ConfigurablePlugin
 		
 		if (type == CallType.Server)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager", "", false)) return;
 			
 			autoptr BuildingSet buildSet = GetBuildingSetByName(data.param1);
 			if (buildSet == null){
@@ -245,7 +245,7 @@ class BuildingSetManager : ConfigurablePlugin
 		Param1<Object> data;
 		if (!ctx.Read(data)) return;
 		
-		if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager")) return;
+		if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager", "", false)) return;
 		
 		if (data.param1 != null)
 			GetGame().ObjectDelete(data.param1);

@@ -19,8 +19,8 @@ class AdminTools extends PluginBase
             if (target)
             {
             	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Deleted Object @ crosshair: "  + target.GetType()));
+                GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted object [ %3 ] @ [ %4 ]",sender.GetPlainId(), sender.GetName(), target.GetType(),target.GetPosition()));
                 GetGame().ObjectDelete(target);
-                GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted an object!",sender.GetPlainId(), sender.GetName()));
             }
         }
     }

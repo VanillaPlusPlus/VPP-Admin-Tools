@@ -82,7 +82,7 @@ class BansManager extends ConfigurablePlugin
 	{
 		if(type == CallType.Server)
 		{
-			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuBansManager")) return;
+			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuBansManager", "", false)) return;
 			
 			GetRPCManager().SendRPC("BanManagerClient", "HandleData", new Param1<ref array<ref BannedPlayer>>(m_BanList), true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Requested ban list"));

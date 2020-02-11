@@ -83,7 +83,7 @@ class XMLEditor extends PluginBase
 		
 	 	if ( type == CallType.Server )
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor", "", false)) return;
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Requested xml data for item: " + data.param1));
 
@@ -114,7 +114,7 @@ class XMLEditor extends PluginBase
 		
 	 	if ( type == CallType.Server )
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor", "", false)) return;
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Saved edits to type.xml"));
 
@@ -147,7 +147,7 @@ class XMLEditor extends PluginBase
 		
 		if ( type == CallType.Server )
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor", "", false)) return;
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Started a loot scan for item: " + data.param1));
 			ref map<ref Object,vector> FoundItems = new map<ref Object,vector>;

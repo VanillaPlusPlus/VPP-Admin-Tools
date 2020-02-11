@@ -42,7 +42,7 @@ class PermissionManager extends ConfigurablePlugin
 		//WebHooks Menu
 		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
 		//Teleport Manager Menu
-		AddPermissionType({ "MenuTeleportManager","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
+		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
 		//ESP tools menu 
 		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP" });
 		//XML Editor menu
@@ -143,7 +143,7 @@ class PermissionManager extends ConfigurablePlugin
 		ref map<string,bool> permissions = new map<string,bool>;
 		foreach(string perm : permsToUpdate)
 		{
-			permissions.Insert(perm,VerifyPermission(targetId,perm));
+			permissions.Insert(perm,VerifyPermission(targetId,perm, "", false));
 		}
 		autoptr PlayerIdentity pidentity = GetIdentityById(targetId);
 		if (pidentity != null)
@@ -250,7 +250,7 @@ class PermissionManager extends ConfigurablePlugin
 
 		if(type == CallType.Server)
 		{
-			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor", "", false)) return;
 
 			if (data.param2 != "")
 			{
@@ -281,7 +281,7 @@ class PermissionManager extends ConfigurablePlugin
 		autoptr array<string> tempData = data.param1;
 		if (type == CallType.Server)
 		{
-			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor", "", false)) return;
 
 			foreach(UserGroup group : m_UserGroups)
 			{
@@ -346,7 +346,7 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if (type == CallType.Server)
 		{
-			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor")) return;
+			if (!VerifyPermission(sender.GetPlainId(), "MenuPermissionsEditor", "", false)) return;
 
 			foreach(ref UserGroup group : m_UserGroups)
 			{
@@ -491,7 +491,7 @@ class PermissionManager extends ConfigurablePlugin
 	private void CreateDefualtUserGroups()
 	{
 		CreateUserGroup( "Admins", 1, m_Permissions );
-		AddMembersToGroup(new VPPUser("Fake User 1","76561198321354734"), "Admins");
+		AddMembersToGroup(new VPPUser("Example User","26561198420222028"), "Admins");
 		
 	    GetSimpleLogger().Log("[PermissionManager]:: CreateDefualtUserGroups(): Created defualt UserGroups.vpp");
 	}
@@ -592,12 +592,15 @@ class PermissionManager extends ConfigurablePlugin
 	// @Param: string callerID, string permissionName, string TargetID
 	// @Target ID should match be the same as target if there isn't a target.
 	
-	bool VerifyPermission(string id, string permissionName, string targetID = "")
+	bool VerifyPermission(string id, string permissionName, string targetID = "", bool sendNotify = true)
 	{
 		if (m_Permissions.Find(permissionName) <= -1) //Reject permission no matter what if wrong perm type was received.
 		{
 			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", Target: Self, Unregistred/Unknown Permission type! Rejected.");
-			NotifyPlayer(id,"The permission "+permissionName+" is unknown/unregistered!",NotifyTypes.ERROR);
+			
+			if ( sendNotify )
+				NotifyPlayer(id,"The permission "+permissionName+" is unknown/unregistered!",NotifyTypes.ERROR);
+
 			return false;
 		}
 		
@@ -620,7 +623,10 @@ class PermissionManager extends ConfigurablePlugin
 		if(!HasUserGroup(id))
 		{
 			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-			NotifyPlayer(id,"You are not an admin or belong to a usergroup.",NotifyTypes.PERMISSION_REJECT);
+			
+			if ( sendNotify )
+				NotifyPlayer(id,"You are not an admin or belong to a usergroup.",NotifyTypes.PERMISSION_REJECT);
+			
 			return false;
 		}
 		
@@ -633,7 +639,10 @@ class PermissionManager extends ConfigurablePlugin
 		if(IsSuperAdmin(targetID) && !IsSuperAdmin(id))
 		{
 			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-			NotifyPlayer(id,"You cannot target Super Admins with: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+			
+			if ( sendNotify )
+				NotifyPlayer(id,"You cannot target Super Admins with: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+			
 			return false;
 		}
 		
@@ -675,7 +684,10 @@ class PermissionManager extends ConfigurablePlugin
 				if(group.GetPermissions().Find(permissionName) <= -1)
 				{
 					GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-					NotifyPlayer(id,"You don't have the following permission: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+					
+					if ( sendNotify )
+						NotifyPlayer(id,"You don't have the following permission: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+					
 					return false;
 				}
 			}
@@ -684,7 +696,8 @@ class PermissionManager extends ConfigurablePlugin
 		bool hasPermission = senderPermLevel < targetPermLevel || (targetID == id && senderPermLevel == targetPermLevel);
 		if (!hasPermission && GetIdentityById(targetID) != null)
 		{
-			NotifyPlayer(id,"Permission level too low to exectue: " + permissionName + " On: "+GetIdentityById(targetID).GetName(), NotifyTypes.PERMISSION_REJECT);
+			if ( sendNotify )
+				NotifyPlayer(id,"Permission level too low to exectue: " + permissionName + " On: "+GetIdentityById(targetID).GetName(), NotifyTypes.PERMISSION_REJECT);
 		}
 		GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID : " + targetID + ", Permission: " + permissionName + ", Value: " + hasPermission);
 		

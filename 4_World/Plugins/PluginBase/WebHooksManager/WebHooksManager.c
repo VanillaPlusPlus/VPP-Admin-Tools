@@ -106,7 +106,7 @@ class WebHooksManager: ConfigurablePlugin
 	{
 		if(type == CallType.Server && sender)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks"))
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks", "", false))
 				return;
 
 			GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender);

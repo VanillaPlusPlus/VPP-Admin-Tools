@@ -65,10 +65,9 @@ class PlayerManager extends PluginBase
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Player "+pid.GetName()+" is now banned!",NotifyTypes.NOTIFY);
 					else
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to ban player "+pid.GetName(),NotifyTypes.NOTIFY);
-
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Banned player: "+ pid.GetName() + " ID: " + tgId));
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Banned " + ids.Count() + " player(s)"));
 		}
 	}
 	
@@ -91,10 +90,10 @@ class PlayerManager extends PluginBase
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+tempiden.GetName(),NotifyTypes.NOTIFY);
 						GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tempiden);
 						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Kicked player [%3]",sender.GetPlainId(), sender.GetName(), tempiden.GetName()));
-						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Kicked player: "+ tempiden.GetName()));
 					}
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Kicked "+ ids.Count() +" player(s)"));
 		}
 	}
 	
@@ -417,7 +416,7 @@ class PlayerManager extends PluginBase
 			Param1<string> data;
 			if(!ctx.Read(data)) return;
 
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuPlayerManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuPlayerManager", "", false)) return;
 			
 			string id = data.param1;
 			autoptr Man playerMan = GetPermissionManager().GetPlayerBaseByID(id);
@@ -508,7 +507,7 @@ class PlayerManager extends PluginBase
 			int pcount = UIDS.Count();
 			if (sender != null)
 			{
-				if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuPlayerManager")) return;
+				if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuPlayerManager", "", false)) return;
 				
 				foreach(string id : UIDS)
 				{

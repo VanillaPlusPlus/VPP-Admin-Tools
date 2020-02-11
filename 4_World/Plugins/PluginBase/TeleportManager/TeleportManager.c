@@ -265,7 +265,7 @@ class TeleportManager : ConfigurablePlugin
 		{
 			if(sender != null)
 			{
-				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager"))
+				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:ViewPlayerPositions", "", false))
 				{
 					ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
 					autoptr array<Man>   m_Players = new array<Man>;
@@ -287,7 +287,7 @@ class TeleportManager : ConfigurablePlugin
 		{
 			if(sender != null)
 			{
-				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager")) return;
+				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager", "", false)) return;
 				
 				Load();
 				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);

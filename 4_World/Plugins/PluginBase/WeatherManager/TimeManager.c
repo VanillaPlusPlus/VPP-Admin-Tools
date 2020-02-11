@@ -44,7 +44,7 @@ class TimeManager : ConfigurablePlugin
 	{
 		if(type == CallType.Server)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuWeatherManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuWeatherManager", "", false)) return;
 			
 			array<string> input = new array<string>;
 			foreach(TimeSetting ts : timeSettings)

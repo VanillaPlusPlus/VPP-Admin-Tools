@@ -41,6 +41,12 @@ class SpawnedBuilding
 					//GetRPCManager().SendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
 			}
 		}
+
+		if(GetGame().IsClient())
+		{
+			if(m_Building != null)
+				GetGame().ObjectDeleteOnClient(m_Building);
+		}
 	}
 	
 	string GetTypeName()

@@ -1,9 +1,9 @@
 class ChatCommand
 {
-    private string m_Command;
-    private int m_MinimumArgsCount;
-    private string m_Permission;
-    private bool m_PlayersAsArgs;
+    protected string m_Command;
+    protected int m_MinimumArgsCount;
+    protected string m_Permission;
+    protected bool m_PlayersAsArgs;
     
     void ChatCommand(string command, int argsCount, string permission, bool playerArgs = false)
     {
@@ -33,4 +33,7 @@ class ChatCommand
     {
         return m_Permission;
     }
+
+    void ExecuteCommand(PlayerBase caller, array<Man> targets, array<string> args);
 }
+

@@ -231,7 +231,7 @@ class VPPItemManager: ConfigurablePlugin
 	{
 		if(type == CallType.Server)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager", "", false)) return;
 			Load();
 			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Sent saved presets data."));
@@ -330,8 +330,8 @@ class VPPItemManager: ConfigurablePlugin
 						break;
 					}
 					GetSimpleLogger().Log("[ItemManager] :: SpawnItem(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] Spawned Item " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]");
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] :: SpawnItem(): Spawned Item " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]"));
 				}
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] :: SpawnItem(): Spawned Item " + params.presetName + " " + params.targets.Count() + " player(s) "));
 			}else{
 				//Self Spawn
 				targetPlayer = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());

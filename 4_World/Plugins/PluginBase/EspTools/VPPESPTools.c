@@ -33,7 +33,7 @@ class VPPESPTools extends PluginBase
 	{
 		if( type == CallType.Server && sender != null)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu", "", false)) return;
 
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "just toggled ON ESP Tools."));
 		}

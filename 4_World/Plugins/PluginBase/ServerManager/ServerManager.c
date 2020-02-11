@@ -171,7 +171,7 @@ class ServerManager extends PluginBase
 	{
 		if( type == CallType.Server )
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuServerManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuServerManager", "", false)) return;
 			
 			ref array<ref VPPPlayerData> m_List = new array<ref VPPPlayerData>;
 			autoptr array<Man>   m_Players = new array<Man>;
@@ -221,7 +221,7 @@ class ServerManager extends PluginBase
 	{
 		if( type == CallType.Server )
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuServerManager")) return;
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuServerManager", "", false)) return;
 			
 			autoptr array<string> file_list = new array<string>;
 			SearchForFiles(file_list);
