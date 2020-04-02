@@ -66,7 +66,7 @@ If you have issues with this step, please join our Discord we can help you out :
 If you add multiple steam id's each one has to be on it's own line with no empty spaces at the end, or begin of each steam id. You can get your Steam ID: [Here](http://steamid.io/)
 
 ## End
-If you have followed these steps correctly, you should be able to get in-game, and press the INSERT key to open the tools. Every button for every module will be on the right side of your screen, and can be opened, and closed by simply clicking on it.
+If you have followed these steps correctly, you should be able to get in-game, and press the key you configured to open the tools. Every button for every module will be on the right side of your screen, and can be opened, and closed by simply clicking on it.
 
 ## Donation Information
 - [DaOne](https://www.paypal.me/duhonez)
