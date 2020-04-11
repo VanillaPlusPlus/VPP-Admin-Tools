@@ -77,18 +77,23 @@ If you wish to manual edit these Json Configuration Files, please use [JsonEdito
 
 ## FAQ & Troubleshooting
 ***Q:*** I Press the keybind but nothing happens?
+
 ***A:*** Make sure you have your ***Steam64ID*** added as a superadmin under ***VPPAdminTools/Permissions/SuperAdmins/SuperAdmins.txt***
 
 ***Q:*** I can't find the profiles folder
+
 ***A:*** The "Profile" folder can be different to each Game Service Provider, It contains all your log files of types ( .log, .rpt, .adm ). If you are hosting the server locally, then make sure to follow the instructions carefully [Adding Super Admin](#adding-a-super-admin)
 
 ***Q:***  I found the profile folder, but there is no VPPAdminTools folder.
+
 ***A:*** Make sure the mod is actually installed on your server, verify that via your GSP Panel or check an .RPT log headline for the mods name. The folder VPPAdminTools is auto-generated during 1st boot of server after installation of mod.
 
 ***Q:***  Why is the Server not starting? I'm getting a Virtual Machine Error.
+
 ***A:*** This is either caused by **missing required mods, CF / VPPNotifications** OR compatability issues with other admin tool mods ( uninstall other admin tool mods ).
 
 ***Q:*** Why do i get kicked for missing pbo or client contains pbo which server rejected.
+
 ***A:*** The mod comes with a folder named 'Keys' you need to copy the contents of that folder and paste it into a folder named 'Keys' located in the root directory of your DayZ Server.
 
 **Still having issues? Join our [Discord]([https://discordapp.com/invite/GWXN2bB](https://discordapp.com/invite/GWXN2bB)) server and chat to use about the issues you are running into so we can help you out :D**
