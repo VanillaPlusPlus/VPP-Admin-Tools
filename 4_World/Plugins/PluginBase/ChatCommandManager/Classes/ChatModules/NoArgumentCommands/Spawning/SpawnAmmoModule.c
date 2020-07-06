@@ -42,6 +42,7 @@ class SpawnAmmoChatModule extends ChatCommand
 			}
 			GetGame().RPCSingleParam(caller, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>( "Weapon " + weapon.ConfigGetString("displayName") + " Reloaded and Repaired" ), true, caller.GetIdentity());
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /ammo used on self."));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /ammo used on self.", callerName, callerID));
 		}
     }
 

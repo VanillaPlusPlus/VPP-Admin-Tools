@@ -149,13 +149,13 @@ class MenuWeatherManager extends AdminHudSubMenu
 		m_ImgInfoTimePreset    = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ImgInfoTimePreset"));
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfoTimePreset.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("This feature allows you to save presets of current world time OR the time data that you have typed in the 'World Time' section of the menu.\nTick the box `Use Current Time` to save time directly from the world (current time, as shown in the `Information` section of the menu.)");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_WEATHER_MNU");
 		
 		m_ImgInfoWeatherPreset = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ImgInfoWeatherPreset"));
 		m_ImgInfoWeatherPreset.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("This feature allows you to save weather presets that you can apply when you wish to. Duplicate names are not allowed!\nOpening and closing this menu will refresh the presets list if other admins made any new presets while you had it open.");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_WEATHER_PRST");
 	}
 	
 	override void ShowSubMenu()
@@ -342,13 +342,13 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(name == "Weather Presets")
 		{
-			GetVPPUIManager().DisplayError("Please select a weather preset to delete.");
+			GetVPPUIManager().DisplayError("#VSTR_TOOLTIP_SELECT_PRST_WEATHER");
 			return;
 		}
 		
 		if(weatherPresetNames.Find(name) < 0)
 		{
-			GetVPPUIManager().DisplayError("Weather Setting doesn't exist.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_WEATHERSETTING");
 			return;
 		}
 		
@@ -357,7 +357,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 
 		UpdateWeatherSaves();
 		GetRPCManager().SendRPC( "RPC_WeatherManager", "RemoveWeatherSettingsFromServer", new Param1<string>(name), true );
-		GetVPPUIManager().DisplayNotification("Deleting Weather Preset...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_DEL_WEATHER_PRST");
 	}
 	
 	private void SaveWeather()
@@ -366,19 +366,19 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(name == string.Empty || name == "Enter Name")
 		{
-			GetVPPUIManager().DisplayError("Incorrect Weather Preset Name");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_INCRR_PRESET");
 			return;
 		}
 		
 		if(weatherPresetNames.Find(name) >= 0)
 		{
-			GetVPPUIManager().DisplayError("Name is already in use.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_NAME_INUSE");
 			return;
 		}
 		
 		if(m_OvercastRate.GetText() == string.Empty || m_OvercastDur.GetText() == string.Empty || m_RainRate.GetText() == string.Empty || m_RainDur.GetText() == string.Empty || m_FogDur.GetText() == string.Empty || m_FogRate.GetText() == string.Empty)
 		{
-			GetVPPUIManager().DisplayError("Invalid Weather Data");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_INVALID_WEATHERDATA");
 			return;
 		}
 		
@@ -394,7 +394,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		GetWeatherValues(overcast, fog, rain, wind);
 		
 		GetRPCManager().SendRPC( "RPC_WeatherManager", "AddWeatherSettingToServer", new Param5<array<float>, array<float>, array<float>, float, string>(overcast, fog, rain, wind, name), true );
-		GetVPPUIManager().DisplayNotification("Saving Weather Preset...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SAVING_WEATHER");
 	}
 	
 	private void ApplyWeather()
@@ -422,12 +422,12 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(name == string.Empty || name == "Weather Presets")
 		{
-			GetVPPUIManager().DisplayError("Please select a weather preset.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_WEATHER_SELECT_PRST");
 			return;
 		}
 		
 		GetRPCManager().SendRPC( "RPC_WeatherManager", "ApplyPreset", new Param1<string>(name), true );
-		GetVPPUIManager().DisplayNotification("Applying Weather Preset...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_APPLY_WEATHERPREST");
 	}
 	
 	private void DeleteDate()
@@ -436,13 +436,13 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(name == "Time Presets")
 		{
-			GetVPPUIManager().DisplayError("Please select a time preset to delete.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_SELECT_PRST_WEATHER_DEL");
 			return;
 		}
 		
 		if(timePresetNames.Find(name) < 0)
 		{
-			GetVPPUIManager().DisplayError("Time Preset doesn't exist.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_TIME_PRST");
 			return;
 		}
 		
@@ -450,7 +450,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		timePresetNames.RemoveItem(name);
 		GetRPCManager().SendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
 		UpdateTimeSaves();
-		GetVPPUIManager().DisplayNotification("Removing Date Preset...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_REMOVE_DATE_PRST");
 	}
 	
 	private void SaveDate()
@@ -470,7 +470,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 			
 			if(yearInput.GetText() == string.Empty || monthInput.GetText() == string.Empty || dayInput.GetText() == string.Empty || minInput.GetText() == string.Empty || hourInput.GetText() == string.Empty)
 			{
-				GetVPPUIManager().DisplayError("Missing Date information.");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_MISSING_DATE");
 				return;
 			}
 		}
@@ -483,7 +483,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 	
 		if(timePresetNames.Find(name) >= 0)
 		{
-			GetVPPUIManager().DisplayError("Duplicate Time Presets");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_DUPE_TIME_PRST");
 			return;
 		}
 		
@@ -491,7 +491,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		UpdateTimeSaves();
 		
 		GetRPCManager().SendRPC( "RPC_TimeManager", "SaveTimeSettings", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
-		GetVPPUIManager().DisplayNotification("Saving Date Preset...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SAVE_PRST_DATE");
 	}
 	
 	private void ApplyDate()
@@ -501,7 +501,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(yearInput.GetText() == string.Empty || monthInput.GetText() == string.Empty || dayInput.GetText() == string.Empty || minInput.GetText() == string.Empty || hourInput.GetText() == string.Empty)
 		{
-			GetVPPUIManager().DisplayError("Missing Date information.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_DATE_MISSING");
 			return;
 		}
 		
@@ -512,7 +512,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		hour = hourInput.GetText().ToInt();
 		
 		GetRPCManager().SendRPC( "RPC_TimeManager", "ApplyDate", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
-		GetVPPUIManager().DisplayNotification("Applying...Please Wait, sometimes it takes a few seconds to update!");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WTH_APPLYING");
 	}
 	
 	private void ApplyTimePreset()
@@ -521,12 +521,12 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(name == string.Empty || name == "Time Presets")
 		{
-			GetVPPUIManager().DisplayError("Please select a time preset.");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_SELECT_TIME_PRST");
 			return;
 		}
 		
 		GetRPCManager().SendRPC( "RPC_TimeManager", "ApplyPreset", new Param1<string>(name), true );
-		GetVPPUIManager().DisplayNotification("Applying Time Preset...Please wait.");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_APPLY_TIME_PRST");
 	}
 	
 	private void DeleteTimePreset()
@@ -538,7 +538,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 			GetRPCManager().SendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
 		 	timePresetNames.Remove(timePresetNames.Find(name));
 			UpdateTimeSaves();
-			GetVPPUIManager().DisplayNotification("Time Preset...Updated");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_UPDATED_TIME_PRST");
 		}
 	}
 	

@@ -35,13 +35,26 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgActions {
+       clipchildren 0
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.08
+       size 0.986 0.906
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass timePanel_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.995 0.073
+       size 0.985 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -63,7 +76,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Actions"
+         text "#VSTR_LBL_ACTIONS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -74,7 +87,8 @@ FrameWidgetClass rootFrame {
       }
       GridSpacerWidgetClass ButtonsSpacer {
        ignorepointer 1
-       size 0.86 1
+       position 0 0.01
+       size 0.86 0.9
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -97,7 +111,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Heal Player(s)"
+         text "#VSTR_LBL_HEAL_PLAYERS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionKill {
@@ -110,7 +124,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Kill Player(s)"
+         text "#VSTR_LBL_KILL_PLAYERS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionTpToMe {
@@ -122,7 +136,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Teleport To Me"
+         text "#VSTR_LBL_TP_TO_ME"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionSendMessage {
@@ -135,7 +149,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Send Message"
+         text "#VSTR_LBL_SEND_MESSAGE"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionTpMeTo {
@@ -147,7 +161,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Teleport Me To"
+         text "#VSTR_LBL_TP_ME_TO"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionKickPlayer {
@@ -160,7 +174,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Kick Player(s)"
+         text "#VSTR_LBL_KICK_PLAYERS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionBanPlayer {
@@ -173,7 +187,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Ban Player(s)"
+         text "#VSTR_LBL_BAN_PLAYERS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionSpectate {
@@ -185,12 +199,11 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Spectate Player"
+         text "#VSTR_LBL_SPECTATE_PLAYER"
          font "gui/fonts/Metron-Bold14"
         }
-        ButtonWidgetClass ActionMakeInvis {
-         visible 0
-         color 0.6667 0.1686 0.1529 1
+        ButtonWidgetClass ActionMakeVomit {
+         visible 1
          position 0 0
          size 0.4 0.19
          halign center_ref
@@ -199,8 +212,9 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
+         scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Make Invisible"
+         text "#VSTR_LBL_MAKE_VOMIT"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionGiveGodmode {
@@ -214,7 +228,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Godmode"
+         text "#VSTR_LBL_GODMODE"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass ActionUnlimitedAmmo {
@@ -226,7 +240,31 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Unlimited Ammo"
+         text "#VSTR_LBL_UNLIM_AMMO"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionInvisible {
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "#VSTR_LBL_SET_INVIS"
+         font "gui/fonts/Metron-Bold14"
+        }
+        ButtonWidgetClass ActionFreezePlayer {
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         text "#VSTR_LBL_FREEZE_PLAYER"
          font "gui/fonts/Metron-Bold14"
         }
        }
@@ -241,8 +279,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgPlayers {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.08
+       size 0.976 0.912
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ScrollWidgetClass PlayerList {
        ignorepointer 0
        keepsafezone 0
@@ -282,7 +332,7 @@ FrameWidgetClass rootFrame {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.97 0.073
+       size 0.98 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -304,7 +354,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Player List"
+         text "#VSTR_LBL_PLAYERS_LIST"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -346,7 +396,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Refresh"
+       text "#VSTR_REFRESH"
       }
      }
     }
@@ -359,13 +409,25 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgDetials {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.08
+       size 0.976 0.912
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass player_info_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.97 0.073
+       size 0.98 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -387,7 +449,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Player Details"
+         text "#VSTR_LBL_PLAYERS_DETAILS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -450,7 +512,6 @@ FrameWidgetClass rootFrame {
      text "Add Selected Players To Group"
     }
     EditBoxWidgetClass SearchInputBox {
-     color 0.9176 0.0314 0.0314 1
      position 0.01 0.035
      size 0.98 0.03
      hexactpos 0
@@ -459,7 +520,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style DefaultBorder
      "no focus" 0
-     text "Search For Player"
+     text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
      font "gui/fonts/Metron-Italic16"
@@ -474,13 +535,25 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlSlidersbg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.08
+       size 0.986 0.906
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass timePanel_title_slider {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.995 0.073
+       size 0.985 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -502,7 +575,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Modifiers"
+         text "#VSTR_LBL_MODIFIERS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -547,7 +620,7 @@ FrameWidgetClass rootFrame {
          filter 1
         }
         SliderWidgetClass SliderHealth {
-         color 0.7176 0.1412 0.1412 1
+         color 0.6706 0.6706 0.6706 1
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -595,7 +668,7 @@ FrameWidgetClass rootFrame {
          filter 1
         }
         SliderWidgetClass SliderBlood {
-         color 0.7176 0.1412 0.1412 1
+         color 0.6706 0.6706 0.6706 1
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -643,7 +716,7 @@ FrameWidgetClass rootFrame {
          filter 1
         }
         SliderWidgetClass SliderShock {
-         color 0.7176 0.1412 0.1412 1
+         color 0.6706 0.6706 0.6706 1
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -689,7 +762,7 @@ FrameWidgetClass rootFrame {
          filter 1
         }
         SliderWidgetClass SliderWater {
-         color 0.7176 0.1412 0.1412 1
+         color 0.6706 0.6706 0.6706 1
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -737,7 +810,7 @@ FrameWidgetClass rootFrame {
          filter 1
         }
         SliderWidgetClass SliderEnergy {
-         color 0.7176 0.1412 0.1412 1
+         color 0.6706 0.6706 0.6706 1
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -959,7 +1032,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "PLAYER MANAGER"
+     text "#VSTR_PLAYER_MANAGER_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

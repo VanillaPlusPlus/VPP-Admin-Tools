@@ -22,21 +22,21 @@ class MenuCommandsConsole: AdminHudSubMenu
 		m_FilterWidgets = new map<ref Widget, string>;
 		m_PrevCommands = new array<string>;
 		m_CmdTooltips  = new map<string,ref Param2<string,string>>;
-		m_CmdTooltips.Insert( "/sph", new Param2<string,string>("spawn an item into hands", "<class name>") );
-		m_CmdTooltips.Insert( "/spg", new Param2<string,string>("spawn an item on ground", "<class name>") );
-		m_CmdTooltips.Insert( "/spawncar", new Param2<string,string>("spawn a civilian sedan nearby", "") );
-		m_CmdTooltips.Insert( "/refuel", new Param2<string,string>("refuel & repair vehicle you are in", "") );
-		m_CmdTooltips.Insert( "/spi", new Param2<string,string>("spawn an item in your inventory", "<class name>") );
-		m_CmdTooltips.Insert( "/ammo", new Param2<string,string>("repair and reload weapon in hand", "") );
-		m_CmdTooltips.Insert( "/tpp", new Param2<string,string>("teleport to coordinates", "<7500,0,7500>") );
-		m_CmdTooltips.Insert( "/tpt", new Param2<string,string>("teleport to a position saved in your presets", "<PresetName>") );
-		m_CmdTooltips.Insert( "/goto", new Param2<string,string>("teleport to a player by name", "<PlayerName>") );
-		m_CmdTooltips.Insert( "/return", new Param2<string,string>("teleport player by name to previously cached position", "<PlayerName>") );
-		m_CmdTooltips.Insert( "/bring", new Param2<string,string>("teleport player by name to you", "<PlayerName>") );
-		m_CmdTooltips.Insert( "/heal", new Param2<string,string>("heal player by name or self", "<PlayerName> OR self") );
-		m_CmdTooltips.Insert( "/kill", new Param2<string,string>("kill player by name or self", "<PlayerName> OR self") );
-		m_CmdTooltips.Insert( "/strip", new Param2<string,string>("strip player gear by name or self", "<PlayerName> OR self") );
-		m_CmdTooltips.Insert( "/clear", new Param2<string,string>("clears commands history", "") );
+		m_CmdTooltips.Insert( "/sph", new Param2<string,string>("#VSTR_TOOLTIP_SPH", "<class name>") );
+		m_CmdTooltips.Insert( "/spg", new Param2<string,string>("#VSTR_TOOLTIP_SPG", "<class name>") );
+		m_CmdTooltips.Insert( "/spawncar", new Param2<string,string>("#VSTR_TOOLTIP_SPAWNCAR", "") );
+		m_CmdTooltips.Insert( "/refuel", new Param2<string,string>("#VSTR_TOOLTIP_REFUEL", "") );
+		m_CmdTooltips.Insert( "/spi", new Param2<string,string>("#VSTR_TOOLTIP_SPI", "<class name>") );
+		m_CmdTooltips.Insert( "/ammo", new Param2<string,string>("#VSTR_TOOLTIP_AMMO", "") );
+		m_CmdTooltips.Insert( "/tpp", new Param2<string,string>("#VSTR_TOOLTIP_TPP", "<7500,0,7500>") );
+		m_CmdTooltips.Insert( "/tpt", new Param2<string,string>("#VSTR_TOOLTIP_TPT", "<PresetName>") );
+		m_CmdTooltips.Insert( "/goto", new Param2<string,string>("#VSTR_TOOLTIP_GOTO", "<PlayerName>") );
+		m_CmdTooltips.Insert( "/return", new Param2<string,string>("#VSTR_TOOLTIP_RETURN", "<PlayerName>") );
+		m_CmdTooltips.Insert( "/bring", new Param2<string,string>("#VSTR_TOOLTIP_BRING", "<PlayerName>") );
+		m_CmdTooltips.Insert( "/heal", new Param2<string,string>("#VSTR_TOOLTIP_HEAL", "<PlayerName> OR self") );
+		m_CmdTooltips.Insert( "/kill", new Param2<string,string>("#VSTR_TOOLTIP_KILL", "<PlayerName> OR self") );
+		m_CmdTooltips.Insert( "/strip", new Param2<string,string>("#VSTR_TOOLTIP_STRIP", "<PlayerName> OR self") );
+		m_CmdTooltips.Insert( "/clear", new Param2<string,string>("#VSTR_TOOLTIP_CLEAR", "") );
 	}
 
 	override void OnCreate(Widget RootW)
@@ -57,8 +57,8 @@ class MenuCommandsConsole: AdminHudSubMenu
 		//tooltip
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("Arrow key UP/DOWN to cycle between previously executed commands");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_COMMANDCONSOLE_KEYS");
 		
 		
 		foreach(string command, ref Param2<string,string> params: m_CmdTooltips)

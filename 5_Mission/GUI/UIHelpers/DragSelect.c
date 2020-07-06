@@ -21,8 +21,6 @@ class DragSelect extends UIScriptedMenu
 		GetGame().GetMousePos( m_mouse_x, m_mouse_y );
 		m_drag_widget.SetPos(m_mouse_x,m_mouse_y - 45);
 		m_drag_widget.Update();
-		
-		Print("DragSelect:: DragSelect Init!");
 	}
 	
 	override void Update( float timeslice )

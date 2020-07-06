@@ -37,7 +37,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		
 	//Action Buttons--
 	private ButtonWidget m_ActionHeal;
-	private ButtonWidget m_ActionMakeInvis;
+	private ButtonWidget m_ActionMakeVomit;
 	private ButtonWidget m_ActionKickPlayer;
 	private ButtonWidget m_ActionKill;
 	private ButtonWidget m_ActionSendMessage;
@@ -47,6 +47,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_ActionSpectate;
 	private ButtonWidget m_ActionGiveGodmode;
 	private ButtonWidget m_ActionUnlimitedAmmo;
+	private ButtonWidget m_ActionInvisible;
+	private ButtonWidget m_ActionFreezePlayer;
 	//----------------
 	
 	void MenuPlayerManager()
@@ -78,7 +80,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_SelectAllPlayers 	   = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers") );
 		m_BtnRefreshPlayerList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRefreshPlayerList"));
 		m_btnFnAddPlayersToGrp = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnFnAddPlayersToGrp"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnFnAddPlayersToGrp, M_SUB_WIDGET,this,"FinishPlayerSelect", DIAGTYPE.DIAG_YESNO, "Notice", "Are you sure you wish to add selected players to selected user group?");
+		GetVPPUIManager().HookConfirmationDialog(m_btnFnAddPlayersToGrp, M_SUB_WIDGET,this,"FinishPlayerSelect", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_WRN_ADDPLAYERTOGRP");
 		
 		//Stats Sliders
 		m_SliderHealth  = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SliderHealth"));
@@ -95,19 +97,21 @@ class MenuPlayerManager extends AdminHudSubMenu
 		//-------------
 		
 		//Action Buttons
-		m_ActionMakeInvis 	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionMakeInvis"));
+		m_ActionMakeVomit 	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionMakeVomit"));
+		GetVPPUIManager().HookConfirmationDialog(m_ActionMakeVomit, M_SUB_WIDGET, this, "VomiteDiagResult", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TOOLTIP_TITLE_VOMIT", "#VSTR_TOOLTIP_VOMIT");
+
 		m_ActionHeal  		   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionHeal"));
 		m_ActionKickPlayer     = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionKickPlayer"));
-		GetVPPUIManager().HookConfirmationDialog(m_ActionKickPlayer, M_SUB_WIDGET,this,"KickPlayer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Kick Player", "Please type kick reason or leave empty.!", true);
+		GetVPPUIManager().HookConfirmationDialog(m_ActionKickPlayer, M_SUB_WIDGET,this,"KickPlayer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TOOLTIP_TITLE_KICK", "#VSTR_TOOLTIP_KICK_REASON", true);
 		
 		m_ActionKill	   	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionKill"));
-		GetVPPUIManager().HookConfirmationDialog(m_ActionKill, M_SUB_WIDGET,this,"KillSelectedPlayers", DIAGTYPE.DIAG_YESNO, "Kill Player(s)", "Are you sure you wish to kill selected players?");
+		GetVPPUIManager().HookConfirmationDialog(m_ActionKill, M_SUB_WIDGET,this,"KillSelectedPlayers", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_KILL_PLAYERS", "#VSTR_TOOLTIP_KILL_PLAYERS");
 		
 		m_ActionSendMessage    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionSendMessage"));
-		GetVPPUIManager().HookConfirmationDialog(m_ActionSendMessage, M_SUB_WIDGET,this,"SendMessageToPlayer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Send Message", "Please type the message you wish to send!", true);
+		GetVPPUIManager().HookConfirmationDialog(m_ActionSendMessage, M_SUB_WIDGET,this,"SendMessageToPlayer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TOOLTIP_TITLE_SEND_MSG", "#VSTR_TOOLTIP_SEND_MSG", true);
 		
 		m_ActionBanPlayer  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionBanPlayer"));
-		GetVPPUIManager().HookConfirmationDialog(m_ActionBanPlayer, M_SUB_WIDGET,this,"BanPlayer", DIAGTYPE.DIAG_YESNO, "Ban Player(s)", "Are you sure you wish to ban selected players? Note: you can edit the ban duration after within the Bans Manager Menu");
+		GetVPPUIManager().HookConfirmationDialog(m_ActionBanPlayer, M_SUB_WIDGET,this,"BanPlayer", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_BAN_PLAYER", "#VSTR_TOOLTIP_BAN_PLAYER");
 		
 		
 		m_ActionTpToMe  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionTpToMe"));
@@ -116,6 +120,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 		
 		m_ActionGiveGodmode    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionGiveGodmode"));
 		m_ActionUnlimitedAmmo  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionUnlimitedAmmo"));
+		m_ActionInvisible  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionInvisible"));
+		m_ActionFreezePlayer   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionFreezePlayer"));
 		//--------------
 		
 		//init first "page"
@@ -182,13 +188,15 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionKickPlayer.Enable(selectedPlayers.Count() >= 1);
 		m_ActionBanPlayer.Enable(selectedPlayers.Count() >= 1);
 		m_ActionHeal.Enable(selectedPlayers.Count() >= 1);
-		m_ActionMakeInvis.Enable(selectedPlayers.Count() >= 1);
+		m_ActionMakeVomit.Enable(selectedPlayers.Count() >= 1);
 		m_ActionKill.Enable(selectedPlayers.Count() >= 1);
 		m_ActionSendMessage.Enable(selectedPlayers.Count() >= 1);
 		m_ActionTpToMe.Enable(selectedPlayers.Count() >= 1);
 		m_ActionTpMeTo.Enable(selectedPlayers.Count() == 1);
 		m_ActionGiveGodmode.Enable(selectedPlayers.Count() == 1);
 		m_ActionUnlimitedAmmo.Enable(selectedPlayers.Count() == 1);
+		m_ActionInvisible.Enable(selectedPlayers.Count() >= 1);
+		m_ActionFreezePlayer.Enable(selectedPlayers.Count() >= 1);
 		m_ActionSpectate.Enable(selectedPlayers.Count() == 1 & !g_Game.IsSpectateMode());
 		
 		//Sliders apply btns
@@ -239,10 +247,6 @@ class MenuPlayerManager extends AdminHudSubMenu
 			UpdateEntries();
 			break;
 			
-			case m_ActionMakeInvis:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
-			break;
-			
 			case m_ActionHeal:
 			GetRPCManager().SendRPC( "RPC_PlayerManager", "HealPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
 			break;
@@ -253,6 +257,14 @@ class MenuPlayerManager extends AdminHudSubMenu
 			
 			case m_ActionUnlimitedAmmo:
 			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveUnlimitedAmmo", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+			break;
+
+			case m_ActionInvisible:
+			GetRPCManager().SendRPC( "RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			break;
+
+			case m_ActionFreezePlayer:
+			GetRPCManager().SendRPC( "RPC_PlayerManager", "FreezePlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
 			break;
 			
 			case m_ActionSpectate:
@@ -270,32 +282,45 @@ class MenuPlayerManager extends AdminHudSubMenu
 			//Sliders apply buttons
 			case m_BtnApplyHealth:
 			UpdateStat("Health");
-			GetVPPUIManager().DisplayNotification(string.Format("Applying new Health value on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_HEALTH" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			break;
 			
 			case m_BtnApplyBlood:
 			UpdateStat("Blood");
-			GetVPPUIManager().DisplayNotification(string.Format("Applying new Blood value on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_BLOOD" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			break;
 			
 			case m_BtnApplyShock:
 			UpdateStat("Shock");
-			GetVPPUIManager().DisplayNotification(string.Format("Applying new Shock value on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_SHOCK" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			break;
 			
 			case m_BtnApplyWater:
-			GetVPPUIManager().DisplayNotification(string.Format("Applying new Water value on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_WATER" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			UpdateStat("Water");
 			break;
 			
 			case m_BtnApplyEnergy:
-			GetVPPUIManager().DisplayNotification(string.Format("Applying new Energy/Food value on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_ENERGY" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			UpdateStat("Energy");
 			break;
 		}
 		return false;
 	}
 	
+	void VomiteDiagResult(int result, string inputText)
+	{
+		if(result == DIAGRESULT.OK)
+		{
+			int time = inputText.ToInt();
+
+			if(time > 0)
+			{
+				GetRPCManager().SendRPC( "RPC_PlayerManager", "MakePlayerVomit", new Param2<ref array<string>, int>(GetSelectedPlayersIDs(), time), true);
+			}
+		}
+	}
+
 	override void HideSubMenu()
 	{
 		super.HideSubMenu();
@@ -330,7 +355,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		if (result == DIAGRESULT.OK)
 		{
 			if (input == "")
-				input = "Kicked By Server Admin!";
+				input = "#VSTR_NOTIFY_KICK_MESSAGE_PLAYER";
 			
 			GetRPCManager().SendRPC( "RPC_PlayerManager", "KickPlayer", new Param2<ref array<string>,string>(GetSelectedPlayersIDs(),input), true);
 		}
@@ -392,7 +417,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 
 	void SpectateTarget()
 	{
-		GetVPPUIManager().DisplayNotification("Requesting to sepctate selected player...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SPECTATE_REQ");
 		GetRPCManager().SendRPC("RPC_PlayerManager", "SpectatePlayer", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 	}
 	

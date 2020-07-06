@@ -86,11 +86,11 @@ class MenuItemManager extends AdminHudSubMenu
 		m_ImgInfoAddPreset = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoAddPreset") );
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfoAddPreset.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("2x left click on an item from the 'Item List' on the right side of the panel to spawn it according to the options you have selected from the 'Spawn Options` at the bottom of the panel.\nTo make a new preset, click on 'New Preset'. Hold Left CTRL + 2x Left Click on an item from the 'Item List' to add it to your selected preset!\nRight clicking on a preset item will set it to `Parent`. Hold left ctrl + right click to set no parent.");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_ITEMMGR");
 		
 		m_SavedPresetsWidget = M_SUB_WIDGET.FindAnyWidget( "PresetsDropDown");
-		m_SavedPresetsDropDown = new VPPDropDownMenu( m_SavedPresetsWidget, "Saved Item Presets" );
+		m_SavedPresetsDropDown = new VPPDropDownMenu( m_SavedPresetsWidget, "#VSTR_TITLE_SAVEDPRESETS" );
 		m_SavedPresetsDropDown.m_OnSelectItem.Insert( OnSelectItemPreset );
 		
 		foreach(string catagoryType : m_CatagoryItems){
@@ -152,18 +152,18 @@ class MenuItemManager extends AdminHudSubMenu
 			break;
 			
 			case m_BtnSpawnPreset:
-			if (m_SavedPresetsDropDown.GetText() != "Saved Item Presets")
+			if (m_SavedPresetsDropDown.GetText() != "#VSTR_TITLE_SAVEDPRESETS")
 				RequestSpawn();
 			else
-				GetVPPUIManager().DisplayError("No Preset Selected!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_NOPRESET");
 			break;
 			
 			case m_BtnDeletePreset:
-			if (m_SavedPresetsDropDown.GetIndex() != -1 && m_SavedPresetsDropDown.GetText() != "Saved Item Presets" || m_SavedPresetsDropDown.GetText() != "")
+			if (m_SavedPresetsDropDown.GetIndex() != -1 && m_SavedPresetsDropDown.GetText() != "#VSTR_TITLE_SAVEDPRESETS" || m_SavedPresetsDropDown.GetText() != "")
 			{
 				DeletePreset(m_SavedPresetsDropDown.GetText());
 			}else{
-				GetVPPUIManager().DisplayError("No Preset Selected!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_NOPRESET");
 			}
 			break;
 			
@@ -230,8 +230,8 @@ class MenuItemManager extends AdminHudSubMenu
 				if (g_Game.IsLeftCtrlDown())
 				{
 					//Add item to selected preset
-					if (m_SavedPresetsDropDown.GetIndex() == -1 || m_SavedPresetsDropDown.GetText() == "Saved Item Presets" && m_CurrentPresetData == null){
-						GetVPPUIManager().DisplayError("Error Adding Item to Preset: No Preset Selected!");
+					if (m_SavedPresetsDropDown.GetIndex() == -1 || m_SavedPresetsDropDown.GetText() == "#VSTR_TITLE_SAVEDPRESETS" && m_CurrentPresetData == null){
+						GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_NOTSELECTPRESET");
 						return false;
 					}
 					m_CurrentPresetData.AddItem(typeName,false);
@@ -280,14 +280,14 @@ class MenuItemManager extends AdminHudSubMenu
 			autoptr MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
 			if (pManager == null)
 			{
-				GetVPPUIManager().DisplayError("Error Spawn Preset: No Players Selected!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_SPAWN_PRESET");
 				return;
 			}
 			
 			trgIDs = pManager.GetSelectedPlayersIDs();
 			if (trgIDs.Count() <= 0)
 			{
-				GetVPPUIManager().DisplayError("Error Spawn Preset: No Players Selected!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_SPAWN_PRESET_NOPLAYER");
 				return;
 			}
 		}

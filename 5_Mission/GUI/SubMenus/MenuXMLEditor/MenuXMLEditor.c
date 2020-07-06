@@ -15,6 +15,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private EditBoxWidget     m_InputCost;
 	private EditBoxWidget     m_SearchBoxXML;
 	private CheckBoxWidget    m_chkEnablePreview;
+	private ImageWidget 	  m_ImgInfoXMLToolTip;
 	
 	private ref ItemScanResultScreen m_MapScreen;
 	
@@ -61,13 +62,15 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_SearchBoxXML = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchBoxXML") );
 		m_chkEnablePreview = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview") );
 		
+		m_ImgInfoXMLToolTip = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoXMLToolTip") );
+
 		m_BtnXMLEditorApply = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnXMLEditorApply") );
-		GetVPPUIManager().HookConfirmationDialog(m_BtnXMLEditorApply, M_SUB_WIDGET,this,"ApplyChanges", DIAGTYPE.DIAG_YESNO, "Important Notice!", "Are you sure you wish to save changes?\n\nPlease note that these changes don't take effect to the CE automatically, a copy of the newly edited types.xml will be saved in your servers' profile folder!");
+		GetVPPUIManager().HookConfirmationDialog(m_BtnXMLEditorApply, M_SUB_WIDGET,this,"ApplyChanges", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_XML_EDITORCHN");
 		
 		m_BtnLoadSelected   = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnLoadSelected") );
 		
 		m_BtnGetStats       = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnGetStats") );
-		GetVPPUIManager().HookConfirmationDialog(m_BtnGetStats, M_SUB_WIDGET,this,"RequestStats", DIAGTYPE.DIAG_YESNO, "Important Notice!", "This feature uses heavy server resource, you may experience heavy lag!\n\nAre you sure you wish to continue?");
+		GetVPPUIManager().HookConfirmationDialog(m_BtnGetStats, M_SUB_WIDGET,this,"RequestStats", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_XML_SCAN");
 		
 		
 		m_ItemPreviewXML = ItemPreviewWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemPreviewXML") );
@@ -75,35 +78,40 @@ class MenuXMLEditor extends AdminHudSubMenu
 		
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		
+		autoptr ToolTipHandler toolTipMenu;
+		m_ImgInfoXMLToolTip.GetScript(toolTipMenu);
+		toolTipMenu.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTipMenu.SetContentText("#VSTR_XML_MENU_TOOLTIP");
+
 		autoptr ToolTipHandler toolTip;
 		
 		m_InputNominal.GetScript(toolTip);
-		toolTip.SetTitle("Nominal:");
-		toolTip.SetContentText("Items of this type are spawned to this value (assuming there is enough place in the world, CE queue is not pre-occupied and restock timer reaches 0)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_NOMINAL");
+		toolTip.SetContentText("#VSTR_XML_NOMINAL");
 		//--
 		m_InputLifetime.GetScript(toolTip);
-		toolTip.SetTitle("Lifetime:");
-		toolTip.SetContentText("Time in seconds before this type gets deleted (assuming no one touches it)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_LIFETIME");
+		toolTip.SetContentText("#VSTR_XML_LIFETIME");
 		//--
 		m_InputRestock.GetScript(toolTip);
-		toolTip.SetTitle("Restock:");
-		toolTip.SetContentText("If set to 0, CE tries to respawn type in bulks, if set to positive value, it is time in seconds before ONE item of this type is spawned again");
+		toolTip.SetTitle("#VSTR_XML_TITLE_RESTOCK");
+		toolTip.SetContentText("#VSTR_XML_RESTOCK");
 		//--
 		m_InputMin.GetScript(toolTip);
-		toolTip.SetTitle("Min:");
-		toolTip.SetContentText("If amount of items of this type reach below this value in world, they get spawned to nominal again (they follow restock logic though)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_MIN");
+		toolTip.SetContentText("#VSTR_XML_MIN");
 		//--
 		m_InputQuantmin.GetScript(toolTip);
-		toolTip.SetTitle("Quantmin:");
-		toolTip.SetContentText("Min % for quantity (rags,mags,ammo,..)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_QUANTMIN");
+		toolTip.SetContentText("#VSTR_XML_QUANTMIN");
 		//--
 		m_InputQuantmax.GetScript(toolTip);
-		toolTip.SetTitle("Quantmax:");
-		toolTip.SetContentText("Max % for quantity (rags,mags,ammo,..)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_QUANTMAX");
+		toolTip.SetContentText("#VSTR_XML_QUNATMAX");
 		//--
 		m_InputCost.GetScript(toolTip);
-		toolTip.SetTitle("Cost:");
-		toolTip.SetContentText("Priority for CE (higher value should be prioritized by the spawner)");
+		toolTip.SetTitle("#VSTR_XML_TITLE_COST");
+		toolTip.SetContentText("#VSTR_XML_COST");
 		//--
 		m_Loaded = true;
 		UpdateFilter();
@@ -142,10 +150,10 @@ class MenuXMLEditor extends AdminHudSubMenu
 		{
 			if (m_ItemListBoxXML.GetSelectedRow() == -1)
 			{
-				GetVPPUIManager().DisplayError("No item selected!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_XML_NOITEM");
 				return false;
 			}
-			GetVPPUIManager().DisplayNotification("Please wait...getting info from server");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WAIT_INFO");
 			string typeName;
 			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
 			GetRPCManager().SendRPC("RPC_XMLEditor", "GetDetails", new Param1<string>(typeName), true, null);
@@ -201,7 +209,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 			{
 				m_MapScreen.DrawMarker(name,pos);
 			}
-			m_MapScreen.SetResultText("Total Scanned Objects: ["+ result.Count() +"]");
+			m_MapScreen.SetResultText("#VSTR_NOTIFY_TOTALSCANNED"+ " ["+ result.Count() +"]");
 		}
 	}
 	
@@ -222,7 +230,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 				{
 					case "nominal":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputNominal.SetText("NOT DEFINED!");
+						m_InputNominal.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputNominal.Enable(false);
 					}else{
 						m_InputNominal.SetText(param.param2);
@@ -231,7 +239,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "lifetime":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputLifetime.SetText("NOT DEFINED!");
+						m_InputLifetime.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputLifetime.Enable(false);
 					}else{
 						m_InputLifetime.SetText(param.param2);
@@ -240,7 +248,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "restock":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputRestock.SetText("NOT DEFINED!");
+						m_InputRestock.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputRestock.Enable(false);
 					}else{
 						m_InputRestock.SetText(param.param2);
@@ -249,7 +257,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "min":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputMin.SetText("NOT DEFINED!");
+						m_InputMin.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputMin.Enable(false);
 					}else{
 						m_InputMin.SetText(param.param2);
@@ -258,7 +266,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "quantmin":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputQuantmin.SetText("NOT DEFINED!");
+						m_InputQuantmin.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputQuantmin.Enable(false);
 					}else{
 						m_InputQuantmin.SetText(param.param2);
@@ -267,7 +275,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "quantmax":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputQuantmax.SetText("NOT DEFINED!");
+						m_InputQuantmax.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputQuantmax.Enable(false);
 					}else{
 						m_InputQuantmax.SetText(param.param2);
@@ -276,7 +284,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					
 					case "cost":
 					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputCost.SetText("NOT DEFINED!");
+						m_InputCost.SetText("#VSTR_XML_ERR_NOT_DEF");
 						m_InputCost.Enable(false);
 					}else{
 						m_InputCost.SetText(param.param2);
@@ -284,7 +292,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 				}
 			}
-			GetVPPUIManager().DisplayNotification("Successfully retrieved data from server!");
+			GetVPPUIManager().DisplayNotification("#VSTR_XML_SUCCESS_RETRIVE");
 		}
 	}
 	
@@ -338,7 +346,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		{
 			if (m_cacheData == null || m_selectedType == "")
 			{
-				GetVPPUIManager().DisplayError("Failed to save...no data to save!");
+				GetVPPUIManager().DisplayError("#VSTR_XML_NOTIFY_ERR");
 				return;
 			}
 			UpdateCacheData();
@@ -358,7 +366,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
 			if (typeName == "")
 			{
-				GetVPPUIManager().DisplayError("You need to have an item selected from the list!");
+				GetVPPUIManager().DisplayError("#VSTR_XML_ERR_SELECTFIRST");
 				return;
 			}
 			m_MapScreen = new ItemScanResultScreen();

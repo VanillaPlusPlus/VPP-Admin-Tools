@@ -36,6 +36,7 @@ class SpawnOnGroundChatModule : ChatCommand
             }
 
             itemEntity.PlaceOnSurface();
+            GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /spg used on self. Input (%3)", callerName, callerID, arg));
             GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /spg used on self. Input:  " + arg));
         }
     }

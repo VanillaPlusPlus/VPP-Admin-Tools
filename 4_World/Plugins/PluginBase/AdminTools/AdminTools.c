@@ -7,6 +7,7 @@ class AdminTools extends PluginBase
 		GetRPCManager().AddRPC( "RPC_AdminTools", "DeleteObject", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "TeleportToPosition", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "ToggleFreeCam", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_AdminTools", "RepairVehicles", this, SingeplayerExecutionType.Server );
 		//-------------
 	}
 
@@ -19,7 +20,7 @@ class AdminTools extends PluginBase
             if (target)
             {
             	GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Deleted Object @ crosshair: "  + target.GetType()));
-                GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Just deleted object [ %3 ] @ [ %4 ]",sender.GetPlainId(), sender.GetName(), target.GetType(),target.GetPosition()));
+                GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) deleted object \"%3\" (pos=%4)", sender.GetName(), sender.GetPlainId(), target.GetType(), target.GetPosition().ToString()));
                 GetGame().ObjectDelete(target);
             }
         }
@@ -68,7 +69,7 @@ class AdminTools extends PluginBase
 			}else{
 				pb.SetPosition(data.param1);
 			}
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Teleported to crosshair position! [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) teleported to crosshair (pos=%3)", sender.GetName(), sender.GetPlainId(), data.param1.ToString()));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Teleported to crosshair @ position: " + data.param1));
         }
 	}
@@ -80,8 +81,113 @@ class AdminTools extends PluginBase
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera")) return;
 			
 			GetRPCManager().SendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Toggled Freecam!",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) toggled freecam", sender.GetName(), sender.GetPlainId()));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Toggled Freecam"));
 		}
 	}
-}
+
+	void RepairVehicles(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type == CallType.Server && sender != null)
+        {
+        	if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "RepairVehiclesAtCrosshair"))
+        		return;
+
+	        string callerID;
+	        string callerName;
+            callerID = sender.GetPlainId();
+            callerName = sender.GetName();
+        
+        	Car vehicle = Car.Cast( target );
+        	EntityAI carEntity = EntityAI.Cast(target);
+        	if ( vehicle == NULL || carEntity == NULL)
+        		return;
+
+        	//Health
+        	ref array<string> damageZones;
+        	string cfgPath = CFG_VEHICLESPATH + " " + target.GetType() + " DamageSystem";
+        	if ( GetGame().ConfigIsExisting(cfgPath) )
+        	{
+        		damageZones = new array<string>;
+        		int dmgZoneCount = GetGame().ConfigGetChildrenCount(cfgPath);
+        		if ( dmgZoneCount > 0 )
+        		{
+        			for (int i = 0; i < dmgZoneCount; ++i)
+        			{
+        				string parentClass;
+        				GetGame().ConfigGetChildName(cfgPath, i, parentClass);
+        				parentClass.ToLower();
+        				if ( parentClass == "damagezones" )
+        				{
+        					int dmgZoneIndex = GetGame().ConfigGetChildrenCount(cfgPath + " DamageZones");
+        					for (int j = 0; j < dmgZoneIndex; ++j)
+        					{
+        						string childZone;
+        						GetGame().ConfigGetChildName(cfgPath + " DamageZones", j, childZone);
+        						damageZones.Insert( childZone );
+        					}
+        				}
+        			}
+        		}
+        	}
+
+			carEntity.AddHealth(carEntity.GetMaxHealth());
+			carEntity.SetHealth("EngineBelt", "Health", carEntity.GetMaxHealth());
+
+			if ( damageZones && damageZones.Count() > 0 )
+			{
+				foreach(string dmgZone: damageZones)
+				{
+					carEntity.SetHealth(dmgZone, "",carEntity.GetMaxHealth(dmgZone, ""));
+				}
+			}
+
+			ref array<EntityAI> vehParts = new array<EntityAI>;
+			TStringArray SlotNames = new TStringArray;
+			string cfg_path = CFG_VEHICLESPATH + " " + target.GetType() + " attachments";
+			GetGame().ConfigGetTextArray(cfg_path, SlotNames);	
+			
+			foreach(string carSlot : SlotNames)
+					vehParts.Insert(carEntity.FindAttachmentBySlotName(carSlot));
+		
+			if (vehParts != null)
+			{
+				foreach(EntityAI att : vehParts)
+				{
+					if (att != NULL)
+					{
+						string partType = att.GetType();
+						partType.ToLower();
+						if ( partType.Contains("_ruined") )
+						{
+							partType.Replace("_ruined", "");
+							GetGame().ObjectDelete( att );
+							vehicle.GetInventory().CreateAttachment(partType);
+						}
+						else
+						{
+							att.AddHealth(att.GetMaxHealth());
+							att.SetSynchDirty();
+						}
+					}
+				}
+			}
+			
+			//Liquids
+			float fuelReq = vehicle.GetFluidCapacity( CarFluid.FUEL ) - (vehicle.GetFluidCapacity( CarFluid.FUEL ) * vehicle.GetFluidFraction( CarFluid.FUEL ));
+			float oilReq = vehicle.GetFluidCapacity( CarFluid.OIL ) - (vehicle.GetFluidCapacity( CarFluid.OIL ) * vehicle.GetFluidFraction( CarFluid.OIL ));
+			float coolantReq = vehicle.GetFluidCapacity( CarFluid.COOLANT ) - (vehicle.GetFluidCapacity( CarFluid.COOLANT ) * vehicle.GetFluidFraction( CarFluid.COOLANT ));
+			float brakeReq = vehicle.GetFluidCapacity( CarFluid.BRAKE ) - (vehicle.GetFluidCapacity( CarFluid.BRAKE ) * vehicle.GetFluidFraction( CarFluid.BRAKE ));
+			vehicle.Fill( CarFluid.FUEL, fuelReq );
+			vehicle.Fill( CarFluid.OIL, oilReq );
+			vehicle.Fill( CarFluid.COOLANT, coolantReq );
+			vehicle.Fill( CarFluid.BRAKE, brakeReq );
+			vehicle.SetSynchDirty();
+			vehicle.Synchronize();
+
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) reparied & refueled vehicle (pos=%3)", callerName, callerID, vehicle.GetPosition().ToString()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, string.Format("\"%1\" (steamid=%2) reparied & refueled vehicle (pos=%3)", callerName, callerID, vehicle.GetPosition().ToString())));
+        	GetPermissionManager().NotifyPlayer(callerID, vehicle.Type().ToString() + ": at crosshairs reparied & refueled [" +fuelReq+ "L] added, all fluids maxed",NotifyTypes.NOTIFY);
+        }
+	}
+};

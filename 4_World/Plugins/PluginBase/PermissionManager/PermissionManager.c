@@ -24,7 +24,7 @@ class PermissionManager extends ConfigurablePlugin
 		m_SuperAdmins.Insert("76561198321354754");
 		
 		//Misc
-		AddPermissionType({"DeleteObjectAtCrosshair","TeleportToCrosshair","FreeCamera"});
+		AddPermissionType({"DeleteObjectAtCrosshair","TeleportToCrosshair","FreeCamera", "RepairVehiclesAtCrosshair"});
 		//Item Manager
 		AddPermissionType({ "MenuItemManager","MenuItemManager:SpawnItem","MenuItemManager:EditPreset","MenuItemManager:SpawnPreset","MenuItemManager:DeletePreset","MenuItemManager:AddPreset" });
 		//Server Manager
@@ -36,7 +36,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Permissions Editor
 		AddPermissionType({ "MenuPermissionsEditor","PermissionsEditor:RemoveUser","PermissionsEditor:AddUser","PermissionsEditor:CreateUserGroup","PermissionsEditor:DeleteUserGroup","PermissionsEditor:ChangePermLevel"});
 		//Player Manager
-		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo" });
+		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo", "PlayerManager:MakePlayerVomit", "PlayerManager:FreezePlayers"});
 		//Bans Manager
 		AddPermissionType({ "MenuBansManager","BansManager:UnbanPlayer","BansManager:UpdateBanDuration","BansManager:UpdateBanReason" });
 		//WebHooks Menu
@@ -64,11 +64,6 @@ class PermissionManager extends ConfigurablePlugin
 		//---------------
 	}
 
-	void ~PermissionManager()
-	{
-		
-	}
-	
 	override void OnInit()
 	{
 		Load();
@@ -116,7 +111,6 @@ class PermissionManager extends ConfigurablePlugin
 	   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", param, true, sender);
 				return;
         	}
-			GetSimpleLogger().Log("[PermissionManager]:: EnableToggles(): "+sender+" Identity Attempted 'EnableToggles' Rejected: Not admin/part of a usergroup.");
         }
 	}
 	
@@ -231,8 +225,9 @@ class PermissionManager extends ConfigurablePlugin
 					{
 						group.SetPermissionLevel(data.param1);
 						Save();
-						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupPermLvl(): Group: "+group.GetGroupName()+" Permission level changed to: "+data.param1);
-						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated User Group: " +group.GetGroupName()+" Permission level changed to: "+data.param1));
+						string logMsg = string.Format("[PermissionManager] Group: (%1) Permission level was changed to: (%2) by: \"%3\" (steamid=%4)", group.GetGroupName(), data.param1, sender.GetName(), sender.GetPlainId());
+						GetSimpleLogger().Log(logMsg);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), logMsg));
 						return;
 					}
 				}
@@ -260,9 +255,10 @@ class PermissionManager extends ConfigurablePlugin
 					{
 						group.SetForceSavedName(data.param1);
 						Save();
-						NotifyPlayer(sender.GetPlainId(),"Settings updated for group: "+group.GetGroupName(),NotifyTypes.NOTIFY);
-						GetSimpleLogger().Log("[PermissionManager]:: UpdateUserGroupSettings(): Group: "+group.GetGroupName()+" Settings changed!");
-						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated Settings for User Group: " +group.GetGroupName()));
+						NotifyPlayer(sender.GetPlainId(),"#VSTR_UPDATED_PERM_SETTING"+ " : "+group.GetGroupName(),NotifyTypes.NOTIFY);
+						string logMsg = string.Format("[PermissionManager] Group: (%1) Settings changed by: \"%2\" (steamid=%3)", group.GetGroupName(), sender.GetName(), sender.GetPlainId());
+						GetSimpleLogger().Log(logMsg);
+						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), logMsg));
 						return;
 					}
 				}
@@ -288,8 +284,11 @@ class PermissionManager extends ConfigurablePlugin
 				if (group.GetGroupName() == data.param2)
 				{
 					group.SetPermissions(tempData);
-					GetSimpleLogger().Log("[PermissionManager]:: RemoteUpdateGroupPerms(): Group: "+group.GetGroupName()+" Permissions updated");
-					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Updated Permissions for User Group: " +group.GetGroupName()));
+
+					string logMsg = string.Format("[PermissionManager] Group: (%1) Permissions updated by: \"%2\" (steamid=%3)", group.GetGroupName(), sender.GetName(), sender.GetPlainId());
+					GetSimpleLogger().Log(logMsg);
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), logMsg));
+					
 					autoptr array<ref VPPUser> grpMembers = group.GetMembers();
 					foreach(ref VPPUser member : grpMembers)
 					{
@@ -321,12 +320,15 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				users.Insert(new VPPUser(name,ConvertGUIDToSteamID(id)));
 			}
+
 			foreach(ref VPPUser user : users)
 			{
 				autoptr PlayerIdentity pid = GetIdentityById(user.GetUserId());
 				if (pid != null)
 				{
 					AddMembersToGroup(user, data.param2, sender.GetPlainId());
+					GetSimpleLogger().Log(string.Format("[PermissionManager] Added \"%1\" (steamid=%2) to user group (%3) by: \"%4\" (steamid=%5)", pid.GetName(), pid.GetPlainId(), data.param2, sender.GetName(), sender.GetPlainId()));
+
 		   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, pid);
 					GetPlayerListManager().SendPlayerList(pid);
 				}
@@ -353,13 +355,17 @@ class PermissionManager extends ConfigurablePlugin
 				if (group.FindUser(data.param1))
 				{
 					group.RemoveMembers(data.param1);
-					NotifyPlayer(sender.GetPlainId(),"Removing User: "+data.param1+" from group: "+group.GetGroupName(),NotifyTypes.NOTIFY);
-					GetSimpleLogger().Log("[PermissionManager]:: RemoteRemoveUserFromGroup(): Removing User: "+data.param1+" from group: "+group.GetGroupName());
+					NotifyPlayer(sender.GetPlainId(),"#VSTR_PERMS_REMOVE_USER"+data.param1+"#VSTR_FROM_GROUP"+group.GetGroupName(),NotifyTypes.NOTIFY);
+
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Removing User: " + data.param1 + " from Group: " + group.GetGroupName()));
 					Save();
+
 					autoptr PlayerIdentity tgIdentity = GetIdentityById(data.param1);
 					if (tgIdentity != null)
 						GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, tgIdentity);
+
+					string logMsg = string.Format("[PermissionManager] Removed (steamid=%1) from Group: (%2) by: \"%3\" (steamid=%4)",data.param1, group.GetGroupName(), sender.GetName(), sender.GetPlainId());
+					GetSimpleLogger().Log(logMsg);
 					
 					return;
 				}
@@ -393,7 +399,7 @@ class PermissionManager extends ConfigurablePlugin
 		
 		m_UserGroups.Insert(new UserGroup(groupName,permissionLevel,permissioncatagorys));
 		Save();
-		GetSimpleLogger().Log("[PermissionManager]:: CreateUserGroup(): User Group: "+groupName+" Permission Level: "+permissionLevel+" created!");
+		GetSimpleLogger().Log(string.Format("[PermissionManager] Group: (%1) Permission Level: (%2) was created!", groupName, permissionLevel));
 	}
 
 	void AddMembersToGroup(ref VPPUser user, string groupName, string id = "")
@@ -406,10 +412,8 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(IsSuperAdmin(user.GetUserId()))
 		{
-			GetSimpleLogger().Log("[Permission Manager]:: AddMembersToGroup(): User is Super Admin.");
-			
 			if(id != string.Empty)
-				NotifyPlayer(id, "Error: User is a Super Admin", NotifyTypes.ERROR);
+				NotifyPlayer(id, "#VSTR_ERROR_USER_SUPERADMIN", NotifyTypes.ERROR);
 			
 			return;
 		}
@@ -432,20 +436,16 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(selectedGroup == null)
 		{
-			GetSimpleLogger().Log("[Permission Manager]:: AddMembersToGroup(): Invalid Group.");
-			
 			if(id != string.Empty)
-				NotifyPlayer(id, "Error: Invalid UserGroup " + groupName, NotifyTypes.ERROR);
+				NotifyPlayer(id, "#VSTR_ERROR_INVALID_GROUP" + groupName, NotifyTypes.ERROR);
 			
 			return;
 		}
 		
 		if(selectedGroup == currentGroup)
 		{
-			GetSimpleLogger().Log("[Permission Manager]:: AddMembersToGroup(): User is already in that usergroup.");
-			
 			if(id != string.Empty)
-				NotifyPlayer(id, "Error: User: " + user.GetUserId() + " is already inside of group: " + groupName, NotifyTypes.ERROR);
+				NotifyPlayer(id, "Error: User: " + user.GetUserId() + " " + "#VSTR_PERMS_USER_INGTROUP" + " " + groupName, NotifyTypes.ERROR);
 			
 			return;
 		}
@@ -479,12 +479,12 @@ class PermissionManager extends ConfigurablePlugin
 		{
 			if (m_Permissions.Find(str) == -1)
 			{
-				GetSimpleLogger().Log("[PermissionManager]:: AddPermissionType(): Adding " + str + " to permission collection.");
+				GetSimpleLogger().Log(string.Format("[PermissionManager] Perm (%1) has been registered!", str));
 				m_Permissions.Insert(str);
 				continue;
 			}
 			
-			GetSimpleLogger().Log("[PermissionManager]:: AddPermissionType(): Tried adding duplicate permission, " + str + ", to permission collection.");
+			GetSimpleLogger().Log("[PermissionManager] Tried registering a duplicate permission (" + str + ")");
 		}
 	}
 	
@@ -493,7 +493,7 @@ class PermissionManager extends ConfigurablePlugin
 		CreateUserGroup( "Admins", 1, m_Permissions );
 		AddMembersToGroup(new VPPUser("Example User","26561198420222028"), "Admins");
 		
-	    GetSimpleLogger().Log("[PermissionManager]:: CreateDefualtUserGroups(): Created defualt UserGroups.vpp");
+	    GetSimpleLogger().Log("[PermissionManager] Created default UserGroups.vpp");
 	}
 	
 	private void RemoveUserGroupByName(string groupname)
@@ -511,7 +511,9 @@ class PermissionManager extends ConfigurablePlugin
 				m_UserGroups.RemoveItem(group);
 				delete group;
 				Save();
-				GetSimpleLogger().Log("[PermissionManager]:: RemoveUserGroupByName(): Removed Group: "+groupname+" sucessfully!");
+
+				string logMsg = string.Format("[PermissionManager] Group (%1) was removed!", groupname);
+				GetSimpleLogger().Log(logMsg);
 			}
 		}
 	}
@@ -525,9 +527,10 @@ class PermissionManager extends ConfigurablePlugin
 			{
 			    file.Read(m_UserGroups);
 			    file.Close();
-			    GetSimpleLogger().Log("[PermissionManager]:: LoadUserGroups(): Loading UserGroups.vpp.");
+			    GetSimpleLogger().Log("[PermissionManager] Loaded UserGroups.vpp");
 			}
-		}else
+		}
+		else
 		{
 			CreateDefualtUserGroups();
 		}
@@ -555,12 +558,12 @@ class PermissionManager extends ConfigurablePlugin
 				trimmed.Trim();
 				trimmed.Replace(" ","");
 				m_SuperAdmins.Insert(trimmed);
-				GetSimpleLogger().Log("[PermissionManager]:: LoadSuperAdmins(): Adding Super Admin: "+ trimmed + ".");
+				GetSimpleLogger().Log("[PermissionManager] Adding Super Admin ("+ trimmed + ")");
 			}
 		}
 		else 
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: Error: File Missing... Creating Defaults. Please change SuperAdmins.txt file, and restart the server.");
+			GetSimpleLogger().Log("[PermissionManager] SuperAdmins.txt File Missing...Creating Defaults. Please change SuperAdmins.txt file, and restart the server.");
 			adminUIDSFile = OpenFile(m_SuperAdminsListPath ,FileMode.WRITE);
 			FPrintln(adminUIDSFile, "76561198420222029");
 			FPrintln(adminUIDSFile, "76561198321354754");
@@ -596,10 +599,10 @@ class PermissionManager extends ConfigurablePlugin
 	{
 		if (m_Permissions.Find(permissionName) <= -1) //Reject permission no matter what if wrong perm type was received.
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", Target: Self, Unregistred/Unknown Permission type! Rejected.");
-			
+			GetSimpleLogger().Log(string.Format("[PermissionManager] (steamid=%1) Targeting: (himself), Unregistred/Unknown Permission type (%2) Rejected.", id, permissionName));
+
 			if ( sendNotify )
-				NotifyPlayer(id,"The permission "+permissionName+" is unknown/unregistered!",NotifyTypes.ERROR);
+				NotifyPlayer(id, permissionName + "#VSTR_ERROR_UNKOWN_PERM",NotifyTypes.ERROR);
 
 			return false;
 		}
@@ -614,7 +617,7 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				if (user.GetUserName() != identity.GetName())
 				{
-					NotifyPlayer(id,"Your name does not match the usergroup name!\nYou can't access the tools\nchange your name to: " + user.GetUserName(),NotifyTypes.PERMISSION_REJECT, 15.0);
+					NotifyPlayer(id, "#VSTR_ERROR_NAME_MISMATCH" + user.GetUserName(),NotifyTypes.PERMISSION_REJECT, 15.0);
 					return false;
 				}
 			}
@@ -622,39 +625,35 @@ class PermissionManager extends ConfigurablePlugin
 
 		if(!HasUserGroup(id))
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-			
+			string logMsg = string.Format("[PermissionManager] Permission denied for (steamid=%1) to exectue (%2) Reason: Does not belong to a user group!", id, permissionName);
+			GetSimpleLogger().Log(logMsg);
+
 			if ( sendNotify )
-				NotifyPlayer(id,"You are not an admin or belong to a usergroup.",NotifyTypes.PERMISSION_REJECT);
+				NotifyPlayer(id,"#VSTR_ERROR_NOT_ADMIN",NotifyTypes.PERMISSION_REJECT);
 			
 			return false;
 		}
 		
 		if(IsSuperAdmin(id) && !IsSuperAdmin(targetID) && id != targetID)
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: true");
 			return true;
 		}
 		
 		if(IsSuperAdmin(targetID) && !IsSuperAdmin(id))
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-			
 			if ( sendNotify )
-				NotifyPlayer(id,"You cannot target Super Admins with: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+				NotifyPlayer(id,"#VSTR_ERROR_CANT_TARGET" + permissionName, NotifyTypes.PERMISSION_REJECT);
 			
 			return false;
 		}
 		
 		if(IsSuperAdmin(id) && targetID == id)
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", Target: Self, Permission: " + permissionName + ", Value: true");
 			return true;
 		}
 		
 		if(IsSuperAdmin(id) && IsSuperAdmin(targetID))
 		{
-			GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", Target: Self, Permission: " + permissionName + ", Value: true");
 			return true;
 		}
 
@@ -676,17 +675,14 @@ class PermissionManager extends ConfigurablePlugin
 					
 					if (targetID == string.Empty)
 					{
-						GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + " Permission: " + permissionName + ", Value: true");
 						return true;
 					}
 				}
 				
 				if(group.GetPermissions().Find(permissionName) <= -1)
 				{
-					GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID: " + targetID + ", Permission: " + permissionName + ", Value: false");
-					
 					if ( sendNotify )
-						NotifyPlayer(id,"You don't have the following permission: " + permissionName, NotifyTypes.PERMISSION_REJECT);
+						NotifyPlayer(id,"#VSTR_ERROR_NO_PERM" + permissionName, NotifyTypes.PERMISSION_REJECT);
 					
 					return false;
 				}
@@ -697,10 +693,8 @@ class PermissionManager extends ConfigurablePlugin
 		if (!hasPermission && GetIdentityById(targetID) != null)
 		{
 			if ( sendNotify )
-				NotifyPlayer(id,"Permission level too low to exectue: " + permissionName + " On: "+GetIdentityById(targetID).GetName(), NotifyTypes.PERMISSION_REJECT);
+				NotifyPlayer(id,"#VSTR_PERM_LVL_LOW" + permissionName + " On: "+GetIdentityById(targetID).GetName(), NotifyTypes.PERMISSION_REJECT);
 		}
-		GetSimpleLogger().Log("[PermissionManager]:: VerifyPermission() : Sender ID: " + id + ", TargetID : " + targetID + ", Permission: " + permissionName + ", Value: " + hasPermission);
-		
 		return hasPermission;
 	}
 	

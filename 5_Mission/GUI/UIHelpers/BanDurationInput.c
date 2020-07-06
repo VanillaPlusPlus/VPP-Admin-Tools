@@ -39,8 +39,8 @@ class BanDurationInput extends ScriptedWidgetEventHandler
 			m_PermaTick = CheckBoxWidget.Cast(m_root.FindAnyWidget("PermaTick"));
 			autoptr ToolTipHandler toolTip;
 			m_ImgInfo.GetScript(toolTip);
-			toolTip.SetTitle("Information:");
-			toolTip.SetContentText("Set the unban date of when the selected ban gets revoked/removed.The date is based-off the time set on the machine this DayZ server is running on.");
+			toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+			toolTip.SetContentText("#VSTR_TOOLTIP_BAN_TIP");
 			
 			
 			m_InputYear	    = EditBoxWidget.Cast(m_root.FindAnyWidget("InputYear"));

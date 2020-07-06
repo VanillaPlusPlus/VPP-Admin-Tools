@@ -1,10 +1,18 @@
 modded class MissionServer
 {
-	private float m_LoginTimeMs;
-	private bool  m_ServerLocked = false;
+	private float m_LoginTimeMs   = 15000; //15 sec default
+	private bool  m_ServerLocked  = false;
+	private int   m_MaxKickAttempts = 5;
+	private ref map<string,int> m_KickQueue;
 	
 	void MissionServer()
 	{
+		m_KickQueue = new map<string,int>;
+		//Event handlers
+		VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect").Insert( HandleOnPlayerConnect );
+		VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected").Insert( HandleOnPlayerDisconnected );
+		VPPATGetEventHandler().GetEventInvoker("OnClientDisconnectCancel").Insert( HandleOnPlayerConnect );
+
 		//=============RPC's====================
 		GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_MissionServer", "HandleChatCommand", this, SingeplayerExecutionType.Server );		
@@ -34,7 +42,7 @@ modded class MissionServer
 					line_content.Trim();
 					line_content.Replace("<var name=\"timelogin\" type=\"0\" value=\"", "");
 					line_content.Replace("\"/>", "");
-					m_LoginTimeMs = (line_content.ToInt() * 1000) + 5000.0;
+					m_LoginTimeMs = (line_content.ToInt() * 1000) + 1200.0;
 					break;
 				}
 				FGets( file,  line_content );
@@ -53,11 +61,11 @@ modded class MissionServer
 			if (m_ServerLocked)
 			{
 				m_ServerLocked = false;
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Server is NO LONGER locked!",NotifyTypes.NOTIFY);
+				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_SERVER_LOCK_OFF",NotifyTypes.NOTIFY);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Unlocked the server"));
 			}else{
 				m_ServerLocked = true;
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Server is now locked!",NotifyTypes.NOTIFY);
+				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_SERVER_LOCK_ON",NotifyTypes.NOTIFY);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Locked the server"));
 			}
 		}
@@ -76,152 +84,186 @@ modded class MissionServer
 	
 	override void OnEvent(EventType eventTypeId, Param params) 
 	{
-		if (eventTypeId == ClientPrepareEventTypeID)
+		PlayerIdentity identity;
+		PlayerBase 	   player;
+		ScriptInvoker onPlayerConnect;
+
+		switch(eventTypeId)
 		{
-			super.OnEvent(eventTypeId,params);
+			case ClientReadyEventTypeID:
+			ClientReadyEventParams readyParams;
+			Class.CastTo(readyParams, params);
 			
+			identity = readyParams.param1;
+			player   = PlayerBase.Cast(readyParams.param2);
+
+			onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+			
+			if(onPlayerConnect)
+				onPlayerConnect.Invoke(player, identity, false);
+
+			break;
+
+			case ClientNewEventTypeID:
+			ClientNewEventParams newParams;
+			Class.CastTo(newParams, params);
+			
+			identity = newParams.param1;
+			onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+			
+			if(onPlayerConnect)
+				onPlayerConnect.Invoke(player, identity, false);
+			
+			break;
+
+			case ClientReconnectEventTypeID:
+			ClientReconnectEventParams reconnectParams;
+			Class.CastTo(reconnectParams, params);
+			
+			identity = reconnectParams.param1;
+			
+			onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+			
+			if(onPlayerConnect)
+				onPlayerConnect.Invoke(player, identity, false);
+
+			break;
+			
+			case ClientDisconnectedEventTypeID:
+			ClientDisconnectedEventParams discoParams;
+			Class.CastTo(discoParams, params);		
+			
+			identity = discoParams.param1;
+			player   = PlayerBase.Cast(discoParams.param2);
+
+			ScriptInvoker onClientDisconnectedEvent = VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected");
+			
+			if(onClientDisconnectedEvent)
+				onClientDisconnectedEvent.Invoke(player, identity);
+
+			break;
+				
+			case LogoutCancelEventTypeID:
+			LogoutCancelEventParams logoutCancelParams;
+			Class.CastTo(logoutCancelParams, params);				
+			Class.CastTo(player, logoutCancelParams.param1);
+
+			identity = player.GetIdentity();
+
+			onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+			
+			if(onPlayerConnect)
+				onPlayerConnect.Invoke(player, identity, true);
+
+			break;
+
+			case ClientPrepareEventTypeID:
 			ClientPrepareEventParams clientPrepareParams;
 			Class.CastTo(clientPrepareParams, params);
 
+			onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+			
+			if(onPlayerConnect)
+				onPlayerConnect.Invoke(NULL, clientPrepareParams.param1, false); //Invoke anyway sometimes ClientReadyEventTypeID does not trigger.
+
 			ref BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(clientPrepareParams.param1.GetPlainId());
-			if (bannedPlayer != null)
+			if (bannedPlayer != NULL)
 			{
-				autoptr BanDuration expireDate = bannedPlayer.expirationDate;
+				BanDuration expireDate = bannedPlayer.expirationDate;
 				string banReason = bannedPlayer.banReason;
 				if (expireDate.Permanent)
-				{
 					banReason += "\n Expiration Date: Permanent";
-				}
 				else
-				{
 					banReason += string.Format("\n Expiration Date %1/%2/%3  %4%5%6",expireDate.Year.ToString(),expireDate.Month.ToString(),expireDate.Day.ToString(),expireDate.Hour.ToString(),":",expireDate.Minute.ToString());
+
+				if ( !m_KickQueue.Contains( clientPrepareParams.param1.GetPlainId() ) )
+				{
+					m_KickQueue.Insert(clientPrepareParams.param1.GetPlainId(), 0);
+					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, true, clientPrepareParams.param1.GetPlainId(), banReason); 
 				}
-				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, false, clientPrepareParams.param1.GetPlainId(), banReason); 
 			}
 			
 			if (m_ServerLocked)
-			{
-				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, false, clientPrepareParams.param1.GetPlainId(),"Server is Currently Locked!");
-			}
+				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, true, clientPrepareParams.param1.GetPlainId(),"#VSTR_NOTIFY_SERVER_LOCKED");
 
 			if (!GetPlayerListManager().HasPlayerInList( clientPrepareParams.param1.GetPlainId() ))
-			{
-				//WebHook Notifications
 				GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(clientPrepareParams.param1.GetName(), clientPrepareParams.param1.GetPlainId(), "joined the server!"));
-			}
 
-		}else{
-			super.OnEvent(eventTypeId,params);
+			break;
 		}
+		super.OnEvent(eventTypeId,params);
 	}
 	
 	void InvokeKickPlayer(string id, string msg)
 	{
-		autoptr PlayerIdentity identity = GetPermissionManager().GetIdentityById( id );
-		if(identity != null)
+		if ( m_KickQueue.Contains(id) )
 		{
+			int attempts = m_KickQueue.Get(id) + 1;
+			m_KickQueue.Set(id, attempts);
+
+			if ( attempts >= m_MaxKickAttempts ){
+				m_KickQueue.Remove(id);
+				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
+			}
+		}
+
+		PlayerIdentity identity = GetPermissionManager().GetIdentityById( id );
+		if( identity != NULL )
+		{
+			GetSimpleLogger().Log(string.Format("Kicking banned player \"%1\" (steamId=%2) kick message: (%3)", identity.GetName(), id, msg));
 			GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
-			Print("InvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayerInvokeKickPlayer");
-		}
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
-	}
-		
-	override void OnClientReconnectEvent(PlayerIdentity identity, PlayerBase player)
-	{
-		super.OnClientReconnectEvent(identity, player);
-		if ( identity != null )
-		{
-			if(!GetPlayerListManager().HasPlayerInList(identity.GetPlainId()))
-			{
-				GetPlayerListManager().AddUserServer(identity.GetName(), identity.GetPlainId());
-			}
-			
-			if(GetPermissionManager().HasUserGroup(identity.GetPlainId()))
-			{
-				GetPlayerListManager().SendPlayerList(identity);
-			}
-		}
-	}
-	
-	override void UpdateLogoutPlayers()
-	{
-		for ( int i = 0; i < m_LogoutPlayers.Count(); i++ )
-		{
-			LogoutInfo info = m_LogoutPlayers.GetElement(i);
-			
-			if (GetGame().GetTime() >= info.param1)
-			{
-				PlayerIdentity identity;
-				PlayerBase player = m_LogoutPlayers.GetKey(i);
-				if (player)
-				{
-					identity = player.GetIdentity();
-					if (identity != null)
-					{
-						if (GetPlayerListManager().HasPlayerInList(identity.GetPlainId()))
-						{
-							GetPlayerListManager().RemoveUserServer(identity.GetPlainId());
-							Print("UpdateLogoutPlayers:: Updating VPP Sync List!");
-						}
-					}
-					super.UpdateLogoutPlayers();
-				}
-			}
-		}
-	}
-	
-	/*
-		overriding this function is a fucking BITCH TO DO. so i just copy pasta and add our shit to it. Fuck it.
-	*/
-	override void OnClientDisconnectedEvent(PlayerIdentity identity, PlayerBase player, int logoutTime, bool authFailed)
-	{
-		bool disconnectNow = true;
-		
-		// TODO: get out of vehicle
-		// using database and no saving if authorization failed
-		if (GetHive() && !authFailed)
-		{			
-			if (player.IsAlive())
-			{	
-				if (!m_LogoutPlayers.Contains(player))
-				{
-					Print("[Logout]: New player " + identity.GetPlainId() + " with logout time " + logoutTime.ToString());
-					
-					// inform client about logout time
-					GetGame().SendLogoutTime(player, logoutTime);
-			
-					// wait for some time before logout and save
-					LogoutInfo params = new LogoutInfo(GetGame().GetTime() + logoutTime * 1000, identity.GetPlainId());
-					m_LogoutPlayers.Insert(player, params);
-										
-					// wait until logout timer runs out
-					disconnectNow = false;		
-				}
-				return;
-			}		
-		}
-		
-		if (disconnectNow)
-		{
-			Print("[Logout]: New player " + identity.GetPlainId() + " with instant logout");
-			
-			// inform client about instant logout
-			GetGame().SendLogoutTime(player, 0);
-			
-			PlayerDisconnected(player, identity, identity.GetPlainId());
+			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
+			m_KickQueue.Remove(id);
 		}
 	}
 
-	override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
+	void HandleOnPlayerConnect(PlayerBase player, PlayerIdentity identity, bool canceledLogout)
 	{
-		if (identity != null) uid = identity.GetPlainId();
-		
+		if(identity == NULL)
+		{
+			GetSimpleLogger().Log(string.Format("A Player attempted to connect but with a NULL PlayerIdentity"));
+			Print(string.Format("[VPPAT] A Player attempted to connect but with a NULL PlayerIdentity"));
+			return;
+		}
+
+		if ( !canceledLogout )
+		{
+			GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
+			Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
+		}
+		else
+		{
+			GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) re-connected to server [canceledLogout]", identity.GetName(), identity.GetPlainId()));
+			Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) re-connected to server [canceledLogout]", identity.GetName(), identity.GetPlainId()));
+		}
+
+		if(identity)
+		{
+			if(!GetPlayerListManager().HasPlayerInList(identity.GetPlainId()))
+				GetPlayerListManager().AddUserServer(identity.GetName(), identity.GetPlainId());
+			
+			if(GetPermissionManager().HasUserGroup(identity.GetPlainId()))
+				GetPlayerListManager().SendPlayerList(identity);
+		}
+	}
+
+	void HandleOnPlayerDisconnected(PlayerBase player, PlayerIdentity identity)
+	{
+		if ( identity )
+		{
+			GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected from server.", identity.GetName(), identity.GetPlainId()));
+			Print(string.Format("Player \"%1\" (steamid=%2) disconnected from server.", identity.GetName(), identity.GetPlainId()));
+		}else{
+			GetSimpleLogger().Log("HandleOnPlayerDisconnected Called but PlayerIdentity was NULL ? Early logout?");
+			Print("[VPPAT] HandleOnPlayerDisconnected Called but PlayerIdentity was NULL ? Early logout?");
+			return;
+		}
+
+		string uid = identity.GetPlainId();
 		if (GetPlayerListManager().HasPlayerInList(uid))
 		{
 			GetPlayerListManager().RemoveUserServer(uid);
-			Print("PlayerDisconnected:: Updating VPP Sync List! removed: "+uid);
+			Print("[VPPAT] Updating VPP Sync List! removed: "+uid);
 		}
-	
-		super.PlayerDisconnected(player,identity,uid);
 	}
-}
+};

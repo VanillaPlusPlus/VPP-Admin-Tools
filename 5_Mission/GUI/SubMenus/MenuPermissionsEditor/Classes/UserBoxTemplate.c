@@ -19,7 +19,7 @@ class UserBoxTemplate : VPPPlayerTemplate
 		m_PlayerName.SetText(m_Name);
 		m_GUID.SetText(m_ID);
 		
-		GetVPPUIManager().HookConfirmationDialog(m_RemoveUser, RootWidget,this,"DeleteUser", DIAGTYPE.DIAG_YESNO, "Delete User", "Are you sure you wish to remove "+m_Name + " from the group?");
+		GetVPPUIManager().HookConfirmationDialog(m_RemoveUser, RootWidget,this,"DeleteUser", DIAGTYPE.DIAG_YESNO, "#VSTR_TILE_DEL_USER", "#VSTR_Q_REMOVE_USER_FROMGROUP"+m_Name + "#VSTR_Q_REMOVE_USER_FROMGROUP_2");
 	}
 	
 	void ~UserBoxTemplate()

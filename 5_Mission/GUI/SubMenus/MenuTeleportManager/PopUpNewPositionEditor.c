@@ -84,9 +84,9 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 				if (m_Position != Vector(0,0,0))
 					m_RootClass.SaveNewMarker(m_PositionName,m_Position,m_editMode,m_OldPositionName,m_OldPosition);
 					else
-					GetVPPUIManager().DisplayError("Invalid Position property!");
+					GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_INVALIDPOS");
 			}else{
-				GetVPPUIManager().DisplayError("You must give the position a unique name!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_TP_NAME_UNIQUE");
 			}
 			break;
 		}

@@ -34,13 +34,25 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PanelWidget0 {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.07
+       size 0.979 0.916
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass timePanel_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.99 0.073
+       size 0.98 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -62,7 +74,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "World Time"
+         text "#VSTR_LBL_WORLD_TIME"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -96,7 +108,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "Hour:"
+         text "#VSTR_LBL_HOUR"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -123,7 +135,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "Minute:"
+         text "#VSTR_LBL_MINUTE"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -150,7 +162,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "Day:"
+         text "#VSTR_LBL_DAY"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -177,7 +189,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "Month:"
+         text "#VSTR_LBL_MONTH"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -204,7 +216,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "Year:"
+         text "#VSTR_LBL_YEAR"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -234,7 +246,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Apply"
+       text "#VSTR_APPLY"
        font "gui/fonts/Metron12"
       }
      }
@@ -249,7 +261,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       ImageWidgetClass PanelPresets_Title {
        ignorepointer 1
@@ -277,7 +289,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Presets"
+         text "#VSTR_LBL_PRESETS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -295,8 +307,20 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PnlBgOptions {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.01
+         size 0.981 0.978
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         WrapSpacerWidgetClass TimePresetsDropDown {
          visible 1
          clipchildren 0
@@ -335,8 +359,20 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PnlBgApplyPreset {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         size 0.963 0.917
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         WrapSpacerWidgetClass SpacerButtonsTimePresets {
          ignorepointer 1
          color 0 0 0 1
@@ -363,7 +399,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Apply Preset"
+           text "#VSTR_LBL_APPLY_PRESET"
            font "gui/fonts/Metron12"
           }
           ButtonWidgetClass BtnSaveTimePreset {
@@ -376,7 +412,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Save"
+           text "#VSTR_LBL_SAVE"
            font "gui/fonts/Metron12"
           }
           ButtonWidgetClass BtnDeleteWeatherPreset {
@@ -390,7 +426,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Delete Preset"
+           text "#VSTR_LBL_DELETE_W_PRESET"
            font "gui/fonts/Metron12"
           }
           ImageWidgetClass ImgInfoTimePreset {
@@ -423,7 +459,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          "no focus" 1
-         text "Use Current Time"
+         text "#VSTR_LBL_USE_CURRENT_TIME"
         }
        }
       }
@@ -437,8 +473,20 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PanelWidget1 {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.03
+         size 0.973 0.937
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         WrapSpacerWidgetClass SpacerButtonsWeatherPresets {
          ignorepointer 1
          color 0 0 0 1
@@ -463,7 +511,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Apply Preset"
+           text "#VSTR_LBL_APPLY_PRESET"
            font "gui/fonts/Metron12"
           }
           ButtonWidgetClass spacerbutton {
@@ -492,7 +540,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Save"
+           text "#VSTR_LBL_SAVE"
            font "gui/fonts/Metron12"
           }
           EditBoxWidgetClass EditPresetName {
@@ -505,7 +553,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Enter Name"
+           text "#VSTR_LBL_ENTER_NAME"
            "Use default text" 1
            "exact text" 1
            font "gui/fonts/Metron12"
@@ -521,7 +569,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Delete Selected"
+           text "#VSTR_LBL_DELETE_W_PRESET"
            font "gui/fonts/Metron12"
           }
           ImageWidgetClass ImgInfoWeatherPreset {
@@ -556,8 +604,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.16
+       size 0.989 0.816
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass Info_Panel {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -584,7 +644,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Information"
+         text "#VSTR_LBL_INFORMATION"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -629,7 +689,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Time:"
+           text "#VSTR_LBL_TIME"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -669,7 +729,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Date:"
+           text "#VSTR_LBL_DATE"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -710,7 +770,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Normal
-           text "Rain:"
+           text "#VSTR_LBL_RAIN"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -750,7 +810,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Overcast:"
+           text "#VSTR_LBL_OVERCAST"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -790,7 +850,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Fog:"
+           text "#VSTR_LBL_FOG"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -831,7 +891,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Wind Force:"
+           text "#VSTR_LBL_WIND_FORCE"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -868,7 +928,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Editor
-     text "Apply"
+     text "#VSTR_APPLY"
      font "gui/fonts/Metron12"
     }
     PanelWidgetClass PanelWeatherConfig {
@@ -882,8 +942,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgCOnfig {
+       ignorepointer 1
+       color 0 0 0 1
+       position 0 0.12
+       size 0.991 0.865
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass weathercfg_title_img {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -910,7 +982,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Weather Configuration"
+         text "#VSTR_LBL_WEATHER_CONFG"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -948,10 +1020,10 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style rover_sim_black_2
+         style editor_quad
          {
           SliderWidgetClass SliderRain {
-           color 0.9098 0.1412 0.1412 1
+           color 0.6706 0.6706 0.6706 1
            position 0 0.17
            size 0.95 0.25
            halign center_ref
@@ -1024,7 +1096,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Duration:"
+           text "#VSTR_LBL_DURATION"
           }
           TextWidgetClass RateOfChangeLabel {
            ignorepointer 1
@@ -1036,7 +1108,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Rate Of Change:"
+           text "#VSTR_LBL_RATE_OF_CHANGE"
           }
          }
         }
@@ -1049,11 +1121,11 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style rover_sim_black_2
+         style editor_quad
          {
           SliderWidgetClass SliderOvercast {
            clipchildren 1
-           color 0.9098 0.1412 0.1412 1
+           color 0.6706 0.6706 0.6706 1
            position 0 0.17
            size 0.95 0.25
            halign center_ref
@@ -1130,7 +1202,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Duration:"
+           text "#VSTR_LBL_DURATION"
           }
           TextWidgetClass RateOfChangeLabel0 {
            ignorepointer 1
@@ -1142,7 +1214,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Rate Of Change:"
+           text "#VSTR_LBL_RATE_OF_CHANGE"
           }
          }
         }
@@ -1155,10 +1227,10 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style rover_sim_black_2
+         style editor_quad
          {
           SliderWidgetClass SliderFog {
-           color 0.9098 0.1412 0.1412 1
+           color 0.6706 0.6706 0.6706 1
            position 0 0.17
            size 0.95 0.25
            halign center_ref
@@ -1231,7 +1303,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Duration:"
+           text "#VSTR_LBL_DURATION"
           }
           TextWidgetClass RateOfChangeLabel2 {
            ignorepointer 1
@@ -1243,7 +1315,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Rate Of Change:"
+           text "#VSTR_LBL_RATE_OF_CHANGE"
           }
          }
         }
@@ -1256,10 +1328,10 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style rover_sim_black_2
+         style editor_quad
          {
           SliderWidgetClass SliderWindForce {
-           color 0.9098 0.1412 0.1412 1
+           color 0.6706 0.6706 0.6706 1
            position 0 0.17
            size 0.95 0.25
            halign center_ref
@@ -1332,7 +1404,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "WEATHER MANAGER"
+     text "#VSTR_WEATHER_MANAGER"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

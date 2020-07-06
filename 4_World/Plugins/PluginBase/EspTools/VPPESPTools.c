@@ -25,7 +25,7 @@ class VPPESPTools extends PluginBase
 					GetGame().ObjectDelete(obj);
 			}
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Deleted ["+copyArray.Count()+"] item(s)!",NotifyTypes.NOTIFY);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] deleted objects using ESP",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) deleted objects using ESP", sender.GetName(), sender.GetPlainId()));
 		}
 	}
 
@@ -71,7 +71,7 @@ class VPPESPTools extends PluginBase
 				playerStats.Insert(statsData);
 			}
 			GetRPCManager().SendRPC( "RPC_VPPESPPlayerTracker", "HandleData", new Param2<array<string>,array<ref PlayerStatsData>>(networkIds, playerStats), true, sender);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just requested a scan for players nearby",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) just requested a scan for players nearby using ESP", sender.GetName(), sender.GetPlainId()));
 		}
 	}
 };

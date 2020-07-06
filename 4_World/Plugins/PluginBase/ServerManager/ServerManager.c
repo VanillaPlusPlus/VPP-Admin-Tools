@@ -108,11 +108,11 @@ class ServerManager extends PluginBase
 				m_RestartInProgress = true;
 				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RestartTicker, 1000, true);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Requested for server restart in: " + data.param1 + " seconds"));
-				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just requested a server restart",sender.GetPlainId(), sender.GetName()));
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) requested a server restart", sender.GetName(), sender.GetPlainId()));
 			}
 			else
 			{
-				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"There is already a request for a restart in progres...",NotifyTypes.ERROR);
+				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_RESTART_ERROR",NotifyTypes.ERROR);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ class ServerManager extends PluginBase
 				autoptr PlayerIdentity identity = player.GetIdentity();
 				if (identity != null)
 				{
-					GetPermissionManager().NotifyPlayer(identity.GetPlainId(),"Server Restart in: "+m_TimeCounter,NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(identity.GetPlainId(),"#VSTR_NOTIFY_RESTART_IN"+m_TimeCounter,NotifyTypes.NOTIFY);
 				}
 			}
 		}
@@ -153,14 +153,15 @@ class ServerManager extends PluginBase
 			
 			autoptr array<Man> players = new array<Man>;
 			GetGame().GetWorld().GetPlayerList(players);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just kicked all players from the server",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) just kicked all players from the server", sender.GetName(), sender.GetPlainId()));
+
 			foreach(Man player : players)
 			{
 				autoptr PlayerIdentity identity = player.GetIdentity();
 				if (identity != null && identity.GetPlainId() != sender.GetPlainId())
 				{
 					GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param1 ), true, identity);
-					GetSimpleLogger().Log("[ServerManager] RequestKickAllPlayers: Kicking Player: "+identity.GetName());
+					GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Kicking Player: \"%3\" (steamid=%4)", sender.GetName(), sender.GetPlainId(), identity.GetName(), identity.GetPlainId()));
 				}
 			}
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ServerManager] Requested to kick all players from server: " + players.Count()));
@@ -208,10 +209,8 @@ class ServerManager extends PluginBase
 				CustomModule.CallFunction(null, "GetInstance", retValue, null);
 				CustomModule.CallFunction(retValue, "FuckThis", null, null);
 				
-				GetSimpleLogger().Log("Load Script: "+data.param1);
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Loaded Script: "+data.param1,NotifyTypes.NOTIFY);
 			}else{
-				GetSimpleLogger().Log("File: "+data.param1+" was unable to be found!");
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"File: "+data.param1+" was unable to be found!",NotifyTypes.ERROR);
 			}
 		}

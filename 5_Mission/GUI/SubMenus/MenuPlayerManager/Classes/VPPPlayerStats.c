@@ -88,7 +88,7 @@ class VPPPlayerStats : VPPPlayerTemplate
 	void ButtonClick( Widget w, int x, int y, int button )
 	{
 		if (w == m_btnCopyInfo) GetGame().CopyToClipboard(m_CopyText);
-		GetVPPUIManager().DisplayNotification("Successfully Copied To Clipboard!");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SUCCESS_COPY_TOCLIPBOARD");
 	}
     
     void ~VPPPlayerStats()

@@ -53,7 +53,7 @@ class VPPUIManager extends PluginBase
 	ref VPPScriptedMenu GetMenuByType(typename menuType)
 	{
 		foreach(ref VPPScriptedMenu menu : M_SCRIPTED_UI_INSTANCES){
-			if (menu.GetType() == menuType){
+			if (menu && menu.GetType() == menuType){
 	    			return menu;
 	    		}
 		}
@@ -165,7 +165,9 @@ class VPPScriptedMenu extends UIScriptedMenu
 
 	void ~VPPScriptedMenu()
 	{
-		GetVPPUIManager().DestroyMenuInstanceByType(GetType());
+		if ( GetVPPUIManager() != NULL)
+			GetVPPUIManager().DestroyMenuInstanceByType(GetType());
+
 		Print("Destroy Menu: "+GetType());
 	}
 	

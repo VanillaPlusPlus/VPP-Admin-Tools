@@ -34,8 +34,20 @@ FrameWidgetClass rootPermissionsEditor {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgPerms {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.045
+       size 0.981 0.95
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title_perms {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -62,7 +74,7 @@ FrameWidgetClass rootPermissionsEditor {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Available Permissions"
+         text "#VSTR_LBL_AVA_PERMS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -123,8 +135,20 @@ FrameWidgetClass rootPermissionsEditor {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgGroups {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.045
+       size 0.991 0.949
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title_groups {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -151,7 +175,7 @@ FrameWidgetClass rootPermissionsEditor {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "User Groups"
+         text "#VSTR_LBL_USER_GROUPS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -217,7 +241,33 @@ FrameWidgetClass rootPermissionsEditor {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Create Group"
+       text "#VSTR_LBL_CREATE_GROUP"
+       font "gui/fonts/Metron12"
+      }
+      ButtonWidgetClass btnSaveChanges {
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       style Editor
+       text "#VSTR_LBL_UPDATE_PERMISSIONS"
+       font "gui/fonts/Metron12"
+      }
+      ButtonWidgetClass btnAddMembers {
+       size 0.33 0.2
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass ""
+       style Editor
+       text "#VSTR_LBL_ADD_MEMEBER"
        font "gui/fonts/Metron12"
       }
       ButtonWidgetClass btnDeleteGroup {
@@ -231,34 +281,7 @@ FrameWidgetClass rootPermissionsEditor {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Delete Group"
-       font "gui/fonts/Metron12"
-      }
-      ButtonWidgetClass btnSaveChanges {
-       size 0.33 0.2
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scriptclass "ConfirmationEventHandler"
-       style Editor
-       text "Update Permissions"
-       font "gui/fonts/Metron12"
-      }
-      ButtonWidgetClass btnAddMembers {
-       color 0.0706 0.9294 0.1137 1
-       size 0.33 0.2
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scriptclass ""
-       style Editor
-       text "Add Member(s)"
+       text "#VSTR_LBL_DELETE_GROUP"
        font "gui/fonts/Metron12"
       }
      }
@@ -300,7 +323,7 @@ FrameWidgetClass rootPermissionsEditor {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "PERMISSIONS EDITOR"
+     text "#VSTR_PERMISSIONS_MANAGER_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

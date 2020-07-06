@@ -55,7 +55,7 @@ class PopUpCreatePreset extends ScriptedWidgetEventHandler
 				m_RootClass.SaveNewPreset(m_PresetName);
 				delete this;
 			}else{
-				GetVPPUIManager().DisplayError("You must give the preset a unique name!");
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_UNIQUE");
 			}
 			break;
 		}

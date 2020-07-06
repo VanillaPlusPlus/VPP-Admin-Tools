@@ -25,7 +25,8 @@ class BringPlayerChatModule : ChatCommand
                 string targetName = targetIdentity.GetName();
                 string targetID = targetIdentity.GetPlainId();
 
-                GetTeleportManager().BringPlayer(target, caller.GetPosition(), callerID);
+                GetTeleportManager().BringPlayer(PlayerBase.Cast(target), caller.GetPosition(), callerID);
+                GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /bring used on: \"%3\" (steamid=%4)", callerName, callerID, targetName, targetID));
                 GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /bring command used on: " + targetName + " ID: " + targetID));
             }
         }

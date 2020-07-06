@@ -4,29 +4,25 @@ modded class PlayerBase
 	private bool    hasUnlimitedAmmo;
 	private bool 	hasFlyinCar;
 	private bool	m_isInvisible;
+	private bool    m_freezePlayer;
 	
 	void PlayerBase()
 	{
 		RegisterNetSyncVariableBool("m_isInvisible");
+		RegisterNetSyncVariableBool("m_freezePlayer");
 		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingeplayerExecutionType.Server );
 	}
 
-	override void OnConnect()
+	override void EOnFrame(IEntity other, float timeSlice)
 	{
-		super.OnConnect();
-		
-		if(GetGame().IsServer() && GetGame().IsMultiplayer())
-		{
-			if(!GetPlayerListManager().HasPlayerInList(GetIdentity().GetPlainId()))
-			{
-				GetPlayerListManager().AddUserServer(GetIdentity().GetName(), GetIdentity().GetPlainId());
-			}
-			
-			if(GetPermissionManager().HasUserGroup(GetIdentity().GetPlainId()))
-			{
-				GetPlayerListManager().SendPlayerList(GetIdentity());
-			}
-		}
+		super.EOnFrame(other, timeSlice);
+		//if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+		//{
+	        if ( m_isInvisible )
+	        {
+	        	this.ClearFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true );
+	        }
+		//}
 	}
 		
 	void InvokeReload(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -54,27 +50,43 @@ modded class PlayerBase
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-			setInvisibility(m_isInvisible);
+		VPPSetInvisibility(m_isInvisible);
+		FreezePlayer(m_freezePlayer);
 	}
 	
-	void setInvisibility(bool state)
+	void VPPSetInvisibility(bool state)
 	{
-		m_isInvisible = state;
-
-		if (!IsAlive()) return;
-		SetInvisible(state);
-		if (state){
-			ClearFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true );
-		}else{
-			SetFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true);
+		if (!state && GetGame().IsClient())
+			this.SetFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true);
+		else if ( GetGame().IsServer() ){
+			m_isInvisible = state;
+			SetSynchDirty();
 		}
-		SetSynchDirty();
 	}
 	
 	void setGodMode(bool trigger)
 	{
 		hasGodmode = trigger;
 		SetAllowDamage(!trigger);
+	}
+
+	void FreezePlayer(bool state)
+	{
+		if ( GetGame().IsServer() )
+		{
+			m_freezePlayer = state;
+			SetSynchDirty();
+			return;
+		}
+		
+		HumanInputController hic = this.GetInputController();
+		if ( hic )
+			hic.SetDisabled( state );
+	}
+
+	bool IsFreezeControls()
+	{
+		return m_freezePlayer;
 	}
 	
 	bool GodModeStatus()
@@ -106,7 +118,7 @@ modded class PlayerBase
 	{
 		return hasFlyinCar;
 	}
-	
+
 	void UnlimitedAmmoCheck(Weapon_Base weapon)
 	{
 		if ( IsUnlimitedAmmo() )
@@ -115,25 +127,22 @@ modded class PlayerBase
 			if ( GetGame().IsServer() )
 			{
 				magazine = weapon.GetMagazine(weapon.GetCurrentMuzzle());
-			
+
+				if ( GetGame().IsMultiplayer() && magazine)
+	            	GetGame().RemoteObjectDelete( magazine );
+
 				if(magazine)
-				{
-					if (magazine.GetAmmoCount() <= 5)
-					{
-						magazine.ServerSetAmmoMax();
-					}
-				}
+					magazine.ServerSetAmmoMax();
+
+				if ( GetGame().IsMultiplayer() && magazine)
+            		GetGame().RemoteObjectCreate( magazine );
 			}
 			else
 			{
 				magazine = weapon.GetMagazine(weapon.GetCurrentMuzzle());
-			
 				if(magazine)
 				{
-					if (magazine.GetAmmoCount() <= 5)
-					{
-						magazine.LocalSetAmmoMax();
-					}
+					magazine.LocalSetAmmoMax();
 				}
 			}
 		}

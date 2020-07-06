@@ -1,4 +1,4 @@
-class WebHookCallBack: CURLCallback
+class WebHookCallBack: RestCallback
 {
 	void WebHookCallBack()
 	{

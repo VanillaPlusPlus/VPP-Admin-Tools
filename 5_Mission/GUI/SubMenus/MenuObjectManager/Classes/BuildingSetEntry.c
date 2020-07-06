@@ -15,11 +15,11 @@ class BuildingSetEntry : VPPPlayerTemplate
         m_LayoutPath = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingSetEntry.layout";
         m_EntryBox   = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 		m_StatusCheckBox = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("Active"));
-		GetVPPUIManager().HookConfirmationDialog(m_StatusCheckBox, rootWidget,this,"CheckBoxEvent", DIAGTYPE.DIAG_YESNO, "Warning!", "Selecting another building set will NOT save previous changes to other sets. Continue?");
+		GetVPPUIManager().HookConfirmationDialog(m_StatusCheckBox, rootWidget,this,"CheckBoxEvent", DIAGTYPE.DIAG_YESNO, "#VSTR_TITLE_WARNING", "#VSTR_TOOLTIP_SELECT_SET");
 		m_EditItem   = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
 		
 		m_DeleteItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
-		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "Are you sure you wish to delete "+itemSetName+"? (You can't revert once you delete this item!)");
+		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2"+itemSetName+"#VSTR_ESP_DEL_CONFIRM_3");
 		
         m_SetNameWidget = TextWidget.Cast(m_EntryBox.FindAnyWidget("ItemName"));
         m_SetNameWidget.SetText(itemSetName);

@@ -200,7 +200,7 @@ class BuildingTracker: ScriptedWidgetEventHandler
 	void Highlight(bool state)
 	{
 		if (state)
-			m_RootWidget.SetColor(ARGB(200,0,0,125));
+			m_RootWidget.SetColor(ARGB(200,0,0,110));
 		else
 			m_RootWidget.SetColor(ARGB(200,0,0,0));
 	}

@@ -49,7 +49,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Bold
-       text "WebHooks Manager"
+       text "#VSTR_WEB_HOOKS_MANAGER_TITLE"
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -92,8 +92,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgWebHooks {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.05
+       size 0.968 0.945
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass log_content_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -119,7 +131,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "WebHooks"
+         text "#VSTR_LBL_WEBHOOKS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -138,7 +150,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Create New"
+       text "#VSTR_LBL_CREATE_NEW_PRESET"
       }
       ScrollWidgetClass ScrollerWebhooks {
        ignorepointer 1
@@ -177,8 +189,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgAtts {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.05
+       size 0.982 0.945
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass title_atts {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -204,7 +228,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "WebHook Attributes"
+         text "#VSTR_LBL_WEBHOOKS_ATTS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -263,7 +287,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Send Kill / Death logs"
+             text "#VSTR_LBL_SEND_DEATH_LOGS"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -300,7 +324,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Send Admin Activity Logs"
+             text "#VSTR_LBL_SEND_ADMIN_LOGS"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -337,7 +361,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Send Player Hit / Damage Logs"
+             text "#VSTR_LBL_SEND_HIT_LOGS"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -373,7 +397,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Send Player Join / Leave Logs"
+             text "#VSTR_LBL_SEND_PLAYER_LEAVE_JOIN_LOGS"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -410,7 +434,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Name:"
+             text "#VSTR_LBL_NAME"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -451,7 +475,7 @@ FrameWidgetClass rootFrame {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "URL:"
+             text "#VSTR_LBL_URL"
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -490,7 +514,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Save Changes"
+       text "#VSTR_LBL_SAVE_CHANGES"
       }
       PanelWidgetClass panel_info {
        ignorepointer 1
@@ -526,7 +550,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style DayZBold
-         text "Currently only Discord WebHooks are supported as the requests format (json) are suited for Discord"
+         text "#VSTR_LBL_WEBHOOKS_TIP"
          font "gui/fonts/Metron-Italic16"
          "exact text" 1
          "size to text h" 1

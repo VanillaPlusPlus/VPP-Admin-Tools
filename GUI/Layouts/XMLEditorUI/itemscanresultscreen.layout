@@ -36,7 +36,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       MapWidgetClass map {
        visible 1
@@ -59,8 +59,21 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass Ng {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0
+       size 0.983 0.824
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       TextWidgetClass SomeText {
        ignorepointer 1
        size 0.933 0.794
@@ -70,7 +83,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Please wait..."
+       text "#VSTR_LBL_PLEASE_WAIT"
        font "gui/fonts/Metron16"
        "size to text h" 1
        "size to text v" 1

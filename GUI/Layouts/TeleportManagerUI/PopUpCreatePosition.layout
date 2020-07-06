@@ -8,8 +8,20 @@ PanelWidgetClass rootFrame {
  hexactsize 0
  vexactsize 0
  scriptclass "PopUpNewPositionEditor"
- style rover_sim_black_2
+ style editor_quad
  {
+  PanelWidgetClass PanelWidget1 {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   size 0.99 0.979
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   TextWidgetClass text_title {
    ignorepointer 1
    position 0.01 0
@@ -18,7 +30,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   text "NEW POSITION ATTRIBUTES"
+   text "#VSTR_LBL_NEW_TP_POS_ATTS"
    font "gui/fonts/etelkatextpro22"
    "exact text" 1
    "size to text h" 0
@@ -26,6 +38,7 @@ PanelWidgetClass rootFrame {
   }
   PanelWidgetClass panel_redline {
    ignorepointer 1
+   color 1 0 0 1
    position 0 0.12
    size 0.99 0.007
    halign center_ref
@@ -33,7 +46,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_black_2
+   style editor_quad
   }
   GridSpacerWidgetClass panel_content {
    ignorepointer 0
@@ -55,7 +68,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Name:"
+     text "#VSTR_LBL_NAME"
      font "gui/fonts/etelkatextpro16"
      "exact text" 1
      "size to text h" 0
@@ -94,7 +107,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Position:"
+     text "#VSTR_LBL_POS"
      font "gui/fonts/etelkatextpro16"
      "exact text" 1
      "size to text h" 0
@@ -128,18 +141,18 @@ PanelWidgetClass rootFrame {
    {
     ButtonWidgetClass button_cancel {
      position 0 0.1
-     size 0.25 0.8
+     size 0.35 0.8
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      style Editor
-     text "Cancel"
+     text "#VSTR_CANCEL"
      font "gui/fonts/metron"
     }
     ButtonWidgetClass button_save {
      position 0 0.1
-     size 0.25 0.8
+     size 0.35 0.8
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -147,7 +160,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      scaled 1
      style Editor
-     text "Save"
+     text "#VSTR_LBL_SAVE"
      font "gui/fonts/metron"
     }
    }

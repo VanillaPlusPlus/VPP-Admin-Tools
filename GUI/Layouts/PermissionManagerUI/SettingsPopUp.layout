@@ -16,8 +16,20 @@ FrameWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_black_2
+   style editor_quad
    {
+    PanelWidgetClass PnlBg {
+     ignorepointer 1
+     color 0 0 0 0.9608
+     position 0 0.1
+     size 0.995 0.895
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style editor_selection
+    }
     PanelWidgetClass titleBG {
      ignorepointer 1
      color 0 0 0 1
@@ -38,7 +50,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "USER GROUP ATTRIBUTES"
+     text "#VSTR_LBL_UPDATE_GROUP_ATTS"
      font "gui/fonts/etelkatextpro22"
      "exact text" 1
      "size to text h" 0
@@ -46,6 +58,7 @@ FrameWidgetClass rootFrame {
     }
     PanelWidgetClass panel_redline {
      ignorepointer 1
+     color 1 0 0 1
      position 0 0.12
      size 0.99 0.007
      halign center_ref
@@ -53,7 +66,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style DayZDefaultPanel
     }
     PanelWidgetClass panel_buttons {
      ignorepointer 0
@@ -69,18 +82,18 @@ FrameWidgetClass rootFrame {
      {
       ButtonWidgetClass button_cancel {
        position 0 0.1
-       size 0.25 0.8
+       size 0.35 0.8
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Cancel"
+       text "#VSTR_CANCEL"
        font "gui/fonts/metron"
       }
       ButtonWidgetClass button_save {
        position 0 0.1
-       size 0.25 0.8
+       size 0.35 0.8
        halign right_ref
        hexactpos 0
        vexactpos 0
@@ -88,7 +101,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scaled 1
        style Editor
-       text "Save"
+       text "#VSTR_LBL_SAVE"
        font "gui/fonts/metron"
       }
      }
@@ -129,7 +142,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "[Force Name]: Users within the usergroup will not be able to use the tools if their ingame name is not matching with the name saved within the group"
+       text "#VSTR_LBL_GROUP_NAME_FORCE"
        "size to text h" 1
        "size to text v" 1
        wrap 1

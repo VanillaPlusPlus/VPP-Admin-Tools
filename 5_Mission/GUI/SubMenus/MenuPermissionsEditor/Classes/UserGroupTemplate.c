@@ -22,7 +22,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 		m_SelectGroup 	   = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("chkBoxSelectGrp"));
 		m_ScrollWidget 	   = ScrollWidget.Cast(m_EntryBox.FindAnyWidget("ScrollerUserGroups"));
 		m_btnEditPermLevel = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditPermLevel"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnEditPermLevel, RootWidget,this,"UpdatePermissionLevel", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Edit Permission Level", "Please Insert New Permission Level Value for the user group: "+group.GetGroupName());
+		GetVPPUIManager().HookConfirmationDialog(m_btnEditPermLevel, RootWidget,this,"UpdatePermissionLevel", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TITLE_EDIT_PERMS", "#VSTR_TOOLTIP_PERMSLEVEL"+group.GetGroupName());
 		m_btnSettings = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnSettings"));
 
 		m_group = group;
@@ -99,7 +99,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 			{
 				m_PermsLevel.SetText(userInput);
 				GetRPCManager().SendRPC( "RPC_PermissionManager", "UpdateUserGroupPermLvl", new Param2<int,string>(userInput.ToInt(),m_group.GetGroupName()), true);
-				GetVPPUIManager().DisplayNotification("Permission Level Updated To: "+userInput);
+				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMLVL_UPDATED"+userInput);
 			}
 		}
 		//unhide scroll widgets

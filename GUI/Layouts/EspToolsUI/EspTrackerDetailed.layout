@@ -24,7 +24,7 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Bold
-   text "Name:"
+   text "#VSTR_LBL_NAME"
    font "gui/fonts/Metron-BoldItalic12"
    "size to text h" 1
    "size to text v" 1
@@ -60,14 +60,14 @@ GridSpacerWidgetClass SpacerGrid {
    filter 0
   }
   SliderWidgetClass HealthInput {
-   color 0.7647 0.1843 0.1843 1
+   color 0.6706 0.6706 0.6706 1
    position 0 0
    size 100 10
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style GUI_Black
+   style Default
    vertical 0
    flipped 0
   }
@@ -83,14 +83,14 @@ GridSpacerWidgetClass SpacerGrid {
    "src alpha" 1
   }
   SliderWidgetClass BloodInput {
-   color 0.7647 0.1843 0.1843 1
+   color 0.6706 0.6706 0.6706 1
    position 0 0
    size 100 10
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style GUI_Black
+   style Default
    maximum 5000
    current 2500
   }
@@ -132,8 +132,7 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Bold
-   text "Steam64 ID:"
-   font "gui/fonts/Metron-BoldItalic12"
+   text "#VSTR_LBL_STEAMID"
    "size to text h" 1
    "size to text v" 1
    "text valign" center
@@ -160,8 +159,7 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Bold
-   text "Distance:"
-   font "gui/fonts/Metron-BoldItalic12"
+   text "#VSTR_LBL_DISTANCE"
    "size to text h" 1
    "size to text v" 1
    "text valign" center

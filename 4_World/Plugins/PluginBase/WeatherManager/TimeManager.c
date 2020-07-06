@@ -27,7 +27,7 @@ class TimeManager : ConfigurablePlugin
 		
 		if(FileExist(JSONPATH))
 		{
-			GetSimpleLogger().Log("[TimeManager]:: Load(): Loading Json File " + JSONPATH);
+			GetSimpleLogger().Log("[TimeManager] Loading Json File " + JSONPATH);
 			JsonFileLoader<TimeManager>.JsonLoadFile(JSONPATH, this);
 		}else{
 			Save();
@@ -36,7 +36,7 @@ class TimeManager : ConfigurablePlugin
 	
 	override void Save()
 	{
-		GetSimpleLogger().Log("[TimeManager]:: Save(): Saving to " + JSONPATH);
+		GetSimpleLogger().Log("[TimeManager] Saving to " + JSONPATH);
 		JsonFileLoader<TimeManager>.JsonSaveFile(JSONPATH, this);
 	}
 	
@@ -52,7 +52,6 @@ class TimeManager : ConfigurablePlugin
 				input.Insert(ts.GetName());
 			}
 			
-			GetSimpleLogger().Log("[TimeManager]:: SendToClient(): Send Data Count is " + input.Count().ToString());
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Sent Saved Time Prests" ));
 			GetRPCManager().SendRPC( "RPC_WeatherUI", "HandleTimeData", new Param1<array<string>>(input), true, sender );
 		}
@@ -81,7 +80,7 @@ class TimeManager : ConfigurablePlugin
 			autoptr TimeSetting settings = new TimeSetting(hour, min, month, day, year);
 			timeSettings.Insert(settings);
 			
-			GetSimpleLogger().Log("[TimeManager]:: SaveTimeSettings(): Saving setting to " + settings.GetName());
+			GetSimpleLogger().Log("[TimeManager] Saving setting to " + settings.GetName());
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Saving Time Preset:" + settings.GetName()));
 			Save();
 		}
@@ -102,7 +101,7 @@ class TimeManager : ConfigurablePlugin
 			{
 				if(ts != null && ts.GetName() == name)
 				{
-					GetSimpleLogger().Log("[TimeManager]:: DeleteTimeSetting(): Deleting time setting " + ts.GetName());
+					GetSimpleLogger().Log("[TimeManager] Deleting time setting " + ts.GetName());
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Deleted [" + ts.GetName() + "] saved time preset" ));
 			
 					timeSettings.RemoveItem(ts);
@@ -127,7 +126,7 @@ class TimeManager : ConfigurablePlugin
 			int min = param.param4;
 			int hour = param.param5;
 			
-			GetSimpleLogger().Log("[Time Manager]:: ApplyDate(): Setting Date to " + year.ToString() + "/" + month.ToString() + "/" + day.ToString() + " " + hour.ToString() + ":" + min.ToString());
+			GetSimpleLogger().Log("[Time Manager] Setting Date to " + year.ToString() + "/" + month.ToString() + "/" + day.ToString() + " " + hour.ToString() + ":" + min.ToString());
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[Time Manager]:: ApplyDate(): Setting Date to " + year.ToString() + "/" + month.ToString() + "/" + day.ToString() + " " + hour.ToString() + ":" + min.ToString()));
 			GetGame().GetWorld().SetDate(year, month, day, hour, min);
 		}
@@ -174,7 +173,7 @@ class TimeManager : ConfigurablePlugin
 		int hour = s.GetHour(), min = s.GetMinute();
 		int month = s.GetMonth(), day = s.GetDay(), year = s.GetYear();
 		
-		GetSimpleLogger().Log("[TimeManager]:: ApplyPreset(): Applying preset " + s.GetName());
+		GetSimpleLogger().Log("[TimeManager] Applying preset " + s.GetName());
 		GetGame().GetWorld().SetDate(year, month, day, hour, min);
 	}
 }

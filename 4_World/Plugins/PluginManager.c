@@ -13,9 +13,12 @@ modded class PluginManager
 		//----------------------------------------------------------------------
 		//		        Module Class Name 				Client	Server
 		//----------------------------------------------------------------------
-
-		RegisterPlugin("VPPUIManager",			    	 true,      false);
 		RegisterPlugin("ClientPlayerListManager",		 true,		true);
+
+		if (GetGame().IsClient())
+		{
+			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
+		}
 
 		if(GetGame().IsServer() && GetGame().IsMultiplayer())
 		{

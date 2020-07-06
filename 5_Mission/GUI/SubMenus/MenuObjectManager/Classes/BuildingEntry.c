@@ -5,6 +5,7 @@ class BuildingEntry : VPPPlayerTemplate
 	private ButtonWidget   m_DeleteItem;
 	private ButtonWidget   m_btnSelect;
 	private ButtonWidget   m_btnEditItem;
+	private ButtonWidget   m_btnPhysicsDrop;
     private string 		   m_BuildingDisplayName;
 	private bool   		   m_IsVisible;
 	private ref BuildingTracker m_TrackerWidget;
@@ -28,8 +29,10 @@ class BuildingEntry : VPPPlayerTemplate
 		m_DeleteItem  = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
 		m_btnEditItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
 		m_btnSelect   = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnSelect"));
-		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "Are you sure you wish to delete "+displayName+"? (You can't revert once you delete this item!)");
-		
+		m_btnPhysicsDrop = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnPhysicsDrop"));
+		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2"+displayName+"#VSTR_ESP_DEL_CONFIRM_3");
+		GetVPPUIManager().HookConfirmationDialog(m_btnPhysicsDrop, rootWidget,this,"PhysicsDrop", DIAGTYPE.DIAG_YESNO, "#VSTR_ALERT_ENABLE_PHYSICS", "#VSTR_TOOLTIP_PHYSICS");
+
         m_BuildingDisplayNameWidget = TextWidget.Cast(m_EntryBox.FindAnyWidget("ItemName"));
         m_BuildingDisplayNameWidget.SetText(displayName);
 		m_IsVisible = true;
@@ -114,6 +117,20 @@ class BuildingEntry : VPPPlayerTemplate
 			}
 		}
 	}
+
+	void PhysicsDrop(int result)
+	{
+		if (result == DIAGRESULT.YES)
+		{
+			if ( placedObject )
+			{
+				placedObject.CreateDynamicPhysics(PhxInteractionLayers.DYNAMICITEM);
+				placedObject.EnableDynamicCCD(true);
+				placedObject.SetDynamicPhysicsLifeTime(10.0);
+				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(placedObject.EnableDynamicCCD, 9000, false, false);
+			}
+		}
+	}
 	
 	void SetVisible(bool state)
 	{
@@ -134,6 +151,11 @@ class BuildingEntry : VPPPlayerTemplate
 	bool IsSelected()
 	{
 		return m_StatusCheckBox.IsChecked();
+	}
+
+	void SetSelected(bool state)
+	{
+		m_StatusCheckBox.SetChecked( state );
 	}
 	
 	BuildingTracker GetTracker()

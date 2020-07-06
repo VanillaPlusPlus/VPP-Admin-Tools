@@ -41,7 +41,6 @@ PanelWidgetClass dropdown_selector {
      clipchildren 0
      inheritalpha 1
      ignorepointer 1
-     color 0.2 0.8314 0.2235 1
      size 0.7 0.7
      halign center_ref
      valign center_ref
@@ -61,7 +60,6 @@ PanelWidgetClass dropdown_selector {
      clipchildren 0
      inheritalpha 1
      ignorepointer 1
-     color 1 0 0 1
      size 0.7 0.7
      halign center_ref
      valign center_ref

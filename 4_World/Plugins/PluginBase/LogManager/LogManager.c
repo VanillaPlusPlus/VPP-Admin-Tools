@@ -1,10 +1,17 @@
-class LogManager : PluginBase
+class LogManager: ConfigurablePlugin
 {
+	[NonSerialized()]
     private string 	   m_Logpath;
+    [NonSerialized()]
 	private FileHandle m_LogFile;
+
+	private bool 	   SendLogsToADM;
+	private bool       LongTimeStamp;
 	   
     void LogManager()
     {
+    	JSONPATH = "$profile:VPPAdminTools/LogOptions.json";
+
 		//-----RPC's-----
 		GetRPCManager().AddRPC("RPC_LogManager", "GetLogData", this, SingeplayerExecutionType.Server );
 		//---------------
@@ -17,7 +24,7 @@ class LogManager : PluginBase
 		GetHourMinuteSecondUTC(hour,minute,second);
 		GetYearMonthDayUTC(year,month,day);
 		
-		string timeStamp = string.Format("[%1-%2-%3]--[%4-%5-%6]",year.ToString(),month.ToString(),day.ToString(),hour.ToString(),minute.ToString(),second.ToString());
+		string timeStamp = string.Format("%1-%2-%3_%4-%5-%6",year.ToString(),month.ToString(),day.ToString(),hour.ToString(),minute.ToString(),second.ToString());
 		m_Logpath = string.Format("$profile:VPPAdminTools/Logging/Log_%1.txt",timeStamp);
 		
     	m_LogFile = OpenFile(m_Logpath, FileMode.WRITE);
@@ -26,10 +33,35 @@ class LogManager : PluginBase
 		FPrintln(m_LogFile, "====================================================================================");
 		CloseFile(m_LogFile);
     }
+
+    override void OnInit()
+    {
+    	super.OnInit();
+    	Load();
+    }
+
+	override void Load()
+	{
+		super.Load();
+
+		if (FileExist(JSONPATH))
+		{
+			JsonFileLoader<LogManager>.JsonLoadFile(JSONPATH, this);
+			return;
+		}
+		Save();
+	}
 	
+	override void Save()
+	{
+		super.Save();
+		JsonFileLoader<LogManager>.JsonSaveFile(JSONPATH, this);
+	}
+
 	void ~LogManager()
 	{
-		CloseFile(m_LogFile);
+		if ( m_LogFile )
+			CloseFile(m_LogFile);
 	}
 	
 	void Log(string str)
@@ -42,10 +74,24 @@ class LogManager : PluginBase
 		GetHourMinuteSecondUTC(hour,minute,second);
 		GetYearMonthDayUTC(year,month,day);
 		
-		string timeStamp = string.Format("[%1:%2:%3]--> ",hour.ToString(),minute.ToString(),second.ToString());
+		string timeStamp;
+		if ( LongTimeStamp )
+			timeStamp = string.Format("%1/%2/%3, %4:%5:%6 | ",year.ToString(), month.ToString(), day.ToString(), hour.ToString(), minute.ToString(), second.ToString());
+		else
+			timeStamp = string.Format("%1:%2:%3 | ",hour.ToString(), minute.ToString(), second.ToString());
 
 		FPrintln(m_LogFile, timeStamp + str);
 		CloseFile(m_LogFile);
+
+		if ( SendLogsToADM )
+		{
+			if ( LongTimeStamp )
+				timeStamp = string.Format("%1/%2/%3 | ",year.ToString(), month.ToString(), day.ToString());
+			else
+				timeStamp = string.Empty;
+
+			GetGame().AdminLog(timeStamp + " [VPPAT] " + str);
+		}
 	}
 	
 	//--------RPC Calls--------

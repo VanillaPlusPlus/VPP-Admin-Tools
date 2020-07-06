@@ -34,13 +34,25 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlFilterBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.09
+       size 0.98 0.9
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.005
-       size 0.97 0.083
+       size 0.98 0.083
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -62,7 +74,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Filters"
+         text "#VSTR_LBL_FILTERS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -83,7 +95,6 @@ FrameWidgetClass rootFrame {
            {
             ImageWidgetClass ImageWidget0 {
              ignorepointer 1
-             color 0.1137 1 0 1
              size 1 1
              halign center_ref
              valign center_ref
@@ -112,7 +123,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass "ConfirmationEventHandler"
            style Editor
-           text "Defaults"
+           text "#VSTR_LBL_DEFAULTS"
            font "gui/fonts/Metron12"
           }
          }
@@ -169,8 +180,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlEspItesBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.05
+       size 0.979 0.948
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title_Items {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -197,7 +220,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Selected Items"
+         text "#VSTR_LBL_SELECTED_ITEMS"
          font "gui/fonts/sdf_MetronLight36"
          "exact text" 1
          "exact text size" 16
@@ -249,13 +272,25 @@ FrameWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_black_2
+   style editor_quad
    {
+    PanelWidgetClass PnlActionsBg {
+     ignorepointer 1
+     color 0 0 0 0.9608
+     position 0 0.1
+     size 0.98 0.883
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style editor_selection
+    }
     ImageWidgetClass info_title_ {
      ignorepointer 1
      color 0.6706 0.6706 0.6706 0.8784
      position 0 0.005
-     size 0.97 0.1
+     size 0.98 0.1
      halign center_ref
      hexactpos 0
      vexactpos 0
@@ -277,7 +312,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Normal
-       text "Actions"
+       text "#VSTR_LBL_ACTIONS"
        font "gui/fonts/sdf_MetronLight42"
        "exact text" 1
        "exact text size" 22
@@ -315,7 +350,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Toggle"
+       text "#VSTR_LBL_TOGGLE"
        font "gui/fonts/Metron-Bold14"
       }
       ButtonWidgetClass btnClear {
@@ -328,7 +363,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Clear"
+       text "#VSTR_LBL_CLEAR"
        font "gui/fonts/Metron-Bold14"
       }
       CheckBoxWidgetClass ChkUseNameFilter {
@@ -339,7 +374,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Filter By Item Type:"
+       text "#VSTR_LBL_FILTER_BY_TYPE"
        font "gui/fonts/Metron-Bold14"
       }
       EditBoxWidgetClass InputClassNameFilter {
@@ -351,7 +386,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        "no focus" 0
-       text "class name"
+       text "#VSTR_LBL_CLASS_NAME"
        "Use default text" 1
        "exact text" 1
        font "gui/fonts/Metron-Italic16"
@@ -365,7 +400,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Update Interval:"
+       text "#VSTR_LBL_UPDATE_INTERVAL"
        font "gui/fonts/Metron-Bold14"
        "exact text" 1
        "text halign" center
@@ -395,7 +430,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Show Detailed ESP:"
+       text "#VSTR_LBL_SHOW_DETAILED_ESP"
        font "gui/fonts/Metron-Bold14"
        "exact text" 1
        "text halign" center
@@ -417,7 +452,7 @@ FrameWidgetClass rootFrame {
      ignorepointer 0
      color 1 0 0 1
      position 0.012 0.01
-     size 0.0825 0.13
+     size 0.0725 0.1
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -440,10 +475,10 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       SliderWidgetClass SliderRadius {
-       color 0.7176 0.1412 0.1412 1
+       color 0.6706 0.6706 0.6706 1
        size 0.98 0.5
        halign center_ref
        valign center_ref
@@ -491,7 +526,7 @@ FrameWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_black_2
+   style editor_quad
    {
     ButtonWidgetClass delAllItems {
      position 0.1 0
@@ -504,8 +539,8 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scriptclass "ConfirmationEventHandler"
      style Editor
-     text "Delete All"
-     font "gui/fonts/Metron-Bold14"
+     text "#VSTR_LBL_DELETE_ALL"
+     font "gui/fonts/Metron14"
     }
     ButtonWidgetClass removeAllItems {
      position 0.1 0
@@ -516,8 +551,8 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Editor
-     text "Clear List"
-     font "gui/fonts/Metron-Bold14"
+     text "#VSTR_LBL_CLEAR_LIST"
+     font "gui/fonts/Metron14"
     }
    }
   }
@@ -556,7 +591,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "ESP TOOLS"
+     text "#VSTR_TITLE_ESP_TOOLS"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

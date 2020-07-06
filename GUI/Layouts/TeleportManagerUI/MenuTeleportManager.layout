@@ -34,7 +34,7 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       MapWidgetClass MapWidget {
        size 0.98 0.98
@@ -55,8 +55,20 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgPos {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.06
+       size 0.973 0.934
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -83,7 +95,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Saved Positions"
+         text "#VSTR_LBL_SAVED_POSITIONS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 22
@@ -108,7 +120,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Refresh"
+         text "#VSTR_REFRESH"
         }
        }
       }
@@ -154,8 +166,20 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlActionsBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.12
+       size 0.973 0.87
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass info_title__ {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -182,7 +206,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Actions"
+         text "#VSTR_LBL_ACTIONS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 22
@@ -209,7 +233,6 @@ WindowWidgetClass rootFrame {
        Rows 6
        {
         ButtonWidgetClass btnAddPos {
-         color 0.0078 0.702 0.1686 1
          size 0.154 0.15
          halign center_ref
          valign center_ref
@@ -218,7 +241,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Add New Position"
+         text "#VSTR_LBL_ADD_NEW_POS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass btnEditPos {
@@ -230,7 +253,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Edit Selected Position"
+         text "#VSTR_LBL_EDIT_SEL_POS"
          font "gui/fonts/Metron-Bold14"
         }
         ButtonWidgetClass BtnRemove {
@@ -244,7 +267,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Delete Selected Position(s)"
+         text "#VSTR_LBL_DEL_SEL_POS"
          font "gui/fonts/Metron-Bold14"
         }
         PanelWidgetClass Spacer {
@@ -265,7 +288,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         text "Teleport Selected Player(s)"
+         text "#VSTR_LBL_TP_TO_SEL_PLAYERS"
          font "gui/fonts/Metron-Bold16"
         }
         ButtonWidgetClass btnTeleport {
@@ -277,7 +300,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "Teleport to Position"
+         text "#VSTR_LBL_TP_TO_POS"
          font "gui/fonts/Metron-Bold14"
         }
        }
@@ -338,7 +361,7 @@ WindowWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "TELEPORT MANAGER"
+     text "#VSTR_TELEPORT_MANAGER_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

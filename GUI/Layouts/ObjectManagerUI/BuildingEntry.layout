@@ -9,8 +9,20 @@ PanelWidgetClass PanelEntry {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style rover_sim_black_2
+ style editor_quad
  {
+  PanelWidgetClass PnlBg {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   size 0.995 0.944
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   GridSpacerWidgetClass entry_content {
    ignorepointer 0
    color 0 0 0 0
@@ -42,7 +54,7 @@ PanelWidgetClass PanelEntry {
       TextWidgetClass ItemName {
        ignorepointer 1
        position 0.06 0
-       size 0.72 1
+       size 0.65 1
        halign right_ref
        valign center_ref
        hexactpos 0
@@ -83,7 +95,6 @@ PanelWidgetClass PanelEntry {
        }
       }
       CheckBoxWidgetClass Active {
-       color 1 0 0 1
        position 0.005 0
        size 0.075 0.85
        valign center_ref
@@ -133,8 +144,42 @@ PanelWidgetClass PanelEntry {
        vexactsize 0
        scriptclass ""
        style Editor
-       text "Select"
+       text "#VSTR_LBL_SELECT"
        font "gui/fonts/Metron12"
+      }
+      ButtonWidgetClass btnPhysicsDrop {
+       visible 1
+       color 1 0 0 1
+       position 0.2185 0
+       size 0.065 0.7
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scriptclass "ConfirmationEventHandler"
+       {
+        ImageWidgetClass iconPhysicsDrop {
+         ignorepointer 1
+         position 0 0
+         size 0.85 0.9
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "VPPAdminTools\\GUI\\Textures\\down-arrow.paa"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         "flip u" 0
+         "flip v" 0
+         filter 0
+         "Transition width" 0.054
+        }
+       }
       }
      }
     }

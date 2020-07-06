@@ -18,7 +18,7 @@ FrameWidgetClass diagFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_black_2
+   style editor_quad
    {
     PanelWidgetClass PanelMain {
      visible 1
@@ -33,7 +33,7 @@ FrameWidgetClass diagFrame {
      hexactsize 0
      vexactsize 0
      scriptclass ""
-     style rover_sim_black
+     style rover_sim_blackbox
      {
       ImageWidgetClass TitleImage {
        ignorepointer 1

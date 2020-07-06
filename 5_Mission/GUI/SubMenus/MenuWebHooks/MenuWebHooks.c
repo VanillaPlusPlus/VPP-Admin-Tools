@@ -41,7 +41,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_admHitLog = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "admHitLog") );
 		m_joinLeaveLog = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "joinLeaveLog") );
 		m_btnSaveChanges = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges") );
-		GetVPPUIManager().HookConfirmationDialog(m_btnSaveChanges, M_SUB_WIDGET, this, "SaveEdits", DIAGTYPE.DIAG_YESNO, "Save Changes?", "Are you sure you wish to save changes?");
+		GetVPPUIManager().HookConfirmationDialog(m_btnSaveChanges, M_SUB_WIDGET, this, "SaveEdits", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_SAVE_CHANGE", "#VSTR_TOOLTIP_SAVE_CHANGE");
 		
 		m_btnCreateWebhook = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnCreateWebhook") );
 
@@ -71,7 +71,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		{
 			case m_btnCreateWebhook:
 			createMode = true;
-			GetVPPUIManager().DisplayNotification("Please Configure your webhook settings on the left then save!");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WBHOOKS_CONFG");
 			m_btnCreateWebhook.Enable( false );
 			m_btnSaveChanges.Enable( true );
 			return true;
@@ -86,14 +86,14 @@ class MenuWebHooks extends AdminHudSubMenu
 		{
 			if (m_selectedIndex == -1 && !createMode)
 			{
-				GetVPPUIManager().DisplayNotification("No webhook was selected!");
+				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_NOWEBHOOK");
 				return;
 			}
 
 			string newName = m_webHookName.GetText();
 			if (newName == "" || newName.Length() < 3)
 			{
-				GetVPPUIManager().DisplayNotification("Error, WebHook name too short! 3 characters minimum");
+				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_WBHOOK_NAMESHORT");
 				return;
 			}
 
@@ -132,7 +132,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		{
 			if (cfg.GetName() == name && createMode)
 			{
-				GetVPPUIManager().DisplayNotification("The name: " + name + " is already used!\nPlease use a unique name");
+				GetVPPUIManager().DisplayNotification("Name: " + name + " #VSTR_NOTIFY_ERR_NAMEINUSE_WEBHOOK");
 				return true;
 			}
 		}
@@ -166,7 +166,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		if (index > -1)
 			GetRPCManager().SendRPC("RPC_WebHooksManager", "DeleteWebHooks", new Param2<int,string>(index, entry.GetName()), true);
 		else
-			GetVPPUIManager().DisplayNotification("Something went really wrong\nCould not delete webhook: " + entry.GetName());
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_DEL_WEBHOOK " + entry.GetName());
 	}
 
 	void ClearEntries()

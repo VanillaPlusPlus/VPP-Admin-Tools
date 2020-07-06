@@ -52,10 +52,8 @@ class VPPItemManager: ConfigurablePlugin
 			{
 			    file.Read(m_SavedPresets);
 			    file.Close();
-			    GetSimpleLogger().Log("[VPPItemManager]:: Load(): Loading Cache File " + JSONPATH);
 			}
 		}else{
-			GetSimpleLogger().Log("[VPPItemManager]:: Load(): Creating Default Cache File " + JSONPATH);
 			CreateDefualtPresets();
 		}
 	}
@@ -69,7 +67,6 @@ class VPPItemManager: ConfigurablePlugin
 			{
 			    file.Write(m_SavedPresets);
 			    file.Close();
-				GetSimpleLogger().Log("[VPPItemManager]:: Save() to " + JSONPATH);
 			}
 		}
 	}
@@ -86,13 +83,14 @@ class VPPItemManager: ConfigurablePlugin
 		autoptr PresetItemData ToSpawn = GetPresetByName(params.presetName);
 		if (ToSpawn == null) 
 		{
-			GetSimpleLogger().Log("[VPPItemManager]:: SpawnItemPreset(): Unable to spawn preset: " + params.presetName+" preset is NULL!");
+			GetSimpleLogger().Log(string.Format("(steamid=%1) Spawned preset: (%2)", senderID, params.presetName));
 			return;
 		}
 		
 		bool hasParent;
 		string parentType = ToSpawn.GetParentType();
-		if (parentType == ""){
+		if (parentType == "")
+		{
 			GetSimpleLogger().Log("[VPPItemManager]:: SpawnItemPreset(): WARNING! preset: " +params.presetName+" has no parrent!");
 		}
 		
@@ -130,7 +128,8 @@ class VPPItemManager: ConfigurablePlugin
 		}else{
 			//Non-Targets Spawn ( admin only ) TODO: Maybe move into methods instead of copy pasta similar things
 			targetPlayer = GetPermissionManager().GetPlayerBaseByID(senderID);
-			if (targetPlayer == null){
+			if (targetPlayer == null)
+			{
 				GetSimpleLogger().Log("[VPPItemManager]:: SpawnItemPreset(): FAILED TO SPAWN ITEM BY SENDER: "+senderID+" PLAYERBASE IS NULL!");
 				return;
 			}
@@ -258,7 +257,7 @@ class VPPItemManager: ConfigurablePlugin
 			}
 			Save();
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully Saved Changes to preset: "+editPreset.GetPresetName(),NotifyTypes.NOTIFY);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just edited item preset [%3]",sender.GetPlainId(), sender.GetName(), editPreset.GetPresetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) edited preset: (%3)", sender.GetName(), sender.GetPlainId(), editPreset.GetPresetName()));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Edited preset: " + editPreset.GetPresetName()));
 		}
 	}
@@ -272,7 +271,7 @@ class VPPItemManager: ConfigurablePlugin
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager:SpawnPreset")) return;
 			
 			SpawnItemPreset(data.param1,sender.GetPlainId());
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just spawned an item preset",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) spawned preset: (%3)", sender.GetName(), sender.GetPlainId(), data.param1.presetName));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Spawn preset: " + data.param1.presetName));
 		}
 	}
@@ -293,7 +292,8 @@ class VPPItemManager: ConfigurablePlugin
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully deleted preset: "+data.param1,NotifyTypes.NOTIFY);
 				GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
-				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just deleted the preset [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) deleted the preset: (%3)", sender.GetName(), sender.GetPlainId(), data.param1));
+
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Delete preset: " + data.param1));
 			}
 		}
@@ -329,7 +329,7 @@ class VPPItemManager: ConfigurablePlugin
 						CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity);
 						break;
 					}
-					GetSimpleLogger().Log("[ItemManager] :: SpawnItem(): [" + sender.GetName() + " : " + sender.GetPlainId() + "] Spawned Item " + params.presetName + " on [" + targetPlayer.GetIdentity().GetName() + " : " + targetID + "]");
+					GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Spawned Item: (%3) on \"%4\" (steamid=%5)", sender.GetName(), sender.GetPlainId(), params.presetName, targetPlayer.GetIdentity().GetName(), targetID));
 				}
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] :: SpawnItem(): Spawned Item " + params.presetName + " " + params.targets.Count() + " player(s) "));
 			}else{
@@ -357,7 +357,7 @@ class VPPItemManager: ConfigurablePlugin
 					break;
 				}
 			}
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just spawned an object [%3]",sender.GetPlainId(), sender.GetName(), params.presetName));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Spawned Item: (%3)", sender.GetName(), sender.GetPlainId(), params.presetName));
 		}
 	}
 	
@@ -378,7 +378,8 @@ class VPPItemManager: ConfigurablePlugin
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully added new preset: "+data.param1,NotifyTypes.NOTIFY);
 			Save();
 			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Created a new item preset",sender.GetPlainId(), sender.GetName()));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Created a new item preset: (%3)", sender.GetName(), sender.GetPlainId(), data.param1));
+
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), " Created a new item preset: " + data.param1 ));
 		}
 	}

@@ -45,8 +45,8 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_ImgInfo	  = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfo") );
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("Hold Left Ctrl and 2x Click on map to create a custom position!\nDouble click on map to teleport your self or selected players!");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_TP_MENU_INFO");
 		
 		m_Scroller       = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "Scroller") );
 		m_ParentGrid     = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SpacerParent") );
@@ -58,7 +58,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_btnEditPos     = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnEditPos"));
 		
 		m_BtnRemove      = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRemove"));
-		GetVPPUIManager().HookConfirmationDialog(m_BtnRemove, M_SUB_WIDGET,this,"RemovePosition", DIAGTYPE.DIAG_YESNO, "Delete Preset?", "Are you sure you want to remove selected saved teleport position(s)?");
+		GetVPPUIManager().HookConfirmationDialog(m_BtnRemove, M_SUB_WIDGET,this,"RemovePosition", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_DEL_PRESET_TP", "#VSTR_TOOLTIP_DEL_PRESET_TP");
 		
 		m_btnTeleport    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnTeleport"));
 		m_ChkTpSelected  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ChkTpSelected"));
@@ -245,12 +245,12 @@ class MenuTeleportManager extends AdminHudSubMenu
 				}
 				else
 				{
-					GetVPPUIManager().DisplayError("Error Teleporting...No Players selected!");
+					GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_TP_PLAYER");
 				}
 			}
 			else 
 			{ 
-				GetVPPUIManager().DisplayError("Error Teleporting...No Players selected,use Player Manager menu!"); 
+				GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_TP_PLAYERS_NOTSELECT"); 
 			}
 		}
 		else

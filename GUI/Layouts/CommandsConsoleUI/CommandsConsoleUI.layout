@@ -151,7 +151,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "Commands Console"
+     text "#VSTR_LBL_CMD_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

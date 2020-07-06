@@ -1,0 +1,71 @@
+GridSpacerWidgetClass MainPanel {
+ visible 1
+ disabled 0
+ inheritalpha 0
+ ignorepointer 1
+ color 0 0 0 0.7843
+ position 8.60022 7.60062
+ size 660.04895 250.037
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style DayZDefaultPanel
+ "no focus" 1
+ Padding 8
+ Margin 16
+ "Size To Content V" 1
+ Columns 1
+ Rows 2
+ {
+  TextWidgetClass TitleText {
+   inheritalpha 1
+   ignorepointer 1
+   position 47.7842 26.5818
+   size 24.2311 22.7455
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   font "gui/fonts/MetronBlack16"
+   text_proportion 0.9
+   "size to text h" 0
+   "size to text v" 0
+  }
+  RichTextWidgetClass ContentText {
+   inheritalpha 1
+   ignorepointer 1
+   size 0.108 48
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style DayZBold
+   font "gui/fonts/MetronBlack22"
+   "exact text" 1
+   "size to text h" 1
+   "size to text v" 1
+   wrap 1
+   "condense whitespace" 1
+   "strip newlines" 1
+  }
+  ImageWidgetClass InfoImage {
+   visible 1
+   disabled 0
+   inheritalpha 1
+   ignorepointer 1
+   position 370 91.05
+   size 44 48
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+   mode blend
+   "src alpha" 1
+   "no wrap" 1
+   stretch 1
+  }
+ }
+}

@@ -185,6 +185,11 @@ class WebHooksManager: ConfigurablePlugin
 			}
 		}
 	}
+
+	ref WebHookConnectionManager GetConnectionManager()
+	{
+		return m_ConnectionManager;
+	}
 };
 
 ref WebHooksManager GetWebHooksManager()

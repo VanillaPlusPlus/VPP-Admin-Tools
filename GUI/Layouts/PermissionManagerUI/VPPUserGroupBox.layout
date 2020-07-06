@@ -8,8 +8,20 @@ PanelWidgetClass PanelUserGroup {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style rover_sim_black_2
+ style editor_quad
  {
+  PanelWidgetClass PnlBg {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   position 0 0.01
+   size 0.996 0.985
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   GridSpacerWidgetClass info_content_grid {
    ignorepointer 1
    color 0 0 0 0
@@ -43,7 +55,7 @@ PanelWidgetClass PanelUserGroup {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "Group Name:"
+       text "#VSTR_LBL_GROUP_NAME"
        font "gui/fonts/Metron-BoldItalic16"
        "size to text h" 1
        "size to text v" 0
@@ -85,7 +97,7 @@ PanelWidgetClass PanelUserGroup {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "Total Members:"
+       text "#VSTR_LBL_GROUP_TOTAL_MEMBERS"
        font "gui/fonts/Metron-BoldItalic16"
        "size to text h" 1
        "size to text v" 0
@@ -127,7 +139,7 @@ PanelWidgetClass PanelUserGroup {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "Permission Level:"
+       text "#VSTR_LBL_GROUP_PERMS_LVL"
        font "gui/fonts/Metron-BoldItalic16"
        "size to text h" 1
        "size to text v" 0

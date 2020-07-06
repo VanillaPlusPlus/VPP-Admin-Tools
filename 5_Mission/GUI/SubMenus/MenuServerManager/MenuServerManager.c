@@ -117,11 +117,11 @@ class MenuServerManager extends AdminHudSubMenu
 		m_ActivityMap        = MapWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ActivityMap") );
 		m_RefreshActivityMap = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "RefreshMapActivity") );
 		m_RestartServer      = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnRestartServer") );
-		GetVPPUIManager().HookConfirmationDialog(m_RestartServer, M_SUB_WIDGET,this,"RestartServer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Restart Server", "Please input time (seconds) until restart. Players will be alerted.");
+		GetVPPUIManager().HookConfirmationDialog(m_RestartServer, M_SUB_WIDGET,this,"RestartServer", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TOOLTIP_TITLE_RESTARTSERVER", "#VSTR_TOOLTIP_RESTARTSERVER");
 		m_BtnLockServer 	 = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnLockServer") );
-		GetVPPUIManager().HookConfirmationDialog(m_BtnLockServer, M_SUB_WIDGET,this,"LockServer", DIAGTYPE.DIAG_YESNO, "Lock Server", "Are you sure you wish to lock the server and prevent new clients from connecting?");
+		GetVPPUIManager().HookConfirmationDialog(m_BtnLockServer, M_SUB_WIDGET,this,"LockServer", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_LOCKSERVER", "#VSTR_TOOLTIP_LOCKSERVER");
 		m_BtnKickAll     	 = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnKickAll") );
-		GetVPPUIManager().HookConfirmationDialog(m_BtnKickAll, M_SUB_WIDGET,this,"KickAllPlayers", DIAGTYPE.DIAG_YESNO, "Kick All Players", "Are you sure you wish to kick all players from server?");
+		GetVPPUIManager().HookConfirmationDialog(m_BtnKickAll, M_SUB_WIDGET,this,"KickAllPlayers", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_KICKALLPLAYERS", "#VSTR_TOOLTIP_KICKALLPLAYERS");
 		m_BtnViewAdmLog      = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnViewAdmLog") );
 		
 		m_BtnLoadScript      = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnLoadScript") );
@@ -220,7 +220,7 @@ class MenuServerManager extends AdminHudSubMenu
 		if (result == DIAGRESULT.YES)
 		{
 			GetRPCManager().SendRPC("RPC_ServerManager", "RequestKickAllPlayers", null, true);
-			GetVPPUIManager().DisplayNotification("Kicking all players...");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_KICKINGPLAYERS");
 		}
 	}
 	

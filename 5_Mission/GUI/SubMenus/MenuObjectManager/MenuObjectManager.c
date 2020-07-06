@@ -25,6 +25,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private ButtonWidget             m_btnReloadSets;
 	private GridSpacerWidget         m_ParentGrid;
 	private CheckBoxWidget           m_chkEnablePreview;
+	private CheckBoxWidget           m_chkShowHideCards;
 	private ScrollWidget         	 m_ScrollerBuildingSets;
 	private ScrollWidget         	 m_ScrollerSetItems;
 	private ref CustomGridSpacer 	 m_LastGrid;
@@ -82,6 +83,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_chkTopDowncam.Enable(false);
 	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnCreateNewSet"));
 		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview"));
+		m_chkShowHideCards = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkShowHideCards"));
 		
 		m_ShowHideButtons = new array<ref Param2<bool,ref ButtonWidget>>;
 		m_SearchInputBox = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
@@ -145,7 +147,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			//Select part test
 			if (worldObject == null)
 			{
-				hitObjects = g_Game.GetObjectsAt(start,end,GetGame().GetPlayer(),2.0);
+				hitObjects = g_Game.GetObjectsAt(start,end,GetGame().GetPlayer(),0.0);
 				if (hitObjects != null && hitObjects.Count() >= 1 && m_SelectedSetData != null)
 				{
 					autoptr array<ref SpawnedBuilding> setBuildings = m_SelectedSetData.GetBuildings();
@@ -210,7 +212,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		{
 			worldObject = null;
 			DeselectAllTrackers();
-			GetVPPUIManager().DisplayNotification("Object deselected!");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_OBJ_DESELECT");
 		}
 		
 		//Camera control update
@@ -258,7 +260,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (tracker != null)
 			tracker.Highlight(true);
 
-		GetVPPUIManager().DisplayNotification("Object: "+worldObject+" selected!");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_OB_SELECTED"+ " " + worldObject);
 	}
 	
 	void RemoveBuilding(Object toRemove, string networkdID = "")
@@ -316,7 +318,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			else
 				m_setAttributesEditor = new BuildingSetEditor(M_SUB_WIDGET.FindAnyWidget("PanelConfirmationBox"), "NewSet", true, false);
 		else
-			GetVPPUIManager().DisplayError("Attributes editor already showing!");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_ATTS_SHOWING");
 	}
 	
 	BuildingTracker GetTrackerByObject(Object obj)
@@ -332,6 +334,21 @@ class MenuObjectManager extends AdminHudSubMenu
 			}
 		}
 		return null;
+	}
+
+	void ShowAllTrackers( bool show )
+	{
+		autoptr BuildingTracker tracker;
+		foreach(BuildingEntry entry : m_BuildingEntries){
+			if (entry != null){
+				tracker = entry.GetTracker();
+				if (tracker != NULL)
+				{
+					entry.SetSelected(show);
+					tracker.ShowTracker(show);
+				}
+			}
+		}
 	}
 	
 	void DeselectAllTrackers()
@@ -657,13 +674,13 @@ class MenuObjectManager extends AdminHudSubMenu
 		string ItemClassName;
 		if (m_SelectedSetData == null)
 		{
-			GetVPPUIManager().DisplayError("Cannot spawn object! No Building set selected!\n\nSelect or create a new buildingset!");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_NOSET_SELECTED");
 			return false;
 		}
 		
 		if (!m_SelectedSetData.GetActive())
 		{
-			GetVPPUIManager().DisplayError("Cannot spawn object! Building set selected is not active!!");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_SET_INACTIVE");
 			return false;
 		}
 		
@@ -774,15 +791,16 @@ class MenuObjectManager extends AdminHudSubMenu
 			break;
 			
 			case m_btnHelp:
-			string objhelp = "How to use:\n\n";
-			objhelp+= "<Object Builder Controls>\n";
-			objhelp+= "-> Left Ctrl to deselect an object\n";
-			objhelp+= "-> Hold left Shift + left/right click to rotate object\n";
-			objhelp+= "-> Hold left Alt + left/right click to move up/down\n";
-			objhelp+= "-> Left Click on object to select\n";
-			objhelp+= "-> Hold left Click to drag/move object.";
+			string objhelp = "#VSTR_TOOLTIP_HELP_OBJMANAGER";
 			
 			GetVPPUIManager().DisplayNotification(objhelp,"Object Builder",15.0);
+			break;
+
+			case m_chkShowHideCards:
+			if ( m_SelectedSetData != NULL )
+			{
+				ShowAllTrackers( m_chkShowHideCards.IsChecked() );
+			}
 			break;
 		}
 		return super.OnClick(w, x, y, button);;

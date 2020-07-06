@@ -33,6 +33,7 @@ class SpawnCarChatModule extends ChatCommand
 			sedan.Fill(i, sedan.GetFluidCapacity(i));
 		}
 
+		GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /spawncar used on self.", callerName, callerID));
 		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /spawncar used on self."));
     }
 }

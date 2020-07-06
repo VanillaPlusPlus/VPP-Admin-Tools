@@ -1,5 +1,4 @@
 PanelWidgetClass rootFrame {
- color 0 0 0 1
  size 0.25 0.25
  halign center_ref
  valign center_ref
@@ -7,8 +6,20 @@ PanelWidgetClass rootFrame {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style rover_sim_colorable
+ style editor_quad
  {
+  PanelWidgetClass PnlBg {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   position 0 0.01
+   size 0.99 0.978
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   ButtonWidgetClass panel_close {
    ignorepointer 0
    position 0 0
@@ -45,7 +56,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   text "BUILDING ATTRIBUTES"
+   text "#VSTR_BUILDING_ATTS"
    font "gui/fonts/etelkatextpro22"
    "exact text" 1
    "size to text h" 0
@@ -55,7 +66,8 @@ PanelWidgetClass rootFrame {
    ignorepointer 1
    color 1 0 0 1
    position 0 0.12
-   size 1 0.007
+   size 0.99 0.007
+   halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
@@ -75,7 +87,6 @@ PanelWidgetClass rootFrame {
    Rows 2
    {
     CheckBoxWidgetClass checkbox_active {
-     color 1 0 0 1
      size 0.98 0.288
      halign center_ref
      valign center_ref
@@ -83,7 +94,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Set Active (Spawn it when the set is active)"
+     text "#VSTR_LBL_BLD_SET_ACTIVE_S"
      font "gui/fonts/Metron16"
     }
    }
@@ -109,7 +120,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      scaled 1
      style Editor
-     text "OK"
+     text "#VSTR_LBL_OK"
      font "gui/fonts/metron"
     }
    }

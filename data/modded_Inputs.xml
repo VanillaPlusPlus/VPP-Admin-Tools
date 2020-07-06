@@ -2,11 +2,14 @@
 <modded_inputs>
     <inputs>
         <actions>
-            <input name="UAFocusOnGame" loc="[Hold] Focus On Game [DoubleTap] to Toggle" />
+            <input name="UAFocusOnGame" loc="[Hold / DoubleTap] Focus On Game" />
+            <input name="UAOpenAdminTools" loc="Open V++ Admin Tools" />
             <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
             <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
             <input name="UADeleteObjCrosshair" loc="Delete Object at Crosshair" />
             <input name="UAToggleGodMode" loc="Toggle GodMode" />
+			<input name="UACopyPositionClipboard" loc="Copy position to clipboard" />
+			<input name="UARepairVehicleAtCrosshairs" loc="Repair,Build,Refuel vehicles at crosshairs" />
             <input name="UAToggleFreeCam" loc="Toggle Free Camera" />
             <input name="UAExitSpectate" loc="Exit Spectate Mode" />
 			<input name="UASelectObject" loc="Select & move world objects (Object Manager)" />
@@ -17,7 +20,6 @@
 			<input name="UAExecuteCommand" loc="" visible="false" />
 			<input name="UAUPCommand" loc="" visible="false" />
 			<input name="UADOWNCommand" loc="" visible="false" />
-			<!--Free Cam Controls-->
 			<input name="UACamForward" loc="Camera move forward" />
 			<input name="UACamBackward" loc="Camera move backward" />
 			<input name="UACamRight" loc="Camera move right" />
@@ -32,9 +34,7 @@
 			<input name="UACamSpeedAdd" loc="Camera Speed increase" />
 			<input name="UACamSpeedDeduct" loc="Camera speed reduce" />
 			<input name="UACamRelease" loc="" visible="false" />
-			<!--------------------->
         </actions>
-		<!----------Cam controls exclude grp----------->
 		<exclude name="VPPCamControls">
 		<input name="UACamForward"/>
 		<input name="UACamBackward"/>
@@ -55,6 +55,14 @@
     <preset>
 		<input name="UAToggleFreeCam">
             <btn name="kBackspace">
+            </btn>
+        </input>
+		<input name="UACopyPositionClipboard">
+            <btn name="kP">
+            </btn>
+        </input>
+		<input name="UARepairVehicleAtCrosshairs">
+            <btn name="kK">
             </btn>
         </input>
 		<input name="UAFocusOnGame">
@@ -87,11 +95,26 @@
 		<input name="UADOWNCommand">
 			<btn name="kDown"/>
         </input>
-        <input name="UAToggleAdminTools"> </input>
-		<input name="UATeleportToCrosshair"> </input>
-		<input name="UADeleteObjCrosshair"> </input>
-		<input name="UAToggleGodMode"> </input>
-		<!--Free Cam Controls Inputs-->
+        <input name="UAToggleAdminTools">
+			<btn name="kEnd">
+            </btn>
+		</input>
+		<input name="UAOpenAdminTools">
+			<btn name="kHome">
+            </btn>
+		</input>
+		<input name="UATeleportToCrosshair">
+			<btn name="kH">
+            </btn>
+		</input>
+		<input name="UADeleteObjCrosshair">
+			<btn name="kDelete">
+            </btn>
+		</input>
+		<input name="UAToggleGodMode">
+			<btn name="kInsert">
+            </btn>
+		</input>
 		<input name="UACamForward">
             <btn name="kW">
             </btn>
@@ -148,6 +171,5 @@
             <btn name="kLControl">
             </btn>
         </input>
-		<!--------------------->
     </preset>
 </modded_inputs>

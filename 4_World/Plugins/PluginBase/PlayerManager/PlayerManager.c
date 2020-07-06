@@ -1,13 +1,12 @@
 class PlayerManager extends PluginBase
 {
 	private ref Timer m_RPCDelay;
-	private ref array<string> m_InvisiblePlayers;
 	
 	void PlayerManager()
 	{
-		m_InvisiblePlayers = new array<string>;
 		/* RPCs */
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GetPlayerStats", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "MakePlayerVomit", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GetPlayerStatsGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PlayerManager", "RequestInvisibility", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PlayerManager", "ToggleGodmode", this, SingeplayerExecutionType.Server );
@@ -21,24 +20,36 @@ class PlayerManager extends PluginBase
 		GetRPCManager().AddRPC("RPC_PlayerManager", "BanPlayer", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveGodmode", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveUnlimitedAmmo", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC("RPC_PlayerManager", "FreezePlayers", this, SingeplayerExecutionType.Server );
 	}
 	
-	override void OnInit()
+	void MakePlayerVomit(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.UpdateInvisPlayers, 10000, true);
-	}
-	
-	void UpdateInvisPlayers()
-	{
-		if (m_InvisiblePlayers.Count() <= 0) return;
+		if(type != CallType.Server) return;
+
+		Param2<ref array<string>, int> data;
+
+		if(!ctx.Read(data)) return;
+		if(sender == null) return;
 		
-		GetSimpleLogger().Log("[PlayerManager] UpdateInvisPlayers(): Updating "+m_InvisiblePlayers.Count()+" Players invis coat");
-		foreach(string id : m_InvisiblePlayers)
+		autoptr array<string> ids = data.param1;
+
+		foreach(string targetID : ids)
 		{
-			autoptr PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(id);
-			if (pb != null)
+			if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:MakePlayerVomit",targetID))
 			{
-				pb.setInvisibility(true);
+				PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(targetID);
+
+				if(targetPlayer != null && !targetPlayer.GetCommand_Vehicle())
+				{
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Player "+targetPlayer.GetName()+" is vomiting for " + data.param2.ToString() + " seconds!", NotifyTypes.NOTIFY);
+					SymptomBase vomitSymptom = targetPlayer.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
+
+					if(vomitSymptom != null)
+					{
+						vomitSymptom.SetDuration(data.param2);
+					}
+				}
 			}
 		}
 	}
@@ -61,10 +72,12 @@ class PlayerManager extends PluginBase
 					autoptr BanDuration banDuration = GetBansManager().GetCurrentTimeStamp();
 					string banAuthorDetails = string.Format("%1|%2",sender.GetName(),sender.GetPlainId());
 					banDuration.Permanent = true;
-					if (GetBansManager().AddToBanList(new BannedPlayer(pid.GetName(),tgId,pid.GetId(),banDuration,banAuthorDetails,"Banned By Server Admin "+sender.GetName())))
-						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Player "+pid.GetName()+" is now banned!",NotifyTypes.NOTIFY);
+					if (GetBansManager().AddToBanList(new BannedPlayer(pid.GetName(),tgId,pid.GetId(),banDuration,banAuthorDetails,"#VSTR_BAN_REASON "+sender.GetName())))
+						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Player "+pid.GetName()+" #VSTR_BANNED",NotifyTypes.NOTIFY);
 					else
-						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to ban player "+pid.GetName(),NotifyTypes.NOTIFY);
+						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_ERROR_BAN_PLAYER "+pid.GetName(),NotifyTypes.NOTIFY);
+
+					GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) banned player: (steamid=%3)", sender.GetName(), sender.GetPlainId(), ids));
 				}
 			}
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Banned " + ids.Count() + " player(s)"));
@@ -87,9 +100,9 @@ class PlayerManager extends PluginBase
 					ref PlayerIdentity tempiden = GetPermissionManager().GetIdentityById(tgId);
 					if (tempiden != null)
 					{
-						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Kicking player: "+tempiden.GetName(),NotifyTypes.NOTIFY);
+						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_KICK_PLAYER"+tempiden.GetName(),NotifyTypes.NOTIFY);
 						GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tempiden);
-						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] Kicked player [%3]",sender.GetPlainId(), sender.GetName(), tempiden.GetName()));
+						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) kicked player: \"%3\"", sender.GetName(), sender.GetPlainId(), tempiden.GetName()));
 					}
 				}
 			}
@@ -112,7 +125,7 @@ class PlayerManager extends PluginBase
 			{
 				if (data.param1) //TeleportToPlayer
 				{					
-					GetTeleportManager().GotoPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), self, sender.GetPlainId());
+					GetTeleportManager().GotoPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), PlayerBase.Cast(self), sender.GetPlainId());
 				}
 				else
 				{
@@ -150,11 +163,11 @@ class PlayerManager extends PluginBase
 
 					m_RPCDelay = new Timer();
 					m_RPCDelay.Run(2.0,this,"InvokeSpectate", new Param2<string,string>(data.param1,sender.GetPlainId()),false);
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Press (PAGE-UP) to exit spectate!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_SPECTATE",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Started to spectate player: "+ data.param1));
 				}
 
-				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] started to spectate player [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) started to spectate player: \"%3\"", sender.GetName(), sender.GetPlainId(), data.param1));
 			}
 		}
 	}
@@ -191,7 +204,7 @@ class PlayerManager extends PluginBase
 					if (targetPlayer != null)
 					{
 						targetPlayer.SetHealth(0);
-						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] executed kill command on [%3]",sender.GetPlainId(), sender.GetName(), id));
+						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) executed kill command on: \"%3\"", sender.GetName(), sender.GetPlainId(), id));
 					}
 				}
 			}
@@ -230,7 +243,7 @@ class PlayerManager extends PluginBase
 	                         "",
 	                         0,
 	                         0);
-	                        GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] sent a message to [%3]",sender.GetPlainId(), sender.GetName(), pGUID.Get(i)));
+	                        GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) sent message (%3) to: (steamid=%4)", sender.GetName(), sender.GetPlainId(), data.param2,pGUID.Get(i)));
 	    		    	}
 	    		    }
 	    		    GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Sent message "+ data.param2 +" to " + pGUID.Count() + " Players"));
@@ -250,12 +263,12 @@ class PlayerManager extends PluginBase
 					if(AdminPlayer)
 					{
 						if (AdminPlayer.GodModeStatus())
-	                  	GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled OFF!",NotifyTypes.NOTIFY);
+	                  	GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_GODMODE_OFF",NotifyTypes.NOTIFY);
 		    			else
-		                GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"GodMode Toggled ON!",NotifyTypes.NOTIFY);
+		                GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_GODMODE_ON",NotifyTypes.NOTIFY);
 		    			
 						AdminPlayer.setGodMode(!AdminPlayer.GodModeStatus());
-						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just toggled godmode",sender.GetPlainId(), sender.GetName()));
+						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) toggled godmode", sender.GetName(), sender.GetPlainId()));
 						GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] toggled godmode"));
 					}
 		  	}
@@ -275,18 +288,18 @@ class PlayerManager extends PluginBase
 			if(TargetPlayer)
 			{
 				if (TargetPlayer.GodModeStatus()){
-					GetPermissionManager().NotifyPlayer(data.param1,"Admin Revoked your godmode",NotifyTypes.NOTIFY);
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Revoked selected players godmode!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(data.param1,"#VSTR_NOTIFY_REVOKE_GODMODE",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_REVOKE_GODMODE_ADMIN",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Revoked Godmode status from player: "+ TargetPlayer.GetIdentity().GetName() + " ID: " + data.param1));
 				}
 		    	else{
-					GetPermissionManager().NotifyPlayer(data.param1,"Admin Gave you GodMode",NotifyTypes.NOTIFY);
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Gave selected player godmode!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(data.param1,"#VSTR_NOTIFY_GIVE_GODMODE",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_GIVE_GODMODE_ADMIN",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Gave Godmode status to player: "+ TargetPlayer.GetIdentity().GetName() + " ID: " + data.param1));
 				}
 				
 				TargetPlayer.setGodMode(!TargetPlayer.GodModeStatus());
-				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] gave godmode to [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) gave godmode to (steamid=%3)", sender.GetName(), sender.GetPlainId(), data.param1));
 			}
 		}
 	}
@@ -305,21 +318,60 @@ class PlayerManager extends PluginBase
 				string targetPlayerName = TargetPlayer.GetIdentity().GetName();
 				if (TargetPlayer.IsUnlimitedAmmo())
 				{
-					GetPermissionManager().NotifyPlayer(data.param1,"Admin Revoked your unlimited ammo",NotifyTypes.NOTIFY);
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Revoked selected players unlimited ammo!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(data.param1,"#VSTR_NOTIFY_REVOKE_AMMO",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_REVOKE_AMMO_ADMIN",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Revoked unlimited ammo status from player: "+ targetPlayerName + " ID: " + data.param1));
 				}else{
-					GetPermissionManager().NotifyPlayer(data.param1,"Admin Gave you Unlimited Ammo!",NotifyTypes.NOTIFY);
-					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"You Gave selected player Unlimited Ammo!",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(data.param1,"#VSTR_NOTIFY_GIVE_AMMO",NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_NOTIFY_GIVE_AMMO_ADMIN",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Gave unlimited ammo status to player: "+ targetPlayerName + " ID: " + data.param1));
 				}
 				
 				TargetPlayer.SetUnlimitedAmmo(!TargetPlayer.IsUnlimitedAmmo());
-				GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] gave unlimited ammo to [%3]",sender.GetPlainId(), sender.GetName(), data.param1));
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) gave unlimited ammo to (steamid=%3)", sender.GetName(), sender.GetPlainId(), data.param1));
 			}
 		}
 	}
 	
+	void FreezePlayers( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	{
+		if( type == CallType.Server )
+        {
+        	Param1<ref array<string>> data; // player id's
+			if(!ctx.Read(data)) return;
+
+			if (sender == null)
+				return;
+
+			autoptr array<string> ids = data.param1;
+			if (ids.Count() < 1) return;
+
+			string adminID  = sender.GetPlainId();
+
+			if (!GetPermissionManager().VerifyPermission(adminID, "PlayerManager:FreezePlayers"))
+				return;
+
+			foreach(string id : ids)
+			{
+				if (GetPermissionManager().VerifyPermission(adminID, "PlayerManager:FreezePlayers", id))
+				{
+					PlayerBase targetPlayer = GetPermissionManager().GetPlayerBaseByID(id);
+					if (targetPlayer != NULL)
+					{
+						targetPlayer.FreezePlayer( !targetPlayer.IsFreezeControls() );
+
+						if ( targetPlayer.IsFreezeControls() )
+							GetPermissionManager().NotifyPlayer(sender.GetPlainId(), string.Format("Freeze Controls Set to [ TRUE ] for [%1] player(s)", ids.Count()), NotifyTypes.NOTIFY);
+						else
+							GetPermissionManager().NotifyPlayer(sender.GetPlainId(), string.Format("Freeze Controls Set to [ FALSE ] for [%1] player(s)", ids.Count()), NotifyTypes.NOTIFY);
+
+						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Froze player controls (steamid=%3)", sender.GetName(), sender.GetPlainId(), id));
+					}
+				}
+			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Freezing "+ ids.Count() +" Player(s) control"));
+        }
+	}
 	
 	void HealPlayers(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
@@ -356,7 +408,7 @@ class PlayerManager extends PluginBase
 						targetPlayer.GetStatSpecialty().Set(targetPlayer.GetStatSpecialty().GetMax());
 						targetPlayer.SetBleedingBits(0);
 
-						GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] healed player [%3]",sender.GetPlainId(), sender.GetName(), id));
+						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) healed player (steamid=%3)", sender.GetName(), sender.GetPlainId(), id));
 					}
 				}
 			}
@@ -404,7 +456,8 @@ class PlayerManager extends PluginBase
 				targetPlayer.GetStatEnergy().Set(data.param1);
 				break;
 			}
-			GetSimpleLogger().Log(string.Format("Player Name[%1] GUID[%2] just updated a health stat on [%3]",sender.GetPlainId(), sender.GetName(), data.param2));
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) just updated a health stat on (steamid=%3)", sender.GetName(), sender.GetPlainId(), data.param2));
+
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Set Player stats on target: " + targetPlayerId + " Name: " + targetPlayerName));
 		}
 	}
@@ -455,44 +508,31 @@ class PlayerManager extends PluginBase
 	
 	void RequestInvisibility(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		if (type == CallType.Server && sender != null)
+		if (type == CallType.Server && sender != NULL)
 		{
 			Param1<ref array<string>> data;
 			if(!ctx.Read(data)) return;
 
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:SetPlayerInvisible")) return;
 
-			autoptr array<string> ids = data.param1;
+			array<string> ids = data.param1;
 			foreach(string id : ids)
 			{
 				if (GetPermissionManager().VerifyPermission(sender.GetPlainId(), "PlayerManager:SetPlayerInvisible",id))
 				{
-					autoptr PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(id);
-					if (pb != null)
+					PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(id);
+					if (pb != NULL)
 					{
-						if (pb.InvisibilityStatus())
-						{
-							if (m_InvisiblePlayers.Find(id) != -1)
-							{
-								m_InvisiblePlayers.Remove(m_InvisiblePlayers.Find(id));
-								GetSimpleLogger().Log("[PlayerManager] RequestInvisibility(): Removing "+id+" from invis players array");
-							}
-							pb.setInvisibility(false);
-							GetRPCManager().SendRPC( "RPC_HandleInvisiblity", "HandleInvisiblity", new Param1<bool>(false), true, pb.GetIdentity());
-						}
+						pb.VPPSetInvisibility( !pb.InvisibilityStatus() );
+
+						if ( pb.InvisibilityStatus() )
+							GetPermissionManager().NotifyPlayer(sender.GetPlainId(), string.Format("Invisibility Set to [ TRUE ] for [%1] player(s)", ids.Count()), NotifyTypes.NOTIFY);
 						else
-						{
-							if (m_InvisiblePlayers.Find(id) == -1)
-							{
-								m_InvisiblePlayers.Insert(id);
-								GetSimpleLogger().Log("[PlayerManager] RequestInvisibility(): Adding "+id+" to invis players array");
-							}
-							pb.setInvisibility(true);
-							GetRPCManager().SendRPC( "RPC_HandleInvisiblity", "HandleInvisiblity", new Param1<bool>(true), true, pb.GetIdentity());
-						}	
+							GetPermissionManager().NotifyPlayer(sender.GetPlainId(), string.Format("Invisibility Set to [ FALSE ] for [%1] player(s)", ids.Count()), NotifyTypes.NOTIFY);
 					}
 				}
 			}
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Set Invisibility on player(s): " + ids.Count()));
 		}
 	}
 	

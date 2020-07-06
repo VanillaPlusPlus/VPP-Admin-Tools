@@ -34,13 +34,13 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       ImageWidgetClass title_itemlist {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0.6706 0.6706 0.6706 0.9608
        position 0 0.005
-       size 0.99 0.043
+       size 0.99 0.063
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -62,7 +62,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Item List"
+         text "#VSTR_LBL_ITEMS_LIST"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -72,6 +72,7 @@ WindowWidgetClass rootFrame {
        }
       }
       TextListboxWidgetClass ItemListBox {
+       color 0.6706 0.6706 0.6706 1
        position 0 0.01
        size 0.98 0.93
        halign center_ref
@@ -96,8 +97,20 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlPreviewBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.075
+       size 0.969 0.91
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ItemPreviewWidgetClass ItemPreview {
        visible 1
        clipchildren 0
@@ -114,7 +127,7 @@ WindowWidgetClass rootFrame {
       }
       ImageWidgetClass title_itemPreview {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0.6706 0.6706 0.6706 0.9608
        position 0 0.005
        size 0.99 0.073
        halign center_ref
@@ -138,7 +151,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Item Preview"
+         text "#VSTR_LBL_ITEM_PREVIEW"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 20
@@ -154,12 +167,11 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Enable Preview"
+       text "#VSTR_ENABLE_PREVIEW"
       }
      }
     }
     EditBoxWidgetClass SearchInputBox {
-     color 0.9176 0.0314 0.0314 1
      position 0.01 0.04
      size 0.35 0.03
      halign right_ref
@@ -168,7 +180,7 @@ WindowWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style DefaultBorder
-     text "Search Keyword"
+     text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
      font "gui/fonts/Metron14"
@@ -182,7 +194,7 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
       ImageWidgetClass PanelPresets_Title {
        ignorepointer 1
@@ -210,7 +222,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Item Sets"
+         text "#VSTR_LBL_ITEM_SETS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 22
@@ -245,8 +257,20 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PnlBgItemSets {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.045
+         size 0.969 0.949
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         WrapSpacerWidgetClass PresetsDropDown {
          visible 1
          clipchildren 0
@@ -287,7 +311,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Normal
-           text "Saved Item Sets"
+           text "#VSTR_LBL_SAVED_ITEM_SETS"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
            "exact text size" 16
@@ -304,7 +328,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Reload"
+           text "#VSTR_LBL_RELOAD"
           }
          }
         }
@@ -319,8 +343,20 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PnlBgBg {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.13
+         size 0.969 0.843
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         WrapSpacerWidgetClass SpacerButtons {
          ignorepointer 1
          color 0 0 0 1
@@ -343,18 +379,17 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Spawn Preset"
+           text "#VSTR_LBL_SPAWN_PRESET"
            font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnCreatePreset {
-           color 0 1 0.1843 1
            size 0.9 0.15
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Create Preset"
+           text "#VSTR_LBL_CREATE_PRESET"
            font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnDeletePreset {
@@ -365,7 +400,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Delete Selected Preset"
+           text "#VSTR_LBL_DELETE_PRESET"
            font "gui/fonts/Metron14"
           }
           ButtonWidgetClass BtnSaveChanges {
@@ -375,16 +410,16 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "Save Changes"
+           text "#VSTR_LBL_SAVE_CHANGES"
            font "gui/fonts/Metron14"
           }
          }
         }
         ImageWidgetClass title_presetActions {
          ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
+         color 0.6706 0.6706 0.6706 0.9608
          position 0 0.01
-         size 0.99 0.13
+         size 0.98 0.13
          halign center_ref
          hexactpos 0
          vexactpos 0
@@ -406,7 +441,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Normal
-           text "Preset Actions"
+           text "#VSTR_LBL_PRESET_ACTIONS"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
            "exact text size" 14
@@ -426,8 +461,20 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PnlBgItems {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.045
+         size 0.971 0.949
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         ScrollWidgetClass ScrollerItemList {
          ignorepointer 0
          position 0 0.03
@@ -484,7 +531,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Normal
-           text "Items"
+           text "#VSTR_LBL_ITEMS"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
            "exact text size" 16
@@ -505,11 +552,23 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
+        PanelWidgetClass PanelWidget0 {
+         ignorepointer 1
+         color 0 0 0 0.9608
+         position 0 0.14
+         size 0.98 0.853
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style editor_selection
+        }
         ImageWidgetClass title_itemOptions {
          ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
+         color 0.6706 0.6706 0.6706 0.9608
          position 0 0.03
          size 0.99 0.13
          halign center_ref
@@ -533,7 +592,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Normal
-           text "Spawn Options"
+           text "#VSTR_SPAWN_OPTIONS"
            font "gui/fonts/sdf_MetronLight42"
            "exact text" 1
            "exact text size" 14
@@ -569,7 +628,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Bold
-           text "Quantity:"
+           text "#VSTR_LBL_QUANTITY"
            font "gui/fonts/Metron16"
            "size to text h" 1
            "size to text v" 1
@@ -601,7 +660,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Bold
-           text "Condition:"
+           text "#VSTR_LBL_CONDITION"
            font "gui/fonts/Metron16"
            "size to text h" 1
            "size to text v" 1
@@ -616,9 +675,9 @@ WindowWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           style Default
+           style debugUI
            font "gui/fonts/Metron14"
-           items "Pristine;Worn;Damaged;Badly Damaged;Ruined"
+           items "#VSTR_LBL_PRISTINE;#VSTR_LBL_WORN;#VSTR_LBL_DAMAGED;#VSTR_LBL_BADLY_DAMAGED;#VSTR_LBL_RUIEND"
           }
           TextWidgetClass TxtOtherOptions {
            ignorepointer 1
@@ -630,7 +689,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Bold
-           text "Spawn in:"
+           text "#VSTR_LBL_SPAWN_IN"
            font "gui/fonts/Metron16"
            "exact text" 0
            "size to text h" 1
@@ -646,9 +705,9 @@ WindowWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           style Default
+           style debugUI
            font "gui/fonts/Metron14"
-           items "In Inventory;On Ground;At Crosshair"
+           items "#VSTR_LBL_IN_INENTORY;#VSTR_LBL_ON_GROUND;#VSTR_LBL_AT_CROSSHAIRS"
           }
           TextWidgetClass TxtOnPlayers {
            ignorepointer 1
@@ -660,7 +719,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Bold
-           text "Other:"
+           text "#VSTR_LBL_OTHER"
            font "gui/fonts/Metron16"
            "size to text h" 1
            "size to text v" 1
@@ -675,7 +734,7 @@ WindowWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "On Selected Player(s)"
+           text "#VSTR_LBL_ON_SELECTED_PLAYERS"
            font "gui/fonts/Metron14"
           }
          }
@@ -685,7 +744,6 @@ WindowWidgetClass rootFrame {
      }
     }
     XComboBoxWidgetClass ComboCatagory {
-     color 1 0 0 1
      position 0.01 0.07
      size 0.35 0.03
      halign right_ref
@@ -693,6 +751,7 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style debugUI
      font "gui/fonts/Metron-Bold28"
     }
    }
@@ -732,7 +791,7 @@ WindowWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "ITEM MANAGER"
+     text "#VSTR_ITEM_MANAGER_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

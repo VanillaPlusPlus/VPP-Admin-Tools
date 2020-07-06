@@ -56,7 +56,6 @@ class ChatCommandManager : PluginBase
 
 		if(!commandLine.Contains(" "))
 		{
-       		GetSimpleLogger().Log("[ChatCommandManager]:: ParseCommand(): Command: " + commandLine + " ID: " + id);
         	FindCommand(commandLine, id, args);
 			return;
 		}
@@ -75,8 +74,7 @@ class ChatCommandManager : PluginBase
 			args.Insert(commandLine);
 		}
 		
-        GetSimpleLogger().Log("[ChatCommandManager]:: ParseCommand(): Command: " + command + " ID: " + id + " Command Args : " + args + " Count: " + args.Count());
-        FindCommand(command, id, args);
+       FindCommand(command, id, args);
     }
 	
 	void FindCommand(string command, string id, array<string> args)
@@ -99,7 +97,6 @@ class ChatCommandManager : PluginBase
 
 		if(pickedCommand == null)
 		{
-			GetSimpleLogger().Log("[Command Manager]:: ExecuteCommand(): Invalid command.");
 			return;
 		}
 		
@@ -173,7 +170,7 @@ class ChatCommandManager : PluginBase
         
         if(validTargets != null && (validTargets.Count() == 0 || validTargets.Count() != args.Count()))
         {
-        	GetPermissionManager().NotifyPlayer(id, "You may not have the permission to use that command on some, or all of your targets.",NotifyTypes.NOTIFY);
+        	GetPermissionManager().NotifyPlayer(id, "#VSTR_MISSING_PERM",NotifyTypes.NOTIFY);
         }
         
         return validTargets;

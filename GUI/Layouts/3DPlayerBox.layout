@@ -35,7 +35,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style Bold
-     text "Name:"
+     text "#VSTR_LBL_NAME"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -115,7 +115,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style Bold
-     text "GUID:"
+     text "#VSTR_LBL_GUID"
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -143,7 +143,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style Bold
-     text "Steam64 ID:"
+     text "#VSTR_LBL_STEAMID"
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -170,7 +170,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style Bold
-     text "Distance:"
+     text "#VSTR_LBL_DISTANCE"
      "size to text h" 1
      "size to text v" 1
      "text valign" center

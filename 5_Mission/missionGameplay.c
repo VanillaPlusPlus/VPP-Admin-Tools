@@ -1,12 +1,12 @@
 modded class MissionGameplay
 {
-	private bool  m_Toggles = false;
+	private bool  m_Toggles 	 = false;
+	private bool  m_ToolsToggled;
 	Object targetObj;
 	
 	void MissionGameplay()
 	{
 		GetRPCManager().AddRPC( "RPC_MissionGameplay", "EnableToggles", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_HandleInvisiblity", "HandleInvisiblity", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_HandleFreeCam", "HandleFreeCam", this, SingeplayerExecutionType.Server );
 		GetRPCManager().SendRPC( "RPC_PermitManager", "EnableToggles", NULL, true );
 	}
@@ -52,11 +52,28 @@ modded class MissionGameplay
 		
 		if (m_Toggles)
 		{
-			if ( input.LocalPress("UAToggleAdminTools", false) && !GetVPPUIManager().IsTyping())
+			if ( input.LocalPress("UAToggleAdminTools", false))
 			{
-				OpenToolBar();
+				m_ToolsToggled = !m_ToolsToggled;
+				if ( m_ToolsToggled )
+					GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_ON", "V++ Admin Tools:", 3.0);
+				else
+					GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_OFF", "V++ Admin Tools:", 3.0);
 			}
-			
+
+			if ( input.LocalPress("UAOpenAdminTools", false) && !GetVPPUIManager().IsTyping())
+			{
+				if ( m_ToolsToggled )
+					OpenToolBar();
+				else
+					GetGame().Chat( "#VSTR_NOTIFY_ERR_NOTTOGGLE", "colorAction" );
+			}
+
+			if ( !m_ToolsToggled )
+				return;
+
+			if (GetVPPUIManager().GetKeybindsStatus() || GetVPPUIManager().IsTyping()) return;
+
 			//Shortcut key to the commands console
 			if ( input.LocalPress("UAToggleCmdConsole", false) && !GetVPPUIManager().IsTyping())
 			{
@@ -70,8 +87,6 @@ modded class MissionGameplay
 				}
 			}
 			
-			if (GetVPPUIManager().GetKeybindsStatus() || GetVPPUIManager().IsTyping()) return;
-			
 			if ( input.LocalPress("UATeleportToCrosshair", false) || input.LocalHold("UATeleportToCrosshair", false))
 			{
 				//float oDistance = vector.Distance(GetGame().GetPlayer().GetPosition(),g_Game.GetCursorPos());
@@ -81,7 +96,7 @@ modded class MissionGameplay
 			
 			if ( input.LocalPress("UADeleteObjCrosshair", false))
 			{
-				targetObj = g_Game.getObjectAtCrosshair(1000.0, 1.5,NULL);
+				targetObj = g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL);
 				if (targetObj != null)
 				{
 					//Lock Controls and show mouse cursor 
@@ -92,7 +107,7 @@ modded class MissionGameplay
 					
 					//Show confirmation of delete
 					autoptr VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(null,true);
-					dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Delete Object?", "Are you sure you wish to delete: ["+targetObj.GetType()+"]?", this);
+					dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_NOTIFY_DEL_OBJ", "#VSTR_NOTIFY_Q_DEL" + "["+targetObj.GetType()+"]?", this);
 				}
 			}
 			
@@ -112,6 +127,37 @@ modded class MissionGameplay
 				GetRPCManager().SendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>("/sph "+itemTypes.GetRandomElement()), true);
 				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ThrowInHands, 1000, false);
 			}
+
+			if (input.LocalRelease("UACopyPositionClipboard", false))
+			{
+				Object target = g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL);
+				string targetType = target.GetType();
+				string notificationMsg;
+				if ( target == NULL )
+				{
+					notificationMsg = "#VSTR_NOTIFY_COPY_CLIPBOARD" + "\n\nPosition: " + PosToString(GetGame().GetPlayer().GetPosition());
+					GetGame().CopyToClipboard( GetGame().GetPlayer().GetPosition().ToString() );
+				}
+				else
+				{
+					if ( targetType == "" || targetType == string.Empty)
+						notificationMsg = string.Format("#VSTR_NOTIFY_COPY_POS" + "\n\nPosition:%1", PosToString(target.GetPosition()));
+					else
+						notificationMsg = string.Format("Copied position of object: %1 to clipboard\n\nPosition: %2", target.GetType(), PosToString(target.GetPosition()));
+					
+					GetGame().CopyToClipboard( target.GetPosition().ToString() );
+				}
+				GetVPPUIManager().DisplayNotification(notificationMsg, "V++ Admin Tools:", 10.0);
+			}
+
+			if ( input.LocalRelease("UARepairVehicleAtCrosshairs", false) )
+			{
+				Car targetVehicle = Car.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
+				if ( targetVehicle )
+				{
+					GetRPCManager().SendRPC( "RPC_AdminTools", "RepairVehicles", NULL, true, NULL, targetVehicle);
+				}
+			}
 		}
 		
 		//Spectate mode Exit button
@@ -120,6 +166,12 @@ modded class MissionGameplay
 			g_Game.ReconnectToCurrentSession();
 			g_Game.SetSpectateMode(false);
 		}
+	}
+
+	string PosToString(vector pos)
+	{
+		string PosArray[3] = { pos[0].ToString(), pos[1].ToString(), pos[2].ToString() };
+		return string.Format("(%1, %2, %3)", PosArray[0], PosArray[1], PosArray[2]);
 	}
 	
 	void OnDiagResult(int result)
@@ -161,21 +213,6 @@ modded class MissionGameplay
 			}
         }
     }
-	
-	void HandleInvisiblity(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
-	{
-		Param1<bool> data;
-        if ( !ctx.Read( data ) || !m_Toggles || sender != null ) return;
-		
-		if (type == CallType.Client)
-        {
-			autoptr Entity pe = GetGame().GetPlayer();
-        	if (pe != null && GetGame().GetPlayer().IsAlive())
-			{
-				pe.SetInvisible(data.param1);
-			}
-        }
-	}
 	
 	void HandleFreeCam(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{

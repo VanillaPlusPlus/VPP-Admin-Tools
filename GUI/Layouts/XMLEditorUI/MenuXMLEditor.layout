@@ -35,11 +35,23 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PanelBG {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0
+       size 0.995 0.99
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       EditBoxWidgetClass SearchBoxXML {
        disabled 0
-       color 1 0 0 1
        position 0.01 0.003
        size 0.48 0.048
        halign right_ref
@@ -49,7 +61,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style DefaultBorder
        "no focus" 0
-       text " Search Item"
+       text "#VSTR_SEARCH"
        "Use default text" 1
        "exact text" 1
        font "gui/fonts/Metron16"
@@ -63,9 +75,10 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
         TextListboxWidgetClass ItemListBoxXML {
+         color 0.6706 0.6706 0.6706 1
          size 0.95 0.962
          halign center_ref
          valign center_ref
@@ -90,7 +103,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Get Item Stats"
+       text "#VSTR_LBL_GET_ITEM_STATS"
        switch normal
       }
       ButtonWidgetClass BtnLoadSelected {
@@ -103,7 +116,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       text "Load Selected"
+       text "#VSTR_LBL_LOAD_SELECTED"
        switch normal
       }
       ButtonWidgetClass BtnXMLEditorApply {
@@ -117,7 +130,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Apply Changes"
+       text "#VSTR_LBL_APPLY_CHANGES"
        switch normal
       }
       PanelWidgetClass HuggerEditboxes {
@@ -128,7 +141,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style rover_sim_black_2
+       style editor_quad
        {
         GridSpacerWidgetClass GridItems {
          ignorepointer 1
@@ -157,7 +170,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputNominal {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.243
            size 0.666 0.081
            halign center_ref
@@ -187,7 +200,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputLifetime {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.334
            size 0.666 0.081
            halign center_ref
@@ -217,7 +230,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputRestock {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.424
            size 0.666 0.081
            halign center_ref
@@ -247,7 +260,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputMin {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.517
            size 0.666 0.081
            halign center_ref
@@ -278,7 +291,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputQuantmin {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.605
            size 0.666 0.081
            halign center_ref
@@ -308,7 +321,7 @@ FrameWidgetClass rootFrame {
            font "gui/fonts/Metron22"
           }
           EditBoxWidgetClass InputQuantmax {
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.695
            size 0.666 0.081
            halign center_ref
@@ -339,7 +352,7 @@ FrameWidgetClass rootFrame {
           }
           EditBoxWidgetClass InputCost {
            disabled 0
-           color 1 0 0 1
+           color 0.6706 0.6706 0.6706 1
            position 0.9 0.785
            size 0.666 0.081
            halign center_ref
@@ -368,7 +381,7 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style rover_sim_black_2
+         style editor_quad
          {
           ItemPreviewWidgetClass ItemPreviewXML {
            visible 0
@@ -388,7 +401,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "Enable Preview"
+           text "#VSTR_ENABLE_PREVIEW"
           }
          }
         }
@@ -412,14 +425,14 @@ FrameWidgetClass rootFrame {
         TextWidgetClass title_presets_text {
          ignorepointer 1
          position 0 0
-         size 1 0.892
+         size 0.99 0.892
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Details"
+         text "#VSTR_DETALIS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 16
@@ -428,7 +441,7 @@ FrameWidgetClass rootFrame {
         }
        }
       }
-      ImageWidgetClass ImgInfoWeatherPreset {
+      ImageWidgetClass ImgInfoXMLToolTip {
        ignorepointer 0
        color 1 0 0 1
        position 0.01 0.01
@@ -484,7 +497,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "XML Editor"
+     text "#VSTR_XML_EDITOR_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

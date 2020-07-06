@@ -9,8 +9,20 @@ PanelWidgetClass PanelPlayerDetails {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style rover_sim_black_2
+ style editor_quad
  {
+  PanelWidgetClass PnlBg {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   size 0.995 0.994
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   GridSpacerWidgetClass player_info_content {
    ignorepointer 1
    color 0 0 0 0
@@ -46,7 +58,7 @@ PanelWidgetClass PanelPlayerDetails {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "Name:"
+       text "#VSTR_LBL_NAME"
        font "gui/fonts/Metron-BoldItalic14"
        "size to text h" 1
        "size to text v" 0
@@ -88,7 +100,7 @@ PanelWidgetClass PanelPlayerDetails {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "Steam64 ID:"
+       text "#VSTR_LBL_STEAMID"
        font "gui/fonts/Metron-BoldItalic14"
        "size to text h" 1
        "size to text v" 0
@@ -130,7 +142,7 @@ PanelWidgetClass PanelPlayerDetails {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "GUID:"
+       text "#VSTR_LBL_GUID"
        font "gui/fonts/Metron-BoldItalic14"
        "size to text h" 1
        "size to text v" 0
@@ -172,7 +184,7 @@ PanelWidgetClass PanelPlayerDetails {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "User Group:"
+       text "#VSTR_LBL_USER_GROUP"
        font "gui/fonts/Metron-BoldItalic14"
        "size to text h" 1
        "size to text v" 0
@@ -389,7 +401,7 @@ PanelWidgetClass PanelPlayerDetails {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "Copy Information"
+       text "#VSTR_LBL_COPY_INFO"
        font "gui/fonts/Metron-BoldItalic12"
       }
      }

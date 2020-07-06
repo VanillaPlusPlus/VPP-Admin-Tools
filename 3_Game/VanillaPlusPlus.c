@@ -1,12 +1,14 @@
 modded class DayZGame
 {
-	#define VPP_Admintools_Loaded
-	
+	private ref VPPEventHandler vppatEventHandler;
+
 	private bool   m_SpectateStatus;
 	private bool   m_IsLShiftHolding;
+
 	void DayZGame()
 	{
 		Print("[DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.");
+		vppatEventHandler = new VPPEventHandler();
 		GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RegisterRPCs, 500, false); //Register RPCs after 10 seconds of game boot
 	}
 	
@@ -28,10 +30,16 @@ modded class DayZGame
 		}
 	}
 
+	ref VPPEventHandler VPPATGetEventHandler()
+	{
+		return vppatEventHandler;
+	}
+
 	//Register early RPCs after game is running.
 	void RegisterRPCs()
 	{
 		GetRPCManager().AddRPC( "RPC_MissionGameplay", "KickClientHandle", this );
+		GetRPCManager().AddRPC( "RPC_MissionGameplay", "GetConnectedSession", this );
 	}
 	
 	void KickClientHandle( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
@@ -46,12 +54,23 @@ modded class DayZGame
 			{
 				if (GetDayZGame().GetGameState() != DayZGameState.CONNECT || GetDayZGame().GetGameState() != DayZGameState.CONNECTING || g_Game.GetLoadState() != DayZLoadState.CONNECT_START)
 				{
-					GetGame().GetUIManager().ShowDialog("Session Disconnect", "V++ AdminTools: "+data.param1, 1, DBT_OK, DBB_OK, DMT_WARNING, g_Game.GetUIManager().GetMenu());
+					GetGame().GetUIManager().ShowDialog("#VSTR_SESSION_DISCONNECT", "V++ AdminTools: "+data.param1, 1, DBT_OK, DBB_OK, DMT_WARNING, g_Game.GetUIManager().GetMenu());
 	        		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().DisconnectSessionForce, 100, false);
 					done = true;
 					break;
 				}
 			}
+        }
+	}
+
+	void GetConnectedSession( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	{
+		if (type == CallType.Client)
+        {
+        	string address;
+        	int port;
+        	GetGame().GetHostAddress( address, port );
+        	GetRPCManager().SendRPC( "RPC_MissionGameplay", "ConnectedSession", new Param1<string>(address), true);
         }
 	}
 	
@@ -226,7 +245,7 @@ modded class DayZGame
 	    return hitPos;
 	}
 
-	set< Object > GetObjectsAt( vector from, vector to, Object ignore = NULL, float radius = 0.6, Object with = NULL )
+	set< Object > GetObjectsAt( vector from, vector to, Object ignore = NULL, float radius = 0.0, Object with = NULL )
 	{
 	    vector contact_pos;
 	    vector contact_dir;
@@ -247,7 +266,7 @@ modded class DayZGame
 	    return NULL;
 	}
 
-	Object getObjectAtCrosshair(float distance = 1000.0, float radius = 0.6, Object with = NULL)
+	Object getObjectAtCrosshair(float distance = 1000.0, float radius = 0.0, Object with = NULL)
 	{
 	    vector rayStart = GetGame().GetCurrentCameraPosition();
 	    vector rayEnd = rayStart + GetGame().GetCurrentCameraDirection() * distance;
@@ -258,4 +277,9 @@ modded class DayZGame
 
 	    return NULL;
 	}
-}
+};
+
+ref VPPEventHandler VPPATGetEventHandler()
+{
+	return g_Game.VPPATGetEventHandler();
+};

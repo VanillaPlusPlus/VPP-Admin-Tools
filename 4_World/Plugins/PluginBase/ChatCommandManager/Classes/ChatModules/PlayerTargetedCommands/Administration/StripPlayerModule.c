@@ -26,6 +26,7 @@ class StripPlayerChatModule : ChatCommand
                 string targetID = targetIdentity.GetPlainId();
 
                 playerTarget.RemoveAllItems();
+                GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /strip used on: \"%3\" (steamid=%4)", callerName, callerID, targetName, targetID));
                 GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /strip command used on: " + targetName + " ID: " + targetID));
             }
         }

@@ -24,6 +24,7 @@ class SpawnInHandsChatModule : ChatCommand
                 else
                     caller.GetInventory().CreateInInventory(arg);
 
+                GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /sph used on self. Input (%3)", callerName, callerID, arg));
                 GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /sph used on self. Input:  " + arg));
             }
         }

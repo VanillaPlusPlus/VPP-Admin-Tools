@@ -1,7 +1,7 @@
 GridSpacerWidgetClass SpacerGrid {
  visible 1
  ignorepointer 1
- color 0 0 0 0.7843
+ color 0 0 0 0.4314
  position 0 0
  size 0.5 0
  hexactpos 1
@@ -24,7 +24,7 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Bold
-   text "Type:"
+   text "#VSTR_LBL_TYPE"
    font "gui/fonts/Metron-BoldItalic12"
    "size to text h" 1
    "size to text v" 1
@@ -52,7 +52,7 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Bold
-   text "Distance:"
+   text "#VSTR_LBL_DISTANCE"
    font "gui/fonts/Metron-BoldItalic12"
    "size to text h" 1
    "size to text v" 1
@@ -96,7 +96,7 @@ GridSpacerWidgetClass SpacerGrid {
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     text "Yaw:"
+     text "#VSTR_LBL_YAW"
      font "gui/fonts/Metron-BoldItalic12"
      "size to text h" 0
      "size to text v" 0
@@ -111,7 +111,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"
@@ -124,7 +124,7 @@ GridSpacerWidgetClass SpacerGrid {
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     text "Pitch:"
+     text "#VSTR_LBL_PITCH"
      font "gui/fonts/Metron-BoldItalic12"
      "size to text h" 0
      "size to text v" 0
@@ -139,7 +139,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"
@@ -152,7 +152,7 @@ GridSpacerWidgetClass SpacerGrid {
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     text "Roll:"
+     text "#VSTR_LBL_ROLL"
      font "gui/fonts/Metron-BoldItalic12"
      "size to text h" 0
      "size to text v" 0
@@ -167,7 +167,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"
@@ -213,7 +213,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"
@@ -241,7 +241,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"
@@ -269,7 +269,7 @@ GridSpacerWidgetClass SpacerGrid {
      hexactsize 1
      vexactsize 1
      scriptclass "EditBoxEventHandler"
-     style Editor
+     style DefaultBorder
      text "0"
      "exact text" 1
      font "gui/fonts/Metron12"

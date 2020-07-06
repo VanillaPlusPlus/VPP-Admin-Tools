@@ -27,17 +27,17 @@ class WeatherManager : ConfigurablePlugin
 		
 		if(FileExist(JSONPATH))
 		{
-			GetSimpleLogger().Log("[WeatherManager]:: Load(): Loading Json File " + JSONPATH);
+			GetSimpleLogger().Log("[WeatherManager] Loading Json File " + JSONPATH);
 			JsonFileLoader<WeatherManager>.JsonLoadFile(JSONPATH, this);
 		}else{
-			GetSimpleLogger().Log("[WeatherManager]:: Load(): Creating Default Json File " + JSONPATH);
+			GetSimpleLogger().Log("[WeatherManager] Creating Default Json File " + JSONPATH);
 			Save();
 		}
 	}
 	
 	override void Save()
 	{
-		GetSimpleLogger().Log("[WeatherManager]:: Save() to " + JSONPATH);
+		GetSimpleLogger().Log("[WeatherManager] Save to " + JSONPATH);
 		JsonFileLoader<WeatherManager>.JsonSaveFile(JSONPATH, this);
 	}
 	
@@ -54,7 +54,7 @@ class WeatherManager : ConfigurablePlugin
 			}
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Sent Saved Weather Presets"));
-			GetSimpleLogger().Log("[WeatherManager]:: SendToClient(): Send Data Count is " + input.Count().ToString());
+			GetSimpleLogger().Log("[WeatherManager] Send Data Count is " + input.Count().ToString());
 			GetRPCManager().SendRPC( "RPC_WeatherUI", "HandleWeatherData", new Param1<array<string>>(input), true, sender );
 		}
 	}
@@ -134,7 +134,7 @@ class WeatherManager : ConfigurablePlugin
 		float rain = s.GetRainActual(), rainRate = s.GetRainRate(), rainDur = s.GetRainDur();
 		float wind = s.GetWindActual();
 	
-		GetSimpleLogger().Log("[Weather Manager]:: ApplyWeatherSetting() to: " + s.GetName());
+		GetSimpleLogger().Log("[Weather Manager] ApplyWeatherSetting to: " + s.GetName());
 
 		Weather w = GetGame().GetWeather();
 		Overcast o = w.GetOvercast();
@@ -164,8 +164,6 @@ class WeatherManager : ConfigurablePlugin
 			autoptr array<float> rain = data.param3;
 			
 			float wind = data.param4;
-			
-			GetSimpleLogger().Log("[Weather Manager]:: ApplyWeather()");
 			
 			Weather w = GetGame().GetWeather();
 			Overcast o = w.GetOvercast();

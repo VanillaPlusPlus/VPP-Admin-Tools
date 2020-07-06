@@ -14,7 +14,7 @@ class BuildingSetEditor: ScriptedWidgetEventHandler
 		m_Apply   		= ButtonWidget.Cast(m_root.FindAnyWidget("button_ok"));
 		m_button_close  = ButtonWidget.Cast(m_root.FindAnyWidget("panel_close"));
 		m_button_export  = ButtonWidget.Cast(m_root.FindAnyWidget("button_export"));
-		GetVPPUIManager().HookConfirmationDialog(m_button_export, parent,this,"ExportRaw", DIAGTYPE.DIAG_YESNO, "Export", "Click 'yes' to generate an export of the current set. Exports are saved on server profile: VPPAdminTools\\Exports");
+		GetVPPUIManager().HookConfirmationDialog(m_button_export, parent,this,"ExportRaw", DIAGTYPE.DIAG_YESNO, "Export", "#VSTR_TOOLTIP_EXPORT_SET");
 		
 		m_SetName 		= EditBoxWidget.Cast(m_root.FindAnyWidget("InputSetName"));
 		m_Active        = CheckBoxWidget.Cast(m_root.FindAnyWidget("checkbox_active"));
@@ -51,7 +51,7 @@ class BuildingSetEditor: ScriptedWidgetEventHandler
 			if (objMenu)
 			{
 				if (!m_EditMode && objMenu.CheckDuplicateSet(m_SetName.GetText()) || m_SetName.GetText() == "" || m_SetName.GetText().Length() < 4){
-					GetVPPUIManager().DisplayNotification("Error, set name does not meet requirements!\nduplicate name or name too short!");
+					GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_DUPENAME");
 					return false;
 				}
 				if (m_EditMode)

@@ -35,6 +35,8 @@ class HealPlayerChatModule : ChatCommand
 				playerTarget.GetStatDiet().Set(playerTarget.GetStatDiet().GetMax());
 				playerTarget.GetStatSpecialty().Set(playerTarget.GetStatSpecialty().GetMax());
 				playerTarget.SetBleedingBits(0);
+
+                GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /heal used on: \"%3\" (steamid=%4)", callerName, callerID, targetName, targetID));
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /heal command used on: " + targetName + " ID: " + targetID));
             }
         }

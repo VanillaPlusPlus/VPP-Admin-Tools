@@ -1,22 +1,16 @@
 class WebHookConnectionManager
 {
 	private float 			   currentTime;
-	CURLContext    		   	   cURLCtx;
+	RestContext    		   	   cURLCtx;
 	ref WebHookCallBack  	   webHookCB;
 
 	void WebHookConnectionManager(string contextUrl)
 	{
-		CURLCore cURLCore = CreateCURLCore();
+		RestApi cURLCore = CreateRestApi();
 		cURLCore.EnableDebug(false);
 		webHookCB  = new WebHookCallBack();
-		cURLCtx    = cURLCore.GetCURLContext( contextUrl ); //Discord only for now
+		cURLCtx    = cURLCore.GetRestContext( contextUrl ); //Discord only for now
 		cURLCtx.SetHeader( "application/json" );
-	}
-
-	void ~WebHookConnectionManager()
-	{
-		delete cURLCtx;
-		delete webHookCB;
 	}
 	
 	void Post(string address, string data)

@@ -97,7 +97,7 @@ class XMLEditor extends PluginBase
 					array<ref LineElement> Xmldata = parser.GetElementString("type",data.param1);
 					LineElement elementData        = parser.GetElementStringValue(elementType,Xmldata);
 					if (elementData == null || elementData.data == "" || elementData.index <= -1)
-						result.Insert(new Param3<string,string,int>(elementType,"NOT DEFINED",-1));
+						result.Insert(new Param3<string,string,int>(elementType,"#VSTR_NOT_DEFINED",-1));
 					else
 						result.Insert(new Param3<string,string,int>(elementType,elementData.data,elementData.index));
 				}

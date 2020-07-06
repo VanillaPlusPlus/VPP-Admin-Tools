@@ -47,18 +47,18 @@ class VPPAdminHud extends VPPScriptedMenu
 		m_Buttons        = new array<ref VPPButton>;
 		
 		/*Base actions: Keep here incase other external modules don't call super on DefineButtons()*/
-		InsertButton("MenuPlayerManager" , "set:dayz_gui_vpp image:vpp_icon_players", "Manage players, teleport,kill,send message,heal,view information about players (guid,name,status) & more");
-		InsertButton("MenuItemManager" , "set:dayz_gui_vpp image:vpp_icon_item_manager", "Spawn items on players, on ground, at crosshairs, create, edit and delete item sets & more!");
-		InsertButton("MenuTeleportManager" , "set:dayz_gui_vpp image:vpp_icon_teleport_manager", "Manage teleport presets, add new and edit. Mass teleport players & map teleport.");
+		InsertButton("MenuPlayerManager" , "set:dayz_gui_vpp image:vpp_icon_players", "#VSTR_TOOLTIP_PLAYERMANAGER");
+		InsertButton("MenuItemManager" , "set:dayz_gui_vpp image:vpp_icon_item_manager", "#VSTR_TOOLTIP_ITEMMANAGER");
+		InsertButton("MenuTeleportManager" , "set:dayz_gui_vpp image:vpp_icon_teleport_manager", "#VSTR_TOOLTIP_TELEPORTMANAGER");
 		InsertButton("EspToolsMenu" , "set:dayz_gui_vpp image:vpp_icon_esp", "ESP/XRay");
-		InsertButton("MenuCommandsConsole" , "set:dayz_gui_vpp image:vpp_icon_cmd_console", "Execute and use shortcut commands!");
-		InsertButton("MenuServerManager" , "set:dayz_gui_vpp image:vpp_icon_settings", "Control Server settings, view player activity, restart server, monitor performance & more!");
-		InsertButton("MenuWeatherManager" , "set:dayz_gui_vpp image:vpp_icon_cloud", "Manage server weather settings, load, create delete presets, set time and change forecast.");
-		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "Place custom mission objects, create, load, edit presets & more!");
-		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "Manage V++ Server ban list, add, remove, updated issued bans.");
-		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "Manage toolset permissions & roles, create new user groups, edit and delete.");
-		InsertButton("MenuWebHooks" , "set:dayz_gui_vpp image:vpp_icon_webHooks", "Create and edit webhooks that offload log data. (Currently supports discord only)");
-		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_xml_editor", "Edit types.xml and check loot status on server!");
+		InsertButton("MenuCommandsConsole" , "set:dayz_gui_vpp image:vpp_icon_cmd_console", "#VSTR_TOOLTIP_COMMANDSMENU");
+		InsertButton("MenuServerManager" , "set:dayz_gui_vpp image:vpp_icon_settings", "#VSTR_TOOLTIP_SERVERMANAGER");
+		InsertButton("MenuWeatherManager" , "set:dayz_gui_vpp image:vpp_icon_cloud", "#VSTR_TOOLTIP_WEATHERMANAGER");
+		InsertButton("MenuObjectManager" , "set:dayz_gui_vpp image:vpp_icon_obj_editor", "#VSTR_TOOLTIP_OBJMANAGER");
+		InsertButton("MenuBansManager" , "set:dayz_gui_vpp image:vpp_icon_bans_editor", "#VSTR_TOOLTIP_BANSMANAGER");
+		InsertButton("MenuPermissionsEditor" , "set:dayz_gui_vpp image:vpp_icon_perms_editor", "#VSTR_TOOLTIP_PERMSEDITOR");
+		InsertButton("MenuWebHooks" , "set:dayz_gui_vpp image:vpp_icon_webHooks", "#VSTR_TOOLTIP_WEBHOOKS");
+		InsertButton("MenuXMLEditor" , "set:dayz_gui_vpp image:vpp_icon_xml_editor", "#VSTR_TOOLTIP_XMLEDITOR");
 		//----
 		DefineButtons();
 		//Compile Permissions needed by buttons registred.

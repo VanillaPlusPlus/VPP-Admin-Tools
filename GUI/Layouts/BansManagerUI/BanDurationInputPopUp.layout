@@ -7,8 +7,20 @@ PanelWidgetClass rootFrame {
  hexactsize 0
  vexactsize 0
  scriptclass "BanDurationInput"
- style rover_sim_black_2
+ style editor_quad
  {
+  PanelWidgetClass PnlBg {
+   ignorepointer 1
+   color 0 0 0 0.9608
+   position 0 0.08
+   size 0.995 0.908
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style editor_selection
+  }
   PanelWidgetClass Buttons {
    ignorepointer 1
    position 0 0.02
@@ -30,7 +42,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Editor
-     text "Apply"
+     text "#VSTR_APPLY"
      font "gui/fonts/Metron12"
     }
     ButtonWidgetClass btnCancel {
@@ -42,7 +54,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Editor
-     text "Cancel"
+     text "#VSTR_CANCEL"
      font "gui/fonts/Metron12"
     }
     CheckBoxWidgetClass PermaTick {
@@ -55,7 +67,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Default
-     text "Ban Permanently"
+     text "#VSTR_BAN_PERMA"
      font "gui/fonts/Metron12"
     }
    }
@@ -83,7 +95,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Year"
+     text "#VSTR_YEAR"
      font "gui/fonts/Metron-Italic28"
      "exact text" 1
      "size to text h" 1
@@ -99,7 +111,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Month"
+     text "#VSTR_MONTH"
      font "gui/fonts/Metron-Italic28"
      "exact text" 1
      "size to text h" 1
@@ -115,7 +127,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Day"
+     text "#VSTR_DAY"
      font "gui/fonts/Metron-Italic28"
      "exact text" 1
      "size to text h" 1
@@ -131,7 +143,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Hour"
+     text "#VSTR_HOUR"
      font "gui/fonts/Metron-Italic28"
      "exact text" 1
      "size to text h" 1
@@ -147,7 +159,7 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "Minute"
+     text "#VSTR_MINUTE"
      font "gui/fonts/Metron-Italic28"
      "exact text" 1
      "size to text h" 1
@@ -494,7 +506,7 @@ PanelWidgetClass rootFrame {
   }
   ImageWidgetClass title {
    ignorepointer 1
-   color 0.6706 0.6706 0.6706 0.8784
+   color 0.6706 0.6706 0.6706 0.9608
    position 0 0.01
    size 0.997 0.073
    halign center_ref
@@ -518,7 +530,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Normal
-     text "Edit Duration"
+     text "#VSTR_EDIT_DURATION"
      font "gui/fonts/sdf_MetronLight42"
      "exact text" 1
      "exact text size" 16

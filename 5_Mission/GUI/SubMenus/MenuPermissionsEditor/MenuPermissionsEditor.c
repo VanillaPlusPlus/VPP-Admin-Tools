@@ -42,13 +42,13 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 		m_chkAllPerms        = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkAllPerms"));
 		m_btnAddMembers		 = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnAddMembers"));
 		m_btnDeleteGroup	 = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnDeleteGroup"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnDeleteGroup, M_SUB_WIDGET,this,"DeleteUserGroup", DIAGTYPE.DIAG_YESNO, "Delete User Group", "Are you sure you wish to delete selected user group?");
+		GetVPPUIManager().HookConfirmationDialog(m_btnDeleteGroup, M_SUB_WIDGET,this,"DeleteUserGroup", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIPE_TITLE_DELGROUP", "#VSTR_TOOLTIPE_DELGROUP");
 		
 		m_btnCreateGroup     = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnCreateGroup"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnCreateGroup, M_SUB_WIDGET,this,"CreateUserGroup", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Create User Group", "Please Insert a new for the group. Duplicate names will be rejected.", true);
+		GetVPPUIManager().HookConfirmationDialog(m_btnCreateGroup, M_SUB_WIDGET,this,"CreateUserGroup", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_TOOLTIP_TITLE_CREATEGROUP", "#VSTR_TOOLTIP_CREATEGROUP", true);
 		
 		m_SavePermissions	 = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges"));
-		GetVPPUIManager().HookConfirmationDialog(m_SavePermissions, M_SUB_WIDGET,this,"ApplyNewPermissions", DIAGTYPE.DIAG_YESNO, "Update Permissions", "Are you sure you wish to update selected group's permissions?");
+		GetVPPUIManager().HookConfirmationDialog(m_SavePermissions, M_SUB_WIDGET,this,"ApplyNewPermissions", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_UPDATE_PERMSGRP", "#VSTR_TOOLTIP_UPDATE_PERMSGRP");
 	}
 	
 	override void HideBrokenWidgets(bool state)
@@ -137,7 +137,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 	{
 		if (selectedPlayers != null && selectedPlayers.Count() > 0)
 		{
-			GetVPPUIManager().DisplayNotification("Requesting Server to Add Members to Group: "+GetSelectedUserGroup().GetGroupName());
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMS_REQUSTADD "+GetSelectedUserGroup().GetGroupName());
 			autoptr map<string,string> playersMap = new map<string,string>;
 			
 			foreach(ref VPPPlayerEntry entry : selectedPlayers)
@@ -150,7 +150,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			return;
 		}
 		
-		GetVPPUIManager().DisplayNotification("Error Adding Selected Players! Something Went Wrong.");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_ADD_PLAYERSPERMS");
 	}
 	
 	void DeleteUserGroup(int result)
@@ -185,7 +185,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 				}
 				//Send Update to server
 				GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteUpdateGroupPerms", new Param2<ref array<string>,string>(selectedPerms,grp.GetGroupName()), true);
-				GetVPPUIManager().DisplayNotification("Permissions for group:"+grp.GetGroupName()+" updated & saved!");
+				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMS_UPD_GRP "+grp.GetGroupName()+" #VSTR_NOTIFY_PERMS_UPD_GRP_2");
 				ReloadUserGroupsTab();
 			}
 		}
@@ -200,13 +200,13 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			{
 				if (group.GetGroupName() == userInput)
 				{
-					GetVPPUIManager().DisplayNotification("Group Name: "+userInput+" already exists!");
+					GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_GRPNAME "+userInput+" #VSTR_NOTIFY_ALREADY_EXISTS");
 					return;
 				}
 			}
 			//Make UserGroup
 			GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteCreateUserGroup", new Param1<string>(userInput), true);
-			GetVPPUIManager().DisplayNotification("Created New User Group: "+userInput+"!");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_USER_GRP_CREATED "+userInput+"!");
 			ReloadUserGroupsTab();
 		}
 	}

@@ -20,7 +20,7 @@ class PresetItemEntry: VPPPlayerTemplate
 		m_ItemName    = TextWidget.Cast( m_EntryBox.FindAnyWidget("ItemName") );
 
 		if (isParent){
-			m_ItemName.SetText(typeName + " (Parent)");
+			m_ItemName.SetText(typeName + "#VSTR_DISPLAY_PARENT");
 			m_EntryBox.SetColor(ARGB(255,0,255,25));
 		}else{
 			m_ItemName.SetText(typeName);

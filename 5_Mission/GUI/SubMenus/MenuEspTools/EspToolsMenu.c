@@ -54,14 +54,14 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_btnToggle    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnToggle"));
 		m_btnClear	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnClear"));
 		m_btnRestore   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRestore"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnRestore, M_SUB_WIDGET,this,"RestoreFilters", DIAGTYPE.DIAG_YESNO, "Restore Default?", "Are you sure you wish to restore default filters? (This will not remove any of your custom made filters!)");
+		GetVPPUIManager().HookConfirmationDialog(m_btnRestore, M_SUB_WIDGET,this,"RestoreFilters", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_FILTER_RESTORE_TITLE", "#VSTR_ESP_FILTER_RESTORE");
 		
 		m_btnAddNewFilter = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnAddNewFilter"));
-		GetVPPUIManager().HookConfirmationDialog(m_btnAddNewFilter, M_SUB_WIDGET,this,"CreateNewFilter", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Create Custom Filter", "Please insert the item type/class name or base class name of item.", true);
+		GetVPPUIManager().HookConfirmationDialog(m_btnAddNewFilter, M_SUB_WIDGET,this,"CreateNewFilter", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "#VSTR_ESP_CREATE_FILTER", "#VSTR_ESP_FILTER_INFO", true);
 		
 		m_removeAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "removeAllItems"));
 		m_delAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "delAllItems"));
-		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "Delete Items", "Are you sure you wish to delete ALL ITEMS in the list? (You can't revert once you delete this item)");
+		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_TITLE_DELETE", "#VSTR_ESP_DEL_CONFIRM");
 		m_chkSelectAll = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSelectAll"));
 		m_ChkUseNameFilter = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkUseNameFilter"));
 		m_ChkShowDetailed = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowDetailed"));
@@ -74,8 +74,8 @@ class EspToolsMenu extends AdminHudSubMenu
 		
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("When the toggle button is green it means ESP will scan every second with new data.");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_ESP_TOOLTIP");
 		
 		LoadSavedFilters();
 		InitEspItemsList();

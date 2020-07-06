@@ -12,8 +12,8 @@ class WebHookEntry: ScriptedWidgetEventHandler
 		m_btnDeleteItem = ButtonWidget.Cast( m_Root.FindAnyWidget( "btnDeleteItem") );
 		m_btnEditItem   = ButtonWidget.Cast( m_Root.FindAnyWidget( "btnEditItem") );
 		autoptr Widget rootPr = parent.GetParent().GetParent().GetParent().GetParent();
-		GetVPPUIManager().HookConfirmationDialog(m_btnDeleteItem, rootPr, this, "DeleteWebHook", DIAGTYPE.DIAG_YESNO, "Delete webhook?", "Are you sure you wish to delete webhook: " + webHookName);
-		GetVPPUIManager().HookConfirmationDialog(m_btnEditItem, rootPr, this, "EditWebHook", DIAGTYPE.DIAG_YESNO, "Select Webhook?", "Any unsaved changes to previously selected item will be discarded continue?");
+		GetVPPUIManager().HookConfirmationDialog(m_btnDeleteItem, rootPr, this, "DeleteWebHook", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_WBHOOK_DEL", "#VSTR_TOOLTIP_WBHOOK_DEL " + webHookName);
+		GetVPPUIManager().HookConfirmationDialog(m_btnEditItem, rootPr, this, "EditWebHook", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_WBHOOK_SELC", "#VSTR_TOOLTIP_WBHOOK_SELC");
 
 		m_webHookName   = webHookName;
 		m_ItemName 		= TextWidget.Cast( m_Root.FindAnyWidget( "ItemName") );

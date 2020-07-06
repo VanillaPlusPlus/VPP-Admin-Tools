@@ -34,8 +34,21 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBg {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0
+       size 0.99 0.988
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ScrollWidgetClass PlayerList {
        ignorepointer 0
        position 0 0.03
@@ -73,7 +86,7 @@ FrameWidgetClass rootFrame {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
        position 0 0.01
-       size 0.97 0.073
+       size 0.98 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -95,7 +108,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Ban List"
+         text "#VSTR_BAN_LIST"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 22
@@ -123,7 +136,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style EmptyHighlight
-       text "Refresh"
+       text "#VSTR_REFRESH"
       }
      }
     }
@@ -137,8 +150,20 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style rover_sim_black_2
+     style editor_quad
      {
+      PanelWidgetClass PnlBgDetials {
+       ignorepointer 1
+       color 0 0 0 0.9608
+       position 0 0.13
+       size 0.983 0.855
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_selection
+      }
       ImageWidgetClass player_info_title {
        ignorepointer 1
        color 0.6706 0.6706 0.6706 0.8784
@@ -165,7 +190,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Normal
-         text "Details"
+         text "#VSTR_DETALIS"
          font "gui/fonts/sdf_MetronLight42"
          "exact text" 1
          "exact text size" 22
@@ -227,7 +252,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Name:"
+           text "#VSTR_LBL_NAME"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -267,7 +292,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Steam64 ID:"
+           text "#VSTR_LBL_STEAMID"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -307,7 +332,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "GUID:"
+           text "#VSTR_LBL_GUID"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -348,7 +373,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Reason:"
+           text "#VSTR_LBL_REASON"
            "size to text h" 1
            "size to text v" 1
           }
@@ -417,7 +442,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Expiration Date:"
+           text "#VSTR_LBL_EXPERIY_DATE"
            "size to text h" 1
            "size to text v" 1
           }
@@ -486,7 +511,7 @@ FrameWidgetClass rootFrame {
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           text "Issued By:"
+           text "#VSTR_LBL_ISSUED_BY"
            "size to text h" 1
            "size to text v" 1
           }
@@ -523,11 +548,10 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scriptclass "ConfirmationEventHandler"
      style Editor
-     text "Remove Selected Player(s)"
+     text "#VSTR_LBL_REMOVE_SEL_PLAYERS"
      font "gui/fonts/Metron-Bold14"
     }
     EditBoxWidgetClass SearchInputBox {
-     color 0.9176 0.0314 0.0314 1
      position 0 0.04
      size 0.9 0.05
      halign center_ref
@@ -536,7 +560,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style DefaultBorder
-     text "Search Keyword"
+     text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
      font "gui/fonts/Metron-Italic22"
@@ -578,7 +602,7 @@ FrameWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style Bold
-     text "SERVER BAN LIST MANAGER"
+     text "#VSTR_BAN_LIST_MANAGER_TITLE"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

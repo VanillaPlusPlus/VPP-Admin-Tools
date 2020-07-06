@@ -51,15 +51,15 @@ class MenuBansManager extends AdminHudSubMenu
 		
 	 	m_SelectAll   = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers"));
 		m_RemoveSelected 	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRemoveSelected"));
-		GetVPPUIManager().HookConfirmationDialog(m_RemoveSelected, M_SUB_WIDGET,this,"RemoveSelectedBans", DIAGTYPE.DIAG_YESNO, "Unban", "Are you sure you wish to unban selected player(s) from the server?");
+		GetVPPUIManager().HookConfirmationDialog(m_RemoveSelected, M_SUB_WIDGET,this,"RemoveSelectedBans", DIAGTYPE.DIAG_YESNO, "#VSTR_UNBAN", "#VSTR_Q_UNBAN");
 		m_BtnRefreshBanList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRefreshBanList"));
 		m_SearchInputBox	= EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SearchInputBox"));
 		
 		m_ImgInfo			= ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ImgInfo"));
 		autoptr ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
-		toolTip.SetTitle("Information:");
-		toolTip.SetContentText("The 'Details Panel' will only show data if ONE entry from the ban list is selected!\nYou are able to edit multiple bans at once (ban reason & expiration date), however the 'Details Panel' will not populate.");
+		toolTip.SetTitle("#VSTR_TOOLTIP_TITLE");
+		toolTip.SetContentText("#VSTR_TOOLTIP_BANS_DETIALS");
 		
 		m_Name			    = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "Name"));
 		m_SteamID			= TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SteamID"));
@@ -178,7 +178,7 @@ class MenuBansManager extends AdminHudSubMenu
 				IDs.Insert(entry.GetPlayer().Steam64Id);
 			}
 			GetRPCManager().SendRPC("BanManagerServer", "UpdateBanReason", new Param2<ref array<string>,string>(IDs,input), true);
-			GetVPPUIManager().DisplayNotification("Updating Ban Reason...");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_UPDATE_BAN_REASON");
 			RequestRefresh();
 		}
 	}
@@ -190,7 +190,7 @@ class MenuBansManager extends AdminHudSubMenu
 	{
 		autoptr array<ref BannedPlayerEntry> selected = GetSelected();
 		if (selected.Count() < 1){
-			GetVPPUIManager().DisplayNotification("Error:No Entries Selected!");
+			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_ERR_BAN_NOSELECT");
 			return;
 		}
 		
@@ -200,7 +200,7 @@ class MenuBansManager extends AdminHudSubMenu
 			IDs.Insert(entry.GetPlayer().Steam64Id);
 		}
 		GetRPCManager().SendRPC("BanManagerServer", "UpdateBanDuration", new Param2<ref array<string>,ref BanDuration>(IDs,timeStamp), true);
-		GetVPPUIManager().DisplayNotification("Updating Ban Duration...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_UPDATE_BAN_TIME");
 		RequestRefresh();
 	}
 
