@@ -99,10 +99,10 @@ If you wish to manual edit these Json Configuration Files, please use [JsonEdito
 
 ***A:*** The mod comes with a folder named 'Keys' you need to copy the contents of that folder and paste it into a folder named 'Keys' located in the root directory of your DayZ Server.
 
-**Still having issues? Join our [Discord]([https://discordapp.com/invite/GWXN2bB](https://discordapp.com/invite/GWXN2bB)) server and chat to use about the issues you are running into so we can help you out :D**
+**Still having issues? Join our [Discord](https://discord.gg/TTYd9mA) server and chat to use about the issues you are running into so we can help you out :D**
 
 ## Contact Us
-**- Join our [Discord]([https://discordapp.com/invite/GWXN2bB](https://discordapp.com/invite/GWXN2bB)) Server**
+**- Join [Discord](https://discord.gg/TTYd9mA) Server**
 **- Email: vanillaplusplusdayz@gmail.com**
 
 ## End
