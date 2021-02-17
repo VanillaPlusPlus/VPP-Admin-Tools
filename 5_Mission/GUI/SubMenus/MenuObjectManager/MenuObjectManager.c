@@ -419,8 +419,11 @@ class MenuObjectManager extends AdminHudSubMenu
 	void ClearBuildingSetEntries()
 	{
 		foreach(BuildingSetEntry entry : m_BuildingSetEntries){
-			if (entry != null){
-				m_BuildingSetEntries.RemoveItem(entry);
+			if (entry != null)
+			{
+				if(m_BuildingSetEntries != null)
+					m_BuildingSetEntries.RemoveItem(entry);
+					
 				delete entry;
 			}
 		}
