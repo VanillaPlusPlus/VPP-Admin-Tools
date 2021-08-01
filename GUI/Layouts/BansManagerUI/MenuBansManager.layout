@@ -9,11 +9,11 @@ FrameWidgetClass rootFrame {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -34,11 +34,11 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBg {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0
        size 0.99 0.988
        halign center_ref
@@ -82,21 +82,17 @@ FrameWidgetClass rootFrame {
         }
        }
       }
-      ImageWidgetClass player_list_title {
+      PanelWidgetClass player_list_title {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
-       position 0 0.01
-       size 0.98 0.073
+       color 0 0 0 1
+       position 0 0
+       size 0.99 0.073
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_players {
          ignorepointer 1
@@ -109,7 +105,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_BAN_LIST"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronBook24"
          "exact text" 1
          "exact text size" 22
          "text halign" center
@@ -127,36 +123,37 @@ FrameWidgetClass rootFrame {
        font "gui/fonts/Metron-BoldItalic58"
       }
       ButtonWidgetClass BtnRefreshBanList {
-       color 0.6824 0.1373 0.1373 1
-       position 0.01 0.01
+       position 0.01 0.005
        size 0.22 0.06
        halign right_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style EmptyHighlight
+       style Editor
+       "no focus" 1
        text "#VSTR_REFRESH"
       }
      }
     }
     PanelWidgetClass PanelBannedPlayerInfo {
      ignorepointer 1
-     position 0 0.31
-     size 0.9 0.249
+     position 0.00017 0.3
+     size 0.89062 0.249
      halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBgDetials {
+       visible 1
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0.13
-       size 0.983 0.855
+       size 1 0.855
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -164,21 +161,17 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style editor_selection
       }
-      ImageWidgetClass player_info_title {
+      PanelWidgetClass player_info_title {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.01
-       size 0.99 0.133
+       size 1 0.133
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_info {
          ignorepointer 1
@@ -191,7 +184,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_DETALIS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronBook24"
          "exact text" 1
          "exact text size" 22
          "text halign" center
@@ -220,10 +213,10 @@ FrameWidgetClass rootFrame {
       GridSpacerWidgetClass ban_info_content {
        ignorepointer 1
        color 0 0 0 0
-       position 0 0.06
+       position 0 0
        size 1 0
        halign center_ref
-       valign center_ref
+       valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -268,6 +261,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -308,6 +302,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -348,6 +343,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -388,6 +384,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -457,6 +454,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -526,6 +524,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
+           font "gui/fonts/sdf_MetronBook24"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -538,6 +537,7 @@ FrameWidgetClass rootFrame {
      }
     }
     ButtonWidgetClass btnRemoveSelected {
+     disabled 0
      position 0 0.01
      size 0.9 0.05
      halign center_ref
@@ -548,8 +548,9 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scriptclass "ConfirmationEventHandler"
      style Editor
+     "no focus" 1
      text "#VSTR_LBL_REMOVE_SEL_PLAYERS"
-     font "gui/fonts/Metron-Bold14"
+     font "gui/fonts/MetronBook-Bold16"
     }
     EditBoxWidgetClass SearchInputBox {
      position 0 0.04
@@ -563,7 +564,7 @@ FrameWidgetClass rootFrame {
      text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
-     font "gui/fonts/Metron-Italic22"
+     font "gui/fonts/sdf_MetronBook24"
     }
    }
   }
@@ -578,9 +579,9 @@ FrameWidgetClass rootFrame {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
-   color 0 0 0 0.9216
+   color 0 0 0 1
    position 0 0
    size 1 0.03
    halign center_ref
@@ -590,7 +591,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -603,6 +604,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_BAN_LIST_MANAGER_TITLE"
+     font "gui/fonts/sdf_MetronBook72"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -621,6 +623,7 @@ FrameWidgetClass rootFrame {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 1.07 1
        halign center_ref
        valign center_ref

@@ -2,13 +2,13 @@ GridSpacerWidgetClass ElementGrid {
  visible 1
  clipchildren 1
  ignorepointer 1
- color 0.9961 0.9961 0.9961 1
+ color 1 1 1 0.549
  size 0.98 0.45
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style outline
+ style DayZDefaultPanel
  Padding 15
  "Size To Content H" 1
  "Size To Content V" 1
@@ -19,14 +19,14 @@ GridSpacerWidgetClass ElementGrid {
  {
   GridSpacerWidgetClass ItemWidget {
    clipchildren 0
-   color 0.1294 0.1294 0.1294 0.3922
+   color 0 0 0 1
    position 0 0
    size 1.102 0.325
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style Colorable
+   style DayZDefaultPanel
    Padding 3
    Margin 5
    "Size To Content H" 1
@@ -42,9 +42,9 @@ GridSpacerWidgetClass ElementGrid {
      hexactsize 0
      vexactsize 0
      text "/sph akm"
-     font "gui/fonts/sdf_MetronLight72"
+     font "gui/fonts/sdf_MetronLight24"
      "exact text" 1
-     "exact text size" 15
+     "exact text size" 16
      "size to text h" 1
      "size to text v" 1
      "text valign" center

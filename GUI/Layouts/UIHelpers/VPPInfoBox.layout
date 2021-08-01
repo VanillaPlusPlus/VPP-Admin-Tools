@@ -1,5 +1,6 @@
 GridSpacerWidgetClass rootFrame {
  visible 0
+ clipchildren 1
  ignorepointer 1
  color 0 0 0 0.8824
  position 0 0
@@ -8,6 +9,7 @@ GridSpacerWidgetClass rootFrame {
  vexactpos 1
  hexactsize 0
  vexactsize 0
+ priority 1023
  style DayZDefaultPanelSides
  Padding 3
  Margin 1
@@ -20,7 +22,7 @@ GridSpacerWidgetClass rootFrame {
    ignorepointer 0
    color 0 0 0 1
    position 0 0
-   size 1 0.13
+   size 1 0.17
    halign center_ref
    hexactpos 1
    vexactpos 1
@@ -40,7 +42,9 @@ GridSpacerWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "Tool Tip:"
-     font "gui/fonts/MetronBlack-Italic22"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 18
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -62,9 +66,10 @@ GridSpacerWidgetClass rootFrame {
    text "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
    "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
    "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."
-   font "gui/fonts/Metron-Italic22"
+   font "gui/fonts/sdf_MetronLight24"
    "text offset" 15 0
    "exact text" 1
+   "exact text size" 16
    "size to text h" 1
    "size to text v" 1
    wrap 1

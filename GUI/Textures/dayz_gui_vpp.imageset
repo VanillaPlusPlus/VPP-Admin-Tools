@@ -10,49 +10,49 @@ ImageSetClass {
  Images {
   ImageSetDefClass vpp_icon_cloud {
    Name "vpp_icon_cloud"
-   Pos 965 34
+   Pos 1206 108
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_item_manager {
    Name "vpp_icon_item_manager"
-   Pos 474 34
+   Pos 968 105
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_obj_editor {
    Name "vpp_icon_obj_editor"
-   Pos 553 34
+   Pos 553 109
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_settings {
    Name "vpp_icon_settings"
-   Pos 799 34
+   Pos 634 109
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_players {
    Name "vpp_icon_players"
-   Pos 712 34
+   Pos 391 112
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_perms_editor {
    Name "vpp_icon_perms_editor"
-   Pos 632 34
+   Pos 882 103
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_teleport_manager {
    Name "vpp_icon_teleport_manager"
-   Pos 882 34
+   Pos 1127 107
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_bans_editor {
    Name "vpp_icon_bans_editor"
-   Pos 316 34
+   Pos 797 107
    Size 62 62
    Flags 0
   }
@@ -64,13 +64,13 @@ ImageSetClass {
   }
   ImageSetDefClass vpp_icon_esp {
    Name "vpp_icon_esp"
-   Pos 394 34
+   Pos 472 112
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_xml_editor {
    Name "vpp_icon_xml_editor"
-   Pos 1042 34
+   Pos 1299 107
    Size 62 62
    Flags 0
   }
@@ -82,13 +82,13 @@ ImageSetClass {
   }
   ImageSetDefClass vpp_icon_cmd_console {
    Name "vpp_icon_cmd_console"
-   Pos 1122 34
+   Pos 715 106
    Size 62 62
    Flags 0
   }
   ImageSetDefClass vpp_icon_webHooks {
    Name "vpp_icon_webHooks"
-   Pos 1206 33
+   Pos 1045 103
    Size 62 62
    Flags 0
   }

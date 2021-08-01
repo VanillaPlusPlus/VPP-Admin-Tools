@@ -1,0 +1,187 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 0.5 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style Colorable
+ Padding 5
+ Margin 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 11
+ {
+  TextWidgetClass Name {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "#VSTR_LBL_NAME"
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  TextWidgetClass NameInput {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "No Name"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass GUID {
+   visible 0
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "GUID:"
+   font "gui/fonts/sdf_MetronBook72"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass GUIDCopy {
+   visible 0
+   color 1 1 1 0.7843
+   position 0 0
+   size 64 17
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Copy"
+   font "gui/fonts/etelkatextpro14"
+  }
+  TextWidgetClass GUID64 {
+   visible 0
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "#VSTR_LBL_STEAMID"
+   font "gui/fonts/sdf_MetronBook72"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass SteamIDCopy {
+   visible 0
+   color 1 1 1 0.7843
+   position 0 0
+   size 64 17
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Copy"
+   font "gui/fonts/etelkatextpro14"
+  }
+  TextWidgetClass Distance {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "#VSTR_LBL_DISTANCE"
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  TextWidgetClass DistanceInput {
+   color 0 1 0.0706 1
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Normal
+   text "[600m]"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ImageWidgetClass IconDead {
+   visible 1
+   position 0 116.537
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "VPPAdminTools\\GUI\\Textures\\icon_dead.paa"
+   mode additive
+   "src alpha" 1
+   stretch 1
+   nocache 0
+  }
+  TextWidgetClass StrDead {
+   visible 1
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   font "gui/fonts/Metron-BoldItalic12"
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass CopyAll {
+   visible 1
+   color 1 1 1 0.7843
+   position 0 0
+   size 100 21
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Copy Details"
+   font "gui/fonts/etelkatextpro16"
+  }
+ }
+}

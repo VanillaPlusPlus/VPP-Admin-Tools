@@ -1,0 +1,74 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 1 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style Colorable
+ Margin 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 8
+ {
+  TextWidgetClass LblPasscode {
+   position 0 0
+   size 0 10
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Passcode:"
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  TextWidgetClass Passcode {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "XXXXXX"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass PassCodeCopy {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Copy"
+   font "gui/fonts/sdf_MetronLight24"
+  }
+  ButtonWidgetClass PassCodeReset {
+   color 0.949 0.0392 0.0392 1
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Clear"
+   font "gui/fonts/sdf_MetronLight24"
+  }
+ }
+}

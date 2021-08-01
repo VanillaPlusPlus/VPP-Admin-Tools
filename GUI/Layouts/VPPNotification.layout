@@ -28,8 +28,9 @@ GridSpacerWidgetClass MainPanel {
    hexactsize 1
    vexactsize 1
    style Bold
-   font "gui/fonts/MetronBlack16"
-   text_proportion 0.9
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 16
    "size to text h" 0
    "size to text v" 0
   }
@@ -42,8 +43,9 @@ GridSpacerWidgetClass MainPanel {
    hexactsize 0
    vexactsize 1
    style DayZBold
-   font "gui/fonts/MetronBlack22"
+   font "gui/fonts/sdf_MetronLight24"
    "exact text" 1
+   "exact text size" 24
    "size to text h" 1
    "size to text v" 1
    wrap 1

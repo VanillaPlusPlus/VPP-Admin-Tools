@@ -9,11 +9,11 @@ WindowWidgetClass rootFrame {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -22,7 +22,7 @@ WindowWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
     PanelWidgetClass PanelMap {
@@ -44,51 +44,37 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       priority 100
       }
      }
     }
     PanelWidgetClass PanelSavedPositions {
      ignorepointer 1
+     color 0 0 0 0.549
      position 0.01 0.04
      size 0.35 0.6
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style DayZDefaultPanel
      {
-      PanelWidgetClass PnlBgPos {
+      PanelWidgetClass info_title {
        ignorepointer 1
-       color 0 0 0 0.9608
-       position 0 0.06
-       size 0.973 0.934
+       color 0 0 0 1
+       position -0 0
+       size 0.9996 0.06329
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
-      }
-      ImageWidgetClass info_title {
-       ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
-       position 0 0.005
-       size 0.99 0.063
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text {
          ignorepointer 1
-         position 0 0
-         size 0.99 1.303
+         position 0.00093 0
+         size 0.98907 1.303
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -96,9 +82,9 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_SAVED_POSITIONS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -121,12 +107,13 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_REFRESH"
+         font "gui/fonts/MetronLight"
         }
        }
       }
       ScrollWidgetClass Scroller {
        ignorepointer 0
-       position 0 0.06
+       position 0 0.07
        size 0.97 0.92
        halign center_ref
        hexactpos 0
@@ -159,6 +146,7 @@ WindowWidgetClass rootFrame {
     }
     PanelWidgetClass PanelActions {
      ignorepointer 1
+     color 0 0 0 0.549
      position 0.01 0.01
      size 0.35 0.342
      valign bottom_ref
@@ -166,23 +154,11 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style DayZDefaultPanel
      {
-      PanelWidgetClass PnlActionsBg {
+      PanelWidgetClass info_title__ {
        ignorepointer 1
-       color 0 0 0 0.9608
-       position 0 0.12
-       size 0.973 0.87
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style editor_selection
-      }
-      ImageWidgetClass info_title__ {
-       ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.005
        size 0.99 0.123
        halign center_ref
@@ -190,11 +166,7 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text__ {
          ignorepointer 1
@@ -207,9 +179,9 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ACTIONS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
-         "exact text size" 22
+         "exact text size" 16
          "text halign" center
          "text valign" center
         }
@@ -242,7 +214,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_ADD_NEW_POS"
-         font "gui/fonts/Metron-Bold14"
+         font "gui/fonts/MetronLight"
         }
         ButtonWidgetClass btnEditPos {
          size 0.154 0.15
@@ -254,7 +226,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_EDIT_SEL_POS"
-         font "gui/fonts/Metron-Bold14"
+         font "gui/fonts/MetronLight"
         }
         ButtonWidgetClass BtnRemove {
          color 0.9059 0.2235 0.2235 1
@@ -268,7 +240,7 @@ WindowWidgetClass rootFrame {
          scriptclass "ConfirmationEventHandler"
          style Editor
          text "#VSTR_LBL_DEL_SEL_POS"
-         font "gui/fonts/Metron-Bold14"
+         font "gui/fonts/MetronLight"
         }
         PanelWidgetClass Spacer {
          ignorepointer 1
@@ -289,7 +261,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_TP_TO_SEL_PLAYERS"
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/MetronLight14"
         }
         ButtonWidgetClass btnTeleport {
          size 0.154 0.15
@@ -301,7 +273,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_TP_TO_POS"
-         font "gui/fonts/Metron-Bold14"
+         font "gui/fonts/MetronLight"
         }
        }
       }
@@ -337,7 +309,7 @@ WindowWidgetClass rootFrame {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
@@ -349,7 +321,7 @@ WindowWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -362,6 +334,7 @@ WindowWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_TELEPORT_MANAGER_TITLE"
+     font "gui/fonts/sdf_MetronLight24"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -380,6 +353,7 @@ WindowWidgetClass rootFrame {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 0.97 1
        halign center_ref
        valign center_ref

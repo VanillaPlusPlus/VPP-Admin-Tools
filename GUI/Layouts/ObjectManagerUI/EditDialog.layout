@@ -1,4 +1,5 @@
 PanelWidgetClass rootFrame {
+ color 1 1 1 0.549
  size 0.35 0.35
  halign center_ref
  valign center_ref
@@ -6,11 +7,11 @@ PanelWidgetClass rootFrame {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    position 0 0.01
    size 0.991 0.983
    halign center_ref
@@ -18,7 +19,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   ButtonWidgetClass panel_close {
    ignorepointer 0
@@ -32,7 +33,7 @@ PanelWidgetClass rootFrame {
    {
     ImageWidgetClass button_close {
      ignorepointer 1
-     color 0.8235 0.8235 0.8235 1
+     color 1 0 0 1
      size 1 1
      halign center_ref
      valign center_ref
@@ -57,8 +58,9 @@ PanelWidgetClass rootFrame {
    hexactsize 0
    vexactsize 0
    text "#VSTR_LBL_BUILDING_SET_ATTS"
-   font "gui/fonts/etelkatextpro22"
+   font "gui/fonts/sdf_MetronLight24"
    "exact text" 1
+   "exact text size" 16
    "size to text h" 0
    "text valign" center
   }
@@ -96,7 +98,7 @@ PanelWidgetClass rootFrame {
      text "#VSTR_LBL_BUILDING_SET_NAME"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-Italic16"
+     font "gui/fonts/MetronLight"
     }
     CheckBoxWidgetClass checkbox_active {
      size 0.102 0.288
@@ -107,7 +109,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_LBL_BLD_SET_ACTIVE"
-     font "gui/fonts/Metron-Italic16"
+     font "gui/fonts/MetronLight"
     }
     ButtonWidgetClass button_export {
      size 0.5 0.57
@@ -121,7 +123,7 @@ PanelWidgetClass rootFrame {
      scriptclass "ConfirmationEventHandler"
      style Editor
      text "#VSTR_LBL_EXPORT_RAW"
-     font "gui/fonts/metron"
+     font "gui/fonts/MetronLight"
     }
    }
   }
@@ -147,7 +149,7 @@ PanelWidgetClass rootFrame {
      scaled 1
      style Editor
      text "#VSTR_LBL_OK"
-     font "gui/fonts/metron"
+     font "gui/fonts/MetronLight"
     }
    }
   }

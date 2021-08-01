@@ -43,7 +43,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_APPLY"
-     font "gui/fonts/Metron12"
+     font "gui/fonts/sdf_MetronBook24"
     }
     ButtonWidgetClass btnCancel {
      position 0.01 0
@@ -55,7 +55,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_CANCEL"
-     font "gui/fonts/Metron12"
+     font "gui/fonts/sdf_MetronBook24"
     }
     CheckBoxWidgetClass PermaTick {
      position 0 0
@@ -68,7 +68,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Default
      text "#VSTR_BAN_PERMA"
-     font "gui/fonts/Metron12"
+     font "gui/fonts/sdf_MetronBook24"
     }
    }
   }
@@ -96,7 +96,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_YEAR"
-     font "gui/fonts/Metron-Italic28"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -112,7 +112,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_MONTH"
-     font "gui/fonts/Metron-Italic28"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -128,7 +128,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_DAY"
-     font "gui/fonts/Metron-Italic28"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -144,7 +144,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_HOUR"
-     font "gui/fonts/Metron-Italic28"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -160,7 +160,7 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_MINUTE"
-     font "gui/fonts/Metron-Italic28"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -310,7 +310,8 @@ PanelWidgetClass rootFrame {
      text "2019"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic28"
+     font "gui/fonts/sdf_MetronBook24"
+     "bold text" 1
     }
     EditBoxWidgetClass InputMonth {
      ignorepointer 0
@@ -325,7 +326,8 @@ PanelWidgetClass rootFrame {
      text "6"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic28"
+     font "gui/fonts/sdf_MetronBook24"
+     "bold text" 1
     }
     EditBoxWidgetClass InputDay {
      ignorepointer 0
@@ -340,7 +342,8 @@ PanelWidgetClass rootFrame {
      text "25"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic28"
+     font "gui/fonts/sdf_MetronBook24"
+     "bold text" 1
     }
     EditBoxWidgetClass InputHour {
      ignorepointer 0
@@ -355,7 +358,8 @@ PanelWidgetClass rootFrame {
      text "12"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic28"
+     font "gui/fonts/sdf_MetronBook24"
+     "bold text" 1
     }
     EditBoxWidgetClass InputMinute {
      ignorepointer 0
@@ -370,7 +374,8 @@ PanelWidgetClass rootFrame {
      text "30"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic28"
+     font "gui/fonts/sdf_MetronBook24"
+     "bold text" 1
     }
     ButtonWidgetClass brtnYrDec {
      position 0.007 0.052
@@ -531,8 +536,8 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Normal
      text "#VSTR_EDIT_DURATION"
-     font "gui/fonts/sdf_MetronLight42"
-     "exact text" 1
+     font "gui/fonts/sdf_MetronBook72"
+     "exact text" 0
      "exact text size" 16
      "text halign" center
      "text valign" center

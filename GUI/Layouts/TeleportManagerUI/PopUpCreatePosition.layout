@@ -1,4 +1,5 @@
 PanelWidgetClass rootFrame {
+ color 1 1 1 0.549
  position 0.15 0
  size 0.3 0.32
  halign right_ref
@@ -8,11 +9,11 @@ PanelWidgetClass rootFrame {
  hexactsize 0
  vexactsize 0
  scriptclass "PopUpNewPositionEditor"
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass PanelWidget1 {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    size 0.99 0.979
    halign center_ref
    valign center_ref
@@ -20,7 +21,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   TextWidgetClass text_title {
    ignorepointer 1
@@ -31,8 +32,9 @@ PanelWidgetClass rootFrame {
    hexactsize 0
    vexactsize 0
    text "#VSTR_LBL_NEW_TP_POS_ATTS"
-   font "gui/fonts/etelkatextpro22"
+   font "gui/fonts/sdf_MetronLight24"
    "exact text" 1
+   "exact text size" 16
    "size to text h" 0
    "text valign" center
   }
@@ -69,8 +71,9 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_LBL_NAME"
-     font "gui/fonts/etelkatextpro16"
+     font "gui/fonts/sdf_MetronLight24"
      "exact text" 1
+     "exact text size" 12
      "size to text h" 0
      "size to text v" 0
      "text valign" center
@@ -95,7 +98,7 @@ PanelWidgetClass rootFrame {
        vexactsize 0
        text "position name"
        "exact text" 1
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
       }
      }
     }
@@ -108,8 +111,9 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      text "#VSTR_LBL_POS"
-     font "gui/fonts/etelkatextpro16"
+     font "gui/fonts/sdf_MetronBook24"
      "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "text valign" center
     }
@@ -124,7 +128,7 @@ PanelWidgetClass rootFrame {
      text "7500,0,7500"
      "limit visible" 0
      "exact text" 1
-     font "gui/fonts/Metron-BoldItalic16"
+     font "gui/fonts/sdf_MetronLight24"
     }
    }
   }
@@ -148,7 +152,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_CANCEL"
-     font "gui/fonts/metron"
+     font "gui/fonts/MetronLight"
     }
     ButtonWidgetClass button_save {
      position 0 0.1
@@ -161,7 +165,7 @@ PanelWidgetClass rootFrame {
      scaled 1
      style Editor
      text "#VSTR_LBL_SAVE"
-     font "gui/fonts/metron"
+     font "gui/fonts/MetronLight"
     }
    }
   }

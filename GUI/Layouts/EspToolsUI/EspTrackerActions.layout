@@ -1,0 +1,166 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 0.5 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style Colorable
+ Padding 5
+ Margin 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 11
+ {
+  TextWidgetClass Pos {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Position:"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass PosCopy {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Copy"
+   font "gui/fonts/MetronLight16"
+  }
+  TextWidgetClass LblSelect {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Select In PlayerManager"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  CheckBoxWidgetClass ChkSelectPlayer {
+   position 0 0
+   size 50 24
+   hexactpos 0
+   vexactpos 0
+   hexactsize 1
+   vexactsize 1
+  }
+  TextWidgetClass LblTpTo {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Teleport:"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass BtnTpToMe {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "To me"
+   font "gui/fonts/MetronLight16"
+  }
+  TextWidgetClass LblTpMe {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Teleport:"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass BtnTpMeTo {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "To"
+   font "gui/fonts/MetronLight16"
+  }
+  TextWidgetClass LblTpBack {
+   position 0 0
+   size 0 13
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Bold
+   text "Teleport:"
+   font "gui/fonts/sdf_MetronLight24"
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass BtnTpReturn {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Return"
+   font "gui/fonts/MetronLight16"
+  }
+  ButtonWidgetClass BtnKill {
+   color 0.949 0.0392 0.0392 1
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Kill"
+   font "gui/fonts/MetronLight16"
+  }
+  ButtonWidgetClass BtnHeal {
+   position 0 0
+   size 64 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Editor
+   text "Heal"
+   font "gui/fonts/MetronLight16"
+  }
+ }
+}

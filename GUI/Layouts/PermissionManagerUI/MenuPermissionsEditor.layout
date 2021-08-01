@@ -9,11 +9,11 @@ FrameWidgetClass rootPermissionsEditor {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -22,7 +22,7 @@ FrameWidgetClass rootPermissionsEditor {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
     PanelWidgetClass PaneAvailablePerms {
@@ -34,11 +34,11 @@ FrameWidgetClass rootPermissionsEditor {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBgPerms {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0.045
        size 0.981 0.95
        halign center_ref
@@ -46,11 +46,11 @@ FrameWidgetClass rootPermissionsEditor {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
-      ImageWidgetClass info_title_perms {
+      PanelWidgetClass info_title_perms {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.005
        size 0.98 0.053
        halign center_ref
@@ -58,11 +58,7 @@ FrameWidgetClass rootPermissionsEditor {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_perms {
          ignorepointer 0
@@ -75,7 +71,7 @@ FrameWidgetClass rootPermissionsEditor {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_AVA_PERMS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 16
          "text halign" center
@@ -135,11 +131,11 @@ FrameWidgetClass rootPermissionsEditor {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBgGroups {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0.045
        size 0.991 0.949
        halign center_ref
@@ -147,11 +143,11 @@ FrameWidgetClass rootPermissionsEditor {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
-      ImageWidgetClass info_title_groups {
+      PanelWidgetClass info_title_groups {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.005
        size 0.99 0.043
        halign center_ref
@@ -159,11 +155,7 @@ FrameWidgetClass rootPermissionsEditor {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_players_info {
          ignorepointer 1
@@ -176,7 +168,7 @@ FrameWidgetClass rootPermissionsEditor {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_USER_GROUPS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 16
          "text halign" center
@@ -242,7 +234,7 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_CREATE_GROUP"
-       font "gui/fonts/Metron12"
+       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass btnSaveChanges {
        size 0.33 0.2
@@ -255,7 +247,7 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_UPDATE_PERMISSIONS"
-       font "gui/fonts/Metron12"
+       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass btnAddMembers {
        size 0.33 0.2
@@ -268,7 +260,7 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass ""
        style Editor
        text "#VSTR_LBL_ADD_MEMEBER"
-       font "gui/fonts/Metron12"
+       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass btnDeleteGroup {
        color 0.8902 0.0784 0.0784 1
@@ -282,7 +274,7 @@ FrameWidgetClass rootPermissionsEditor {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_DELETE_GROUP"
-       font "gui/fonts/Metron12"
+       font "gui/fonts/MetronLight"
       }
      }
     }
@@ -299,7 +291,7 @@ FrameWidgetClass rootPermissionsEditor {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
@@ -311,7 +303,7 @@ FrameWidgetClass rootPermissionsEditor {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -324,6 +316,7 @@ FrameWidgetClass rootPermissionsEditor {
      vexactsize 0
      style Bold
      text "#VSTR_PERMISSIONS_MANAGER_TITLE"
+     font "gui/fonts/sdf_MetronLight24"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -342,6 +335,7 @@ FrameWidgetClass rootPermissionsEditor {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 0.97 1
        halign center_ref
        valign center_ref

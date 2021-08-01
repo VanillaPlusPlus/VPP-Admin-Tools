@@ -1,6 +1,7 @@
 PanelWidgetClass PanelPlayerDetails {
  ignorepointer 1
  keepsafezone 1
+ color 1 1 1 0.549
  position 0 0
  size 1 1
  halign center_ref
@@ -9,11 +10,11 @@ PanelWidgetClass PanelPlayerDetails {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    size 0.995 0.994
    halign center_ref
    valign center_ref
@@ -21,7 +22,7 @@ PanelWidgetClass PanelPlayerDetails {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   GridSpacerWidgetClass player_info_content {
    ignorepointer 1
@@ -59,7 +60,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_NAME"
-       font "gui/fonts/Metron-BoldItalic14"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -75,7 +78,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "GravityWolfNotAmused"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -101,7 +106,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_STEAMID"
-       font "gui/fonts/Metron-BoldItalic14"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -117,7 +124,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "6942069420"
-       font "gui/fonts/Metron-Italic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -143,7 +152,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GUID"
-       font "gui/fonts/Metron-BoldItalic14"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -159,7 +170,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "54654654654654654657897987"
-       font "gui/fonts/Metron-Italic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -185,7 +198,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_USER_GROUP"
-       font "gui/fonts/Metron-BoldItalic14"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -201,7 +216,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "none"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -244,7 +261,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "100"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -287,7 +306,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "5000"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -330,7 +351,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "100"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -373,7 +396,9 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "AKM"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -402,7 +427,7 @@ PanelWidgetClass PanelPlayerDetails {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_COPY_INFO"
-       font "gui/fonts/Metron-BoldItalic12"
+       font "gui/fonts/MetronLight14"
       }
      }
     }

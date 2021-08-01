@@ -9,11 +9,11 @@ FrameWidgetClass rootFrame {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -22,10 +22,10 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
-    SmartPanelWidgetClass HeaderTitle {
+    PanelWidgetClass HeaderTitle {
      ignorepointer 0
      color 0 0 0 1
      position 0 0
@@ -37,7 +37,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      scaled 0
      draggable 0
-     style DayZDefaultPanelBottom
+     style DayZDefaultPanel
      {
       TextWidgetClass Title {
        ignorepointer 1
@@ -50,6 +50,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Bold
        text "#VSTR_WEB_HOOKS_MANAGER_TITLE"
+       font "gui/fonts/sdf_MetronLight24"
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -68,6 +69,7 @@ FrameWidgetClass rootFrame {
        {
         ImageWidgetClass ImageClose {
          ignorepointer 1
+         color 1 0 0 1
          size 0.97 1
          halign center_ref
          valign center_ref
@@ -92,11 +94,11 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBgWebHooks {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0.05
        size 0.968 0.945
        halign center_ref
@@ -104,11 +106,11 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
-      ImageWidgetClass log_content_title {
+      PanelWidgetClass log_content_title {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.0025
        size 0.97 0.05
        halign center_ref
@@ -116,11 +118,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_logcont {
          ignorepointer 1
@@ -132,7 +130,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_WEBHOOKS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 16
          "text halign" center
@@ -151,6 +149,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_CREATE_NEW_PRESET"
+       font "gui/fonts/MetronLight"
       }
       ScrollWidgetClass ScrollerWebhooks {
        ignorepointer 1
@@ -189,11 +188,11 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlBgAtts {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0.05
        size 0.982 0.945
        halign center_ref
@@ -201,27 +200,23 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
-      ImageWidgetClass title_atts {
+      PanelWidgetClass title_atts {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0.0025
-       size 0.97 0.05
+       size 0.98 0.05
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_text_logcont0 {
          ignorepointer 1
-         size 0.99 1
+         size 1 1
          halign center_ref
          hexactpos 0
          vexactpos 0
@@ -229,7 +224,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_WEBHOOKS_ATTS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 16
          "text halign" center
@@ -288,6 +283,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SEND_DEATH_LOGS"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -325,6 +323,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SEND_ADMIN_LOGS"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -362,6 +363,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SEND_HIT_LOGS"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -398,6 +402,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SEND_PLAYER_LEAVE_JOIN_LOGS"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -414,6 +421,56 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              checked 0
+            }
+           }
+          }
+          FrameWidgetClass webHookOption5 {
+           ignorepointer 1
+           position 0 0
+           size 20 70
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label5 {
+             ignorepointer 1
+             position 0 0
+             size 0.81546 0.39623
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "Send Server Status Logs"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass serverStatusLog {
+             ignorepointer 0
+             position 1 0
+             size 0.08 0.42
+             halign right_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             checked 0
+            }
+            XComboBoxWidgetClass ComboTimer {
+             size 0.99 0.4
+             halign center_ref
+             valign bottom_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             font "gui/fonts/sdf_MetronLight24"
+             items "Every: 60 seconds;Every: 5 minutes;Every: 10 minutes;Every: 15 minutes"
             }
            }
           }
@@ -435,6 +492,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_NAME"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -476,6 +536,9 @@ FrameWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_URL"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
              "size to text h" 1
              "size to text v" 0
              "text halign" center
@@ -515,21 +578,26 @@ FrameWidgetClass rootFrame {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_SAVE_CHANGES"
+       font "gui/fonts/MetronLight"
       }
       PanelWidgetClass panel_info {
        ignorepointer 1
-       position 0.05 0.15
-       size 0.9 0.3
+       color 0 0 0 0.549
+       position 0.05 0.07
+       size 0.9 0.1
        valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       style DayZDefaultPanel
        {
         ImageWidgetClass info_image {
          ignorepointer 1
          color 1 0 0 1
+         position 0 -2
          size 32 32
+         halign right_ref
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -542,17 +610,17 @@ FrameWidgetClass rootFrame {
         }
         MultilineTextWidgetClass info_text {
          ignorepointer 1
-         position 0.06 0
+         position 0.01 0.1
          size 0.87 0.38
-         halign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
          style DayZBold
          text "#VSTR_LBL_WEBHOOKS_TIP"
-         font "gui/fonts/Metron-Italic16"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
+         "exact text size" 12
          "size to text h" 1
          "size to text v" 1
          "text valign" center

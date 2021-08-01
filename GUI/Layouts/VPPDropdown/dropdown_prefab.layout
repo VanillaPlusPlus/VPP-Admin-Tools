@@ -21,7 +21,8 @@ PanelWidgetClass dropdown_selector {
    vexactsize 0
    font "gui/fonts/sdf_MetronLight24"
    "text offset" 10 0
-   text_proportion 0.55
+   "exact text" 1
+   "exact text size" 16
    "text valign" center
   }
   FrameWidgetClass dropdown_selector_button {

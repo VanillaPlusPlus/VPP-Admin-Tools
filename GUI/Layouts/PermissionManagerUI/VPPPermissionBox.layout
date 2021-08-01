@@ -1,6 +1,7 @@
 PanelWidgetClass PanelPerm {
  ignorepointer 1
  keepsafezone 1
+ color 1 1 1 0.549
  size 1 0.07
  halign center_ref
  valign center_ref
@@ -8,11 +9,11 @@ PanelWidgetClass PanelPerm {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    size 0.996 0.925
    halign center_ref
    valign center_ref
@@ -20,7 +21,7 @@ PanelWidgetClass PanelPerm {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   GridSpacerWidgetClass widget_content {
    visible 1
@@ -60,7 +61,7 @@ PanelWidgetClass PanelPerm {
        hexactsize 0
        vexactsize 0
        text "PermissionName"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/MetronLight16"
       }
      }
     }

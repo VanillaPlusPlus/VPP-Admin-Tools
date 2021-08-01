@@ -1,0 +1,77 @@
+GridSpacerWidgetClass SpacerGrid {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 1 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ style Colorable
+ Padding 0
+ Margin 1
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_valign center
+ Columns 2
+ Rows 8
+ {
+  ImageWidgetClass IconHealth {
+   position 4.32 85.64
+   size 32 32
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:dayz_gui image:iconHealth0"
+   mode blend
+   "src alpha" 1
+   "no wrap" 0
+   stretch 0
+   "flip v" 0
+   filter 0
+  }
+  SliderWidgetClass HealthInput {
+   ignorepointer 1
+   color 0.9373 0.9373 0.9373 1
+   position 0 0
+   size 150 15
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Default
+   vertical 0
+   flipped 0
+  }
+  ImageWidgetClass IconBlood {
+   position 0.52 116.537
+   size 32 32
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:dayz_gui image:iconBlood0"
+   mode blend
+   "src alpha" 1
+   "no wrap" 0
+   stretch 0
+   "flip u" 0
+   "flip v" 0
+  }
+  SliderWidgetClass BloodInput {
+   ignorepointer 1
+   color 0.9373 0.9373 0.9373 1
+   position 0 0
+   size 150 15
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Default
+   maximum 5000
+   current 2500
+  }
+ }
+}

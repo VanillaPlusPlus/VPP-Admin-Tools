@@ -1,6 +1,7 @@
 PanelWidgetClass PanelUserGroup {
  ignorepointer 1
  keepsafezone 1
+ color 1 1 1 0.549
  position 0 0
  size 1 0.55
  halign center_ref
@@ -8,11 +9,11 @@ PanelWidgetClass PanelUserGroup {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    position 0 0.01
    size 0.996 0.985
    halign center_ref
@@ -20,7 +21,7 @@ PanelWidgetClass PanelUserGroup {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   GridSpacerWidgetClass info_content_grid {
    ignorepointer 1
@@ -56,7 +57,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GROUP_NAME"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -72,7 +75,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "usergroupname"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -98,7 +103,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GROUP_TOTAL_MEMBERS"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -114,7 +121,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "25"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -140,7 +149,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GROUP_PERMS_LVL"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -156,7 +167,9 @@ PanelWidgetClass PanelUserGroup {
        hexactsize 0
        vexactsize 0
        text "25"
-       font "gui/fonts/Metron-BoldItalic16"
+       font "gui/fonts/sdf_MetronBook24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 0
        "text halign" center

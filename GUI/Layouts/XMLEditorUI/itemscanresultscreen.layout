@@ -9,13 +9,14 @@ FrameWidgetClass rootFrame {
  vexactpos 1
  hexactsize 0
  vexactsize 0
+ priority 110
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -24,7 +25,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
     PanelWidgetClass Hugger {
@@ -47,6 +48,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       priority 115
       }
      }
     }
@@ -84,7 +86,9 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_PLEASE_WAIT"
-       font "gui/fonts/Metron16"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -105,7 +109,7 @@ FrameWidgetClass rootFrame {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
@@ -117,7 +121,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -147,6 +151,7 @@ FrameWidgetClass rootFrame {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 0.97 1
        halign center_ref
        valign center_ref

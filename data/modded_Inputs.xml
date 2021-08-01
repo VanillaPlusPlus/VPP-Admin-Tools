@@ -3,6 +3,7 @@
     <inputs>
         <actions>
             <input name="UAFocusOnGame" loc="[Hold / DoubleTap] Focus On Game" />
+            <input name="UACollapseESPDropDwn" loc="[Hold] Expand / Collapse ESP Player Details" />
             <input name="UAOpenAdminTools" loc="Open V++ Admin Tools" />
             <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
             <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
@@ -17,6 +18,8 @@
 			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
 			<input name="UASupriseButtSex" loc="Assign Me & Press Me ( ͡° ͜ʖ ͡°)" />
 			<input name="UAToggleCmdConsole" loc="Shortcut key to open commands console" />
+			<input name="UAToggleMeshEsp" loc="Toggle Player Skeleton ESP" />
+			<input name="UAToggleInvis" loc="Toggle Invisibility" />
 			<input name="UAExecuteCommand" loc="" visible="false" />
 			<input name="UAUPCommand" loc="" visible="false" />
 			<input name="UADOWNCommand" loc="" visible="false" />
@@ -33,6 +36,7 @@
 			<input name="UACamShiftDown" loc="Camera shift down" />
 			<input name="UACamSpeedAdd" loc="Camera Speed increase" />
 			<input name="UACamSpeedDeduct" loc="Camera speed reduce" />
+			<input name="UACamFOV" loc="Hold + Camera zoom in/out to change FOV" />
 			<input name="UACamRelease" loc="" visible="false" />
         </actions>
 		<exclude name="VPPCamControls">
@@ -50,6 +54,7 @@
 		<input name="UACamSpeedAdd"/>
 		<input name="UACamSpeedDeduct"/>
 		<input name="UACamRelease"/>
+		<input name="UACamFOV"/>
 		</exclude>
     </inputs>
     <preset>
@@ -67,6 +72,10 @@
         </input>
 		<input name="UAFocusOnGame">
             <btn name="kTab">
+            </btn>
+        </input>
+		<input name="UACollapseESPDropDwn">
+            <btn name="kT">
             </btn>
         </input>
 		<input name="UAExitSpectate">
@@ -97,6 +106,10 @@
         </input>
         <input name="UAToggleAdminTools">
 			<btn name="kEnd">
+            </btn>
+		</input>
+		<input name="UAToggleMeshEsp">
+			<btn name="kY">
             </btn>
 		</input>
 		<input name="UAOpenAdminTools">
@@ -141,6 +154,10 @@
         </input>
 		<input name="UACamTurbo">
             <btn name="kLShift">
+            </btn>
+        </input>
+		<input name="UACamFOV">
+            <btn name="kLControl">
             </btn>
         </input>
 		<input name="UACamShiftLeft">

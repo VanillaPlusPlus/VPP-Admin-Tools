@@ -9,6 +9,7 @@ FrameWidgetClass rootFrame {
  {
   PanelWidgetClass mainPnl {
    ignorepointer 1
+   color 1 1 1 0.549
    size 1 1
    halign center_ref
    valign bottom_ref
@@ -16,11 +17,11 @@ FrameWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_quad
+   style DayZDefaultPanel
    {
     PanelWidgetClass PnlBg {
      ignorepointer 1
-     color 0 0 0 0.9608
+     color 0 0 0 1
      position 0 0.1
      size 0.995 0.895
      halign center_ref
@@ -28,7 +29,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_selection
+     style DayZDefaultPanel
     }
     PanelWidgetClass titleBG {
      ignorepointer 1
@@ -39,7 +40,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad_dark
+     style DayZDefaultPanel
     }
     TextWidgetClass text_title {
      ignorepointer 1
@@ -51,7 +52,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_LBL_UPDATE_GROUP_ATTS"
-     font "gui/fonts/etelkatextpro22"
+     font "gui/fonts/MetronLight22"
      "exact text" 1
      "size to text h" 0
      "text valign" center
@@ -89,7 +90,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_CANCEL"
-       font "gui/fonts/metron"
+       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass button_save {
        position 0 0.1
@@ -102,7 +103,7 @@ FrameWidgetClass rootFrame {
        scaled 1
        style Editor
        text "#VSTR_LBL_SAVE"
-       font "gui/fonts/metron"
+       font "gui/fonts/MetronLight"
       }
      }
     }
@@ -143,6 +144,9 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GROUP_NAME_FORCE"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
        "size to text h" 1
        "size to text v" 1
        wrap 1

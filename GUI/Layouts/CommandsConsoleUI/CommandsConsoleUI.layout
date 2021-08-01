@@ -10,11 +10,11 @@ FrameWidgetClass rootFrame {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 0.76
    hexactpos 1
@@ -27,6 +27,7 @@ FrameWidgetClass rootFrame {
    "no focus" 0
    {
     PanelWidgetClass content {
+     visible 1
      ignorepointer 1
      position 0 0.06
      size 0.98 0.81
@@ -35,7 +36,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Outline
+     style blank
      {
       ScrollWidgetClass ScrollerFeed {
        ignorepointer 0
@@ -104,7 +105,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style DayZBold
-       font "gui/fonts/Metron22"
+       font "gui/fonts/sdf_MetronLight24"
        "exact text" 0
        "size to text h" 0
        "size to text v" 0
@@ -127,7 +128,7 @@ FrameWidgetClass rootFrame {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
@@ -150,8 +151,9 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Bold
+     style Normal
      text "#VSTR_LBL_CMD_TITLE"
+     font "gui/fonts/sdf_MetronLight24"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -171,6 +173,7 @@ FrameWidgetClass rootFrame {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 1 1
        halign center_ref
        valign center_ref
@@ -189,8 +192,8 @@ FrameWidgetClass rootFrame {
   ScrollWidgetClass ScrollerSuggest {
    visible 1
    ignorepointer 0
-   color 0.1922 0.1922 0.1922 0.9216
-   position -0.01 0.035
+   color 0 0 0 0.549
+   position 0 0.035
    size 0.98 0.2005
    halign center_ref
    valign bottom_ref

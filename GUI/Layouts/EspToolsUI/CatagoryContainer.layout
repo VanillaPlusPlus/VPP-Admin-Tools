@@ -1,0 +1,98 @@
+GridSpacerWidgetClass ItemCatagory {
+ ignorepointer 1
+ size 1 0.1
+ halign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ Padding 0
+ Margin 0
+ "Size To Content H" 1
+ "Size To Content V" 1
+ content_halign center
+ content_valign center
+ Columns 1
+ Rows 2
+ {
+  PanelWidgetClass PanelHeader {
+   ignorepointer 1
+   color 0 0 0 0.8627
+   size 0.993 0.65
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black_2
+   {
+    RichTextWidgetClass CatagoryTitle {
+     visible 1
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 0.132
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "CATAGORY TITLE"
+     font "gui/fonts/sdf_MetronBook72"
+     "text spacing" 0 5
+     "outline size" 2
+     "outline color" 1 1 1 0.1961
+     "shadow size" 10
+     "italic text" 0
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 17
+     "size to text h" 0
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+     wrap 1
+    }
+    ImageWidgetClass IconCollapse {
+     ignorepointer 0
+     position 0.01 0
+     size 0.03 1.005
+     halign right_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     image0 "set:dayz_gui image:icon_expand"
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+     "flip u" 0
+     "flip v" 0
+     "Transition width" 0.155
+    }
+   }
+  }
+  GridSpacerWidgetClass GridItems {
+   visible 0
+   ignorepointer 0
+   position 0 0.15
+   size 0.95 0.95
+   halign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   Padding 20
+   Margin 12
+   "Size To Content H" 1
+   "Size To Content V" 1
+   content_halign center
+   content_valign center
+   Columns 6
+   Rows 100
+  }
+ }
+}

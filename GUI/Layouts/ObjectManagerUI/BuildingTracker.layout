@@ -1,103 +1,114 @@
 GridSpacerWidgetClass SpacerGrid {
  visible 1
  ignorepointer 1
- color 0 0 0 0.4314
+ color 0 0 0 0.5686
  position 0 0
- size 0.5 0
+ size 0.15 0.07
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
  style DayZDefaultPanel
  Padding 1
- "Size To Content H" 1
  "Size To Content V" 1
  content_valign center
  Columns 2
- Rows 7
+ Rows 6
  {
   TextWidgetClass Type {
-   position 0 0
-   size 0 10
+   size 0 0.25
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Bold
+   hexactsize 0
+   vexactsize 0
+   style Normal
    text "#VSTR_LBL_TYPE"
-   font "gui/fonts/Metron-BoldItalic12"
-   "size to text h" 1
-   "size to text v" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 12
+   "size to text h" 0
+   "size to text v" 0
    "text halign" center
    "text valign" center
   }
   TextWidgetClass TypeInput {
    position 0 0
-   size 0 10
+   size 0 0.25
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Bold
+   hexactsize 0
+   vexactsize 0
+   style Normal
    text "Test Object"
-   "size to text h" 1
-   "size to text v" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 0
+   "size to text v" 0
    "text valign" center
   }
   TextWidgetClass Distance {
    position 0 0
-   size 0 10
+   size 0 0.25
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
+   hexactsize 0
+   vexactsize 0
    style Bold
    text "#VSTR_LBL_DISTANCE"
-   font "gui/fonts/Metron-BoldItalic12"
-   "size to text h" 1
-   "size to text v" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 0
+   "size to text v" 0
    "text valign" center
   }
   TextWidgetClass DistanceInput {
    color 0 1 0.0706 1
    position 0 0
-   size 0 10
+   size 0 0.25
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
+   hexactsize 0
+   vexactsize 0
    style Bold
    text "[600m]"
-   "size to text h" 1
-   "size to text v" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 0
+   "size to text v" 0
    "text valign" center
   }
   GridSpacerWidgetClass GridYPR {
    inheritalpha 1
    ignorepointer 0
-   size 0 14
+   position 0 0
+   size 0.0026 0.65
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
+   hexactsize 0
+   vexactsize 0
    "Size To Content H" 1
    "Size To Content V" 1
    content_halign center
    content_valign center
    Columns 2
-   Rows 8
+   Rows 6
    {
     TextWidgetClass TxtYaw {
      inheritalpha 0
      ignorepointer 1
      position 2 3
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "#VSTR_LBL_YAW"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -105,27 +116,29 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditYaw {
      position 3 3
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
     TextWidgetClass TxtPitch {
      ignorepointer 1
      position 9 4
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "#VSTR_LBL_PITCH"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -133,27 +146,29 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditPitch {
      position 8 4
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
     TextWidgetClass TxtRoll {
      ignorepointer 1
      position 25 5
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "#VSTR_LBL_ROLL"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -161,45 +176,48 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditRoll {
      position 23 5
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
    }
   }
   GridSpacerWidgetClass GridXZY {
    inheritalpha 1
    ignorepointer 0
-   size 0 14
+   position 0 0
+   size 0 0.65
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
+   hexactsize 0
+   vexactsize 0
    "Size To Content H" 1
    "Size To Content V" 1
    content_halign center
    content_valign center
    Columns 2
-   Rows 8
+   Rows 6
    {
     TextWidgetClass TxtX {
      inheritalpha 0
      ignorepointer 1
      position 2 3
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "X:"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -207,27 +225,29 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditX {
      position 3 3
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
     TextWidgetClass TxtZ {
      ignorepointer 1
      position 9 4
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "Z:"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -235,27 +255,29 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditZ {
      position 8 4
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
     TextWidgetClass TxtY {
      ignorepointer 1
      position 25 5
-     size 40 16
+     size 0.32 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      text "Y:"
-     font "gui/fonts/Metron-BoldItalic12"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
      "size to text h" 0
      "size to text v" 0
      "text halign" center
@@ -263,16 +285,16 @@ GridSpacerWidgetClass SpacerGrid {
     }
     EditBoxWidgetClass EditY {
      position 23 5
-     size 40 16
+     size 0.64 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
      scriptclass "EditBoxEventHandler"
      style DefaultBorder
      text "0"
      "exact text" 1
-     font "gui/fonts/Metron12"
+     font "gui/fonts/MetronLight"
     }
    }
   }

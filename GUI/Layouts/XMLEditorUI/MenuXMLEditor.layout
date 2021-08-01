@@ -13,7 +13,7 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 1
    hexactpos 1
@@ -22,11 +22,12 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
     PanelWidgetClass content {
      ignorepointer 1
+     color 0 0 0 0
      position 0 0
      size 0.95 0.9
      halign center_ref
@@ -35,11 +36,11 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style DayZDefaultPanel
      {
       PanelWidgetClass PanelBG {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        position 0 0
        size 0.995 0.99
        halign center_ref
@@ -48,7 +49,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
       EditBoxWidgetClass SearchBoxXML {
        disabled 0
@@ -64,7 +65,7 @@ FrameWidgetClass rootFrame {
        text "#VSTR_SEARCH"
        "Use default text" 1
        "exact text" 1
-       font "gui/fonts/Metron16"
+       font "gui/fonts/MetronLight16"
       }
       PanelWidgetClass listHugger {
        ignorepointer 1
@@ -75,7 +76,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style blank
        {
         TextListboxWidgetClass ItemListBoxXML {
          color 0.6706 0.6706 0.6706 1
@@ -87,8 +88,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         lines 0
-         font "gui/fonts/Metron14"
+         font "gui/fonts/MetronLight16"
         }
        }
       }
@@ -104,6 +104,7 @@ FrameWidgetClass rootFrame {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_GET_ITEM_STATS"
+       font "gui/fonts/MetronLight16"
        switch normal
       }
       ButtonWidgetClass BtnLoadSelected {
@@ -117,6 +118,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_LOAD_SELECTED"
+       font "gui/fonts/MetronLight16"
        switch normal
       }
       ButtonWidgetClass BtnXMLEditorApply {
@@ -131,6 +133,7 @@ FrameWidgetClass rootFrame {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_APPLY_CHANGES"
+       font "gui/fonts/MetronLight16"
        switch normal
       }
       PanelWidgetClass HuggerEditboxes {
@@ -141,7 +144,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style blank
        {
         GridSpacerWidgetClass GridItems {
          ignorepointer 1
@@ -167,7 +170,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "Nominal:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputNominal {
            color 0.6706 0.6706 0.6706 1
@@ -184,7 +189,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtLifetime {
@@ -197,7 +202,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "LifeTime:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputLifetime {
            color 0.6706 0.6706 0.6706 1
@@ -214,7 +221,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtRestock {
@@ -227,7 +234,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "Restock:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputRestock {
            color 0.6706 0.6706 0.6706 1
@@ -244,7 +253,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtMin {
@@ -257,7 +266,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "Minimum:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputMin {
            color 0.6706 0.6706 0.6706 1
@@ -274,7 +285,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtQuantmin {
@@ -288,7 +299,9 @@ FrameWidgetClass rootFrame {
            draggable 0
            style Bold
            text "Quantmin:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputQuantmin {
            color 0.6706 0.6706 0.6706 1
@@ -305,7 +318,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtQuantmax {
@@ -318,7 +331,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "Quantmax:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputQuantmax {
            color 0.6706 0.6706 0.6706 1
@@ -335,7 +350,7 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
           TextWidgetClass TxtCost {
@@ -348,7 +363,9 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "Cost:"
-           font "gui/fonts/Metron22"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
           }
           EditBoxWidgetClass InputCost {
            disabled 0
@@ -366,13 +383,14 @@ FrameWidgetClass rootFrame {
            "limit visible" 0
            "Use default text" 0
            "exact text" 1
-           font "gui/fonts/MetronBlack16"
+           font "gui/fonts/sdf_MetronLight24"
            "disabled text color" 1 0 0 1
           }
          }
         }
         PanelWidgetClass Previewhugger {
          ignorepointer 1
+         color 0 0 0 0.549
          position 0 0.01
          size 0.945 0.436
          halign center_ref
@@ -381,7 +399,7 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style editor_quad
+         style DayZDefaultPanel
          {
           ItemPreviewWidgetClass ItemPreviewXML {
            visible 0
@@ -402,25 +420,21 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_ENABLE_PREVIEW"
+           font "gui/fonts/MetronLight16"
           }
          }
         }
        }
       }
-      ImageWidgetClass Panel_Title {
+      PanelWidgetClass Panel_Title {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
-       position 0.01 0.003
-       size 0.48 0.048
+       color 0 0 0 1
+       size 0.505 0.048
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_presets_text {
          ignorepointer 1
@@ -433,7 +447,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_DETALIS"
-         font "gui/fonts/sdf_MetronLight42"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 16
          "text halign" center
@@ -464,7 +478,7 @@ FrameWidgetClass rootFrame {
   }
   PanelWidgetClass Header {
    ignorepointer 0
-   size 0.993 0.028
+   size 0.993 0.04
    halign center_ref
    hexactpos 0
    vexactpos 0
@@ -473,11 +487,11 @@ FrameWidgetClass rootFrame {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
-   size 1 0.03
+   size 1 0.04
    halign center_ref
    hexactpos 1
    vexactpos 1
@@ -485,7 +499,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -498,6 +512,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_XML_EDITOR_TITLE"
+     font "gui/fonts/sdf_MetronLight24"
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -517,6 +532,7 @@ FrameWidgetClass rootFrame {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 1 1
        halign center_ref
        valign center_ref

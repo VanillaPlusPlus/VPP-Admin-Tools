@@ -1,19 +1,20 @@
 PanelWidgetClass PanelFilter {
  ignorepointer 1
  keepsafezone 1
+ color 1 1 1 0.549
  position 0 0
- size 1 0.07
+ size 1 0.17
  halign center_ref
  valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style editor_quad
+ style DayZDefaultPanel
  {
   PanelWidgetClass FilterBg {
    ignorepointer 1
-   color 0 0 0 0.9608
+   color 0 0 0 1
    size 0.996 0.925
    halign center_ref
    valign center_ref
@@ -21,7 +22,7 @@ PanelWidgetClass PanelFilter {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style DayZDefaultPanel
   }
   GridSpacerWidgetClass filter_content {
    ignorepointer 0
@@ -53,17 +54,18 @@ PanelWidgetClass PanelFilter {
      {
       CheckBoxWidgetClass CheckBox {
        ignorepointer 0
-       size 0.44 0.9
+       position 0 0
+       size 0.56 0.9
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 0
        text "FilterName"
-       font "gui/fonts/Metron14"
+       font "gui/fonts/sdf_MetronLight24"
       }
       XComboBoxWidgetClass ColorCombo {
-       size 0.5 0.5
+       size 0.35 0.5
        halign right_ref
        valign center_ref
        hexactpos 1
@@ -71,12 +73,12 @@ PanelWidgetClass PanelFilter {
        hexactsize 0
        vexactsize 0
        style debugUI
-       font "gui/fonts/Metron-Bold14"
-       items "White;Green;Blue;Yellow;Orange;Red;Purple"
+       font "gui/fonts/sdf_MetronLight24"
+       items "White;Green;Blue;Yellow;Orange;Red;Purple;Black"
       }
       ButtonWidgetClass btnDeleteFilter {
        color 1 0 0 1
-       position 0.44 0
+       position 0.56 0
        size 0.06 0.7
        valign center_ref
        hexactpos 0

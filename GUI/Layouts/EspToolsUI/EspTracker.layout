@@ -1,4 +1,4 @@
-GridSpacerWidgetClass rootFrame {
+GridSpacerWidgetClass rootFrameEsp {
  visible 1
  ignorepointer 0
  position 0 0
@@ -76,10 +76,11 @@ GridSpacerWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        scaled 1
-       style Bold
+       style Normal
        text "M4A1"
-       font "gui/fonts/metronbook-bold14"
+       font "gui/fonts/sdf_MetronBook24"
        "exact text" 1
+       "exact text size" 11
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -98,8 +99,9 @@ GridSpacerWidgetClass rootFrame {
        vexactsize 0
        style Bold
        text "[1250m]"
-       font "gui/fonts/metronbook-bold14"
+       font "gui/fonts/sdf_MetronBook24"
        "exact text" 1
+       "exact text size" 11
        "size to text h" 1
        "size to text v" 1
        "text halign" center

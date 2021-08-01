@@ -50,6 +50,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Bold
        text "#VSTR_BUILDING_MANAGER_TITLE"
+       font "gui/fonts/sdf_MetronLight24"
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -68,6 +69,7 @@ FrameWidgetClass rootFrame {
        {
         ImageWidgetClass ImageClose {
          ignorepointer 1
+         color 1 0 0 1
          position 0 0
          size 1 1
          halign center_ref
@@ -129,9 +131,9 @@ FrameWidgetClass rootFrame {
       }
      }
     }
-    ImageWidgetClass Panel_title_sets {
+    PanelWidgetClass Panel_title_sets {
      ignorepointer 1
-     color 0.6706 0.6706 0.6706 0.8784
+     color 0 0 0 1
      position 0 0.001
      size 1 0.063
      halign center_ref
@@ -139,11 +141,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     image0 "set:dayz_gui image:container_header"
-     mode blend
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     style DayZDefaultPanel
      {
       TextWidgetClass title_saved_sets {
        ignorepointer 1
@@ -156,7 +154,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Normal
        text "#VSTR_LBL_BUILDING_SETS"
-       font "gui/fonts/sdf_MetronLight42"
+       font "gui/fonts/sdf_MetronLight24"
        "exact text" 1
        "exact text size" 19
        "text halign" center
@@ -201,7 +199,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_RELOAD"
-       font "gui/fonts/Metron-Bold14"
+       font "gui/fonts/MetronLight"
       }
      }
     }
@@ -262,9 +260,9 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    style rover_sim_black
    {
-    ImageWidgetClass title_placeNew {
+    PanelWidgetClass title_placeNew {
      ignorepointer 1
-     color 0.6706 0.6706 0.6706 0.8784
+     color 0 0 0 1
      position 0 0.005
      size 1 0.053
      halign center_ref
@@ -272,11 +270,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     image0 "set:dayz_gui image:container_header"
-     mode blend
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     style DayZDefaultPanel
      {
       TextWidgetClass title_txt_itm_new {
        ignorepointer 1
@@ -289,7 +283,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Normal
        text "#VSTR_LBL_NEW_OBJ_ATT"
-       font "gui/fonts/sdf_MetronLight42"
+       font "gui/fonts/sdf_MetronLight24"
        "exact text" 1
        "exact text size" 19
        "text halign" center
@@ -351,9 +345,9 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scaled 0
       }
-      ImageWidgetClass title_itemPreview {
+      PanelWidgetClass title_itemPreview {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 0.8784
        position 0 0.005
        size 0.97 0.073
        halign center_ref
@@ -361,11 +355,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_txt_itm_prev {
          ignorepointer 1
@@ -394,6 +384,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "#VSTR_ENABLE_PREVIEW"
+       font "gui/fonts/MetronLight"
       }
      }
     }
@@ -407,23 +398,19 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
-      ImageWidgetClass title_itemlist {
+      PanelWidgetClass title_itemlist {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 0.8824
        position 0 0.005
-       size 0.96 0.043
+       size 0.98001 0.043
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_txt_itm_list {
          ignorepointer 1
@@ -455,9 +442,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style Editor
-       lines 0
-       "highlight row" 1
-       font "gui/fonts/Metron-Bold22"
+       font "gui/fonts/MetronLight16"
       }
      }
     }
@@ -473,7 +458,7 @@ FrameWidgetClass rootFrame {
      text "#VSTR_LBL_SEARCH_KEYWORD"
      "Use default text" 1
      "exact text" 1
-     font "gui/fonts/Metron14"
+     font "gui/fonts/MetronLight"
     }
     ButtonWidgetClass btnHelp {
      position 0.03 0.07
@@ -485,6 +470,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_LBL_HELP"
+     font "gui/fonts/MetronLight"
     }
     PanelWidgetClass PanelCamera {
      visible 1
@@ -496,12 +482,12 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
-      ImageWidgetClass cam_title {
+      PanelWidgetClass cam_title {
        inheritalpha 0
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        position 0 0
        size 1 0.099
        halign center_ref
@@ -509,11 +495,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass title_txt_camtype {
          ignorepointer 1
@@ -526,7 +508,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_OPTIONS"
-         font "gui/fonts/MetronLight14"
+         font "gui/fonts/sdf_MetronLight24"
          "exact text" 0
          "exact text size" 22
          "text halign" center
@@ -544,7 +526,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_FREE_CAM"
-       font "gui/fonts/etelkatextpro"
+       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass chkTopDowncam {
        inheritalpha 1
@@ -556,7 +538,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_TOP_DOWN_VIEW"
-       font "gui/fonts/etelkatextpro"
+       font "gui/fonts/MetronLight"
       }
       GridSpacerWidgetClass GridYPRCamoption {
        inheritalpha 1
@@ -586,7 +568,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_YAW"
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/MetronLight"
          "size to text h" 0
          "size to text v" 0
          "text halign" center
@@ -604,7 +586,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron12"
+         font "gui/fonts/MetronLight"
         }
         TextWidgetClass TxtPitch {
          ignorepointer 1
@@ -615,7 +597,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_PITCH"
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/MetronLight"
          "size to text h" 0
          "size to text v" 0
          "text halign" center
@@ -632,7 +614,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron12"
+         font "gui/fonts/MetronLight"
         }
         TextWidgetClass TxtRoll {
          ignorepointer 1
@@ -643,7 +625,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_ROLL"
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/MetronLight"
          "size to text h" 0
          "size to text v" 0
          "text halign" center
@@ -660,7 +642,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron12"
+         font "gui/fonts/MetronLight"
         }
         TextWidgetClass TxtFOV {
          ignorepointer 1
@@ -671,7 +653,7 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_FOV"
-         font "gui/fonts/Metron-Bold16"
+         font "gui/fonts/MetronLight"
          "size to text h" 0
          "size to text v" 0
          "text halign" center
@@ -688,7 +670,7 @@ FrameWidgetClass rootFrame {
          style Editor
          text "0"
          "exact text" 1
-         font "gui/fonts/Metron12"
+         font "gui/fonts/MetronLight"
         }
        }
       }
@@ -701,8 +683,20 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_SNAP_ON_MOVE"
+       font "gui/fonts/MetronLight"
       }
      }
+    }
+    CheckBoxWidgetClass ChkFilterByScope {
+     position 0.01031 0.957
+     size 0.478 0.04
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Default
+     text "Filter items by scope value"
+     font "gui/fonts/MetronLight"
     }
    }
   }
@@ -717,9 +711,9 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    style rover_sim_black
    {
-    ImageWidgetClass title_current_set {
+    PanelWidgetClass title_current_set {
      ignorepointer 1
-     color 0.6706 0.6706 0.6706 0.8784
+     color 0 0 0 1
      position 0 -0.002
      size 1 0.073
      halign center_ref
@@ -727,11 +721,7 @@ FrameWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     image0 "set:dayz_gui image:container_header"
-     mode blend
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     style DayZDefaultPanel
      {
       TextWidgetClass title_txt_curr_set {
        ignorepointer 1
@@ -744,7 +734,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Normal
        text "Selected Set: (Name)"
-       font "gui/fonts/sdf_MetronLight42"
+       font "gui/fonts/sdf_MetronLight24"
        "exact text" 1
        "exact text size" 16
        "text halign" center
@@ -786,6 +776,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       font "gui/fonts/sdf_MetronLight24"
       }
      }
     }

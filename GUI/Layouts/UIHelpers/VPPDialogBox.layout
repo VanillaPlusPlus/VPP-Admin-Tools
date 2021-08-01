@@ -6,10 +6,12 @@ FrameWidgetClass diagFrame {
  vexactpos 0
  hexactsize 0
  vexactsize 0
+ priority 102
  scriptclass "VPPDialogBox"
  {
   PanelWidgetClass BorderOutline {
    ignorepointer 1
+   color 1 1 1 0.549
    position 0 0
    size 0.5 0.3
    halign center_ref
@@ -18,13 +20,14 @@ FrameWidgetClass diagFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_quad
+   priority 1023
+   style DayZDefaultPanel
    {
     PanelWidgetClass PanelMain {
      visible 1
      inheritalpha 0
      ignorepointer 1
-     color 0.9333 0.0863 0.0863 1
+     color 0 0 0 1
      size 0.99 0.97
      halign center_ref
      valign center_ref
@@ -33,22 +36,18 @@ FrameWidgetClass diagFrame {
      hexactsize 0
      vexactsize 0
      scriptclass ""
-     style rover_sim_blackbox
+     style DayZDefaultPanel
      {
-      ImageWidgetClass TitleImage {
+      PanelWidgetClass TitleImage {
        ignorepointer 1
-       color 0.6706 0.6706 0.6706 0.8784
+       color 0 0 0 1
        size 0.993 0.143
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       image0 "set:dayz_gui image:container_header"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style DayZDefaultPanel
        {
         TextWidgetClass TitleText {
          ignorepointer 1
@@ -61,11 +60,12 @@ FrameWidgetClass diagFrame {
          vexactsize 0
          style Normal
          text "TITLE"
-         font "gui/fonts/MetronBook-Italic28"
+         font "gui/fonts/sdf_MetronLight24"
          "italic text" 0
          "bold text" 1
          "text sharpness" 3
          "exact text" 1
+         "exact text size" 22
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -84,8 +84,9 @@ FrameWidgetClass diagFrame {
        vexactsize 0
        scriptclass ""
        text "This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,"
-       font "gui/fonts/Metron"
+       font "gui/fonts/sdf_MetronLight24"
        "exact text" 0
+       "exact text size" 22
        "size to text h" 1
        "size to text v" 1
        "text halign" center
@@ -94,6 +95,7 @@ FrameWidgetClass diagFrame {
        "strip newlines" 1
       }
       GridSpacerWidgetClass ButtonsGrid {
+       visible 1
        ignorepointer 1
        keepsafezone 0
        position 0 0.02
@@ -124,7 +126,7 @@ FrameWidgetClass diagFrame {
          scriptclass ""
          style Editor
          text "YES"
-         font "gui/fonts/Metron16"
+         font "gui/fonts/MetronLight"
         }
         ButtonWidgetClass ButtonNO {
          visible 0
@@ -137,7 +139,7 @@ FrameWidgetClass diagFrame {
          vexactsize 0
          style Editor
          text "NO"
-         font "gui/fonts/Metron16"
+         font "gui/fonts/MetronLight"
         }
         ButtonWidgetClass ButtonCANCEL {
          visible 0
@@ -152,7 +154,7 @@ FrameWidgetClass diagFrame {
          vexactsize 0
          style Editor
          text "CANCEL"
-         font "gui/fonts/Metron16"
+         font "gui/fonts/MetronLight"
         }
         ButtonWidgetClass ButtonOK {
          visible 0
@@ -166,7 +168,7 @@ FrameWidgetClass diagFrame {
          vexactsize 0
          style Editor
          text "OK"
-         font "gui/fonts/Metron16"
+         font "gui/fonts/MetronLight"
         }
        }
       }
@@ -198,7 +200,7 @@ FrameWidgetClass diagFrame {
        "limit visible" 0
        "Use default text" 1
        "exact text" 1
-       font "gui/fonts/Metron-Italic22"
+       font "gui/fonts/sdf_MetronLight24"
       }
      }
     }

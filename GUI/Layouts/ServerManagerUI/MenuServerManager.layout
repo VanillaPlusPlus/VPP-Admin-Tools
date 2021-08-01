@@ -9,11 +9,11 @@ FrameWidgetClass rootMenuServerManager {
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.9216
+   color 0 0 0 0.549
    position 0 0
    size 1 0.9725
    halign center_ref
@@ -25,7 +25,7 @@ FrameWidgetClass rootMenuServerManager {
    scaled 1
    priority 10
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    "no focus" 0
    {
     PanelWidgetClass PageScroller {
@@ -38,11 +38,11 @@ FrameWidgetClass rootMenuServerManager {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style editor_quad
+     style blank
      {
       PanelWidgetClass PnlMainBg {
        ignorepointer 1
-       color 0 0 0 0.9608
+       color 0 0 0 0.549
        size 0.993 0.986
        halign center_ref
        valign center_ref
@@ -50,9 +50,10 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_selection
+       style DayZDefaultPanel
       }
       PanelWidgetClass ActivityPanel {
+       color 0 0 0 0.549
        position 0.0143 0.0191
        size 0.6395 0.8249
        halign right_ref
@@ -60,7 +61,7 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style DayZDefaultPanel
        {
         MapWidgetClass ActivityMap {
          visible 1
@@ -86,6 +87,7 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          style Bold
          text "#VSTR_LBL_ACTIVVITY_MAP"
+         font "gui/fonts/sdf_MetronLight24"
          "size to text h" 1
          "size to text v" 1
          "text halign" center
@@ -102,6 +104,7 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_REFRESH_ACTIVITY"
+         font "gui/fonts/MetronLight"
          {
           CheckBoxWidgetClass ChkBoxUpdateActivity {
            position 0.1 0
@@ -113,7 +116,7 @@ FrameWidgetClass rootMenuServerManager {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_AUTO_UPDATE_ACTIVITY"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
          }
         }
@@ -121,14 +124,14 @@ FrameWidgetClass rootMenuServerManager {
       }
       PanelWidgetClass ScriptLoader {
        ignorepointer 1
-       color 1 1 1 0.7843
+       color 0 0 0 0.549
        position 0.0143 0.0191
        size 0.328 0.46
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style DayZDefaultPanel
        {
         WrapSpacerWidgetClass ScriptLoaderButtons {
          ignorepointer 1
@@ -156,7 +159,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_RELEASE"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
           ButtonWidgetClass BtnViewScript {
            disabled 1
@@ -169,7 +172,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_VIEW"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
           ButtonWidgetClass BtnWriteScript {
            size 0.3 0.35
@@ -181,7 +184,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_WRITE"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
           ButtonWidgetClass BtnLoadScript {
            disabled 1
@@ -194,7 +197,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_LOAD"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
           ButtonWidgetClass BtnRefreshScriptList {
            disabled 0
@@ -207,7 +210,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_REFRESH_LIST"
-           font "gui/fonts/Metron12"
+           font "gui/fonts/MetronLight"
           }
          }
         }
@@ -224,7 +227,8 @@ FrameWidgetClass rootMenuServerManager {
           WrapSpacerWidgetClass ScriptsDropDown {
            visible 1
            clipchildren 0
-           color 0.0157 0.0157 0.0157 0.8824
+           color 0 0 0 0.549
+           position 0 0.035
            size 1 0.1
            halign center_ref
            hexactpos 0
@@ -236,9 +240,9 @@ FrameWidgetClass rootMenuServerManager {
           }
          }
         }
-        ImageWidgetClass admin_login_header0 {
+        PanelWidgetClass admin_login_header0 {
          ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
+         color 0 0 0 0.8784
          position 0 4
          size 0.9799 22
          halign center_ref
@@ -246,11 +250,7 @@ FrameWidgetClass rootMenuServerManager {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         image0 "set:dayz_gui image:container_header"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         style DayZDefaultPanel
          {
           TextWidgetClass admin_login_text0 {
            ignorepointer 1
@@ -263,7 +263,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 1
            style Normal
            text "#VSTR_LBL_SCRIPT_LOADER"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
            "exact text size" 16
            "text halign" center
@@ -275,7 +275,7 @@ FrameWidgetClass rootMenuServerManager {
       }
       PanelWidgetClass AdminloginPanel {
        ignorepointer 1
-       color 1 1 1 0.7843
+       color 0 0 0 0.549
        position 0.0145 0.09
        size 0.328 0.215
        valign center_ref
@@ -283,23 +283,19 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style DayZDefaultPanel
        {
-        ImageWidgetClass admin_login_header {
+        PanelWidgetClass admin_login_header {
          ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.8784
-         position 0 4
-         size 0.9799 27
+         color 0 0 0 0.8824
+         position 0 0
+         size 1 21
          halign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         image0 "set:dayz_gui image:container_header"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         style DayZDefaultPanel
          {
           TextWidgetClass admin_login_text {
            ignorepointer 1
@@ -312,7 +308,7 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 1
            style Normal
            text "#VSTR_LBL_ADMIN_LOGIN"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
            "exact text size" 20
            "text halign" center
@@ -341,8 +337,11 @@ FrameWidgetClass rootMenuServerManager {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           style Bold
+           style Normal
            text "#VSTR_LBL_PASSWORD"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
            "size to text h" 1
            "size to text v" 1
            "text halign" right
@@ -367,8 +366,8 @@ FrameWidgetClass rootMenuServerManager {
          }
         }
         ButtonWidgetClass BtnAdminLogin {
-         position 0 0.07
-         size 0.9 0.12
+         position -0.015 0.07
+         size 0.9 0.15
          halign center_ref
          valign bottom_ref
          hexactpos 0
@@ -377,11 +376,13 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          style Editor
          text "Login"
+         font "gui/fonts/MetronLight"
         }
        }
       }
       PanelWidgetClass BorderMonitor {
        ignorepointer 1
+       color 0 0 0 0.549
        position 0.015 0.01
        size 0.327 0.283
        valign bottom_ref
@@ -389,7 +390,7 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style editor_quad
+       style DayZDefaultPanel
        {
         GridSpacerWidgetClass server_stats_root {
          visible 1
@@ -444,6 +445,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_SERVER_FPS"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -484,6 +488,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_ONLINE_PLAYERS"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -524,6 +531,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_SERVER_UPTIME"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -564,6 +574,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_MEM_USED"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -604,6 +617,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_NETWORK_TRAFFIC"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -644,6 +660,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_NETWORK_TRAFFIC2"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -684,6 +703,9 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_ACTIVE_AI"
+               font "gui/fonts/sdf_MetronLight24"
+               "exact text" 1
+               "exact text size" 11
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -713,8 +735,8 @@ FrameWidgetClass rootMenuServerManager {
         ImageWidgetClass server_stats_header {
          ignorepointer 1
          color 0.6706 0.6706 0.6706 0.7843
-         position 0 3
-         size 0.9662 22
+         position 0 0
+         size 1.0062 22
          halign center_ref
          hexactpos 1
          vexactpos 1
@@ -737,9 +759,9 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 1
            style Normal
            text "#VSTR_LBL_SERVER_MONITOR"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
-           "exact text size" 20
+           "exact text size" 16
            "text halign" center
            "text valign" center
            {
@@ -787,6 +809,7 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_RESTART_SERVER"
+       font "gui/fonts/MetronLight14"
       }
       ButtonWidgetClass BtnLockServer {
        size 0.25 0.35
@@ -799,6 +822,7 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_LOCKSERVER"
+       font "gui/fonts/MetronLight14"
       }
       ButtonWidgetClass BtnKickAll {
        size 0.25 0.35
@@ -811,6 +835,7 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_KILL_ALL_PLAYERS"
+       font "gui/fonts/MetronLight14"
       }
       ButtonWidgetClass BtnViewAdmLog {
        visible 0
@@ -841,7 +866,7 @@ FrameWidgetClass rootMenuServerManager {
    draggable 1
    style blank
   }
-  SmartPanelWidgetClass HeaderTitle {
+  PanelWidgetClass HeaderTitle {
    ignorepointer 1
    color 0 0 0 1
    position 0 0
@@ -853,7 +878,7 @@ FrameWidgetClass rootMenuServerManager {
    vexactsize 0
    scaled 0
    draggable 0
-   style DayZDefaultPanelBottom
+   style DayZDefaultPanel
    {
     TextWidgetClass Title {
      ignorepointer 1
@@ -866,6 +891,9 @@ FrameWidgetClass rootMenuServerManager {
      vexactsize 0
      style Bold
      text "#VSTR_SERVER_MANAGER_TITLE"
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 0
+     "exact text size" 16
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -884,6 +912,7 @@ FrameWidgetClass rootMenuServerManager {
      {
       ImageWidgetClass ImageClose {
        ignorepointer 1
+       color 1 0 0 1
        size 0.97 1
        halign center_ref
        valign center_ref
