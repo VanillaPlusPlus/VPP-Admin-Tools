@@ -40,7 +40,7 @@ class VPPAdminHud extends VPPScriptedMenu
 		{
 			perms.Insert(m_DefinedButtons[i].param1);
 		}
-		GetRPCManager().SendRPC("RPC_PermitManager", "VerifyButtonsPermission", new Param1<ref array<string>>(perms),true);
+		GetRPCManager().VSendRPC("RPC_PermitManager", "VerifyButtonsPermission", new Param1<ref array<string>>(perms),true);
 	}
 
 	void ~VPPAdminHud()

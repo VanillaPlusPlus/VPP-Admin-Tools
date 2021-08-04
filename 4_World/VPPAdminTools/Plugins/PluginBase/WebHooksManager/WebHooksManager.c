@@ -136,7 +136,7 @@ class WebHooksManager: ConfigurablePlugin
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuWebHooks", "", false))
 				return;
 
-			GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender);
+			GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender);
 		}
 	}
 
@@ -157,7 +157,7 @@ class WebHooksManager: ConfigurablePlugin
 				M_DATA.RemoveOrdered( data.param1 );
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"WebHook: "+data.param2 + " was successfully deleted!", NotifyTypes.NOTIFY);
-				GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
+				GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
 			}else{
 				//Failed
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Error deleting webhook: "+data.param2 + "\nobject not found in array!", NotifyTypes.NOTIFY);
@@ -182,7 +182,7 @@ class WebHooksManager: ConfigurablePlugin
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Created new WebHook: " + data.param1.GetName()));
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"New WebHook: " + data.param1.GetName() + " successfully created and saved!", NotifyTypes.NOTIFY);
 			Save();
-			GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
+			GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
 		}
 	}
 
@@ -205,7 +205,7 @@ class WebHooksManager: ConfigurablePlugin
 				M_DATA.Set(data.param1, data.param3);
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"WebHook: " + data.param3.GetName() + " was successfully edited & saved!", NotifyTypes.NOTIFY);
 				Save();
-				GetRPCManager().SendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
+				GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
 			}else{
 				//Failed
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Failed to save changes to webhook: " + data.param3.GetName() + "\n\nCould not find old instance, another admin deleted it?", NotifyTypes.NOTIFY);

@@ -80,7 +80,7 @@ class ClientPlayerListManager : PluginBase
     {
         if(GetGame().IsServer() && GetGame().IsMultiplayer())
         {
-            GetRPCManager().SendRPC( "RPC_ClientPlayerList", "HandleConnectionList", new Param1<array<ref VPPUser>>(m_Users), true, identity);
+            GetRPCManager().VSendRPC( "RPC_ClientPlayerList", "HandleConnectionList", new Param1<array<ref VPPUser>>(m_Users), true, identity);
         }
     }
 
@@ -90,7 +90,7 @@ class ClientPlayerListManager : PluginBase
         {
             VPPUser user = new VPPUser(name, id, sessionId);
             m_Users.Insert(user);
-            GetRPCManager().SendRPC( "RPC_ClientPlayerList", "ReceiveAddData", new Param1<ref VPPUser>(user), true);
+            GetRPCManager().VSendRPC( "RPC_ClientPlayerList", "ReceiveAddData", new Param1<ref VPPUser>(user), true);
         }
     }
 
@@ -102,7 +102,7 @@ class ClientPlayerListManager : PluginBase
             {
                 if(user.GetUserId() == id)
                 {
-                    GetRPCManager().SendRPC( "RPC_ClientPlayerList", "ReceiveDeleteData", new Param1<string>(user.GetUserId()), true);
+                    GetRPCManager().VSendRPC( "RPC_ClientPlayerList", "ReceiveDeleteData", new Param1<string>(user.GetUserId()), true);
                     m_Users.RemoveItem(user);
                     break;
                 }

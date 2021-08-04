@@ -80,7 +80,7 @@ class AdminTools extends PluginBase
         {
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera")) return;
 			
-			GetRPCManager().SendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
+			GetRPCManager().VSendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
 			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) toggled freecam", sender.GetName(), sender.GetPlainId()));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Toggled Freecam"));
 		}
@@ -97,7 +97,7 @@ class AdminTools extends PluginBase
 	        string callerName;
             callerID = sender.GetPlainId();
             callerName = sender.GetName();
-        
+        	
         	Car vehicle = Car.Cast( target );
         	EntityAI carEntity = EntityAI.Cast(target);
         	if ( vehicle == NULL || carEntity == NULL)
@@ -105,81 +105,88 @@ class AdminTools extends PluginBase
 
         	//Attachments
 			dBodyApplyImpulse(carEntity, vector.Up);
-			carEntity.OnDebugSpawn();
+			carEntity.SetHealthMax("", "Health");
+			carEntity.SetHealthMax();
+			CarScript.Cast(target).RefillAllLiquids();
 
-        	//Health
-        	array<string> damageZones;
-        	string cfgPath = CFG_VEHICLESPATH + " " + target.GetType() + " DamageSystem";
-        	if ( GetGame().ConfigIsExisting(cfgPath) )
-        	{
-        		damageZones = new array<string>;
-        		int dmgZoneCount = GetGame().ConfigGetChildrenCount(cfgPath);
-        		if ( dmgZoneCount > 0 )
-        		{
-        			for (int i = 0; i < dmgZoneCount; ++i)
-        			{
-        				string parentClass;
-        				GetGame().ConfigGetChildName(cfgPath, i, parentClass);
-        				parentClass.ToLower();
-        				if ( parentClass == "damagezones" )
-        				{
-        					int dmgZoneIndex = GetGame().ConfigGetChildrenCount(cfgPath + " DamageZones");
-        					for (int j = 0; j < dmgZoneIndex; ++j)
-        					{
-        						string childZone;
-        						GetGame().ConfigGetChildName(cfgPath + " DamageZones", j, childZone);
-        						damageZones.Insert( childZone );
-        					}
-        				}
-        			}
-        		}
-        	}
+			string childClass;
+			string cfgPath = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
+			
+	    	//Health
+	    	array<string> damageZones;
+	    	cfgPath = CFG_VEHICLESPATH + " " + vehicle.GetType() + " DamageSystem";
+	    	if (GetGame().ConfigIsExisting(cfgPath))
+	    	{
+	    		damageZones = new array<string>;
+	    		int dmgZoneCount = GetGame().ConfigGetChildrenCount(cfgPath);
+	    		if ( dmgZoneCount > 0 )
+	    		{
+	    			for (int i = 0; i < dmgZoneCount; ++i)
+	    			{
+	    				GetGame().ConfigGetChildName(cfgPath, i, childClass);
+	    				childClass.ToLower();
+	    				if ( childClass == "damagezones" )
+	    				{
+	    					int dmgZoneIndex = GetGame().ConfigGetChildrenCount(cfgPath + " DamageZones");
+	    					for (int j = 0; j < dmgZoneIndex; ++j)
+	    					{
+	    						string childZone;
+	    						GetGame().ConfigGetChildName(cfgPath + " DamageZones", j, childZone);
+	    						damageZones.Insert( childZone );
+	    					}
+	    				}
+	    			}
+	    		}
+	    	}
 
-			carEntity.AddHealth(carEntity.GetMaxHealth());
-			//carEntity.SetHealth("EngineBelt", "Health", carEntity.GetMaxHealth());
-
-			if ( damageZones && damageZones.Count() > 0 )
+			if (damageZones && damageZones.Count() > 0)
 			{
 				foreach(string dmgZone: damageZones)
 				{
-					carEntity.SetHealthMax(dmgZone);
+					carEntity.SetHealthMax(dmgZone, "Health");
 				}
 			}
 
-			array<EntityAI> vehParts = new array<EntityAI>;
+			//Repair existing attachments or create if missing
 			TStringArray SlotNames = new TStringArray;
-			string cfg_path = CFG_VEHICLESPATH + " " + target.GetType() + " attachments";
+			string cfg_path = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
 			GetGame().ConfigGetTextArray(cfg_path, SlotNames);	
 			
 			foreach(string carSlot : SlotNames)
-					vehParts.Insert(carEntity.FindAttachmentBySlotName(carSlot));
-		
-			if (vehParts != null)
 			{
-				foreach(EntityAI att : vehParts)
+				carSlot.ToLower();
+				int slotId = InventorySlots.GetSlotIdFromString(carSlot);
+				EntityAI attachment = vehicle.GetInventory().FindAttachment(slotId);
+				if (!attachment)
 				{
-					if (att != NULL)
+					string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
+					typeName.ToLower();
+					if (typeName.Contains("_ruined"))
+						typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
+
+					vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
+				}
+				else
+				{
+					string partType = attachment.GetType();
+					partType.ToLower();
+					if (partType.Contains("_ruined"))
 					{
-						string partType = att.GetType();
-						partType.ToLower();
-						if ( partType.Contains("_ruined") )
-						{
-							partType.Replace("_ruined", "");
-							GetGame().ObjectDelete( att );
-							vehicle.GetInventory().CreateAttachment(partType);
-						}
-						else
-						{
-							att.AddHealth(att.GetMaxHealth());
-							att.SetSynchDirty();
-						}
+						partType.Replace("_ruined", "");
+						GetGame().ObjectDelete(attachment);
+						vehicle.GetInventory().CreateInInventory(partType);
+					}
+					else
+					{
+						attachment.SetHealthMax("", "Health");
+						attachment.SetSynchDirty();
 					}
 				}
 			}
-			
-			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) reparied & refueled vehicle (pos=%3)", callerName, callerID, vehicle.GetPosition().ToString()));
-			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, string.Format("\"%1\" (steamid=%2) reparied & refueled vehicle (pos=%3)", callerName, callerID, vehicle.GetPosition().ToString())));
-        	GetPermissionManager().NotifyPlayer(callerID, vehicle.Type().ToString() + ": at crosshairs reparied & refueled, all fluids maxed",NotifyTypes.NOTIFY);
+			carEntity.SetSynchDirty();
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /refuel used on self.", callerName, callerID));
+	    	GetPermissionManager().NotifyPlayer(callerID, vehicle.Type().ToString() + ": reparied & refueled added, all fluids maxed",NotifyTypes.NOTIFY);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /refuel used on self."));
         }
 	}
 };

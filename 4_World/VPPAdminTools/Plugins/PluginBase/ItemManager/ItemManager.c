@@ -251,7 +251,7 @@ class VPPItemManager: ConfigurablePlugin
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuItemManager", "", false)) return;
 			Load();
-			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+			GetRPCManager().VSendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Sent saved presets data."));
 		}
 	}
@@ -310,7 +310,7 @@ class VPPItemManager: ConfigurablePlugin
 				delete toDelete;
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully deleted preset: "+data.param1,NotifyTypes.NOTIFY);
-				GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+				GetRPCManager().VSendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) deleted the preset: (%3)", sender.GetName(), sender.GetPlainId(), data.param1));
 
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ItemManager] Delete preset: " + data.param1));
@@ -396,7 +396,7 @@ class VPPItemManager: ConfigurablePlugin
 			m_SavedPresets.Insert(new PresetItemData(data.param1,string.Empty,{}));
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Successfully added new preset: "+data.param1,NotifyTypes.NOTIFY);
 			Save();
-			GetRPCManager().SendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
+			GetRPCManager().VSendRPC( "RPC_MenuItemManager", "HandleData", new Param1<ref array<ref PresetItemData>>(m_SavedPresets), true, sender);
 			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Created a new item preset: (%3)", sender.GetName(), sender.GetPlainId(), data.param1));
 
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), " Created a new item preset: " + data.param1 ));

@@ -48,7 +48,7 @@ class VPPESPTools extends PluginBase
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu:PlayerMeshEsp", "", false))
 				return;
 
-			GetRPCManager().SendRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", NULL, true, sender);
+			GetRPCManager().VSendRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", NULL, true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "just toggled ON Player Mesh ESP."));
 		}
 	}
@@ -85,7 +85,7 @@ class VPPESPTools extends PluginBase
 			{
 				string code;
 				EnScript.GetClassVar(itemB, "m_Code", 0, code);
-				GetRPCManager().SendRPC("RPC_VPPESPTools", "HandleCodeFromObj", new Param2<string,Object>(code, data.param1), true, sender);
+				GetRPCManager().VSendRPC("RPC_VPPESPTools", "HandleCodeFromObj", new Param2<string,Object>(code, data.param1), true, sender);
 			}
 		}
 	}

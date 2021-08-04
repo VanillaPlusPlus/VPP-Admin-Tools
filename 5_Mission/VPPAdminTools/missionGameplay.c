@@ -5,7 +5,9 @@ modded class MissionGameplay
 	static ref ScriptInvoker m_OnMissionUnpaused = new ScriptInvoker();
 
 	//Client vars
-    private bool   m_Toggles     = false;
+    private bool   m_Toggles;
+    private string m_VAdminPassword;
+
     private bool   m_ToolsToggled;
     private string m_systemMessage;
     private bool   m_isLoggedIn;
@@ -55,6 +57,8 @@ modded class MissionGameplay
         m_EspBones.Insert(new ESPBonesParams("rightleg",     "rightfoot"));
         m_EspBones.Insert(new ESPBonesParams("rightfoot",    "righttoebase"));
 
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "ServerLoginError", this, SingeplayerExecutionType.Server);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "LoginAttemptFail", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableToggles", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingeplayerExecutionType.Server);
@@ -83,9 +87,6 @@ modded class MissionGameplay
     {
         super.OnMissionStart();
         Print("[MissionGameplay] OnMissionStart - Client");
-        if (GetGame().IsClient() || GetGame().IsMultiplayer()){
-            GetRPCManager().SendRPC("RPC_PermitManager", "EnableToggles", NULL, true);
-        }
     }
 
     override void OnMissionFinish()
@@ -276,13 +277,99 @@ modded class MissionGameplay
     void ToggleAdminTools()
     {
         if (!m_Toggles)
+        {
+            if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
+            {
+                GetVPPUIManager().SetKeybindsStatus(true);
+                GetGame().GetInput().ChangeGameFocus(1);
+                GetGame().GetUIManager().ShowUICursor(true);
+                PlayerControlDisable(INPUT_EXCLUDE_ALL);
+
+                VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+                dialogBox.InitDiagBox(DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Admin Login", "Please enter password to continue using the tool.\n*Input is hidden*", this, "OnDiagResultToggleTools");
+                dialogBox.AllowCharInput();
+                dialogBox.HideInputCharacters(true);
+            }
             return;
+        }
 
         m_ToolsToggled = !m_ToolsToggled;
         if ( m_ToolsToggled )
             GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_ON", "V++ Admin Tools:", 3.0);
         else
             GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_OFF", "V++ Admin Tools:", 3.0);
+    }
+
+    void OnDiagResultToggleTools(int result, string input)
+    {
+        GetVPPUIManager().SetKeybindsStatus(false);
+        GetGame().GetUIManager().ShowUICursor(false);
+        GetGame().GetInput().ResetGameFocus();
+        GetGame().GetInput().ChangeGameFocus(-1);
+        PlayerControlEnable(false);
+
+        if (result == DIAGRESULT.OK)
+        {
+            if (input == string.Empty)
+            {
+                GetVPPUIManager().DisplayNotification("You need to enter a valid password.", "[VPPAT] LOGIN ERROR:", 5.0);
+                return;
+            }
+
+            if (g_Game.GetFailedLoginAttempts() >= 6)
+            {
+                GetVPPUIManager().DisplayNotification("Too many failed login attempts, server will not accept attempts until next restart. Game Restart is also required!", "[VPPAT] LOGIN ERROR:", 8.0);
+                return;
+            }
+            m_VAdminPassword = input;
+            GetRPCManager().VSendRPC("RPC_PermitManager", "AdminLogin", NULL, true);
+        }
+    }
+
+    void LoginAttemptFail(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if (type == CallType.Client)
+        {
+            GetVPPUIManager().DisplayNotification(string.Format("Login information was incorrect. Attempts: (%1/6)", g_Game.GetFailedLoginAttempts()), "[VPPAT] LOGIN ERROR:", 8.0);
+            g_Game.IncrementFailedLoginAttempts();
+        }
+    }
+
+    void ServerLoginError(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if (type == CallType.Client)
+        {
+            GetVPPUIManager().DisplayNotification(string.Format("The server has no set password! Please read the instructions found within [profile/VPPAdminTools/Permissions/credentials.txt] on how to setup a login password. (profile is the directory where your mods configurations are generated & stored including server logs)"), "[VPPAT] LOGIN ERROR:", 30.0);
+        }
+    }
+
+    void EnableToggles( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+    {
+        Param1<bool> data;
+        if (!ctx.Read( data ) || sender != null)
+            return;
+
+        if (type == CallType.Client)
+        {
+            m_Toggles = data.param1;
+            
+            if (!m_Toggles)
+            {
+                GetVPPUIManager().DisplayNotification("failed to grant permissions. You are no longer part of a user group.", "V++ Admin Tools:", 8.0);
+
+                VPPAdminHud adminMenu;
+                if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
+                {
+                    if (adminMenu.IsShowing())
+                    {
+                        adminMenu.HideMenu();
+                        GetVPPUIManager().DestroyMenuInstanceByType(VPPAdminHud);
+                    }
+                }
+            }else{
+                GetVPPUIManager().DisplayNotification("Successfully logged in as admin.", "V++ Admin Tools:", 5.0);
+            }
+        }
     }
 
     void OpenAdminTools()
@@ -325,7 +412,7 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            GetRPCManager().SendRPC( "RPC_AdminTools", "TeleportToPosition", new Param1<vector>(g_Game.GetCursorPos()), true);
+            GetRPCManager().VSendRPC( "RPC_AdminTools", "TeleportToPosition", new Param1<vector>(g_Game.GetCursorPos()), true);
         }
     }
 
@@ -359,7 +446,7 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            GetRPCManager().SendRPC( "RPC_PlayerManager", "ToggleGodmode", NULL, true);
+            GetRPCManager().VSendRPC( "RPC_PlayerManager", "ToggleGodmode", NULL, true);
         }
     }
 
@@ -370,7 +457,7 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            GetRPCManager().SendRPC( "RPC_AdminTools", "ToggleFreeCam", NULL, true);
+            GetRPCManager().VSendRPC( "RPC_AdminTools", "ToggleFreeCam", NULL, true);
         }
     }
 
@@ -382,7 +469,7 @@ modded class MissionGameplay
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
             array<string> itemTypes = {"barrel_green","Truck_01_WheelDouble","TransitBusWheel","TransitBusWheelDouble","Refridgerator","SeaChest","PowerGenerator","WoodenLog"};
-            GetRPCManager().SendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>("/sph "+itemTypes.GetRandomElement()), true);
+            GetRPCManager().VSendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>("/sph "+itemTypes.GetRandomElement()), true);
             GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ThrowInHands, 1000, false);
         }
     }
@@ -425,7 +512,7 @@ modded class MissionGameplay
             Car targetVehicle = Car.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
             if (targetVehicle)
             {
-                GetRPCManager().SendRPC("RPC_AdminTools", "RepairVehicles", NULL, true, NULL, targetVehicle);
+                GetRPCManager().VSendRPC("RPC_AdminTools", "RepairVehicles", NULL, true, NULL, targetVehicle);
             }
         }
     }
@@ -457,7 +544,7 @@ modded class MissionGameplay
             return;
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
-            GetRPCManager().SendRPC( "RPC_VPPESPTools", "ToggleMeshESP", null, true, null);
+            GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleMeshESP", null, true, null);
     }
 
     void TogglePlayerInvis()
@@ -469,7 +556,7 @@ modded class MissionGameplay
         {
             if (GetGame().GetPlayer() && GetGame().GetPlayer().GetIdentity())
             {
-                GetRPCManager().SendRPC("RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<int>>({GetGame().GetPlayer().GetIdentity().GetPlayerId()}), true);
+                GetRPCManager().VSendRPC("RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<int>>({GetGame().GetPlayer().GetIdentity().GetPlayerId()}), true);
             }
         }
     }
@@ -515,31 +602,7 @@ modded class MissionGameplay
         {
             //Proceed to delete object at cursor
             if (targetObj != null)
-                GetRPCManager().SendRPC( "RPC_AdminTools", "DeleteObject", NULL, true, NULL, targetObj);
-        }
-    }
-    
-    void EnableToggles( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
-    {
-        Param1<bool> data;
-        if ( !ctx.Read( data ) || sender != null ) return;
-
-        if (type == CallType.Client)
-        {
-            m_Toggles = data.param1;
-            
-            if (!m_Toggles)
-            {
-                VPPAdminHud adminMenu;
-                if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
-                {
-                    if (adminMenu.IsShowing())
-                    {
-                        adminMenu.HideMenu();
-                        GetVPPUIManager().DestroyMenuInstanceByType(VPPAdminHud);
-                    }
-                }
-            }
+                GetRPCManager().VSendRPC( "RPC_AdminTools", "DeleteObject", NULL, true, NULL, targetObj);
         }
     }
     

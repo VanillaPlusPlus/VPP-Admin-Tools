@@ -85,7 +85,7 @@ class ServerManager extends PluginBase
 					}
 					CloseFile(logFile);
 					
-					GetRPCManager().SendRPC("RPC_MenuServerManager", "HandleLogViewer", new Param1<ref array<string>>(ContentLines), true, sender);
+					GetRPCManager().VSendRPC("RPC_MenuServerManager", "HandleLogViewer", new Param1<ref array<string>>(ContentLines), true, sender);
 				}
 			}else{
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),".ADM logs not found...",NotifyTypes.ERROR);
@@ -158,7 +158,7 @@ class ServerManager extends PluginBase
 			{
 				if (player && PlayerBase.Cast(player).VPlayerGetSteamId() != sender.GetPlainId())
 				{
-					GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param1 ), true, player.GetIdentity());
+					GetRPCManager().VSendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param1 ), true, player.GetIdentity());
 					GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Kicking Player: \"%3\" (steamid=%4)", sender.GetName(), sender.GetPlainId(), PlayerBase.Cast(player).VPlayerGetName(), PlayerBase.Cast(player).VPlayerGetSteamId()));
 				}
 			}
@@ -179,7 +179,7 @@ class ServerManager extends PluginBase
 			{
 				m_List.Insert( new VPPPlayerData(PlayerBase.Cast(player).VPlayerGetName(), player.GetPosition()) );
 			}
-			GetRPCManager().SendRPC( "RPC_MenuServerManager", "UpdateActivityMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
+			GetRPCManager().VSendRPC( "RPC_MenuServerManager", "UpdateActivityMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
 		}
 	}
 
@@ -187,7 +187,7 @@ class ServerManager extends PluginBase
 	{
 		if( type == CallType.Server )
 		{
-			GetRPCManager().SendRPC( "RPC_MenuServerManager", "UpdateServerMonitor", new Param1<int>(GetGame().GetTime()), true, sender);
+			GetRPCManager().VSendRPC( "RPC_MenuServerManager", "UpdateServerMonitor", new Param1<int>(GetGame().GetTime()), true, sender);
 		}
 	}
 	
@@ -251,7 +251,7 @@ class ServerManager extends PluginBase
 						}
 					}
 					CloseFile(scriptFile);
-					GetRPCManager().SendRPC( "RPC_MenuServerManager", "SortScriptList", new Param2<string,ref array<string>>( file_list.Get(i), ContentLines ), true, sender);
+					GetRPCManager().VSendRPC( "RPC_MenuServerManager", "SortScriptList", new Param2<string,ref array<string>>( file_list.Get(i), ContentLines ), true, sender);
 				}
 				Print("[RequestScriptList] Total files Located: "+file_list.Count() + " ConfigPath: "+file_list.Get(i));
 			}

@@ -58,12 +58,12 @@ class MenuServerManager extends AdminHudSubMenu
 		{
 			if (m_ChkBoxUpdateActivity.IsChecked())
 			{
-				GetRPCManager().SendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
+				GetRPCManager().VSendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
 			}
 			
 			if (m_ToggleServerMonitor.IsChecked())
 			{
-				GetRPCManager().SendRPC("RPC_ServerManager", "RequestServerMonitor", NULL, true);
+				GetRPCManager().VSendRPC("RPC_ServerManager", "RequestServerMonitor", NULL, true);
 			}
 			UpdateTick = 0.0;
 		}
@@ -135,8 +135,8 @@ class MenuServerManager extends AdminHudSubMenu
 		
 		m_CustomScripts = new map<string,ref array<string>>;
 		
-		GetRPCManager().SendRPC("RPC_ServerManager", "RequestScriptList", NULL, true); //Get Scripts list
-		GetRPCManager().SendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
+		GetRPCManager().VSendRPC("RPC_ServerManager", "RequestScriptList", NULL, true); //Get Scripts list
+		GetRPCManager().VSendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
 		m_loaded = true;
 	}
 		
@@ -146,12 +146,12 @@ class MenuServerManager extends AdminHudSubMenu
 		switch(w)
 		{
 			case m_RefreshActivityMap:
-			GetRPCManager().SendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
+			GetRPCManager().VSendRPC("RPC_ServerManager", "RequestActivityMap", NULL, true);
 			break;
 			
 			case m_BtnViewAdmLog:
-			//GetRPCManager().SendRPC("RPC_ServerManager", "RequestLogViewer", NULL, true);
-			GetRPCManager().SendRPC("RPC_LogManager", "GetLogData", new Param1<string>("Log_[2019-7-21]--[13-35-25].txt"), true);
+			//GetRPCManager().VSendRPC("RPC_ServerManager", "RequestLogViewer", NULL, true);
+			GetRPCManager().VSendRPC("RPC_LogManager", "GetLogData", new Param1<string>("Log_[2019-7-21]--[13-35-25].txt"), true);
 			break;
 						
 			case m_BtnAdminLogin:
@@ -174,11 +174,11 @@ class MenuServerManager extends AdminHudSubMenu
 			break;
 			
 			case m_BtnRefreshScriptList:
-			GetRPCManager().SendRPC("RPC_ServerManager", "RequestScriptList", NULL, true); //Get Scripts list
+			GetRPCManager().VSendRPC("RPC_ServerManager", "RequestScriptList", NULL, true); //Get Scripts list
 			break;
 			
 			case m_BtnLoadScript:
-			GetRPCManager().SendRPC("RPC_ServerManager", "LoadScript", new Param1<string>(m_ScriptsDropDown.GetText()), true);
+			GetRPCManager().VSendRPC("RPC_ServerManager", "LoadScript", new Param1<string>(m_ScriptsDropDown.GetText()), true);
 			break;
 			
 			case m_BtnWriteScript:
@@ -201,7 +201,7 @@ class MenuServerManager extends AdminHudSubMenu
 		ToggleMapWidget(true);
 		if (result == DIAGRESULT.YES)
 		{
-			GetRPCManager().SendRPC("RPC_MissionServer", "RequestLockServer", null, true);
+			GetRPCManager().VSendRPC("RPC_MissionServer", "RequestLockServer", null, true);
 		}
 	}
 	
@@ -210,7 +210,7 @@ class MenuServerManager extends AdminHudSubMenu
 		ToggleMapWidget(true);
 		if (result == DIAGRESULT.OK && input != "")
 		{
-			GetRPCManager().SendRPC("RPC_ServerManager", "RequestRestartServer", new Param1<int>(input.ToInt()), true);
+			GetRPCManager().VSendRPC("RPC_ServerManager", "RequestRestartServer", new Param1<int>(input.ToInt()), true);
 		}
 	}
 	
@@ -219,7 +219,7 @@ class MenuServerManager extends AdminHudSubMenu
 		ToggleMapWidget(true);
 		if (result == DIAGRESULT.YES)
 		{
-			GetRPCManager().SendRPC("RPC_ServerManager", "RequestKickAllPlayers", null, true);
+			GetRPCManager().VSendRPC("RPC_ServerManager", "RequestKickAllPlayers", null, true);
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_KICKINGPLAYERS");
 		}
 	}

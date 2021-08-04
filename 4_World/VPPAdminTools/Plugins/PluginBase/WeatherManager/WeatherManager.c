@@ -55,7 +55,7 @@ class WeatherManager : ConfigurablePlugin
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Sent Saved Weather Presets"));
 			GetSimpleLogger().Log("[WeatherManager] Send Data Count is " + input.Count().ToString());
-			GetRPCManager().SendRPC( "RPC_WeatherUI", "HandleWeatherData", new Param1<array<string>>(input), true, sender );
+			GetRPCManager().VSendRPC( "RPC_WeatherUI", "HandleWeatherData", new Param1<array<string>>(input), true, sender );
 		}
 	}
 	

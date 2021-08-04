@@ -72,7 +72,7 @@ class MenuBansManager extends AdminHudSubMenu
 		GetVPPUIManager().HookConfirmationDialog(m_btnEditReason, M_SUB_WIDGET,this,"EditBanReason", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Edit Reason", "Input new ban reason                    ", true);
 		
 		
-		GetRPCManager().SendRPC("BanManagerServer", "SendData", null, true);
+		GetRPCManager().VSendRPC("BanManagerServer", "SendData", null, true);
 		m_loaded = true;
 	}
 	
@@ -159,7 +159,7 @@ class MenuBansManager extends AdminHudSubMenu
 	private void RequestRefresh()
 	{
 		ClearEntriesList();
-		GetRPCManager().SendRPC("BanManagerServer", "SendData", null, true);
+		GetRPCManager().VSendRPC("BanManagerServer", "SendData", null, true);
 	}
 	
 	void EditBanReason(int result, string input)
@@ -177,7 +177,7 @@ class MenuBansManager extends AdminHudSubMenu
 			{
 				IDs.Insert(entry.GetPlayer().Steam64Id);
 			}
-			GetRPCManager().SendRPC("BanManagerServer", "UpdateBanReason", new Param2<ref array<string>,string>(IDs,input), true);
+			GetRPCManager().VSendRPC("BanManagerServer", "UpdateBanReason", new Param2<ref array<string>,string>(IDs,input), true);
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_UPDATE_BAN_REASON");
 			RequestRefresh();
 		}
@@ -199,7 +199,7 @@ class MenuBansManager extends AdminHudSubMenu
 		{
 			IDs.Insert(entry.GetPlayer().Steam64Id);
 		}
-		GetRPCManager().SendRPC("BanManagerServer", "UpdateBanDuration", new Param2<ref array<string>,ref BanDuration>(IDs,timeStamp), true);
+		GetRPCManager().VSendRPC("BanManagerServer", "UpdateBanDuration", new Param2<ref array<string>,ref BanDuration>(IDs,timeStamp), true);
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_UPDATE_BAN_TIME");
 		RequestRefresh();
 	}
@@ -261,7 +261,7 @@ class MenuBansManager extends AdminHudSubMenu
 			
 			if(selected.Count() == 1)
 			{
-				GetRPCManager().SendRPC("BanManagerServer", "RemoveBan", new Param1<string>(selected[0].GetPlayer().Steam64Id), true);
+				GetRPCManager().VSendRPC("BanManagerServer", "RemoveBan", new Param1<string>(selected[0].GetPlayer().Steam64Id), true);
 				return;
 			}
 			
@@ -277,7 +277,7 @@ class MenuBansManager extends AdminHudSubMenu
 						delete entry;
 					}
 				}
-				GetRPCManager().SendRPC("BanManagerServer", "RemoveBans", new Param1<ref array<string>>(ids), true);
+				GetRPCManager().VSendRPC("BanManagerServer", "RemoveBans", new Param1<ref array<string>>(ids), true);
 			}		
 		}
 	}

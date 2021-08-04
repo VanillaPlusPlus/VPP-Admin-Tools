@@ -12,6 +12,7 @@ modded class MissionServer
         Print("[MissionServer] OnMissionStart - Server");
         //Post message of server status
         GetWebHooksManager().PostData(ServerStatusMessage, new ServerStatusMessage());
+        new VPPATInventorySlots;
     }
 
     override void OnMissionFinish()
@@ -27,9 +28,8 @@ modded class MissionServer
 
         m_KickQueue = new map<string,int>;
         //Event handlers
-        VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect").Insert( HandleOnPlayerConnect );
-        VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected").Insert( HandleOnPlayerDisconnected );
-        VPPATGetEventHandler().GetEventInvoker("OnClientDisconnectCancel").Insert( HandleOnPlayerConnect );
+        VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect").Insert(HandleOnPlayerConnect);
+        VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected").Insert(HandleOnPlayerDisconnected);
 
         g_Game.SetServerName(GetServerName());
         //=============RPC's====================
@@ -41,7 +41,7 @@ modded class MissionServer
 
     override void OnEvent(EventType eventTypeId, Param params)
     {
-    	super.OnEvent(eventTypeId, params);
+        super.OnEvent(eventTypeId, params);
         /*
         * Server part
         */
@@ -59,9 +59,8 @@ modded class MissionServer
             player   = PlayerBase.Cast(readyParams.param2);
 
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
-            
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(player, identity, false);
+                onPlayerConnect.Invoke(player, identity, false, true);
 
             break;
 
@@ -71,10 +70,9 @@ modded class MissionServer
             
             identity = newParams.param1;
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
-            
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(player, identity, false);
-            
+                onPlayerConnect.Invoke(player, identity, false, false);
+
             break;
 
             case ClientReconnectEventTypeID:
@@ -84,9 +82,8 @@ modded class MissionServer
             identity = reconnectParams.param1;
             
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
-            
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(player, identity, false);
+                onPlayerConnect.Invoke(player, identity, false, true);
 
             break;
             
@@ -112,9 +109,8 @@ modded class MissionServer
             identity = player.GetIdentity();
 
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
-            
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(player, identity, true);
+                onPlayerConnect.Invoke(player, identity, true, false);
 
             break;
 
@@ -125,7 +121,7 @@ modded class MissionServer
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
             
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(NULL, clientPrepareParams.param1, false); //Invoke anyway sometimes ClientReadyEventTypeID does not trigger.
+                onPlayerConnect.Invoke(NULL, clientPrepareParams.param1, false, false);
 
             BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(clientPrepareParams.param1.GetPlainId());
             if (bannedPlayer != NULL)
@@ -151,17 +147,17 @@ modded class MissionServer
         }
     }
 
-	override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
-	{
-		super.PlayerDisconnected(player, identity, uid);
-		
-		if ( identity != NULL )
+    override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
+    {
+        super.PlayerDisconnected(player, identity, uid);
+        
+        if ( identity != NULL )
             GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "left the server!"));
         else if ( player )
-        	GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "left the server!"));
-	}
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "left the server!"));
+    }
 
-	/*
+    /*
     **
     *  ///////////Server RPCs Section/////////////////
        ///////////////////////////////////////////////
@@ -309,13 +305,13 @@ modded class MissionServer
         if( identity != NULL )
         {
             GetSimpleLogger().Log(string.Format("Kicking banned player \"%1\" (steamId=%2) kick message: (%3)", identity.GetName(), id, msg));
-            GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
+            GetRPCManager().VSendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
             GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
             m_KickQueue.Remove(id);
         }
     }
 
-    void HandleOnPlayerConnect(PlayerBase player, PlayerIdentity identity, bool canceledLogout)
+    void HandleOnPlayerConnect(PlayerBase player, PlayerIdentity identity, bool canceledLogout, bool logAsLogin)
     {
         if(identity == NULL)
         {
@@ -324,7 +320,7 @@ modded class MissionServer
             return;
         }
 
-        if ( !canceledLogout )
+        if (logAsLogin)
         {
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
@@ -332,7 +328,7 @@ modded class MissionServer
             if (!GetPlayerListManager().HasPlayerInList( identity.GetPlainId() ))
                 GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "joined the server!"));
         }
-        else
+        else if (canceledLogout)
         {
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) re-connected to server [canceledLogout]", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) re-connected to server [canceledLogout]", identity.GetName(), identity.GetPlainId()));

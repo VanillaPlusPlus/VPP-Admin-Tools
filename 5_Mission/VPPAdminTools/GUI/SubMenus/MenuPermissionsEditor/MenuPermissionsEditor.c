@@ -28,7 +28,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-		GetRPCManager().SendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(0), true); //Get User Groups % Permissions levels 0 = both 1 = user groups 2 = perms
+		GetRPCManager().VSendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(0), true); //Get User Groups % Permissions levels 0 = both 1 = user groups 2 = perms
 
 		M_SUB_WIDGET  = CreateWidgets("VPPAdminTools/GUI/Layouts/PermissionManagerUI/MenuPermissionsEditor.layout");
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
@@ -149,7 +149,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 				playersMap.Insert(entry.GetID(),entry.GetPlayerName());
 			}
 			//Send RPC to add selected players
-			GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteAddUsersToGroup", new Param2<ref map<string,string>,string>(playersMap,GetSelectedUserGroup().GetGroupName()), true);
+			GetRPCManager().VSendRPC( "RPC_PermissionManager", "RemoteAddUsersToGroup", new Param2<ref map<string,string>,string>(playersMap,GetSelectedUserGroup().GetGroupName()), true);
 			ReloadUserGroupsTab();
 			return;
 		}
@@ -165,7 +165,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			UserGroupTemplate selectedGroup = GetSelectedUserGroup();
 			if (selectedGroup != null)
 			{
-				GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteDeleteUserGroup", new Param1<string>(selectedGroup.GetGroupName()), true);
+				GetRPCManager().VSendRPC( "RPC_PermissionManager", "RemoteDeleteUserGroup", new Param1<string>(selectedGroup.GetGroupName()), true);
 			}
 			ReloadUserGroupsTab();
 		}
@@ -188,7 +188,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 					}
 				}
 				//Send Update to server
-				GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteUpdateGroupPerms", new Param2<ref array<string>,string>(selectedPerms,grp.GetGroupName()), true);
+				GetRPCManager().VSendRPC( "RPC_PermissionManager", "RemoteUpdateGroupPerms", new Param2<ref array<string>,string>(selectedPerms,grp.GetGroupName()), true);
 				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMS_UPD_GRP "+grp.GetGroupName()+" #VSTR_NOTIFY_PERMS_UPD_GRP_2");
 				ReloadUserGroupsTab();
 			}
@@ -209,7 +209,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 				}
 			}
 			//Make UserGroup
-			GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteCreateUserGroup", new Param1<string>(userInput), true);
+			GetRPCManager().VSendRPC( "RPC_PermissionManager", "RemoteCreateUserGroup", new Param1<string>(userInput), true);
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_USER_GRP_CREATED "+userInput+"!");
 			ReloadUserGroupsTab();
 		}
@@ -281,7 +281,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 			delete grp;
 		}
 		m_UserGroups = new array<ref UserGroupTemplate>;
-		GetRPCManager().SendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(1), true); //Request Updated user groups
+		GetRPCManager().VSendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(1), true); //Request Updated user groups
 	}
 
 	//-----RPCs-----

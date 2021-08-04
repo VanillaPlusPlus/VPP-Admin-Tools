@@ -40,12 +40,15 @@ class HealPlayerChatModule : ChatCommand
 
                         if (playerTarget.GetBleedingManagerServer())
                         {
-                            playerTarget.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
-                            cuts--;
+                            int bit = playerTarget.GetBleedingManagerServer().GetMostSignificantBleedingSource();
+                            if(bit != 0)
+                            {
+                                playerTarget.GetBleedingManagerServer().RemoveBleedingSourceNonInfectious(bit);
+                                cuts--;
+                            }
                         }
                     }
                 }
-
                 GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /heal used on: \"%3\" (steamid=%4)", callerName, callerID, targetName, targetID));
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /heal command used on: " + targetName + " ID: " + targetID));
             }

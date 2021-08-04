@@ -10,7 +10,7 @@ class PermissionManager extends ConfigurablePlugin
 	private ref   array<string> m_SuperAdmins;
 	private const string m_SuperAdminsListPath = "$profile:VPPAdminTools/Permissions/SuperAdmins/SuperAdmins.txt";
 	private const string m_UserGroupsSavePath  = "$profile:VPPAdminTools/Permissions/UserGroups/UserGroups";
-		
+
 	private ref PermissionLoader 		  m_PermissionLoader;
 	private ref array<string> 		  	  m_Permissions;
 	private ref array<ref UserGroup> 	  m_UserGroups;
@@ -56,8 +56,9 @@ class PermissionManager extends ConfigurablePlugin
 		AddPermissionType({ "MenuCommandsConsole" });
 		
 		//-----RPC's-----
-		GetRPCManager().AddRPC("RPC_PermitManager", "EnableToggles", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PermitManager", "VerifyButtonsPermission", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC("RPC_PermitManager", "AdminLogin", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PermitManager", "VerifyButtonsPermission", this, SingeplayerExecutionType.Server);
+		
 		GetRPCManager().AddRPC("RPC_PermissionManager","SendToClient", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteCreateUserGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PermissionManager","RemoteDeleteUserGroup", this, SingleplayerExecutionType.Server);
@@ -82,6 +83,7 @@ class PermissionManager extends ConfigurablePlugin
 			MakeDirectory("$profile:VPPAdminTools/Permissions/SuperAdmins");
 			MakeDirectory("$profile:VPPAdminTools/Permissions/UserGroups");
 			
+			LoadCredentials();
 			LoadSuperAdmins();
 			LoadUserGroups();
 		}
@@ -99,20 +101,21 @@ class PermissionManager extends ConfigurablePlugin
 		RPC Functions
 	*/
 	//----------------------------------
-	void EnableToggles( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	void AdminLogin(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-	   	if( type == CallType.Server )
+		if( type == CallType.Server )
         {
-			if (sender == NULL) return;
-			
-        	if (HasUserGroup(sender.GetPlainId()))
-        	{
-        		Param1<bool>> param = new Param1<bool>(true);
-	   			GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", param, true, sender);
-        	}
-        }
+			if (sender == NULL)
+				return;
+
+			//At this point, password matched. Check for a valid user group.
+			Print(string.Format("[Permissions Manager] Admin (%2) (%1) Successfully Logged in!", sender.GetPlainId(), sender.GetName()));
+			bool hasUsergrp = HasUserGroup(sender.GetPlainId());
+        	GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(hasUsergrp), true, sender);
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] User was authorized and password accepted."));
+		}
 	}
-	
+
 	void VerifyButtonsPermission(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<ref array<string>> data;
@@ -141,7 +144,7 @@ class PermissionManager extends ConfigurablePlugin
 
 		PlayerIdentity identity = GetIdentityById(targetId);
 		if (identity != null)
-			GetRPCManager().SendRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", new Param1<ref map<string,bool>>(permissions), true, identity);
+			GetRPCManager().VSendRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", new Param1<ref map<string,bool>>(permissions), true, identity);
 	}
 	
 	/*
@@ -159,14 +162,14 @@ class PermissionManager extends ConfigurablePlugin
 				return;
 			}
 			if (data.param1 == 0){
-				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
-				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);
+				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
+				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);
 			}
 			if (data.param1 == 1)
-				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);
+				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);
 			
 			if (data.param1 == 2)
-				GetRPCManager().SendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
+				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
 		}
 	}
 	
@@ -325,7 +328,7 @@ class PermissionManager extends ConfigurablePlugin
 
 				if (player != NULL)
 				{
-					GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, player.GetIdentity());
+					GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, player.GetIdentity());
 					GetPlayerListManager().SendPlayerList(player.GetIdentity());
 				}
 			}
@@ -368,7 +371,7 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				PlayerIdentity identity = GetIdentityById(data.param1);	
 				if (identity != null){
-					GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
+					GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
 				}
 			}
 		}
@@ -507,7 +510,7 @@ class PermissionManager extends ConfigurablePlugin
 				{
 					PlayerIdentity identity = GetIdentityById(user.GetUserId());
 					if (identity != null)
-		   				GetRPCManager().SendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
+		   				GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
 				}
 				m_UserGroups.RemoveItem(group);
 				delete group;
@@ -551,6 +554,70 @@ class PermissionManager extends ConfigurablePlugin
 		}
 	}
 	
+	private void LoadCredentials()
+	{
+		string path = "$profile:VPPAdminTools/Permissions/credentials.txt";
+		FileHandle file;
+		if (!FileExist(path))
+		{
+			GetSimpleLogger().Log("credentials.txt was not found. The tool will not operate as intended. Please shutdown the server, and create a password within credentials.txt (Maximum 64 characters)");
+			Print("[VPPAdminTools] credentials.txt was not found. The tool will not operate as intended. Please shutdown the server, and create a password within credentials.txt (Maximum 64 characters)");
+			
+			file = OpenFile(path, FileMode.WRITE);
+			FPrintln(file, "//REMOVE THIS LINE AND REPLACE WITH YOUR PASSWORD! PASSWORD MUST BE ON FIRST LINE OF FILE. (32 Characters Maximum) (Don't use // characters at the start.)\n\n");
+			FPrintln(file, "//This password will be used by all user groups including SuperAdmins each time you login in-game.");
+			FPrintln(file, "//The input in this file will be hashed on first server startup, the raw password will be lost. Store it somewhere safe and NOT within your server files!");
+			FPrintln(file, "//Do NOT share or edit the hashed version of the password! Only give the raw password to trusted persons whom you have given a user group or SuperAdmin access.");
+			FPrintln(file, "//**In case of lost password**, delete the content of THIS file you are reading, write a new password (32 Characters Maximum) save file, restart DayZ Server.");
+			CloseFile(file);
+			return;
+		}
+
+		file = OpenFile(path, FileMode.READ);
+		if (file != 0)
+		{
+			string password = string.Empty;
+			FGets(file, password);
+			CloseFile(file);
+
+			if (password == string.Empty)
+			{
+				GetSimpleLogger().Log("Error parsing credentials.txt! The tool will not function correctly. Please follow instructions found within: profile/VPPAdminTools/Permissions/credentials.txt");
+				Print("[VPPAdminTools] Error parsing credentials.txt! The tool will not function correctly. Please follow instructions found within: profile/VPPAdminTools/Permissions/credentials.txt *Reboot server if the file is missing!*");
+				return;
+			}
+
+			string subStr = password.Substring(0, 2);
+			if (subStr.Contains("/"))
+			{
+				GetSimpleLogger().Log("Error parsing credentials.txt! Please input a valid password, with no // at the start of the line!");
+				Print("[VPPAdminTools] Error parsing credentials.txt! Please input a valid password, with no // at the start of the line!");
+				return;
+			}
+
+			if (password.Length() == 64)
+			{
+				g_Game.SetAdminPasswordHash(password);
+				return;
+			}
+
+			if (password.Length() > 32)
+			{
+				GetSimpleLogger().Log("[VPPAdminTools] Error with credentials.txt! Password exceeds maximum character limit! *32 Characters max*");
+				Print("[VPPAdminTools] Error with credentials.txt! Password exceeds maximum character limit! *32 Characters max*");
+				return;
+			}
+
+			DeleteFile(path);
+			file = OpenFile(path, FileMode.WRITE);
+			string hash = VSHA256.ComputeString(password);
+			g_Game.SetAdminPasswordHash(hash);
+			FPrintln(file, hash);
+			FPrint(file, "//**In case of lost password**, delete the content of THIS file you are reading, write a new password (32 Characters Maximum) on the very FIRST line, save file, restart DayZ Server.");
+			CloseFile(file);
+		}
+	}
+
 	private void LoadSuperAdmins()
 	{
 		FileHandle adminUIDSFile;

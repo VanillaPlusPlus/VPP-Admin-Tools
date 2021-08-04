@@ -36,7 +36,7 @@ class BuildingSetEditor: ScriptedWidgetEventHandler
 		if (result == DIAGRESULT.YES)
 		{
 			//Send RPC 
-			GetRPCManager().SendRPC("RPC_BuildingSetManager", "ExportSetToCode", new Param1<string>(m_SetName.GetText()),true,null);
+			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "ExportSetToCode", new Param1<string>(m_SetName.GetText()),true,null);
 			delete this;
 		}
 	}

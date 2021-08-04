@@ -2,7 +2,10 @@ class RefuelVehicleChatModule extends ChatCommand
 {	
 	override void ExecuteCommand(PlayerBase caller, array<Man> targets, array<string> args)
     {
-        if(caller == null) return;
+        if(!caller)
+        	return;
+        if (!caller.GetCommand_Vehicle())
+        	return;
 
         string callerID   = caller.VPlayerGetSteamId();
         string callerName = caller.VPlayerGetName();
@@ -14,8 +17,10 @@ class RefuelVehicleChatModule extends ChatCommand
 		
 		//Attachments
 		dBodyApplyImpulse(carEntity, vector.Up);
-		carEntity.OnDebugSpawn();
-		
+		carEntity.SetHealthMax("", "Health");
+		carEntity.SetHealthMax();
+		CarScript.Cast(vehicle).RefillAllLiquids();
+
 		string childClass;
 		string cfgPath = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
 		
@@ -46,52 +51,53 @@ class RefuelVehicleChatModule extends ChatCommand
     		}
     	}
 
-		carEntity.AddHealth(carEntity.GetMaxHealth());
-		carEntity.SetHealth("EngineBelt", "Health", carEntity.GetMaxHealth());
-
-		if ( damageZones && damageZones.Count() > 0 )
+		if (damageZones && damageZones.Count() > 0)
 		{
 			foreach(string dmgZone: damageZones)
 			{
-				carEntity.SetHealthMax(dmgZone);
-				//carEntity.SetHealth(dmgZone, "",carEntity.GetMaxHealth(dmgZone, ""));
+				carEntity.SetHealthMax(dmgZone, "Health");
 			}
 		}
 
-		array<EntityAI> vehParts = new array<EntityAI>;
+		//Repair existing attachments or create if missing
 		TStringArray SlotNames = new TStringArray;
 		string cfg_path = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
 		GetGame().ConfigGetTextArray(cfg_path, SlotNames);	
 		
 		foreach(string carSlot : SlotNames)
-				vehParts.Insert(carEntity.FindAttachmentBySlotName(carSlot));
-	
-		if (vehParts != null)
 		{
-			foreach(EntityAI att : vehParts)
+			carSlot.ToLower();
+			int slotId = InventorySlots.GetSlotIdFromString(carSlot);
+			EntityAI attachment = vehicle.GetInventory().FindAttachment(slotId);
+			if (!attachment)
 			{
-				if (att != NULL)
+				string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
+				typeName.ToLower();
+				if (typeName.Contains("_ruined"))
+					typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
+
+				vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
+			}
+			else
+			{
+				string partType = attachment.GetType();
+				partType.ToLower();
+				if (partType.Contains("_ruined"))
 				{
-					string partType = att.GetType();
-					partType.ToLower();
-					if (partType.Contains("_ruined"))
-					{
-						partType.Replace("_ruined", "");
-						GetGame().ObjectDelete(att);
-						vehicle.GetInventory().CreateAttachment(partType);
-					}
-					else
-					{
-						att.AddHealth(att.GetMaxHealth());
-						att.SetSynchDirty();
-					}
+					partType.Replace("_ruined", "");
+					GetGame().ObjectDelete(attachment);
+					vehicle.GetInventory().CreateInInventory(partType);
+				}
+				else
+				{
+					attachment.SetHealthMax("", "Health");
+					attachment.SetSynchDirty();
 				}
 			}
 		}
-
 		carEntity.SetSynchDirty();
 		GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) /refuel used on self.", callerName, callerID));
     	GetPermissionManager().NotifyPlayer(callerID, vehicle.Type().ToString() + ": reparied & refueled added, all fluids maxed",NotifyTypes.NOTIFY);
 		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(callerID, callerName, "Chat Command Manager: /refuel used on self."));
     }
-}
+};

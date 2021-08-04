@@ -35,7 +35,7 @@ class UserBoxTemplate : VPPPlayerTemplate
 		MenuPermissionsEditor.Cast(rootMenu.GetSubMenuByType(MenuPermissionsEditor)).HideScrollWidgets(false);
 		if (result == DIAGRESULT.YES)
 		{
-			GetRPCManager().SendRPC( "RPC_PermissionManager", "RemoteRemoveUserFromGroup", new Param1<string>(m_ID), true);
+			GetRPCManager().VSendRPC( "RPC_PermissionManager", "RemoteRemoveUserFromGroup", new Param1<string>(m_ID), true);
 			MenuPermissionsEditor.Cast(rootMenu.GetSubMenuByType(MenuPermissionsEditor)).ReloadUserGroupsTab();
 			if (m_EntryBox != null)
 			m_EntryBox.Unlink();

@@ -177,12 +177,12 @@ class MenuWeatherManager extends AdminHudSubMenu
 	
 	void RequestTimeData()
 	{
-		GetRPCManager().SendRPC( "RPC_TimeManager", "SendToClient", null, true);
+		GetRPCManager().VSendRPC( "RPC_TimeManager", "SendToClient", null, true);
 	}
 	
 	void RequestWeatherData()
 	{
-		GetRPCManager().SendRPC( "RPC_WeatherManager", "SendToClient", null, true);
+		GetRPCManager().VSendRPC( "RPC_WeatherManager", "SendToClient", null, true);
 	}
 	
 	void HandleTimeData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -356,7 +356,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		m_WeatherPresetsDropDownInstance.SetText("Weather Presets");
 
 		UpdateWeatherSaves();
-		GetRPCManager().SendRPC( "RPC_WeatherManager", "RemoveWeatherSettingsFromServer", new Param1<string>(name), true );
+		GetRPCManager().VSendRPC( "RPC_WeatherManager", "RemoveWeatherSettingsFromServer", new Param1<string>(name), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_DEL_WEATHER_PRST");
 	}
 	
@@ -393,7 +393,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		GetWeatherValues(overcast, fog, rain, wind);
 		
-		GetRPCManager().SendRPC( "RPC_WeatherManager", "AddWeatherSettingToServer", new Param5<array<float>, array<float>, array<float>, float, string>(overcast, fog, rain, wind, name), true );
+		GetRPCManager().VSendRPC( "RPC_WeatherManager", "AddWeatherSettingToServer", new Param5<array<float>, array<float>, array<float>, float, string>(overcast, fog, rain, wind, name), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SAVING_WEATHER");
 	}
 	
@@ -412,7 +412,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		GetWeatherValues(overcast, fog, rain, wind);
 
-		GetRPCManager().SendRPC( "RPC_WeatherManager", "ApplyWeather", new Param4<array<float>, array<float>, array<float>, float>(overcast, fog, rain, wind), true );
+		GetRPCManager().VSendRPC( "RPC_WeatherManager", "ApplyWeather", new Param4<array<float>, array<float>, array<float>, float>(overcast, fog, rain, wind), true );
 		GetVPPUIManager().DisplayNotification("Applying Weather...");
 	}
 	
@@ -426,7 +426,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 			return;
 		}
 		
-		GetRPCManager().SendRPC( "RPC_WeatherManager", "ApplyPreset", new Param1<string>(name), true );
+		GetRPCManager().VSendRPC( "RPC_WeatherManager", "ApplyPreset", new Param1<string>(name), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_APPLY_WEATHERPREST");
 	}
 	
@@ -448,7 +448,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		m_TimePresetsInstance.SetText("Time Presets");
 		timePresetNames.RemoveItem(name);
-		GetRPCManager().SendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
+		GetRPCManager().VSendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
 		UpdateTimeSaves();
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_REMOVE_DATE_PRST");
 	}
@@ -490,7 +490,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		timePresetNames.Insert(name);
 		UpdateTimeSaves();
 		
-		GetRPCManager().SendRPC( "RPC_TimeManager", "SaveTimeSettings", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
+		GetRPCManager().VSendRPC( "RPC_TimeManager", "SaveTimeSettings", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SAVE_PRST_DATE");
 	}
 	
@@ -511,7 +511,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		min = minInput.GetText().ToInt();
 		hour = hourInput.GetText().ToInt();
 		
-		GetRPCManager().SendRPC( "RPC_TimeManager", "ApplyDate", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
+		GetRPCManager().VSendRPC( "RPC_TimeManager", "ApplyDate", new Param5<int, int, int, int, int>(month, day, year, min, hour), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WTH_APPLYING");
 	}
 	
@@ -525,7 +525,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 			return;
 		}
 		
-		GetRPCManager().SendRPC( "RPC_TimeManager", "ApplyPreset", new Param1<string>(name), true );
+		GetRPCManager().VSendRPC( "RPC_TimeManager", "ApplyPreset", new Param1<string>(name), true );
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_APPLY_TIME_PRST");
 	}
 	
@@ -535,7 +535,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 		
 		if(timePresetNames.Find(name) >= 0)
 		{
-			GetRPCManager().SendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
+			GetRPCManager().VSendRPC( "RPC_TimeManager", "DeleteTimeSetting", new Param1<string>(name), true );
 		 	timePresetNames.Remove(timePresetNames.Find(name));
 			UpdateTimeSaves();
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_UPDATED_TIME_PRST");

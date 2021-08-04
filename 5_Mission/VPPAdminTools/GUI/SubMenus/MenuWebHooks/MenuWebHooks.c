@@ -55,7 +55,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_loaded = true;
 
 		//Get Data
-		GetRPCManager().SendRPC("RPC_WebHooksManager", "GetWebHooks", null ,true);
+		GetRPCManager().VSendRPC("RPC_WebHooksManager", "GetWebHooks", null ,true);
 	}
 
 	override void OnUpdate(float timeslice)
@@ -137,7 +137,7 @@ class MenuWebHooks extends AdminHudSubMenu
 				newWebHook.m_joinLeaveLog 	  = m_joinLeaveLog.IsChecked();
 				newWebHook.m_serverStatusLog  = m_serverStatusLog.IsChecked();
 				newWebHook.SetServerStatsInterval(GetSelectedThreshold());
-				GetRPCManager().SendRPC("RPC_WebHooksManager", "CreateWebHooks", new Param1<ref WebHook>(newWebHook), true);
+				GetRPCManager().VSendRPC("RPC_WebHooksManager", "CreateWebHooks", new Param1<ref WebHook>(newWebHook), true);
 				createMode = false;
 			}
 			else
@@ -155,7 +155,7 @@ class MenuWebHooks extends AdminHudSubMenu
 					data.m_joinLeaveLog 	= m_joinLeaveLog.IsChecked();
 					data.m_serverStatusLog  = m_serverStatusLog.IsChecked();
 					data.SetServerStatsInterval(GetSelectedThreshold());
-					GetRPCManager().SendRPC("RPC_WebHooksManager", "EditWebHooks", new Param3<int,string,ref WebHook>(m_selectedIndex, oldName, data), true);
+					GetRPCManager().VSendRPC("RPC_WebHooksManager", "EditWebHooks", new Param3<int,string,ref WebHook>(m_selectedIndex, oldName, data), true);
 				}
 			}
 		}
@@ -210,7 +210,7 @@ class MenuWebHooks extends AdminHudSubMenu
 	{
 		int index = m_webHookEntries.Find( entry );
 		if (index > -1)
-			GetRPCManager().SendRPC("RPC_WebHooksManager", "DeleteWebHooks", new Param2<int,string>(index, entry.GetName()), true);
+			GetRPCManager().VSendRPC("RPC_WebHooksManager", "DeleteWebHooks", new Param2<int,string>(index, entry.GetName()), true);
 		else
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_ERR_DEL_WEBHOOK " + entry.GetName());
 	}

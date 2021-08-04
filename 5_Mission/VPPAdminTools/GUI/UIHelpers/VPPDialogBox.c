@@ -29,6 +29,7 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 	protected RichTextWidget m_Content;
 	private string 			 m_ContentText;
 	private Class        	 m_CallBackClass;
+	private string           m_CbFunc = "OnDiagResult";
 	private int 			 m_diagType;
 	
 	void OnWidgetScriptInit(Widget w)
@@ -57,10 +58,15 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 			m_Root.Unlink();
 	}
 	
-	void InitDiagBox(int diagType, string title, string content, Class callBackClass)
+	void InitDiagBox(int diagType, string title, string content, Class callBackClass, string cbFunc = string.Empty)
 	{
 		m_CallBackClass = callBackClass;
-		m_diagType = diagType;
+
+		if (cbFunc != string.Empty){
+			m_CbFunc = cbFunc;
+		}
+
+		m_diagType 		= diagType;
 		switch(diagType)
 		{
 			case DIAGTYPE.DIAG_YESNO:
@@ -88,12 +94,19 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 		m_TitleText.SetText(title);
 		m_Content.SetText(content);
 	}
-	
+
 	void AllowCharInput()
 	{
 		EditBoxEventHandler editClass;
 		m_InputBox.GetScript(editClass);
 		editClass.AllowCharInput();
+	}
+
+	void HideInputCharacters(bool hide)
+	{
+		EditBoxEventHandler editClass;
+		m_InputBox.GetScript(editClass);
+		editClass.HideCharsOnInput(hide);
 	}
 
 	void SetContentText(string text)
@@ -109,9 +122,14 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 	
 	string GetInputText()
 	{
+		EditBoxEventHandler editClass;
+		m_InputBox.GetScript(editClass);
+		if (editClass.HidePasswordChars())
+			return editClass.GetHiddenInput();
+
 		return m_InputBox.GetText();
 	}
-	
+
 	void MakeSmall()
 	{
 		if (m_Root == null) return;
@@ -122,7 +140,7 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 	
 	private void OnOutCome(int result)
 	{
-		GetGame().GameScript.CallFunction( m_CallBackClass, "OnDiagResult", null, result );
+		GetGame().GameScript.CallFunction( m_CallBackClass, m_CbFunc, null, result );
 		delete this;
 	}
 	
@@ -132,24 +150,24 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 		switch(w)
 		{
 			case m_Yes:
-			OnOutCome(DIAGRESULT.YES);
+				OnOutCome(DIAGRESULT.YES);
 			break;
 			
 			case m_No:
-			OnOutCome(DIAGRESULT.NO);
+				OnOutCome(DIAGRESULT.NO);
 			break;
 			
 			case m_Ok:
-			if (m_diagType == DIAGTYPE.DIAG_OK_CANCEL_INPUT)
-			{
-				GetGame().GameScript.CallFunctionParams( m_CallBackClass, "OnDiagResult", null, new Param2<int,string>( DIAGRESULT.OK, GetInputText()));
-				delete this;
-			}else
-				OnOutCome(DIAGRESULT.OK);
+				if (m_diagType == DIAGTYPE.DIAG_OK_CANCEL_INPUT)
+				{
+					GetGame().GameScript.CallFunctionParams( m_CallBackClass, m_CbFunc, null, new Param2<int,string>( DIAGRESULT.OK, GetInputText()));
+					delete this;
+				}else
+					OnOutCome(DIAGRESULT.OK);
 			break;
 			
 			case m_Cancel:
-			OnOutCome(DIAGRESULT.CANCEL);
+				OnOutCome(DIAGRESULT.CANCEL);
 			break;
 		}
 		return false;

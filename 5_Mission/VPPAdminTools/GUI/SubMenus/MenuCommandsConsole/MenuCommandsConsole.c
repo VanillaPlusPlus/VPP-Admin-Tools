@@ -127,7 +127,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 				{
 					//send off command 
 					if (cmdInpt != "" && (cmdInpt.Substring(0,1)) == "/")
-						GetRPCManager().SendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>(cmdInpt), true);
+						GetRPCManager().VSendRPC( "RPC_MissionServer", "HandleChatCommand", new Param1<string>(cmdInpt), true);
 
 					InsertHistory(cmdInpt);
 				}

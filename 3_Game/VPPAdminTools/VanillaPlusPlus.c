@@ -4,6 +4,9 @@ modded class DayZGame
 	private bool   m_SpectateStatus;
 	private bool   m_IsLShiftHolding;
 
+	private int    m_FailedLoginCount = 0;
+	private string m_AdminPassword;
+
 	private string 			  m_ServerName;
 	private int 			  m_Vtps = 0;
     private int 			  m_Vtps_time = 0;
@@ -99,7 +102,7 @@ modded class DayZGame
         	string address;
         	int port;
         	GetGame().GetHostAddress( address, port );
-        	GetRPCManager().SendRPC( "RPC_MissionGameplay", "ConnectedSession", new Param1<string>(address), true);
+        	GetRPCManager().VSendRPC( "RPC_MissionGameplay", "ConnectedSession", new Param1<string>(address), true);
         }
 	}
 	
@@ -126,6 +129,26 @@ modded class DayZGame
 	bool IsLShiftHolding()
 	{
 		return m_IsLShiftHolding;
+	}
+
+	int GetFailedLoginAttempts()
+	{
+		return m_FailedLoginCount;
+	}
+
+	void IncrementFailedLoginAttempts()
+	{
+		m_FailedLoginCount++;
+	}
+
+	void SetAdminPasswordHash(string data)
+	{
+		m_AdminPassword = data;
+	}
+
+	string GetAdminPasswordHash()
+	{
+		return m_AdminPassword;
 	}
 
 	string GetSessionPassword()

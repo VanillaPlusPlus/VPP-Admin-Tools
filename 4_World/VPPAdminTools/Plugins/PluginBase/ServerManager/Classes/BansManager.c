@@ -84,7 +84,7 @@ class BansManager extends ConfigurablePlugin
 		{
 			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuBansManager", "", false)) return;
 			
-			GetRPCManager().SendRPC("BanManagerClient", "HandleData", new Param1<ref array<ref BannedPlayer>>(m_BanList), true, sender);
+			GetRPCManager().VSendRPC("BanManagerClient", "HandleData", new Param1<ref array<ref BannedPlayer>>(m_BanList), true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[BansManager] Requested ban list"));
 		}
 	}
@@ -183,7 +183,7 @@ class BansManager extends ConfigurablePlugin
 			//Kick player after ban
 			if(GetPermissionManager().GetIdentityById(player.Steam64Id) != null)
 			{
-				GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( player.banReason ), true, GetPermissionManager().GetIdentityById(player.Steam64Id));
+				GetRPCManager().VSendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( player.banReason ), true, GetPermissionManager().GetIdentityById(player.Steam64Id));
 				return true;
 			}
 			GetSimpleLogger().Log(string.Format("[BansManager]:: AddToBanList: Player [%1] [%2] [%3] Reason:[%4] is already BANNED!",player.playerName,player.Steam64Id,player.GUID,player.banReason));

@@ -224,7 +224,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			break;
 			
 			case m_PassCodeReset:
-				GetRPCManager().SendRPC("RPC_VPPESPTools", "RestPasscodeFence", new Param1<Object>(m_TrackerEntity), true);
+				GetRPCManager().VSendRPC("RPC_VPPESPTools", "RestPasscodeFence", new Param1<Object>(m_TrackerEntity), true);
 				m_Passcode.SetText("Unlocked.");
 				return true;
 			break;
@@ -269,27 +269,27 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			break;
 			
 			case m_BtnTpToMe:
-				GetRPCManager().SendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/bring " + m_ItemName), true);
+				GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/bring " + m_ItemName), true);
 				return true;
 			break;
 			
 			case m_BtnTpMeTo:
-				GetRPCManager().SendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/goto " + m_ItemName), true);
+				GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/goto " + m_ItemName), true);
 				return true;
 			break;
 			
 			case m_BtnTpReturn:
-				GetRPCManager().SendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/return " + m_ItemName), true);
+				GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/return " + m_ItemName), true);
 				return true;
 			break;
 			
 			case m_BtnHeal:
-				GetRPCManager().SendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + m_ItemName), true);
+				GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + m_ItemName), true);
 				return true;
 			break;
 			
 			case m_BtnKill:
-				GetRPCManager().SendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/kill " + m_ItemName), true);
+				GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/kill " + m_ItemName), true);
 				return true;
 			break;
 		}		

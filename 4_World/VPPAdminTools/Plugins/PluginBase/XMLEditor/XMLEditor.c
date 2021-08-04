@@ -106,7 +106,7 @@ class XMLEditor extends PluginBase
 						result.Insert(new Param3<string,string,int>(elementType,elementData.data,elementData.index));
 				}
 				if (sender != null)
-					GetRPCManager().SendRPC("RPC_MenuXMLEditor", "HandleDetails", new Param2<string, ref array<ref Param3<string,string,int>>>(data.param1,result), true, sender);
+					GetRPCManager().VSendRPC("RPC_MenuXMLEditor", "HandleDetails", new Param2<string, ref array<ref Param3<string,string,int>>>(data.param1,result), true, sender);
 			}
 		}
 	}
@@ -154,42 +154,31 @@ class XMLEditor extends PluginBase
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuXMLEditor", "", false)) return;
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Started a loot scan for item: " + data.param1));
-			map<ref Object,vector> FoundItems = new map<ref Object,vector>;
 			map<string,vector> ItemPositons = new map<string,vector>;
 			array<vector> ScanPockets = GetScanPositions();
-			int currentPosIndex = 0;
-			foreach(vector PositionXYZ : ScanPockets)
-			{
-				Print("Started Scan at: "+ Vector(PositionXYZ[0], 0, PositionXYZ[1]).ToString());
-				array<Object> objects = new array<Object>;
-				GetGame().GetObjectsAtPosition(Vector(PositionXYZ[0], 0, PositionXYZ[1]), 1500, objects, NULL);
-				
-				for (int i = 0; i < objects.Count(); ++i)
-				{
-					EntityAI ent;
-					if (Class.CastTo(ent, objects.Get(i)))
-					{
-						data.param1.ToLower();
-						string entType = ent.GetType();
-						entType.ToLower();
 
-						if (entType == data.param1 && !FoundItems.Contains(ent))
-						{
-							FoundItems.Insert(ent, ent.GetPosition());
-							ItemPositons.Insert(data.param1 +"_"+ i.ToString(), ent.GetPosition());
-						}
-					}
+			array<EntityAI> entities = new array<EntityAI>;
+			DayZPlayerUtils.SceneGetEntitiesInBox("0 0 0", "20000.0 1200.0 20000.0", entities);
+
+			for (int i = 0; i < entities.Count(); ++i)
+			{
+				EntityAI ent = entities[i];
+				if (ent)
+				{
+					data.param1.ToLower();
+					string entType = ent.GetType();
+					entType.ToLower();
+					if (entType == data.param1)
+						ItemPositons.Insert(data.param1 +"_"+ i.ToString(), ent.GetPosition());
 				}
-				
-				string formatted = string.Format("Scan Position %3/%4: [%2]\nFound Items: [%1]\n",FoundItems.Count(),Vector(PositionXYZ[0], 0, PositionXYZ[1]).ToString(),currentPosIndex,ScanPockets.Count());
-				currentPosIndex++;
-				Print("V++ AdminTools: "+ formatted);
 			}
 			
+			Print(string.Format("[VPPAdminTools] Found Items: [%1]",entities.Count()));
+
 			if (sender != null)
 			{
 				Param1<ref map<string,vector>> m_Data = new Param1<ref map<string,vector>>(ItemPositons);
-				GetRPCManager().SendRPC( "RPC_MenuXMLEditor", "HandleStats", m_Data, true, sender);
+				GetRPCManager().VSendRPC("RPC_MenuXMLEditor", "HandleStats", m_Data, true, sender);
 			}
 		}
 	}

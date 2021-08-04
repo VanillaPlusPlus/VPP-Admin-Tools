@@ -108,7 +108,7 @@ class VPPLogManager: ConfigurablePlugin
 				{
 					array<string> logData;
 					LogToArray(logPath,logData);
-					GetRPCManager().SendRPC("RPC_MenuLogsViewer", "SortLogsList", new Param1<ref array<string>>(logData), true, sender);
+					GetRPCManager().VSendRPC("RPC_MenuLogsViewer", "SortLogsList", new Param1<ref array<string>>(logData), true, sender);
 				}
 			}
 		}

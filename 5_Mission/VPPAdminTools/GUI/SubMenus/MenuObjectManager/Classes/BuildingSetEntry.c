@@ -52,7 +52,7 @@ class BuildingSetEntry : VPPPlayerTemplate
 			objMenu.DeselectAllSets();
 			m_StatusCheckBox.SetChecked(true);
 			//Request server to load selected entry data
-			GetRPCManager().SendRPC("RPC_BuildingSetManager", "GetSetData", new Param1<string>(m_SetName),true,null);
+			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "GetSetData", new Param1<string>(m_SetName),true,null);
 		}else{
 			m_StatusCheckBox.SetChecked(false);
 		}

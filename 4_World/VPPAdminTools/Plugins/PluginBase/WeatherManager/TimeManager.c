@@ -53,7 +53,7 @@ class TimeManager : ConfigurablePlugin
 			}
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WeatherManager] Sent Saved Time Prests" ));
-			GetRPCManager().SendRPC( "RPC_WeatherUI", "HandleTimeData", new Param1<array<string>>(input), true, sender );
+			GetRPCManager().VSendRPC( "RPC_WeatherUI", "HandleTimeData", new Param1<array<string>>(input), true, sender );
 		}
 	}
 	

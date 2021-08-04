@@ -68,10 +68,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		GetVPPUIManager().HookConfirmationDialog(m_BtnXMLEditorApply, M_SUB_WIDGET,this,"ApplyChanges", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_XML_EDITORCHN");
 		
 		m_BtnLoadSelected   = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnLoadSelected") );
-		
 		m_BtnGetStats       = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnGetStats") );
-		GetVPPUIManager().HookConfirmationDialog(m_BtnGetStats, M_SUB_WIDGET,this,"RequestStats", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_XML_SCAN");
-		
 		
 		m_ItemPreviewXML = ItemPreviewWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemPreviewXML") );
 		m_ItemListBoxXML = TextListboxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemListBoxXML") );
@@ -146,6 +143,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
+		string typeName;
 		if (w == m_BtnLoadSelected)
 		{
 			if (m_ItemListBoxXML.GetSelectedRow() == -1)
@@ -154,12 +152,23 @@ class MenuXMLEditor extends AdminHudSubMenu
 				return false;
 			}
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WAIT_INFO");
-			string typeName;
 			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
-			GetRPCManager().SendRPC("RPC_XMLEditor", "GetDetails", new Param1<string>(typeName), true, null);
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetDetails", new Param1<string>(typeName), true, null);
 			return true;
 		}
-		
+
+		if (w == m_BtnGetStats)
+		{
+			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
+			if (typeName == "")
+			{
+				GetVPPUIManager().DisplayError("#VSTR_XML_ERR_SELECTFIRST");
+				return false;
+			}
+			m_MapScreen = new ItemScanResultScreen();
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
+			return true;
+		}
 		return super.OnClick(w, x, y, button);
 	}
 	
@@ -350,27 +359,11 @@ class MenuXMLEditor extends AdminHudSubMenu
 				return;
 			}
 			UpdateCacheData();
-			GetRPCManager().SendRPC("RPC_XMLEditor", "EditElemets", new Param2<string, ref array<ref Param3<string,string,int>>>(m_selectedType,m_cacheData), true, null);
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "EditElemets", new Param2<string, ref array<ref Param3<string,string,int>>>(m_selectedType,m_cacheData), true, null);
 			
 			m_selectedType = "";
 			m_cacheData    = null;
 			ResetInputBoxes();
-		}
-	}
-	
-	void RequestStats(int result)
-	{
-		if (result == DIAGRESULT.YES)
-		{
-			string typeName;
-			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
-			if (typeName == "")
-			{
-				GetVPPUIManager().DisplayError("#VSTR_XML_ERR_SELECTFIRST");
-				return;
-			}
-			m_MapScreen = new ItemScanResultScreen();
-			GetRPCManager().SendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
 		}
 	}
 	

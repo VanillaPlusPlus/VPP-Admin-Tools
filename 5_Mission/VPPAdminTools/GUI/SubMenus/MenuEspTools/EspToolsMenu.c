@@ -287,7 +287,7 @@ class EspToolsMenu extends AdminHudSubMenu
 			}else{
 				M_SCAN_ACTIVE = true;
 				m_btnToggle.SetColor(ARGB(255,0,255,0));
-				GetRPCManager().SendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
+				GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 			}
 			break;
 			
@@ -440,7 +440,7 @@ class EspToolsMenu extends AdminHudSubMenu
 						ToDelete.Insert(itemEntry.GetTargetObject());
 				}
 			}
-			GetRPCManager().SendRPC( "RPC_VPPESPTools", "DeleteItems", new Param1<ref array<Object>>(ToDelete),true,null);
+			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "DeleteItems", new Param1<ref array<Object>>(ToDelete),true,null);
 			ClearItemEntries();
 			return;
 		}
@@ -449,7 +449,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		if (entry.GetTargetObject() != null)
 		{
 			ToDelete.Insert(entry.GetTargetObject());
-			GetRPCManager().SendRPC( "RPC_VPPESPTools", "DeleteItems", new Param1<ref array<Object>>(ToDelete),true,null);
+			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "DeleteItems", new Param1<ref array<Object>>(ToDelete),true,null);
 		}
 		int index = m_EspItemsEntry.Find(entry);
 		if (index > -1)

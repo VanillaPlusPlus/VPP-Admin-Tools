@@ -65,7 +65,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_chkSelectAll   = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkSelectAll"));
 		
 		GetTeleportPositions();
-		GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
+		GetRPCManager().VSendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
 		m_loaded = true;
 	}
 	
@@ -78,12 +78,13 @@ class MenuTeleportManager extends AdminHudSubMenu
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
-		if (!IsSubMenuVisible() && !m_loaded) return;
+		if (!IsSubMenuVisible() || !m_loaded)
+			return;
 		
 		updateInterval += timeslice;
 		if (updateInterval >= 1.0)
 		{
-			GetRPCManager().SendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
+			GetRPCManager().VSendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
 			updateInterval = 0.0;
 		}
 		
@@ -160,9 +161,9 @@ class MenuTeleportManager extends AdminHudSubMenu
 	{
 		delete m_PopUpPositionEditorWidget;
 		if (editMode)
-			GetRPCManager().SendRPC("RPC_TeleportManager", "EditPreset", new Param4<string,vector,string,vector>(oldName,oldPosition,name,position), true);
+			GetRPCManager().VSendRPC("RPC_TeleportManager", "EditPreset", new Param4<string,vector,string,vector>(oldName,oldPosition,name,position), true);
 		else
-			GetRPCManager().SendRPC("RPC_TeleportManager", "AddNewPreset", new Param2<string,vector>(name,position), true);
+			GetRPCManager().VSendRPC("RPC_TeleportManager", "AddNewPreset", new Param2<string,vector>(name,position), true);
 	}
 	
 	void RemovePosition(int result)
@@ -176,7 +177,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 				if (entry != null)
 					toDelete.Insert(entry.GetVPPTeleportLocation().GetName());
 			}
-			GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteRemovePreset", new Param1<ref array<string>>(toDelete), true);
+			GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteRemovePreset", new Param1<ref array<string>>(toDelete), true);
 		}
 	}
 	
@@ -239,9 +240,9 @@ class MenuTeleportManager extends AdminHudSubMenu
 				if (selectedPlayers.Count() >= 1)
 				{
 					if (customPos)
-						GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,"",ScreenToWorld()), true);
+						GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,"",ScreenToWorld()), true);
 						else
-						GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
+						GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(selectedPlayers,GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
 				}
 				else
 				{
@@ -256,9 +257,9 @@ class MenuTeleportManager extends AdminHudSubMenu
 		else
 		{
 			if (GetSelected().Count() > 0 && !customPos)
-				GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>({"self"},GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
+				GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>({"self"},GetSelected()[0].GetVPPTeleportLocation().GetName(),ScreenToWorld()), true);
 			else
-				GetRPCManager().SendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>({"self"},"",ScreenToWorld()), true);
+				GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>({"self"},"",ScreenToWorld()), true);
 		}
 	}
 	
@@ -294,7 +295,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	
 	void GetTeleportPositions()
 	{
-		GetRPCManager().SendRPC("RPC_TeleportManager", "GetData", null, true);
+		GetRPCManager().VSendRPC("RPC_TeleportManager", "GetData", null, true);
 	}
 	
 	void HandleData(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)

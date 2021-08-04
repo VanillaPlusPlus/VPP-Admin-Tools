@@ -252,7 +252,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 				
 			array<string> uids = GetSelectedPlayersIDs();
 				if (uids.Count() >= 1)
-					GetRPCManager().SendRPC( "RPC_PlayerManager", "GetPlayerStatsGroup", new Param1<ref array<string>>(uids), true);
+					GetRPCManager().VSendRPC( "RPC_PlayerManager", "GetPlayerStatsGroup", new Param1<ref array<string>>(uids), true);
 			break;
 			
 			case m_BtnRefreshPlayerList:
@@ -261,23 +261,23 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 			
 			case m_ActionHeal:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "HealPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "HealPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
 			break;
 			
 			case m_ActionGiveGodmode:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveGodmode", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "GiveGodmode", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 			break;
 			
 			case m_ActionUnlimitedAmmo:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "GiveUnlimitedAmmo", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "GiveUnlimitedAmmo", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 			break;
 
 			case m_ActionInvisible:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<int>>(GetSelectedPlayersSessionIDs()), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "RequestInvisibility", new Param1<ref array<int>>(GetSelectedPlayersSessionIDs()), true);
 			break;
 
 			case m_ActionFreezePlayer:
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "FreezePlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "FreezePlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
 			break;
 			
 			case m_ActionSpectate:
@@ -285,11 +285,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 			
 			case m_ActionTpToMe:
-			GetRPCManager().SendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(false,GetSelectedPlayersIDs()),true);
+			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(false,GetSelectedPlayersIDs()),true);
 			break;
 			
 			case m_ActionTpMeTo:
-			GetRPCManager().SendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(true,GetSelectedPlayersIDs()),true);
+			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(true,GetSelectedPlayersIDs()),true);
 			break;
 			
 			//Sliders apply buttons
@@ -326,7 +326,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		if(result == DIAGRESULT.OK)
 		{
 			float scale = inputText.ToFloat();
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "ChangePlayerScale", new Param2<ref array<string>,float>(GetSelectedPlayersIDs(), Math.Clamp(scale, 0.01, 100.0)), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "ChangePlayerScale", new Param2<ref array<string>,float>(GetSelectedPlayersIDs(), Math.Clamp(scale, 0.01, 100.0)), true);
 		}
 	}
 	
@@ -338,7 +338,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 
 			if(time > 0)
 			{
-				GetRPCManager().SendRPC( "RPC_PlayerManager", "MakePlayerVomit", new Param2<ref array<string>, int>(GetSelectedPlayersIDs(), time), true);
+				GetRPCManager().VSendRPC( "RPC_PlayerManager", "MakePlayerVomit", new Param2<ref array<string>, int>(GetSelectedPlayersIDs(), time), true);
 			}
 		}
 	}
@@ -365,7 +365,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	{
 		if (result == DIAGRESULT.YES)
 		{
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "BanPlayer", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "BanPlayer", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
 		}
 	}
 	
@@ -379,7 +379,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 			if (input == "")
 				input = "#VSTR_NOTIFY_KICK_MESSAGE_PLAYER";
 			
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "KickPlayer", new Param2<ref array<string>,string>(GetSelectedPlayersIDs(),input), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "KickPlayer", new Param2<ref array<string>,string>(GetSelectedPlayersIDs(),input), true);
 		}
 	}
 	
@@ -440,14 +440,14 @@ class MenuPlayerManager extends AdminHudSubMenu
 	void SpectateTarget()
 	{
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SPECTATE_REQ");
-		GetRPCManager().SendRPC("RPC_PlayerManager", "SpectatePlayer", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+		GetRPCManager().VSendRPC("RPC_PlayerManager", "SpectatePlayer", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
 	}
 	
 	void KillSelectedPlayers(int result)
 	{
 		if (result == DIAGRESULT.YES)
 		{
-			GetRPCManager().SendRPC( "RPC_PlayerManager", "KillPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true );
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "KillPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true );
 		}
 	}
 	
@@ -456,7 +456,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		if (result == DIAGRESULT.OK && userInput != "")
 		{
 			array<string> uids = GetSelectedPlayersIDs();
-        	GetRPCManager().SendRPC( "RPC_PlayerManager", "SendMessage", new Param3<string,string,ref array<string>>("Server Admin:",userInput,uids), true );
+        	GetRPCManager().VSendRPC( "RPC_PlayerManager", "SendMessage", new Param3<string,string,ref array<string>>("Server Admin:",userInput,uids), true );
 		}
 	}
 	
@@ -549,7 +549,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 				stateNewValue = m_SliderEnergy.GetCurrent();
 				break;
 			}
-			GetRPCManager().SendRPC("RPC_PlayerManager", "SetPlayerStats", new Param3<float,string,string>(stateNewValue,entry.GetID(),statType), true); //stat level, player id, stat type
+			GetRPCManager().VSendRPC("RPC_PlayerManager", "SetPlayerStats", new Param3<float,string,string>(stateNewValue,entry.GetID(),statType), true); //stat level, player id, stat type
 		}
 	}
 
@@ -620,7 +620,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 			}
 		}
 		
-		GetRPCManager().SendRPC("RPC_PlayerManager", "GetPlayerStatsGroup", new Param1<ref array<string>>(IDs), true);
+		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerStatsGroup", new Param1<ref array<string>>(IDs), true);
 	}
 	
 	private array<ref VPPPlayerEntry> Compare(array<ref VPPUser> b)

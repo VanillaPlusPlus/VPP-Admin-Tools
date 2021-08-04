@@ -130,7 +130,7 @@ class PlayerManager extends PluginBase
 					if (tg != null)
 					{
 						GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_KICK_PLAYER"+tg.VPlayerGetName(),NotifyTypes.NOTIFY);
-						GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tg.GetIdentity());
+						GetRPCManager().VSendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( data.param2 ), true, tg.GetIdentity());
 						GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) kicked player: \"%3\"", sender.GetName(), sender.GetPlainId(), tg.VPlayerGetName()));
 					}
 				}
@@ -209,7 +209,7 @@ class PlayerManager extends PluginBase
 
 		if (adminPlayer != null){
 			GetGame().ObjectDelete(adminPlayer);
-			GetRPCManager().SendRPC( "RPC_MenuPlayerManager", "InitSpectate", new Param1<Object>(spectateTarget), true, adminPlayer.GetIdentity() );
+			GetRPCManager().VSendRPC( "RPC_MenuPlayerManager", "InitSpectate", new Param1<Object>(spectateTarget), true, adminPlayer.GetIdentity() );
 		}
 	}
 	
@@ -453,8 +453,12 @@ class PlayerManager extends PluginBase
 
 		                        if (targetPlayer.GetBleedingManagerServer())
 		                        {
-		                            targetPlayer.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
-		                            cuts--;
+		                        	int bit = targetPlayer.GetBleedingManagerServer().GetMostSignificantBleedingSource();
+									if(bit != 0)
+									{
+		                            	targetPlayer.GetBleedingManagerServer().RemoveBleedingSourceNonInfectious(bit);
+		                            	cuts--;
+									}
 		                        }
 		                    }
 		                }
@@ -546,7 +550,7 @@ class PlayerManager extends PluginBase
 				dataMap.Insert("UserGroup",GetPermissionManager().GetPlayerUserGrpNameByID(id));
 	
 				PlayerStatsData stats = new PlayerStatsData(dataMap);
-				GetRPCManager().SendRPC( "RPC_MenuPlayerManager", "HandlePlayerStats", new Param1<ref PlayerStatsData>(stats), true, sender);
+				GetRPCManager().VSendRPC( "RPC_MenuPlayerManager", "HandlePlayerStats", new Param1<ref PlayerStatsData>(stats), true, sender);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] GetPlayerStats Target ID: " + id + " Name: " + playerMan.VPlayerGetSteamId()));
 			}
 		}
@@ -618,7 +622,7 @@ class PlayerManager extends PluginBase
 						dataMap.Insert("UserGroup",GetPermissionManager().GetPlayerUserGrpNameByID(id));
 						
 						PlayerStatsData stats = new PlayerStatsData(dataMap);
-						GetRPCManager().SendRPC( "RPC_MenuPlayerManager", "HandlePlayerStats", new Param1<ref PlayerStatsData>(stats), true, sender);
+						GetRPCManager().VSendRPC( "RPC_MenuPlayerManager", "HandlePlayerStats", new Param1<ref PlayerStatsData>(stats), true, sender);
 					}
 				}
 				if (pcount > 0)

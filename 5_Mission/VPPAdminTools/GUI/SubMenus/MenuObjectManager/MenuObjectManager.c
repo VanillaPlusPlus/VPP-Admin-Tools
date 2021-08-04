@@ -108,7 +108,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		//------------
 		
 		//Get Data from Server via RPC 
-		GetRPCManager().SendRPC("RPC_BuildingSetManager", "GetBuildingSets", null,true,null);
+		GetRPCManager().VSendRPC("RPC_BuildingSetManager", "GetBuildingSets", null,true,null);
 		//--
 		
 		UpdateFilter();
@@ -280,7 +280,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (m_SelectedSetData != null)
 		{
 			//Send RPC to delete selected set
-			GetRPCManager().SendRPC("RPC_BuildingSetManager", "RemoteDeleteSet", new Param1<string>(m_SelectedSetData.GetName()),true,null);
+			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteDeleteSet", new Param1<string>(m_SelectedSetData.GetName()),true,null);
 			m_SelectedSetData = null;
 			worldObject = null;
 		}
@@ -291,7 +291,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (m_SelectedSetData != null)
 		{
 			//Send RPC to update selected set
-			GetRPCManager().SendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),setName,active),true,null);
+			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),setName,active),true,null);
 			m_SelectedSetData = null;
 			worldObject = null;
 		}
@@ -300,7 +300,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	void CreateNewSet(string setName, bool active)
 	{
 		//Send RPC to add new set
-		GetRPCManager().SendRPC("RPC_BuildingSetManager", "RemoteAddNewSet", new Param2<string,bool>(setName,active),true,null);
+		GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteAddNewSet", new Param2<string,bool>(setName,active),true,null);
 	}
 	
 	bool CheckDuplicateSet(string setName)
@@ -772,7 +772,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				m_SelectedSetData = null;
 				worldObject = null;
 			}
-			GetRPCManager().SendRPC("RPC_BuildingSetManager", "GetBuildingSets", null,true,null);
+			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "GetBuildingSets", null,true,null);
 			break;
 			
 			case m_chkFreeCam:
@@ -797,8 +797,8 @@ class MenuObjectManager extends AdminHudSubMenu
 			
 			case m_btnSaveChanges:
 				m_SelectedSetData.UpdateBuildingsData();
-				GetRPCManager().SendRPC("RPC_BuildingSetManager", "RemoteSaveEdits", new Param2<ref array<ref SpawnedBuilding>,string>(m_SelectedSetData.GetBuildings(),m_SelectedSetData.GetName()),true,null);
-			    GetRPCManager().SendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),m_SelectedSetData.GetName(),m_SelectedSetData.GetActive()),true,null);
+				GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteSaveEdits", new Param2<ref array<ref SpawnedBuilding>,string>(m_SelectedSetData.GetBuildings(),m_SelectedSetData.GetName()),true,null);
+			    GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),m_SelectedSetData.GetName(),m_SelectedSetData.GetActive()),true,null);
 				delete m_SelectedSetData;
 				m_SelectedSetData = null;
 				worldObject = null;

@@ -1,8 +1,7 @@
 modded class CarScript
 {
-	override void OnDebugSpawn()
+	void RefillAllLiquids()
 	{
-		//Liquids
 		float fuelReq = GetFluidCapacity(CarFluid.FUEL) - (GetFluidCapacity(CarFluid.FUEL) * GetFluidFraction(CarFluid.FUEL));
 		float oilReq = GetFluidCapacity(CarFluid.OIL) - (GetFluidCapacity(CarFluid.OIL) * GetFluidFraction(CarFluid.OIL));
 		float coolantReq = GetFluidCapacity(CarFluid.COOLANT) - (GetFluidCapacity(CarFluid.COOLANT) * GetFluidFraction(CarFluid.COOLANT));

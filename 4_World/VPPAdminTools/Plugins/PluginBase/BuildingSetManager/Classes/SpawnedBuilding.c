@@ -38,7 +38,7 @@ class SpawnedBuilding
 				Object netWrkObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
 				GetGame().ObjectDelete(netWrkObj);
 				//if (netWrkObj != null)
-					//GetRPCManager().SendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
+					//GetRPCManager().VSendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
 			}
 		}
 

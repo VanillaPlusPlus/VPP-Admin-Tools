@@ -86,9 +86,9 @@ class VPPFreeCam extends Camera
 
 		vector newPos = oldPos + localVelocity;
 
-		float surfaceY = GetGame().SurfaceY( newPos[0], newPos[2] ) + 0.15; //0.25
-		if ( newPos[1] < surfaceY )
-			newPos[1] = surfaceY;
+		//float surfaceY = GetGame().SurfaceY( newPos[0], newPos[2] ) + 0.15; //0.25
+		//if ( newPos[1] < surfaceY )
+			//newPos[1] = surfaceY;
 
 		//FOV
 		if (input.LocalValue("UACamFOV") > 0)

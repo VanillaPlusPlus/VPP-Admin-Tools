@@ -274,7 +274,7 @@ class TeleportManager : ConfigurablePlugin
 						if(player != null)
 							m_List.Insert( new VPPPlayerData(PlayerBase.Cast(player).VPlayerGetName(), player.GetPosition()) );
 					
-					GetRPCManager().SendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
+					GetRPCManager().VSendRPC( "RPC_MenuTeleportManager", "UpdateMap", new Param1<ref array<ref VPPPlayerData>>( m_List ), true, sender);
 				}
 			}
 		}
@@ -289,7 +289,7 @@ class TeleportManager : ConfigurablePlugin
 				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager", "", false)) return;
 				
 				Load();
-				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Sent Teleport Presets"));
 			}
 		}
@@ -383,7 +383,7 @@ class TeleportManager : ConfigurablePlugin
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(senderId, sender.GetName(), "[TeleportManager] Deleted Preset(s): " + totalDeleted));
 					Save();
 					//send updated list to client
-					GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
 				}
 			}
 		}
@@ -403,7 +403,7 @@ class TeleportManager : ConfigurablePlugin
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_ADD_SUCESS"+data.param1+" preset!",NotifyTypes.NOTIFY);
 				//send updated list to client
-				GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Added new preset: " + data.param1 + " position: " + data.param2));
 			}
 		}
@@ -437,7 +437,7 @@ class TeleportManager : ConfigurablePlugin
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_EDIT_SUCESS"+data.param1+" preset!",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Edited Preset: " + data.param1));
 					//send updated list to client
-					GetRPCManager().SendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
 				}else{
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to edited "+data.param1+" preset, something went wrong!",NotifyTypes.ERROR);
 				}

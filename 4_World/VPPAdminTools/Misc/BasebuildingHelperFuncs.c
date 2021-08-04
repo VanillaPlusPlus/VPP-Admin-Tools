@@ -33,7 +33,7 @@ class BasebuildingHelperFuncs
 			
 			//Expansion mod
 			case "ExpansionBaseBuilding":
-				GetRPCManager().SendRPC("RPC_VPPESPTools", "RetriveCodeFromObj", new Param1<Object>(obj), true);
+				GetRPCManager().VSendRPC("RPC_VPPESPTools", "RetriveCodeFromObj", new Param1<Object>(obj), true);
 				return true;
 			break;
 			

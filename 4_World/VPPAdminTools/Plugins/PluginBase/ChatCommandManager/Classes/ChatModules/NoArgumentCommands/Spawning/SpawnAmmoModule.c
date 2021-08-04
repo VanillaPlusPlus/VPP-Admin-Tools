@@ -40,6 +40,6 @@ class SpawnAmmoChatModule extends ChatCommand
 
     void InvokeReloadOnClient(PlayerIdentity clientIdentity)
 	{
-		GetRPCManager().SendRPC( "RPC_PlayerBase", "InvokeReload", null, true, clientIdentity);
+		GetRPCManager().VSendRPC( "RPC_PlayerBase", "InvokeReload", null, true, clientIdentity);
 	}
 }

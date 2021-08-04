@@ -100,7 +100,7 @@ class MenuItemManager extends AdminHudSubMenu
 		UpdateFilter();
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		
-		GetRPCManager().SendRPC("RPC_VPPItemManager", "GetData", null, true, null);
+		GetRPCManager().VSendRPC("RPC_VPPItemManager", "GetData", null, true, null);
 		m_loaded = true;
 	}
 	
@@ -148,7 +148,7 @@ class MenuItemManager extends AdminHudSubMenu
 			
 			case m_BtnSaveChanges:
 			if (m_CurrentPresetData != null)
-				GetRPCManager().SendRPC("RPC_VPPItemManager", "EditPreset", new Param1<ref PresetItemData>(m_CurrentPresetData), true, null);
+				GetRPCManager().VSendRPC("RPC_VPPItemManager", "EditPreset", new Param1<ref PresetItemData>(m_CurrentPresetData), true, null);
 			break;
 			
 			case m_BtnSpawnPreset:
@@ -180,7 +180,7 @@ class MenuItemManager extends AdminHudSubMenu
 			
 			case m_btnRefresh:
 			m_CurrentPresetData = null;
-			GetRPCManager().SendRPC("RPC_VPPItemManager", "GetData", null, true, null);
+			GetRPCManager().VSendRPC("RPC_VPPItemManager", "GetData", null, true, null);
 			break;
 			
 			case m_chkBoxPreview:
@@ -205,7 +205,7 @@ class MenuItemManager extends AdminHudSubMenu
 	
 	void SaveNewPreset(string presetName)
 	{
-		GetRPCManager().SendRPC("RPC_VPPItemManager", "AddPreset", new Param1<string>(presetName), true, null);
+		GetRPCManager().VSendRPC("RPC_VPPItemManager", "AddPreset", new Param1<string>(presetName), true, null);
 	}
 	
 	bool CheckDuplicatePreset(string presetName)
@@ -247,7 +247,7 @@ class MenuItemManager extends AdminHudSubMenu
 	
 	void DeletePreset(string presetName)
 	{
-		GetRPCManager().SendRPC("RPC_VPPItemManager", "DeletePreset", new Param1<string>(presetName), true, null);
+		GetRPCManager().VSendRPC("RPC_VPPItemManager", "DeletePreset", new Param1<string>(presetName), true, null);
 	}
 	
 	void RequestSpawn(bool singleItem = false, string typeName = "")
@@ -294,9 +294,9 @@ class MenuItemManager extends AdminHudSubMenu
 		
 
 		if (singleItem && typeName != "")
-			GetRPCManager().SendRPC("RPC_VPPItemManager", "SpawnItem", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(typeName, pos, quantity, condition, placementType, trgIDs)), true, null);
+			GetRPCManager().VSendRPC("RPC_VPPItemManager", "SpawnItem", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(typeName, pos, quantity, condition, placementType, trgIDs)), true, null);
 			else
-			GetRPCManager().SendRPC("RPC_VPPItemManager", "RemoteSpawnPreset", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(presetName, pos, quantity, condition, placementType, trgIDs)), true, null);
+			GetRPCManager().VSendRPC("RPC_VPPItemManager", "RemoteSpawnPreset", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(presetName, pos, quantity, condition, placementType, trgIDs)), true, null);
 	}
 	
 	void ReloadPresetData()

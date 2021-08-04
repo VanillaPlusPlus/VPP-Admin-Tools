@@ -98,7 +98,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 			if (userInput != "")
 			{
 				m_PermsLevel.SetText(userInput);
-				GetRPCManager().SendRPC( "RPC_PermissionManager", "UpdateUserGroupPermLvl", new Param2<int,string>(userInput.ToInt(),m_group.GetGroupName()), true);
+				GetRPCManager().VSendRPC( "RPC_PermissionManager", "UpdateUserGroupPermLvl", new Param2<int,string>(userInput.ToInt(),m_group.GetGroupName()), true);
 				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMLVL_UPDATED"+userInput);
 			}
 		}
@@ -132,8 +132,8 @@ class UserGroupTemplate : VPPPlayerTemplate
 
 		if (w == button_save)
 		{
-			GetRPCManager().SendRPC( "RPC_PermissionManager", "UpdateUserGroupSettings", new Param2<bool,string>(chkForceAdminName.IsChecked(),m_group.GetGroupName()), true);
-			GetRPCManager().SendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(1), true); //Request Updated user groups
+			GetRPCManager().VSendRPC( "RPC_PermissionManager", "UpdateUserGroupSettings", new Param2<bool,string>(chkForceAdminName.IsChecked(),m_group.GetGroupName()), true);
+			GetRPCManager().VSendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(1), true); //Request Updated user groups
 			settingsRoot.Unlink();
 			return true;
 		}
