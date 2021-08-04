@@ -58,15 +58,20 @@ Some server owners use DayZ SA launcher, and require you to join the server thro
 
 If you wish to manual edit these Json Configuration Files, please use [JsonEditorOnline](https://jsoneditoronline.org/); however, all configuration, other than setting players as super admin, can be done in-game through the UI with the proper permission group, or by being a super admin.
 
-## Adding a Super Admin
+## Adding a Super Admin & Password Setup
 
-The only file which needs to be manually edited on the server is the SuperAdmins.txt file, which is located in your Profile's Folder inside of: VPPAdminTools/Permissions/SuperAdmins. Inside of this file you will see two steam ID's, these id's are for those who have "God" permissions over UserGroups, and are the only one who can set other users into other usergroups. In order to make yourself super admin, you will need to delete both steam id's, and add your own then restart.
+**To add a SuperAdmin;** 
+The file SuperAdmins.txt file located in your Profiles folder located at: **VPPAdminTools/Permissions/SuperAdmins**. Within this file you will add steam ID's, these id's are for those who have the highest permissions over UserGroups. SuperAdmins are the only users in which can add other users into UserGroups. In order to make yourself super admin, you will need to add your own Steam 64 ID.
+
+**To setup a password;** 
+Navigate to **Profiles/VPPAdminTools/Permissions/credentials.txt** and follow the instructions written in the generated file. **You MUST set a password** otherwise the tool will not function.
+Server restart is required to apply changes. 
 
 **Note:**
-If you add multiple steam id's each one has to be on it's own line with no empty spaces at the end, or begin of each steam id. You can get your Steam ID: [Here](http://steamid.io/)
+If you add multiple steam id's, each one has to be on it's own line with no empty spaces at the start or end. You can get your Steam ID: [Here](http://steamid.io/)
 
 ## End
-If you have followed these steps correctly, you should be able to get in-game, and press the INSERT key to open the tools. Every button for every module will be on the right side of your screen, and can be opened, and closed by simply clicking on it.
+If you have followed these steps correctly, you should be able to get in-game, and press the INSERT key to open the tools & login with your set password. Every button for every module will be on the right side of your screen, and can be opened, and closed by simply clicking on it.
 
 ## Donation Information
 - [DaOne](https://www.paypal.me/duhonez)
