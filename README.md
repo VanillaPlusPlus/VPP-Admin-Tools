@@ -38,7 +38,7 @@ Vanilla++ is a DayZ workshop add-on which aims to add administration tools by im
 
 ## Adding Mod to Server
 
-First, subscribe to the dependencies: [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036), [VPPNotifications] (https://steamcommunity.com/sharedfiles/filedetails/?id=1680673106) on the Steam Workshop.
+First, subscribe to the dependencies: [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1828439124), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036) on the Steam Workshop.
 
 Second, launch the normal DayZ launcher, not DayZ SA Launcher, and in the bottom of the window it should verify that you just recently subscribed, and downloaded the mods. Goto the mods tab, right click on VPPAdminTools, and click on Open Folder.
 
