@@ -164,19 +164,21 @@ class VPPItemManager: ConfigurablePlugin
 	{
 		EntityAI itemEntity;
 		ItemBase itemBase;
-		bool isAi = GetGame().IsKindOf( type, "DZ_LightAI" ) || GetGame().IsKindOf( type, "SurvivorBase" );
+		bool isAi = GetGame().IsKindOf( type, "DZ_LightAI" ) || GetGame().IsKindOf(type, "SurvivorBase");
 		int iFlags = ECE_SETUP|ECE_KEEPHEIGHT|ECE_PLACE_ON_SURFACE;
 		
-		if ( isAi )
-			iFlags = (ECE_CREATEPHYSICS * 2)|ECE_CREATEPHYSICS|iFlags;
+		if (isAi)
+			iFlags = ECE_INITAI|ECE_CREATEPHYSICS|iFlags;
 
-		if (parentEntity != null)
-			itemEntity = EntityAI.Cast( parentEntity.GetInventory().CreateInInventory(type) ); //CreateAttachment
-		else
-			itemEntity = EntityAI.Cast( GetGame().CreateObjectEx( type, position, iFlags) );
+		if (parentEntity != NULL)
+		{
+			itemEntity = EntityAI.Cast(parentEntity.GetInventory().CreateInInventory(type));
+		}else{
+			itemEntity = EntityAI.Cast(GetGame().CreateObjectEx(type, position, iFlags));
+		}
 		
-		if ( itemEntity == NULL )
-			return null;
+		if (itemEntity == NULL)
+			return NULL;
 		
 		if (Transport.Cast(itemEntity))
 		{
@@ -188,47 +190,53 @@ class VPPItemManager: ConfigurablePlugin
 		switch(health)
 		{
 			case ConditionTypes.PRISTINE:
-			health = itemEntity.GetMaxHealth();
+			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_PRISTINE_VALUE);
 			break;
 			
 			case ConditionTypes.WORN:
-			health = (itemEntity.GetMaxHealth() * 65) / 100;
+			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_WORN_VALUE);
 			break;
 			
 			case ConditionTypes.DAMAGED:
-			health = (itemEntity.GetMaxHealth() * 45) / 100;
+			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_DAMAGED_VALUE);
 			break;
 			
 			case ConditionTypes.BADLY_DAMAGED:
-			health = (itemEntity.GetMaxHealth() * 25) / 100;
+			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_BADLY_DAMAGED_VALUE);
 			break;
 			
 			case ConditionTypes.RUINED:
-			health = 0;
+			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_RUINED_VALUE);
 			break;
 		}
-				
+
 		if (health <= -1)
-			itemEntity.SetHealth( itemEntity.GetMaxHealth() );
-		else
-			itemEntity.SetHealth( health );
-		
-		if ( itemEntity.IsInherited( ItemBase ) && !isAi )
 		{
-			itemBase = ItemBase.Cast( itemEntity );
+			itemEntity.SetHealth(itemEntity.GetMaxHealth());
+		}else{
+			itemEntity.SetHealth(health);
+		}
+		
+		if (itemEntity.IsInherited(ItemBase) && !isAi)
+		{
+			itemBase = ItemBase.Cast(itemEntity);
 			if (quantity <= -1)
 			{
 				int varQuantityInit = GetGame().ConfigGetInt("cfgVehicles " + itemBase.GetType() + " varQuantityInit");
-				if ( varQuantityInit <= -1 )
+				if (varQuantityInit <= -1)
 					varQuantityInit = itemBase.GetQuantityMax();
 				
-				itemBase.SetupSpawnedItem( itemBase, itemEntity.GetHealth("",""), varQuantityInit );
+				itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), varQuantityInit);
 			}else{
-				itemBase.SetupSpawnedItem( itemBase, itemEntity.GetHealth("",""), quantity );
+				itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
 			}
 		}
+
 		itemEntity.PlaceOnSurface();
-		itemEntity.SetLifetime(itemEntity.GetLifetimeMax());
+		float lifeTime = itemEntity.GetLifetimeMax();
+		if (lifeTime > 0.0)
+			itemEntity.SetLifetime(itemEntity.GetLifetimeMax());
+
 		itemEntity.SetSynchDirty();
 		
 		return itemEntity;
@@ -239,6 +247,7 @@ class VPPItemManager: ConfigurablePlugin
 	{
 		foreach(PresetItemData preset : m_SavedPresets)
 			if (preset.GetPresetName() == name) return preset;
+		
 		return null;
 	}
 	
@@ -402,5 +411,4 @@ class VPPItemManager: ConfigurablePlugin
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), " Created a new item preset: " + data.param1 ));
 		}
 	}
-	//----------
 };

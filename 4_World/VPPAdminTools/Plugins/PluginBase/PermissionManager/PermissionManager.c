@@ -83,7 +83,9 @@ class PermissionManager extends ConfigurablePlugin
 			MakeDirectory("$profile:VPPAdminTools/Permissions/SuperAdmins");
 			MakeDirectory("$profile:VPPAdminTools/Permissions/UserGroups");
 			
-			LoadCredentials();
+			if (!g_Game.IsPasswordProtectionDisabled()){
+				LoadCredentials();
+			}
 			LoadSuperAdmins();
 			LoadUserGroups();
 		}

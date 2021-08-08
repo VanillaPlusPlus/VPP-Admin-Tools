@@ -24,7 +24,7 @@ modded class RPCManager
 
 		string recievedFrom = "server";
 
-		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
+		if (GetGame().IsServer() && GetGame().IsMultiplayer())
 		{
 			if (!sender)
 				return; //dip out, all RPCs coming from client must have a valid sender.
@@ -39,29 +39,32 @@ modded class RPCManager
 			modName   = serverMetaData.param2;
 			funcName  = serverMetaData.param3;
 
-			if (pw == string.Empty)
+			if (!g_Game.IsPasswordProtectionDisabled())
 			{
-				WriteToLogs(string.Format("Player [%1] sent an RPC to server, it contained no password key! Not supposed to happen. RPC rejected.", recievedFrom));
-				return;
-			}
+				if (pw == string.Empty)
+				{
+					WriteToLogs(string.Format("Player [%1] sent an RPC to server, it contained no password key! Not supposed to happen. RPC rejected.", recievedFrom));
+					return;
+				}
 
-			if (g_Game.GetAdminPasswordHash() == string.Empty)
-			{
-				WriteToLogs("There is no password set! The tool will not function correctly. Please follow instructions found within: profile/VPPAdminTools/Permissions/credentials.txt");
-				VSendRPC("RPC_MissionGameplay", "ServerLoginError", NULL, true, sender, NULL);
-				return;
-			}
+				if (g_Game.GetAdminPasswordHash() == string.Empty)
+				{
+					WriteToLogs("There is no password set! The tool will not function correctly. Please follow instructions found within: profile/VPPAdminTools/Permissions/credentials.txt");
+					VSendRPC("RPC_MissionGameplay", "ServerLoginError", NULL, true, sender, NULL);
+					return;
+				}
 
-			if (m_LoginAttempts[recievedFrom] >= 6)
-				return;
+				if (m_LoginAttempts[recievedFrom] >= 6)
+					return;
 
-			string hash = VSHA256.ComputeString(pw);
-			if (hash != g_Game.GetAdminPasswordHash())
-			{
-				m_LoginAttempts.Set(recievedFrom, m_LoginAttempts[recievedFrom] + 1);
-				VSendRPC("RPC_MissionGameplay", "LoginAttemptFail", NULL, true, sender, NULL);
-				WriteToLogs(string.Format("Player %1 attempted login, and failed! Total Attempts: %2", recievedFrom, m_LoginAttempts[recievedFrom]));
-				return;
+				string hash = VSHA256.ComputeString(pw);
+				if (hash != g_Game.GetAdminPasswordHash())
+				{
+					m_LoginAttempts.Set(recievedFrom, m_LoginAttempts[recievedFrom] + 1);
+					VSendRPC("RPC_MissionGameplay", "LoginAttemptFail", NULL, true, sender, NULL);
+					WriteToLogs(string.Format("Player %1 attempted login, and failed! Total Attempts: %2", recievedFrom, m_LoginAttempts[recievedFrom]));
+					return;
+				}
 			}
 		}
 

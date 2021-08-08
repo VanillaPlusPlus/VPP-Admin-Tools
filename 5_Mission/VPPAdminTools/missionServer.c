@@ -60,7 +60,7 @@ modded class MissionServer
 
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(player, identity, false, true);
+                onPlayerConnect.Invoke(player, identity, false, true); //works when player is alive and joins.
 
             break;
 
@@ -70,6 +70,7 @@ modded class MissionServer
             
             identity = newParams.param1;
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+            
             if(onPlayerConnect)
                 onPlayerConnect.Invoke(player, identity, false, false);
 
@@ -120,8 +121,9 @@ modded class MissionServer
 
             onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
             
+            bool announceLogin = !GetPlayerListManager().HasPlayerInList(clientPrepareParams.param1.GetPlainId());
             if(onPlayerConnect)
-                onPlayerConnect.Invoke(NULL, clientPrepareParams.param1, false, false);
+                onPlayerConnect.Invoke(NULL, clientPrepareParams.param1, false, announceLogin);
 
             BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(clientPrepareParams.param1.GetPlainId());
             if (bannedPlayer != NULL)
@@ -305,7 +307,7 @@ modded class MissionServer
         if( identity != NULL )
         {
             GetSimpleLogger().Log(string.Format("Kicking banned player \"%1\" (steamId=%2) kick message: (%3)", identity.GetName(), id, msg));
-            GetRPCManager().VSendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
+            GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
             GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
             m_KickQueue.Remove(id);
         }
@@ -324,9 +326,7 @@ modded class MissionServer
         {
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
-
-            if (!GetPlayerListManager().HasPlayerInList( identity.GetPlainId() ))
-                GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "joined the server!"));
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "joined the server!"));
         }
         else if (canceledLogout)
         {
@@ -340,7 +340,14 @@ modded class MissionServer
                 GetPlayerListManager().AddUserServer(identity.GetName(), identity.GetPlainId(), identity.GetPlayerId());
             
             if(GetPermissionManager().HasUserGroup(identity.GetPlainId()))
+            {
                 GetPlayerListManager().SendPlayerList(identity);
+                GetRPCManager().SendRPC("RPC_MissionGameplay", "AuthCheck", new Param1<bool>(true), true, identity);
+                if (g_Game.IsPasswordProtectionDisabled())
+                {
+                    GetRPCManager().VSendRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", new Param1<bool>(true), true, identity);
+                }
+            }
         }
     }
 

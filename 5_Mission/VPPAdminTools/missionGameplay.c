@@ -5,6 +5,7 @@ modded class MissionGameplay
 	static ref ScriptInvoker m_OnMissionUnpaused = new ScriptInvoker();
 
 	//Client vars
+    private bool   m_AllowPasswordInput;
     private bool   m_Toggles;
     private string m_VAdminPassword;
 
@@ -57,9 +58,11 @@ modded class MissionGameplay
         m_EspBones.Insert(new ESPBonesParams("rightleg",     "rightfoot"));
         m_EspBones.Insert(new ESPBonesParams("rightfoot",    "righttoebase"));
 
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "AuthCheck", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "ServerLoginError", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "LoginAttemptFail", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableToggles", this, SingeplayerExecutionType.Server);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingeplayerExecutionType.Server);
 
@@ -276,28 +279,42 @@ modded class MissionGameplay
 
     void ToggleAdminTools()
     {
+        if (!m_AllowPasswordInput)
+            return;
+
         if (!m_Toggles)
         {
             if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
             {
-                GetVPPUIManager().SetKeybindsStatus(true);
-                GetGame().GetInput().ChangeGameFocus(1);
-                GetGame().GetUIManager().ShowUICursor(true);
-                PlayerControlDisable(INPUT_EXCLUDE_ALL);
+                bool cached = GetGame().GetProfileString("vppatadmincredentials", m_VAdminPassword);
+                if (cached && m_VAdminPassword != string.Empty)
+                {
+                    GetRPCManager().VSendRPC("RPC_PermitManager", "AdminLogin", NULL, true);
+                    return;
+                }
+                else
+                {
+                    GetVPPUIManager().SetKeybindsStatus(true);
+                    GetGame().GetInput().ChangeGameFocus(1);
+                    GetGame().GetUIManager().ShowUICursor(true);
+                    PlayerControlDisable(INPUT_EXCLUDE_ALL);
+                    GetGame().GetPlayer().GetInputController().SetDisabled(true);
 
-                VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
-                dialogBox.InitDiagBox(DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Admin Login", "Please enter password to continue using the tool.\n*Input is hidden*", this, "OnDiagResultToggleTools");
-                dialogBox.AllowCharInput();
-                dialogBox.HideInputCharacters(true);
+                    VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+                    dialogBox.InitDiagBox(DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Admin Login", "Please enter password to continue using the tool.\n*Input is hidden*", this, "OnDiagResultToggleTools");
+                    dialogBox.AllowCharInput();
+                    dialogBox.HideInputCharacters(true);
+                    return;
+                }
             }
-            return;
         }
 
         m_ToolsToggled = !m_ToolsToggled;
-        if ( m_ToolsToggled )
+        if (m_ToolsToggled){
             GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_ON", "V++ Admin Tools:", 3.0);
-        else
+        }else{
             GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_OFF", "V++ Admin Tools:", 3.0);
+        }
     }
 
     void OnDiagResultToggleTools(int result, string input)
@@ -307,6 +324,7 @@ modded class MissionGameplay
         GetGame().GetInput().ResetGameFocus();
         GetGame().GetInput().ChangeGameFocus(-1);
         PlayerControlEnable(false);
+        GetGame().GetPlayer().GetInputController().SetDisabled(false);
 
         if (result == DIAGRESULT.OK)
         {
@@ -332,6 +350,20 @@ modded class MissionGameplay
         {
             GetVPPUIManager().DisplayNotification(string.Format("Login information was incorrect. Attempts: (%1/6)", g_Game.GetFailedLoginAttempts()), "[VPPAT] LOGIN ERROR:", 8.0);
             g_Game.IncrementFailedLoginAttempts();
+
+            if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
+            {
+                GetVPPUIManager().SetKeybindsStatus(true);
+                GetGame().GetInput().ChangeGameFocus(1);
+                GetGame().GetUIManager().ShowUICursor(true);
+                PlayerControlDisable(INPUT_EXCLUDE_ALL);
+                GetGame().GetPlayer().GetInputController().SetDisabled(true);
+
+                VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+                dialogBox.InitDiagBox(DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Admin Login", "Please enter password to continue using the tool.\n*Input is hidden*", this, "OnDiagResultToggleTools");
+                dialogBox.AllowCharInput();
+                dialogBox.HideInputCharacters(true);
+            }
         }
     }
 
@@ -343,7 +375,19 @@ modded class MissionGameplay
         }
     }
 
-    void EnableToggles( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+    void AuthCheck(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if (type == CallType.Client)
+        {
+            Param1<bool> data;
+            if (!ctx.Read(data))
+                return;
+
+            m_AllowPasswordInput = data.param1;
+        }
+    }
+
+    void EnableToggles(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
     {
         Param1<bool> data;
         if (!ctx.Read( data ) || sender != null)
@@ -355,8 +399,7 @@ modded class MissionGameplay
             
             if (!m_Toggles)
             {
-                GetVPPUIManager().DisplayNotification("failed to grant permissions. You are no longer part of a user group.", "V++ Admin Tools:", 8.0);
-
+                GetVPPUIManager().DisplayNotification("Failed to grant permissions. You are no longer part of a user group.", "V++ Admin Tools:", 8.0);
                 VPPAdminHud adminMenu;
                 if (Class.CastTo(adminMenu,GetVPPUIManager().GetMenuByType(VPPAdminHud)))
                 {
@@ -366,9 +409,27 @@ modded class MissionGameplay
                         GetVPPUIManager().DestroyMenuInstanceByType(VPPAdminHud);
                     }
                 }
-            }else{
-                GetVPPUIManager().DisplayNotification("Successfully logged in as admin.", "V++ Admin Tools:", 5.0);
             }
+            else
+            {
+                GetGame().SetProfileString("vppatadmincredentials", m_VAdminPassword);
+                GetGame().SaveProfile();
+                GetVPPUIManager().DisplayNotification("Successfully logged in as admin.", "V++ Admin Tools:", 5.0);
+                GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_ON", "V++ Admin Tools:", 3.0);
+                m_ToolsToggled = true;
+            }
+        }
+    }
+
+    void EnableTogglesNonPassword(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if (type == CallType.Client)
+        {
+            Param1<bool> data;
+            if (!ctx.Read(data) || sender != null)
+                return;
+
+            m_Toggles = data.param1;
         }
     }
 

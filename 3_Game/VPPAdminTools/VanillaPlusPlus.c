@@ -4,6 +4,7 @@ modded class DayZGame
 	private bool   m_SpectateStatus;
 	private bool   m_IsLShiftHolding;
 
+	private bool   m_DisablePasswordProtection;
 	private int    m_FailedLoginCount = 0;
 	private string m_AdminPassword;
 
@@ -144,6 +145,16 @@ modded class DayZGame
 	void SetAdminPasswordHash(string data)
 	{
 		m_AdminPassword = data;
+	}
+
+	void DisablePasswordProtection(bool state)
+	{
+		m_DisablePasswordProtection = state;
+	}
+
+	bool IsPasswordProtectionDisabled()
+	{
+		return m_DisablePasswordProtection;
 	}
 
 	string GetAdminPasswordHash()

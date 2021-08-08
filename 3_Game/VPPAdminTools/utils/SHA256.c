@@ -278,7 +278,7 @@ class VSHA256
 
             if (ctx.datalen == 64)
             {
-                Transform(ctx.data);
+                TransformSha(ctx.data);
 
                 array<vuint> results = DBL_INT_ADD(ctx.bitlen[0], ctx.bitlen[1], 512);
                 ctx.bitlen[0] = results[0];
@@ -289,7 +289,7 @@ class VSHA256
         }
     }
 
-    private void Transform(notnull array<vbyte> data)
+    private void TransformSha(notnull array<vbyte> data)
     {
         vuint a, b, c, d, e, f, g, h, i, j, t1, t2;
         //initialize M to be filled with 64 0s
@@ -364,7 +364,7 @@ class VSHA256
             while (i < 64)
                 ctx.data[i++] = 0x00;
 
-            Transform(ctx.data);
+            TransformSha(ctx.data);
         }
         array<vuint> result = DBL_INT_ADD(ctx.bitlen[0], ctx.bitlen[1], ctx.datalen * 8);
         ctx.bitlen[0] = result[0];
@@ -377,7 +377,7 @@ class VSHA256
         ctx.data[58] = vbyte.FromInt(ctx.bitlen[1].ShiftRight(8));
         ctx.data[57] = vbyte.FromInt(ctx.bitlen[1].ShiftRight(16));
         ctx.data[56] = vbyte.FromInt(ctx.bitlen[1].ShiftRight(24));
-        Transform(ctx.data);
+        TransformSha(ctx.data);
         for (i = 0; i < 4; ++i)
         {
             int shift = 24 - (i * 8);

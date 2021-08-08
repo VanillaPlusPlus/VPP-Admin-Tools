@@ -25,20 +25,30 @@ class EditBoxEventHandler extends ScriptedWidgetEventHandler
 
 		if (m_HidePasswordChars)
 		{
+			int inputLength = text.Length();
+			if (inputLength > 0 && text.IndexOfFrom(inputLength - 1, "*") > -1)
+			{
+				if (inputLength < m_Input.Length())
+					m_Input = m_Input.Substring(0, m_Input.Length() - 1);
+				else
+					m_Input += "*";
+				
+				return true;
+			}
+
 			string hashed;
-			string raw = m_root.GetText();
-			int inputLength = raw.Length();
-			raw.Replace("*","");
+			text.Replace("*","");
 			
-			if (inputLength > m_Input.Length()){
-				m_Input += raw;
+			if (inputLength > m_Input.Length())
+			{
+				m_Input += text;
 			}else{
 				m_Input = m_Input.Substring( 0, inputLength);
 			}
 			
-			for(int i = 0; i < inputLength; i++){
+			for(int i = 0; i < inputLength; i++)
 				hashed += "*";
-			}
+
 			m_root.SetText(hashed);
 			return true;
 		}
