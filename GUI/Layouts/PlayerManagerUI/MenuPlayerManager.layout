@@ -706,7 +706,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "SliderEventHandler"
          style Default
-         maximum 20000
+         maximum 7500
          step 10
          current 10000
          {
