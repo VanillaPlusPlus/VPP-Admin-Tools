@@ -778,10 +778,8 @@ class MenuObjectManager extends AdminHudSubMenu
 			case m_chkFreeCam:
 			if (!IsFreeCamActive())
 			{
-				CreateFreeCamInstance();
 				m_chkTopDowncam.Enable(true);
 			}else{
-				DestroyFreeCam();
 				m_chkTopDowncam.Enable(false);
 			}
 			break;

@@ -340,7 +340,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 	{
 		vector endPos = GetGame().GetPlayer().GetPosition();
 		if (IsFreeCamActive())
-			endPos = GetFreeCamInstance().GetPosition();
+			endPos = VPPGetCurrentCameraPosition();
 
         return vector.Distance(endPos, m_TrackerEntity.GetPosition());
     }
@@ -417,7 +417,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				
 				vector adminPos = GetGame().GetPlayer().GetPosition();
 				if (IsFreeCamActive())
-					adminPos = GetFreeCamInstance().GetPosition();
+					adminPos = VPPGetCurrentCameraPosition();
 				
 				float offset = vector.Distance(adminPos, centerPos);
 				float distSize = centerPos[2];
@@ -457,8 +457,8 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				m_RootWidget.FindAnyWidget("IconDead").Show(!player.IsAlive());
 				m_RootWidget.FindAnyWidget("StrDead").Show(!player.IsAlive());
 
-				m_HealthInput.SetCurrent(player.GetTransferValues().GetHealth() * 100);
-				m_BloodInput.SetCurrent(player.GetTransferValues().GetBlood() * 5000);
+				m_HealthInput.SetCurrent(player.GetTransferValues().m_HealthClient * 100);
+				m_BloodInput.SetCurrent(player.GetTransferValues().m_BloodClient * 5000);
 			}
         }
 		else if (m_RootWidget != NULL) 

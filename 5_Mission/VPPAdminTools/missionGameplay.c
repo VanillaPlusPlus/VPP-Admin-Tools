@@ -222,8 +222,9 @@ modded class MissionGameplay
         if (eventTypeId == ChatMessageEventTypeID)
         {
             ChatMessageEventParams chat_params = ChatMessageEventParams.Cast(params);   
-            chat_params.param2.ToLower();       
-            if (chat_params.param2 == "system")
+            string userName = chat_params.param2;
+            userName.ToLower();
+            if (userName == "system")
             {
                 m_systemMessage = chat_params.param3;
                 
@@ -676,22 +677,16 @@ modded class MissionGameplay
         {
             if (data.param1)
             {
-                PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-                if( player == null ) return;
-                
-                HumanInputController hic = player.GetInputController();
-                if (IsFreeCamActive())
+                DayZPlayerImplement player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
+                if (!player)
+                    return;
+
+                if (!player.IsFreeCamActive())
                 {
-                    DestroyFreeCam();
-                    hic.SetDisabled(false);
-                }
-                else
-                {
-                    if (!GetVPPUIManager().IsTyping())
-                    {
-                        CreateFreeCamInstance();
-                        hic.SetDisabled(true);
-                    }
+                    DayZPlayer.Cast(GetGame().GetPlayer()).GetDayZPlayerType().RegisterCameraCreator(DayZPlayerCameras.VPP_FREE_CAMERA, DayZPlayerCameraFree);
+                    player.SetFreeCamActive(true);
+                }else{
+                    player.SetFreeCamActive(false);
                 }
             }
         }

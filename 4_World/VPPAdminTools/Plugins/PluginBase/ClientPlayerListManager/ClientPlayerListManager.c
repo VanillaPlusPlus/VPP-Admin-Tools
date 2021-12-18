@@ -80,17 +80,6 @@ class ClientPlayerListManager : PluginBase
     {
         if(GetGame().IsServer() && GetGame().IsMultiplayer())
         {
-            //cleanup list.
-            for (int i = 0; i < m_Users.Count(); ++i)
-            {
-                if (!m_Users[i])
-                    continue;
-
-                int networkIdLowBits, networkIdHightBits;
-                GetGame().GetPlayerNetworkIDByIdentityID(m_Users[i].GetSessionId(), networkIdLowBits, networkIdHightBits);
-                if (networkIdLowBits == 0 && networkIdHightBits == 0)
-                    m_Users.Remove(i);
-            }
             GetRPCManager().VSendRPC( "RPC_ClientPlayerList", "HandleConnectionList", new Param1<array<ref VPPUser>>(m_Users), true, identity);
         }
     }

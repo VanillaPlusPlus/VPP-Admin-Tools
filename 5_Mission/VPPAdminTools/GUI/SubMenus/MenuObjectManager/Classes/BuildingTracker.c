@@ -182,7 +182,7 @@ class BuildingTracker: ScriptedWidgetEventHandler
 			
 			vector adminPos = GetGame().GetPlayer().GetPosition();
 			if (IsFreeCamActive())
-				adminPos = GetFreeCamInstance().GetPosition();
+				adminPos = VPPGetCurrentCameraPosition();
 			
 			float offset = vector.Distance(adminPos, centerPos);
 			float distSize = centerPos[2];

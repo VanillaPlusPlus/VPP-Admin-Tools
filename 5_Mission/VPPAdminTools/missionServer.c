@@ -10,6 +10,10 @@ modded class MissionServer
     {
         super.OnMissionStart();
         Print("[MissionServer] OnMissionStart - Server");
+        if (GetGame().ServerConfigGetInt("vppDisablePassword") > 0)
+        {
+            g_Game.DisablePasswordProtection(true);
+        }
         //Post message of server status
         GetWebHooksManager().PostData(ServerStatusMessage, new ServerStatusMessage());
         new VPPATInventorySlots;
@@ -217,23 +221,39 @@ modded class MissionServer
 
     string GetServerName()
     {
-        string result;
         string cfgPath;
         GetGame().CommandlineGetParam("config", cfgPath);
-        string fullPathToConfig = "$CurrentDir:" + cfgPath;
+        string fullPathToConfig;
 
-        if ( cfgPath == string.Empty )
-            fullPathToConfig = "$CurrentDir:serverDZ.cfg";
-        
-        if ( !FileExist(fullPathToConfig) )
-            return "[SERVER NAME NOT FOUND]";
+        if (cfgPath == string.Empty)
+        {
+            fullPathToConfig = "$CurrentDir:serverDZ.cfg"; //default
+        }
+        else if (cfgPath.Substring(1, 2) == ":\\")
+        {
+            array<string> output = {};
+            cfgPath.Split("\\", output);
+            if (output && output.Count() > 0)
+            {
+                fullPathToConfig = string.Format("$CurrentDir:%1\\%2", output[output.Count() - 2], output[output.Count() - 1]);
+            }
+        }
+        else
+        {
+            fullPathToConfig = "$CurrentDir:" + cfgPath;
+        }
+
+        if (!FileExist(fullPathToConfig))
+        {
+            fullPathToConfig = "$CurrentDir:serverDZ.cfg"; //default
+        }
 
         FileHandle serverCfg = OpenFile(fullPathToConfig, FileMode.READ);
         if (serverCfg != 0)
         {
             array<string> cfgData = new array<string>;
             string line_content = "";
-            int char_count = FGets( serverCfg,  line_content );
+            int char_count = FGets(serverCfg, line_content);
             cfgData.Insert(line_content);
             
             while ( char_count != -1 )
@@ -266,8 +286,8 @@ modded class MissionServer
                                 {
                                     string dirtyName = line.Substring(0,strIndex);
                                     dirtyName.Replace("hostname=\"", "");
-                                    result = dirtyName;
-                                    break;
+                                    Print(dirtyName);
+                                    return dirtyName;
                                 }
                             }
                             strIndex++;
@@ -276,7 +296,7 @@ modded class MissionServer
                 }
             }
         }
-        return result;
+        return "[SERVER NAME NOT FOUND]";
     }
     
     void HandleChatCommand( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)

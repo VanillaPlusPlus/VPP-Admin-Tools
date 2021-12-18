@@ -4,6 +4,12 @@ modded class SurvivorBase
 	private float m_defualt_scale;
 	private bool  m_setLocalScale;
 
+	float m_HealthClient;
+	float m_BloodClient;
+
+	const int TYPE_HEALTH 	= 1;
+   	const int TYPE_BLOOD 	= 2;
+
 	void SurvivorBase()
 	{
 		if (GetGame().IsClient())
@@ -55,6 +61,19 @@ modded class SurvivorBase
 		}
 	}
 
+	//for transfer values from server
+	void ReceiveValue(int value_type, float value)
+	{
+		if(value_type == TYPE_HEALTH)
+		{
+			m_HealthClient = value;
+		}
+		else if(value_type == TYPE_BLOOD)
+		{
+			m_BloodClient = value;
+		}
+	}
+
 	void OnRPC_Call(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 		if (!GetGame().IsClient())
@@ -85,6 +104,7 @@ modded class SurvivorBase
 				}
 			}
 		}
+
 		//Scale
 		if (rpc_type == VPPATRPCs.RPC_SYNC_SCALEVAL)
 		{
@@ -103,6 +123,16 @@ modded class SurvivorBase
 					}
 				}
 			}
+		}
+
+		//transfer values from server
+		if (rpc_type == VPPATRPCs.RPC_SYNC_TRANSFER_VALUES)
+		{
+			Param2<int,float> params;
+			if (!ctx.Read(params))
+				return;
+
+			ReceiveValue(params.param1, params.param2);
 		}
 	}
 };

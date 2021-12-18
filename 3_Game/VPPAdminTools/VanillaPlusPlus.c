@@ -13,11 +13,14 @@ modded class DayZGame
     private int 			  m_Vtps_time = 0;
     private int 			  m_Vticks = 0;
 
+    private ref VPPATProfileOptions m_VPPATProfileOptions;
+
 	void DayZGame()
 	{
 		Print("[DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.");
 		vppatEventHandler = new VPPEventHandler();
 		GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RegisterRPCs, 500, false); //Register RPCs after 10 seconds of game boot
+		m_VPPATProfileOptions = new VPPATProfileOptions();
 	}
 	
 	override void OnKeyPress(int key)
@@ -36,6 +39,18 @@ modded class DayZGame
 		{
 			m_IsLShiftHolding = false;
 		}
+	}
+
+	override void DeferredInit()
+	{
+		super.DeferredInit();
+		//Register custom option 
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_SPEED, "vppat_cam_speed", VPPATProfileConstants.DEFAULT_CAM_SPEED);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_BOOST, "vppat_cam_boost", VPPATProfileConstants.DEFAULT_CAM_BOOST);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_MOVE_DRAG, "vppat_cam_move_drag", VPPATProfileConstants.DEFAULT_CAM_MOVE_DRAG);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_MOUSE_SENSE, "vppat_cam_mouse_sense", VPPATProfileConstants.DEFAULT_CAM_MOUSE_SENSE);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_SMOOTHNESS, "vppat_cam_smoothness", VPPATProfileConstants.DEFAULT_CAM_SMOOTHNESS);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.CAM_FOV, "vppat_cam_fov", VPPATProfileConstants.DEFAULT_CAM_FOV);
 	}
 
 	//Credit to philip from CFTools ;)
@@ -112,6 +127,16 @@ modded class DayZGame
 		m_SpectateStatus = state;
 	}
 	
+	float GetVPPATProfileVal(EVPPATProfileOptions option)
+	{
+		return m_VPPATProfileOptions.GetProfileOptionVal(option);
+	}
+	
+	void SetVPPATProfileVal(EVPPATProfileOptions option, float value)
+	{
+		m_VPPATProfileOptions.SetProfileOptionVal(option, value);
+	}
+
 	bool IsSpectateMode()
 	{
 		return m_SpectateStatus;

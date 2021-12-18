@@ -175,7 +175,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		int currentIteration = 1;
 		vector centerPos = GetGame().GetPlayer().GetPosition();
 		if (IsFreeCamActive())
-			centerPos = GetFreeCamInstance().GetPosition();
+			centerPos = VPPGetCurrentCameraPosition();
 		
 		centerPos[1] = GetGame().SurfaceY(centerPos[0], centerPos[2]);
 		
@@ -239,7 +239,7 @@ class EspToolsMenu extends AdminHudSubMenu
 			
 			vector startPos = GetGame().GetPlayer().GetPosition();
 			if (IsFreeCamActive())
-				startPos = GetFreeCamInstance().GetPosition();
+				startPos = VPPGetCurrentCameraPosition();
 
 			foreach(Man man : players)
 			{
@@ -348,7 +348,7 @@ class EspToolsMenu extends AdminHudSubMenu
 			vector startPos = GetGame().GetPlayer().GetPosition();
 			if (IsFreeCamActive())
 			{
-				startPos = GetFreeCamInstance().GetPosition();
+				startPos = VPPGetCurrentCameraPosition();
 			}
 			
 			array<Object> objects = {};

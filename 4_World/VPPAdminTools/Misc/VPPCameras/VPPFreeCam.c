@@ -20,7 +20,7 @@ class VPPFreeCam extends Camera
 
 	void VPPFreeCam()
 	{
-		SetEventMask( EntityEvent.FRAME );
+		SetEventMask( EntityEvent.FRAME ); 
 	}
 	
 	void ~VPPFreeCam()
