@@ -44,6 +44,8 @@ Second, launch the normal DayZ launcher, not DayZ SA Launcher, and in the bottom
 
 Inside of the newly opened window, Copy both @VPPAdminTools, @CF and @VPPNotifications from the !Workshop folder to your servers Root Directory. Next, you will have to add these mods to your start up command line. The vanilla process of installing mods is by adding -mod=@CF;@VPPNotifications;@VPPAdminTools to your start up command line (Server). Please make sure that your last mod doesn't end with a semicolon.
 
+Copy the keys from the keys directory of all the mods to the keys directory of the servers Root Directory.
+
 Many hosting companies have different methods to adding mods to their server, and you will have to figure out the prefered way to add them to your server. Each hosting company is different.
 
 ## Adding Mod to Client
