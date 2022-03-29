@@ -10,7 +10,7 @@ class BuildingSetEditor: ScriptedWidgetEventHandler
 	
 	void BuildingSetEditor(Widget parent, string setName, bool active, bool editMode = false)
 	{
-		m_root   		= GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/ObjectManagerUI/EditDialog.layout", parent);
+		m_root   		= GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EditDialog, parent);
 		m_Apply   		= ButtonWidget.Cast(m_root.FindAnyWidget("button_ok"));
 		m_button_close  = ButtonWidget.Cast(m_root.FindAnyWidget("panel_close"));
 		m_button_export  = ButtonWidget.Cast(m_root.FindAnyWidget("button_export"));

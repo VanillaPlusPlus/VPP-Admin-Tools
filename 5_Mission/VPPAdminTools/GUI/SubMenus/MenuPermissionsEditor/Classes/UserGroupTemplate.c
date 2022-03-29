@@ -13,7 +13,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 
 	void UserGroupTemplate(GridSpacerWidget grid, UserGroup group, Widget RootWidget)
 	{
-		m_LayoutPath 	   = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPUserGroupBox.layout";
+		m_LayoutPath 	   = VPPATUIConstants.VPPUserGroupBox;
 		m_EntryBox 		   = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_GroupName 	   = TextWidget.Cast(m_EntryBox.FindAnyWidget("GroupName"));
 		m_GridSpacer 	   = GridSpacerWidget.Cast(m_EntryBox.FindAnyWidget("SpacerMembersList"));
@@ -145,7 +145,7 @@ class UserGroupTemplate : VPPPlayerTemplate
 				settingsRoot.Unlink();
 				return true;
 			}
-			settingsRoot = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/PermissionManagerUI/SettingsPopUp.layout", m_EntryBox);
+			settingsRoot = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.SettingsPopUp, m_EntryBox);
 			button_cancel = ButtonWidget.Cast(settingsRoot.FindAnyWidget("button_cancel"));
 			button_save = ButtonWidget.Cast(settingsRoot.FindAnyWidget("button_save"));
 			chkForceAdminName = CheckBoxWidget.Cast(settingsRoot.FindAnyWidget("chkForceAdminName"));

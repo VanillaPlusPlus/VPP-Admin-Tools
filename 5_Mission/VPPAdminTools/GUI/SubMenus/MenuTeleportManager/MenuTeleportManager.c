@@ -36,7 +36,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/TeleportManagerUI/MenuTeleportManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuTeleportManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -128,27 +128,41 @@ class MenuTeleportManager extends AdminHudSubMenu
 	void UpdateMap(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<ref array<ref VPPPlayerData>> data;
-		if( !ctx.Read( data ) ) return;
+		if(!ctx.Read(data)) return;
 		
 		array<ref VPPPlayerData> temp = data.param1;
 		if( type == CallType.Client )
 		{
 			if(m_Map != null)
-			{			
+			{
 				m_Map.ClearUserMarks();
 				DayZPlayer client = GetGame().GetPlayer();
+				MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
+				array<ref VPPPlayerEntry> selectedPlayers = {};
+				if (pManager)
+					selectedPlayers = pManager.GetSelectedPlayers();
 
 				foreach(VPPPlayerData info : temp)
 				{
-					if(m_Map != null)
+					if(client && client.GetPosition() == info.m_PlayerPos)
 					{
-						if(client != null && client.GetPosition() == info.m_PlayerPos)
-						{
-							m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
-							continue;
-						}
+						m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+						continue;
+					}
 
+					if (!selectedPlayers || selectedPlayers.Count() <= 0)
+					{
 						m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+						continue;
+					}
+					//check if player is selected
+					for (int i = 0; i < selectedPlayers.Count(); ++i)
+					{
+						if (info.m_PlayerName == selectedPlayers[i].GetPlayerName() && selectedPlayers[i].IsSelected())
+						{
+							m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,255,0,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+							break;
+						}
 					}
 				}	
 			}
@@ -224,7 +238,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 			m_PopUpPositionEditorWidget.Unlink();
 			delete m_PopUpPositionEditor;
 		}
-		m_PopUpPositionEditorWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/TeleportManagerUI/PopUpCreatePosition.layout", m_Main);
+		m_PopUpPositionEditorWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PopUpCreatePosition, m_Main);
 		m_PopUpPositionEditorWidget.GetScript(m_PopUpPositionEditor);
 		m_PopUpPositionEditor.Init(this,position,editMode,oldName);
 	}

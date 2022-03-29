@@ -2,14 +2,14 @@ FrameWidgetClass rootFrame {
  clipchildren 1
  color 1 0 0 1
  position 0 0
- size 0.35 0.55
+ size 0.4 0.55
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
  draggable 0
  {
-  SmartPanelWidgetClass Main {
+  PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
@@ -29,7 +29,7 @@ FrameWidgetClass rootFrame {
      ignorepointer 1
      color 0 0 0 0
      position 0 0
-     size 0.95 0.9
+     size 0.95 0.91
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -50,6 +50,37 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style DayZDefaultPanel
+       {
+        PanelWidgetClass SLDropDownPanel {
+         ignorepointer 1
+         color 0 0 0 0.549
+         position 0 0.25
+         size 0.498 0.29
+         halign right_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+         {
+          WrapSpacerWidgetClass ScriptsDropDown {
+           visible 1
+           clipchildren 0
+           color 0 0 0 0.549
+           position 0 0.025
+           size 0.99 0.2
+           halign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style Colorable
+           "no focus" 0
+          }
+         }
+        }
+       }
       }
       EditBoxWidgetClass SearchBoxXML {
        disabled 0
@@ -65,12 +96,12 @@ FrameWidgetClass rootFrame {
        text "#VSTR_SEARCH"
        "Use default text" 1
        "exact text" 1
-       font "gui/fonts/MetronLight16"
+       font "gui/fonts/sdf_MetronLight24"
       }
       PanelWidgetClass listHugger {
        ignorepointer 1
-       position 0.01 0.05
-       size 0.48 0.85
+       position 0 0.05
+       size 0.5 0.5
        halign right_ref
        hexactpos 0
        vexactpos 0
@@ -88,43 +119,84 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         font "gui/fonts/MetronLight16"
+         font "gui/fonts/MetronBook16"
         }
        }
       }
       ButtonWidgetClass BtnGetStats {
-       position 0.01 0.01
-       size 0.204 0.047
-       halign right_ref
+       position 0.26 0.01
+       size 0.212 0.047
+       halign center_ref
        valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       scriptclass "ConfirmationEventHandler"
+       scriptclass ""
        style Editor
-       text "#VSTR_LBL_GET_ITEM_STATS"
-       font "gui/fonts/MetronLight16"
+       font "gui/fonts/sdf_MetronLight24"
        switch normal
+       {
+        TextWidgetClass txtgetstats {
+         ignorepointer 1
+         position 0 0.01
+         size 0.995 1.003
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scaled 1
+         style Bold
+         text "#VSTR_LBL_GET_ITEM_STATS"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 0
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass BtnLoadSelected {
-       position 0.23 0.01
+       position 0 0.01
        size 0.204 0.047
-       halign right_ref
+       halign center_ref
        valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        style Editor
-       text "#VSTR_LBL_LOAD_SELECTED"
        font "gui/fonts/MetronLight16"
        switch normal
+       {
+        TextWidgetClass txtloadselected {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "#VSTR_LBL_LOAD_SELECTED"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 16
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass BtnXMLEditorApply {
-       position 0.45 0.01
+       position -0.25 0.01
        size 0.204 0.047
-       halign right_ref
+       halign center_ref
        valign bottom_ref
        hexactpos 0
        vexactpos 0
@@ -132,9 +204,28 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        scriptclass "ConfirmationEventHandler"
        style Editor
-       text "#VSTR_LBL_APPLY_CHANGES"
        font "gui/fonts/MetronLight16"
        switch normal
+       {
+        TextWidgetClass btnxmlapply {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "#VSTR_LBL_APPLY_CHANGES"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 16
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       PanelWidgetClass HuggerEditboxes {
        ignorepointer 1
@@ -420,7 +511,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_ENABLE_PREVIEW"
-           font "gui/fonts/MetronLight16"
+           font "gui/fonts/sdf_MetronLight24"
           }
          }
         }
@@ -471,6 +562,48 @@ FrameWidgetClass rootFrame {
        "src alpha" 1
        "no wrap" 1
        stretch 1
+      }
+      FrameWidgetClass filterOptions {
+       ignorepointer 1
+       position 0.04 0.4
+       size 0.413 0.045
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        TextWidgetClass Label {
+         ignorepointer 1
+         size 1 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "Filter items from loaded XML"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+        }
+        CheckBoxWidgetClass filterFromXml {
+         ignorepointer 0
+         position 0 0
+         size 0.08 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         checked 0
+        }
+       }
       }
      }
     }

@@ -21,7 +21,7 @@ class ToolTipHandler extends ScriptedWidgetEventHandler
 		m_TitleText   = "Test Title";
 		m_ToolTipText = "This is a tool tip.";
 		
-		m_ToolTipRoot   = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPInfoBox.layout", GetVPPUIManager().GetMenuByType(VPPAdminHud).layoutRoot);
+		m_ToolTipRoot   = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPInfoBox, GetVPPUIManager().GetMenuByType(VPPAdminHud).layoutRoot);
 		m_TitleWidget   = TextWidget.Cast(m_ToolTipRoot.FindAnyWidget("Title"));
 		m_ContentWidget = MultilineTextWidget.Cast(m_ToolTipRoot.FindAnyWidget("ContentText"));
 		

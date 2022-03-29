@@ -10,7 +10,7 @@ class VPPFilterEntry : VPPPlayerTemplate
     void VPPFilterEntry(GridSpacerWidget grid, EspFilterProperties props, bool startCheck = false)
     {
 		m_Grid       = grid;
-        m_LayoutPath = "VPPAdminTools/GUI/Layouts/EspToolsUI/FilterEntry.layout";
+        m_LayoutPath = VPPATUIConstants.FilterEntry;
         m_EntryBox = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
         m_FilterToggle = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("CheckBox"));
         m_ColorCombo   = XComboBoxWidget.Cast(m_EntryBox.FindAnyWidget("ColorCombo"));

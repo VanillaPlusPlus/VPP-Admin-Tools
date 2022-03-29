@@ -94,7 +94,7 @@ class MenuServerManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/ServerManagerUI/MenuServerManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuServerManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );

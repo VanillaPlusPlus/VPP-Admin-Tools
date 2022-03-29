@@ -160,9 +160,9 @@ class XMLParser
 		return input;
 	}
 	
-	void SaveChanges()
+	void SaveChanges(string path)
 	{
-		FileHandle saveFile = OpenFile("$profile:VPPAdminTools/Exports/types.xml", FileMode.WRITE);
+		FileHandle saveFile = OpenFile(path, FileMode.WRITE);
 		if (saveFile == 0) return;
 		
 		foreach(LineElement e : m_RawLines)

@@ -15,7 +15,7 @@ GridSpacerWidgetClass SpacerGrid {
  "Size To Content V" 1
  content_valign center
  Columns 2
- Rows 8
+ Rows 2
  {
   ImageWidgetClass IconHealth {
    position 4.32 85.64
@@ -36,7 +36,7 @@ GridSpacerWidgetClass SpacerGrid {
    ignorepointer 1
    color 0.9373 0.9373 0.9373 1
    position 0 0
-   size 150 15
+   size 100 10
    hexactpos 1
    vexactpos 1
    hexactsize 1
@@ -64,7 +64,7 @@ GridSpacerWidgetClass SpacerGrid {
    ignorepointer 1
    color 0.9373 0.9373 0.9373 1
    position 0 0
-   size 150 15
+   size 100 10
    hexactpos 1
    vexactpos 1
    hexactsize 1

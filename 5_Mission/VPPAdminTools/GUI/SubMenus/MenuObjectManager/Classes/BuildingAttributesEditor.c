@@ -9,7 +9,7 @@ class BuildingAttributesEditor: ScriptedWidgetEventHandler
 	void BuildingAttributesEditor(SpawnedBuilding sp)
 	{
 		m_ToEdt         = sp;
-		m_root   		= GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/ObjectManagerUI/EditDialogBuilding.layout", null);
+		m_root   		= GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EditDialogBuilding, null);
 		m_Apply   		= ButtonWidget.Cast(m_root.FindAnyWidget("button_ok"));
 		m_button_close  = ButtonWidget.Cast(m_root.FindAnyWidget("panel_close"));
 		m_Active        = CheckBoxWidget.Cast(m_root.FindAnyWidget("checkbox_active"));

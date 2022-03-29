@@ -12,7 +12,7 @@ class VPPESPItemEntry : VPPPlayerTemplate
     {
 		m_Grid       = grid;
         m_ItemName   = itemName;
-        m_LayoutPath = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspItemEntry.layout";
+        m_LayoutPath = VPPATUIConstants.EspItemEntry;
         m_EntryBox   = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 		m_EntryBox.SetHandler(this);
 		m_TargetObject = target;

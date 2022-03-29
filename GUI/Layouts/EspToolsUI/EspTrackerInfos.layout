@@ -44,6 +44,8 @@ GridSpacerWidgetClass SpacerGrid {
    style Bold
    text "No Name"
    font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 11
    "size to text h" 1
    "size to text v" 1
    "text valign" center
@@ -169,10 +171,10 @@ GridSpacerWidgetClass SpacerGrid {
    "text valign" center
   }
   ButtonWidgetClass CopyAll {
-   visible 1
+   visible 0
    color 1 1 1 0.7843
    position 0 0
-   size 100 21
+   size 50 13
    halign center_ref
    valign center_ref
    hexactpos 1
@@ -180,8 +182,26 @@ GridSpacerWidgetClass SpacerGrid {
    hexactsize 1
    vexactsize 1
    style Editor
-   text "Copy Details"
    font "gui/fonts/etelkatextpro16"
+   {
+    TextWidgetClass Pos2 {
+     size 0 13
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Normal
+     text "Copy"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
   }
  }
 }

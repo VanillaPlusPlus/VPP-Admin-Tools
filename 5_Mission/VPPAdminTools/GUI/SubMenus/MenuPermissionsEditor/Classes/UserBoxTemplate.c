@@ -8,7 +8,7 @@ class UserBoxTemplate : VPPPlayerTemplate
 	
 	void UserBoxTemplate(GridSpacerWidget grid, string name, string id, Widget RootWidget)
 	{
-		m_LayoutPath = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPUserBox.layout";
+		m_LayoutPath = VPPATUIConstants.VPPUserBox;
 		m_EntryBox = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_GUID 		  = TextWidget.Cast(m_EntryBox.FindAnyWidget("TextGUID"));
 		m_PlayerName  = TextWidget.Cast(m_EntryBox.FindAnyWidget("TxtPlayerName"));

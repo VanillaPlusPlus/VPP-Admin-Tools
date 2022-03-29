@@ -60,7 +60,7 @@ class MenuItemManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 		
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/ItemManagerUI/MenuItemManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuItemManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -173,7 +173,7 @@ class MenuItemManager extends AdminHudSubMenu
 				m_PopUpPresetCreateWidget.Unlink();
 				delete m_PopUpPresetCreate;
 			}
-			m_PopUpPresetCreateWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/ItemManagerUI/PopUpCreatePreset.layout", m_Main);
+			m_PopUpPresetCreateWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PopUpCreatePreset, m_Main);
 			m_PopUpPresetCreateWidget.GetScript(m_PopUpPresetCreate);
 			m_PopUpPresetCreate.Init(this);
 			break;

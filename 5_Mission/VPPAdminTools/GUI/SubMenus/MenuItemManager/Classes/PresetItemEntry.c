@@ -13,7 +13,7 @@ class PresetItemEntry: VPPPlayerTemplate
 		m_typeName    = typeName;
 		m_IsParent    = isParent;
 		m_PresetItemData = data;
-		m_LayoutPath  = "VPPAdminTools/GUI/Layouts/ItemManagerUI/EntryPresetItem.layout";
+		m_LayoutPath  = VPPATUIConstants.EntryPresetItem;
 		m_EntryBox    = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_EntryBox.SetHandler(this);
 		m_RemoveItem  = ButtonWidget.Cast( m_EntryBox.FindAnyWidget("BtnDelete") );

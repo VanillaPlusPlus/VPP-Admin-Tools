@@ -22,7 +22,7 @@ class BuildingEntry : VPPPlayerTemplate
 		m_Grid       = grid;
         m_BuildingDisplayName = displayName;
 		m_objectID   = objectID;
-        m_LayoutPath = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingEntry.layout";
+        m_LayoutPath = VPPATUIConstants.BuildingEntry;
         m_EntryBox   = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 		m_StatusCheckBox = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("Active"));
 		

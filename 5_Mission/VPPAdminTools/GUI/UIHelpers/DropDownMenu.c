@@ -17,7 +17,7 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 
 	void VPPDropDownMenu( Widget root, string text = "" )
 	{
-		m_Root				= GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/VPPDropdown/dropdown_prefab.layout", root );
+		m_Root				= GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.dropdown_prefab, root );
 
 		m_Scroller			= ScrollWidget.Cast( m_Root.FindAnyWidget( "dropdown_container" ) );
 		m_ContentContainer		= m_Root.FindAnyWidget( "dropdown_content" );
@@ -61,7 +61,7 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 	
 	int AddElement( string text, Widget content = null )
 	{
-		ButtonWidget element = ButtonWidget.Cast( GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/VPPDropdown/dropdown_element.layout", m_ContentContainer ) );
+		ButtonWidget element = ButtonWidget.Cast( GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.dropdown_element, m_ContentContainer ) );
 		element.SetText( text );
 		
 		if( content )

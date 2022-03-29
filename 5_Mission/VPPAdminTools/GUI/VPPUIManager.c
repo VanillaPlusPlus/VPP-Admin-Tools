@@ -92,7 +92,7 @@ class VPPUIManager extends PluginBase
 		VPPDialogBox handler;
 		if (parent == null && forceNull)
 		{
-			dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", null);
+			dialog = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPDialogBox, null);
 			dialog.GetScript(handler);
 			handler.MakeSmall();
 			return handler;
@@ -101,9 +101,9 @@ class VPPUIManager extends PluginBase
 		if (parent != null)
 		{
 			if (parent.FindAnyWidget("Main") == null)
-				dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", parent.FindAnyWidget("PanelConfirmationBox"));
+				dialog = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPDialogBox, parent.FindAnyWidget("PanelConfirmationBox"));
 			else
-				dialog = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout", parent.FindAnyWidget("Main"));
+				dialog = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPDialogBox, parent.FindAnyWidget("Main"));
 			
 			dialog.GetScript(handler);
 			if (handler != null) return handler;

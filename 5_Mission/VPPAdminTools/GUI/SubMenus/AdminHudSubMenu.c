@@ -20,6 +20,13 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	void ~AdminHudSubMenu()
 	{
 	}
+
+	/*
+	*called when admin toolbar/hud is created and opened each time
+	*/
+	void OnAdminHudOpened()
+	{
+	}
 	
 	/*
 		Update is always called even if window is hidden.

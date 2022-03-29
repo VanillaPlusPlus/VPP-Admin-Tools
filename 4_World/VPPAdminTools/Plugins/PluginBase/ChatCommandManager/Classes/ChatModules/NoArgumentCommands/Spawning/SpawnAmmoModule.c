@@ -16,16 +16,17 @@ class SpawnAmmoChatModule extends ChatCommand
 			weapon.SetHealth( weapon.GetMaxHealth( "", "" ) );
 		
 			Magazine foundMag = Magazine.Cast(weapon.GetAttachmentByConfigTypeName( "DefaultMagazine" ));
-			if( foundMag && foundMag.IsMagazine())
+			if(foundMag && foundMag.IsMagazine())
 			{
 				foundMag.ServerSetAmmoMax();
 			}else{							  
 				foundMag = Magazine.Cast(caller.GetHumanInventory().CreateInInventory(g_Game.GetDefaultMagazine(weapon)));
-				foundMag.ServerSetAmmoMax();
+				if (foundMag)
+					foundMag.ServerSetAmmoMax();
 			}
 			
 			m_TickDelay = new Timer(CALL_CATEGORY_GAMEPLAY);
-		    m_TickDelay.Run(2.0,this,"InvokeReloadOnClient",new Param1<ref PlayerIdentity>(caller.GetIdentity()));
+		    m_TickDelay.Run(2.0,this,"InvokeReloadOnClient",new Param1<PlayerIdentity>(caller.GetIdentity()));
 		
 			Object suppressor = ( Object ) weapon.GetAttachmentByConfigTypeName( "SuppressorBase" );
 			if( suppressor )

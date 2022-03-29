@@ -55,6 +55,13 @@ modded class PlayerBase
 		return super.CanBeTargetedByAI(ai);
 	}
 
+	override void SetActions(out TInputActionMap InputActionMap)
+	{
+		super.SetActions(InputActionMap);
+		AddAction(ActionAdminBuildPartSwitch);
+		AddAction(ActionAdminBaseBuilder);
+	}
+
 	private void ResetEntityName()
 	{
 		if (GetGame() && !GetGame().IsServer())
@@ -66,7 +73,8 @@ modded class PlayerBase
 	void HealBrokenLegs()
 	{
 		float add_health_coef = 1.0;
-		if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+		eBrokenLegs state = GetBrokenLegs();
+		if (state == eBrokenLegs.BROKEN_LEGS)
 		{
 			AddHealth("LeftLeg","Health",(GetMaxHealth("LeftLeg", "Health")  - GetHealth("LeftLeg", "Health")) * add_health_coef);
 			AddHealth("RightLeg","Health",(GetMaxHealth("RightLeg", "Health") - GetHealth("RightLeg", "Health")) * add_health_coef);

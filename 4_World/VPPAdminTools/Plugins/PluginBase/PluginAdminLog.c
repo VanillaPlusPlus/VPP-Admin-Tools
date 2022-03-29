@@ -27,7 +27,7 @@ modded class PluginAdminLog
 	}
 
 	string VPPGetHitMessage( TotalDamageResult damageResult, int component, string zone, string ammo) 
-	{	
+	{
 		if ( damageResult )	
 		{
 			float dmg = damageResult.GetHighestDamage("Health");
@@ -43,9 +43,11 @@ modded class PluginAdminLog
 	{
 		if ( player && source )		
 		{
-			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition() , player ) + " HP: [" + player.GetHealth().ToString() + "] ";
+			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition() , player ) + " HP: [" + player.GetHealth().ToString() + "] \n";
 			string HitMessage   = VPPGetHitMessage( damageResult, component, dmgZone, ammo );
 			HitDamageMessage rpt = new HitDamageMessage();
+			int srcId = -1;
+			int low, high;
 
 			if (player.GetIdentity() == null) return;
 
@@ -83,14 +85,22 @@ modded class PluginAdminLog
 					}
 					else
 					{
+						//Includes Beartraps and tripwire
 						rpt.sourceName = source.GetType();
 						rpt.sourceId   = "_obj";
-						rpt.details = PlayerPrefix + " hit by " + source.GetType() + HitMessage;					
+
+						EnScript.GetClassVar(source, "m_activatorSessionID", -1, srcId);
+						GetGame().GetPlayerNetworkIDByIdentityID(srcId, low, high);
+						m_Source = PlayerBase.Cast(GetGame().GetObjectByNetworkId(low, high));
+
+						if (m_Source)
+							rpt.details = PlayerPrefix + " hit by " + source.GetType() + HitMessage + "\nSetup by " + VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
+						else
+							rpt.details = PlayerPrefix + " hit by " + source.GetType() + HitMessage;
 					}
 					break;
 				
 				case DT_FIRE_ARM:	// Player ranged
-				
 					if ( source.IsWeapon() )
 					{
 						m_ItemInHands = source.GetDisplayName();				
@@ -114,7 +124,15 @@ modded class PluginAdminLog
 				case DT_EXPLOSION:	// Explosion
 					rpt.sourceName =  ammo;
 					rpt.sourceId   = "Explosion";
-					rpt.details = PlayerPrefix + " hit by explosion [" + ammo + "] ";
+					
+					EnScript.GetClassVar(source, "m_activatorSessionID", -1, srcId);
+					GetGame().GetPlayerNetworkIDByIdentityID(srcId, low, high);
+					m_Source = PlayerBase.Cast(GetGame().GetObjectByNetworkId(low, high));
+
+					if (m_Source)
+						rpt.details = PlayerPrefix + " hit by explosion [" + ammo + "]\n " + "Caused by " + VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
+					else
+						rpt.details = PlayerPrefix + " hit by explosion [" + ammo + "] ";
 					break;
 						
 				case DT_STUN: 		// unused atm
@@ -166,6 +184,7 @@ modded class PluginAdminLog
 		if ( player && source )
 		{
 			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition(), player );
+			string PlayerPrefix2 = "";
 			KillDeathMessage rpt = new KillDeathMessage();
 			
 			if (player.GetIdentity() == null) return;
@@ -194,6 +213,24 @@ modded class PluginAdminLog
 				rpt.killerName = rpt.victimName;
 				rpt.killerGUID = player.VPlayerGetSteamId();
 			}
+			else if (source.IsInherited(Grenade_Base) || source.IsInherited(LandMineTrap))
+			{
+				//Grenades + Landmines
+				int srcId = -1;
+				EnScript.GetClassVar(source, "m_activatorSessionID", -1, srcId);
+
+				int low, high;
+				GetGame().GetPlayerNetworkIDByIdentityID(srcId, low, high);
+				m_Source = PlayerBase.Cast(GetGame().GetObjectByNetworkId(low, high));
+				if (m_Source)
+				{
+					PlayerPrefix2 = VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
+					rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();
+				}else{
+					//Generic no source message fallback
+					rpt.details = PlayerPrefix + " killed by: " + source.GetType();
+				}
+			}
 			else if ( source.IsWeapon() || source.IsMeleeWeapon() )  // player
 			{
 				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyParent() );
@@ -205,12 +242,10 @@ modded class PluginAdminLog
 					name = m_Source.VPlayerGetName();
 					guid = m_Source.VPlayerGetSteamId();
 					
-					string PlayerPrefix2 = "";
-
 					PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() , m_Source );
 					
 					if ( source.IsMeleeWeapon() )
-					{	
+					{
 						rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();	
 					}
 					else
@@ -230,7 +265,7 @@ modded class PluginAdminLog
 			{
 				if (source.IsInherited(ZombieBase))
 				{
-					rpt.killerName = "Zombie";
+					rpt.killerName = "Infected";
 				}
 				rpt.details = PlayerPrefix + " killed by: " + source.GetType();
 			}

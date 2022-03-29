@@ -66,7 +66,6 @@ modded class MissionGameplay
         GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingeplayerExecutionType.Server);
         GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingeplayerExecutionType.Server);
 
-        VPPKeybindsManager.RegisterBind("UAUIBack", VPPBinds.Press, "EscapeButtonPressed", this);
         VPPKeybindsManager.RegisterBind("UAToggleAdminTools", VPPBinds.Press, "ToggleAdminTools", this);
         VPPKeybindsManager.RegisterBind("UAOpenAdminTools", VPPBinds.Press, "OpenAdminTools", this);
         VPPKeybindsManager.RegisterBind("UAToggleCmdConsole", VPPBinds.Press, "ToggleCmdConsole", this);
@@ -79,10 +78,13 @@ modded class MissionGameplay
         VPPKeybindsManager.RegisterBind("UARepairVehicleAtCrosshairs", VPPBinds.Press, "RepairVehicleAtCrosshairs", this);
         VPPKeybindsManager.RegisterBind("UAExitSpectate", VPPBinds.Press, "ExitSpectate", this);
         VPPKeybindsManager.RegisterBind("UACollapseESPDropDwn", VPPBinds.DoubleClick, "PlayerEspDropdowns", this);
+        VPPKeybindsManager.RegisterBind("UATogglePlayerDetailEsp", VPPBinds.DoubleClick, "PlayerEspHealth", this);
         VPPKeybindsManager.RegisterBind("UAToggleMeshEsp", VPPBinds.Press, "ToggleMeshESP", this);
         VPPKeybindsManager.RegisterBind("UAToggleInvis", VPPBinds.Press, "TogglePlayerInvis", this);
-        
-        m_EspCanvas = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/PlayerESPCanvas.layout");
+        VPPKeybindsManager.RegisterBind("UAHealTargets", VPPBinds.Press, "HealTargetAtCrosshairs", this);
+        VPPKeybindsManager.RegisterBind("UAToggleESP", VPPBinds.Press, "ToggleESP", this);
+
+        m_EspCanvas = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PlayerESPCanvas);
         m_EspCanvasWidget = CanvasWidget.Cast(m_EspCanvas.FindAnyWidget("CanvasWidget"));
     }
 
@@ -96,6 +98,14 @@ modded class MissionGameplay
     {
         super.OnMissionFinish();
         Print("[MissionGameplay] OnMissionFinish - Client");
+    }
+
+    override bool VPPAT_AdminToolsToggled()
+    {
+        if ((!m_Toggles) || (!m_ToolsToggled))
+            return false;
+
+        return true;
     }
 
     vector TransformToScreenPos(vector pWorldPos)
@@ -125,14 +135,16 @@ modded class MissionGameplay
 	
 	override void Pause()
 	{
+        super.Pause();
+
 		MissionGameplay.m_OnMissionPaused.Invoke();
-		super.Pause();
 	}
 	
 	override void Continue()
 	{
-		MissionGameplay.m_OnMissionUnpaused.Invoke();
-		super.Continue();
+        super.Continue();
+
+        MissionGameplay.m_OnMissionUnpaused.Invoke();
 	}
 
 	override void OnUpdate(float timeslice)
@@ -259,6 +271,17 @@ modded class MissionGameplay
         VPPScriptedMenu menu = VPPScriptedMenu.Cast(GetGame().GetUIManager().GetMenu());
         if (menu && key == KeyCode.KC_ESCAPE)
         {
+            VPPAdminHud AdminTab = VPPAdminHud.Cast(GetGame().GetUIManager().FindMenu(VPP_ADMIN_HUD));
+            if (AdminTab != NULL && AdminTab.IsShowing())
+            {
+                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuXMLEditor));
+                if (xmlMenu)
+                {
+                    if (xmlMenu.m_MapScreen)
+                        xmlMenu.m_MapScreen.ShowHide(false);
+                }
+                AdminTab.HideMenu();
+            }
             return;
         }
         super.OnKeyPress(key);
@@ -269,15 +292,6 @@ modded class MissionGameplay
     *  ///////////Client RPCs Section/////////////////
        ///////////////////////////////////////////////
     */
-    void EscapeButtonPressed()
-    {
-        VPPAdminHud AdminTab = VPPAdminHud.Cast(GetGame().GetUIManager().FindMenu(VPP_ADMIN_HUD));
-        if (AdminTab != NULL && AdminTab.IsShowing())
-        {
-            AdminTab.HideMenu();
-        }
-    }
-
     void ToggleAdminTools()
     {
         if (!m_AllowPasswordInput)
@@ -460,9 +474,11 @@ modded class MissionGameplay
             {
                 VPPAdminHud rootMenu = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
                 if (rootMenu.GetSubMenuByType(MenuCommandsConsole) == null)
+                {
                     rootMenu.CreateSubMenu(MenuCommandsConsole);
-                else
+                }else{
                     MenuCommandsConsole.Cast(rootMenu.GetSubMenuByType(MenuCommandsConsole)).ShowSubMenu();
+                }
             }
         }
     }
@@ -544,7 +560,11 @@ modded class MissionGameplay
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
             Object target = g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL);
-            string targetType = target.GetType();
+            string targetType;
+
+            if (target)
+                targetType = target.GetType();
+
             string notificationMsg;
             if ( target == NULL )
             {
@@ -561,6 +581,25 @@ modded class MissionGameplay
                 GetGame().CopyToClipboard(target.GetPosition().ToString());
             }
             GetVPPUIManager().DisplayNotification(notificationMsg, "V++ Admin Tools:", 10.0);
+        }
+    }
+
+    void HealTargetAtCrosshairs()
+    {
+        if ((!m_Toggles) || (!m_ToolsToggled))
+            return;
+
+        if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
+        {
+            SurvivorBase target = SurvivorBase.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
+            if (target)
+            {
+                GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + target.GetIdentity().GetName()), true);
+                GetVPPUIManager().DisplayNotification("Healed player at crosshairs!", "V++ Admin Tools:", 5.0);
+            }else{
+                GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + GetGame().GetPlayer().GetIdentity().GetName()), true);
+                GetVPPUIManager().DisplayNotification("Player healed!", "V++ Admin Tools:", 5.0);
+            }
         }
     }
 
@@ -587,8 +626,13 @@ modded class MissionGameplay
             g_Game.SetSpectateMode(false);
         }
     }
-    
-    void PlayerEspDropdowns()
+
+    void PlayerEspHealth()
+    {
+        PlayerEspDropdowns(true);
+    }
+
+    void PlayerEspDropdowns(bool healthOnly = false)
     {
         if ((!m_Toggles) || (!m_ToolsToggled))
             return;
@@ -596,7 +640,27 @@ modded class MissionGameplay
         EspToolsMenu espMenu = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
         if (espMenu)
         {
-            espMenu.ExpandPlayerTrackerDropDowns();
+            espMenu.ExpandPlayerTrackerDropDowns(healthOnly);
+        }
+    }
+
+    void ToggleESP()
+    {
+        if ((!m_Toggles) || (!m_ToolsToggled))
+            return;
+
+        VPPAdminHud rootMenu = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+        if (rootMenu && rootMenu.HasPermission("EspToolsMenu"))
+        {
+            if (rootMenu.GetSubMenuByType(EspToolsMenu) == null)
+                rootMenu.CreateSubMenu(EspToolsMenu);
+
+            if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
+            {
+                EspToolsMenu espMenu = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
+                if (espMenu)
+                    espMenu._ToggleQuick();
+            }
         }
     }
 
@@ -634,6 +698,12 @@ modded class MissionGameplay
                 adminMenu.ShowMenu();
                 return true;
             }else{
+                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(adminMenu.GetSubMenuByType(MenuXMLEditor));
+                if (xmlMenu)
+                {
+                    if (xmlMenu.m_MapScreen)
+                        xmlMenu.m_MapScreen.ShowHide(false);
+                }
                 adminMenu.HideMenu();
                 return false;
             }

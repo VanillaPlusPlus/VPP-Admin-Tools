@@ -40,7 +40,7 @@ modded class MissionServer
         GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
         GetRPCManager().AddRPC( "RPC_MissionServer", "HandleChatCommand", this, SingeplayerExecutionType.Server );      
         //======================================
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.FindLoginTime, 1500.0, false);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.FindLoginTime, 1500.0, true);
     }
 
     override void OnEvent(EventType eventTypeId, Param params)
@@ -170,34 +170,15 @@ modded class MissionServer
     */
     private void FindLoginTime()
     {
-        if (!GetHive())
+        if (!GetHive() || !GetCEApi())
         {
-            //No hive, keep timer short.
-            m_LoginTimeMs = 3000.0;
+            m_LoginTimeMs = 3000.0;  //No hive, keep timer short.
             return;
         }
-        string globalsXmlPath = XMLEditor.Cast(GetPluginManager().GetPluginByType(XMLEditor)).GetMissionPath("\\db\\globals.xml");
-        FileHandle file = OpenFile(globalsXmlPath, FileMode.READ);
-        if (file != 0)
-        {
-            string line_content = "";
-            FGets( file,  line_content );
-            while ( line_content != "" )
-            {
-                line_content.ToLower();
-                if (line_content.Contains("<var name=\"timelogin\""))
-                {
-                    line_content.Trim();
-                    line_content.Replace("<var name=\"timelogin\" type=\"0\" value=\"", "");
-                    line_content.Replace("\"/>", "");
-                    m_LoginTimeMs = (line_content.ToInt() * 1000) + 1200.0;
-                    break;
-                }
-                FGets( file,  line_content );
-            }
-            CloseFile(file);
-        }
+
+        m_LoginTimeMs = (GetCEApi().GetCEGlobalInt("TimeLogin") * 1000) + 1200.0;
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.FindLoginTime);
+        Print("m_LoginTimeMs: " + m_LoginTimeMs);
     }
     
     void RequestLockServer(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)

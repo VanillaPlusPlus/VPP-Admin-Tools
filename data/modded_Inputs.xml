@@ -3,7 +3,8 @@
     <inputs>
         <actions>
             <input name="UAFocusOnGame" loc="[Hold / DoubleTap] Focus On Game" />
-            <input name="UACollapseESPDropDwn" loc="[Hold] Expand / Collapse ESP Player Details" />
+            <input name="UACollapseESPDropDwn" loc="[DoubleTap] Expand/Collapse ESP Player Details" />
+            <input name="UATogglePlayerDetailEsp" loc="[DoubleTap] Expand/Collapse ESP Player Details" />
             <input name="UAOpenAdminTools" loc="Open V++ Admin Tools" />
             <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
             <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
@@ -16,6 +17,7 @@
 			<input name="UASelectObject" loc="Select & move world objects (Object Manager)" />
 			<input name="UARotateInc" loc="Increment Axis (Object Manager)" />
 			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
+			<input name="UAHealTargets" loc="Heal Self or Player on Crosshairs" />
 			<input name="UASupriseButtSex" loc="Assign Me & Press Me ( ͡° ͜ʖ ͡°)" />
 			<input name="UAToggleCmdConsole" loc="Shortcut key to open commands console" />
 			<input name="UAToggleMeshEsp" loc="Toggle Player Skeleton ESP" />
@@ -38,6 +40,7 @@
 			<input name="UACamSpeedDeduct" loc="Camera speed reduce" />
 			<input name="UACamFOV" loc="Hold + Camera zoom in/out to change FOV" />
 			<input name="UACamRelease" loc="" visible="false" />
+			<input name="UAToggleESP" loc="Toggle ESP"/>
         </actions>
 		<exclude name="VPPCamControls">
 		<input name="UACamForward"/>
@@ -58,6 +61,10 @@
 		</exclude>
     </inputs>
     <preset>
+		<input name="UAHealTargets">
+            <btn name="kJ">
+            </btn>
+        </input>
 		<input name="UAToggleFreeCam">
             <btn name="kBackspace">
             </btn>
@@ -76,6 +83,10 @@
         </input>
 		<input name="UACollapseESPDropDwn">
             <btn name="kT">
+            </btn>
+        </input>
+		<input name="UATogglePlayerDetailEsp">
+            <btn name="kNumpad0">
             </btn>
         </input>
 		<input name="UAExitSpectate">
@@ -186,6 +197,10 @@
         </input>
 		<input name="UACamRelease">
             <btn name="kLControl">
+            </btn>
+        </input>
+		<input name="UAToggleESP">
+            <btn name="kU">
             </btn>
         </input>
     </preset>

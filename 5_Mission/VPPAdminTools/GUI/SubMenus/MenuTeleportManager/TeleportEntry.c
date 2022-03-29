@@ -8,7 +8,7 @@ class TeleportEntry: VPPPlayerTemplate
 	void TeleportEntry(GridSpacerWidget grid, VPPTeleportLocation teleportInfo)
 	{
 		m_VPPTeleportLocation      = teleportInfo;
-		m_LayoutPath  = "VPPAdminTools/GUI/Layouts/TeleportManagerUI/TeleportEntry.layout";
+		m_LayoutPath  = VPPATUIConstants.TeleportEntry;
 		m_EntryBox    = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_CheckBox = CheckBoxWidget.Cast( m_EntryBox.FindAnyWidget("CheckBox") );
 		m_CheckBox.SetText(teleportInfo.GetName());

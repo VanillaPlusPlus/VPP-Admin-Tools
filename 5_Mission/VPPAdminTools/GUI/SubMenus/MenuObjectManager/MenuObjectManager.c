@@ -64,7 +64,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 		
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/ObjectManagerUI/MenuObjectManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuObjectManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );

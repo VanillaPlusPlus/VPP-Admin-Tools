@@ -13,7 +13,7 @@ class VPPTextEditor extends UIScriptedMenu
 	
 	void VPPTextEditor(Widget parentWidget, AdminHudSubMenu parentClass, array<string> newText = null)
 	{
-		M_WIDGET    = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/UIHelpers/CustomInputMenu.layout", parentWidget.FindAnyWidget("Panel_Content"));
+		M_WIDGET    = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.CustomInputMenu, parentWidget.FindAnyWidget("Panel_Content"));
 		m_Apply     = ButtonWidget.Cast( M_WIDGET.FindAnyWidget( "BtnApply") );
 		m_Hide      = ButtonWidget.Cast( M_WIDGET.FindAnyWidget( "BtnClose") );
 		m_TextInput = MultilineEditBoxWidget.Cast( M_WIDGET.FindAnyWidget( "TextInput") );

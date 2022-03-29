@@ -13,7 +13,7 @@ class VPPPlayerEntry : VPPPlayerTemplate
         m_PlayerName = playerName;
         m_id = id;
         m_SessionId = sessionId;
-        m_LayoutPath = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerList.layout";
+        m_LayoutPath = VPPATUIConstants.VPPPlayerList;
         m_EntryBox = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
         m_PlayerToggle = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("CheckBox"));
         m_PlayerToggle.SetText(playerName);
@@ -81,4 +81,4 @@ class VPPPlayerEntry : VPPPlayerTemplate
     {
         return (m_PlayerToggle && m_PlayerToggle.IsChecked());
     }
-}
+};

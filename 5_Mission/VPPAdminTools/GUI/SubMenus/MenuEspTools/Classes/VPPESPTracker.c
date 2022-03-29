@@ -41,13 +41,13 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 
     void VPPESPTracker(string itemName, Object trackedEntity, int color = -1, bool visible = true ) 
 	{
-        m_RootWidget = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTracker.layout", null);
+        m_RootWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTracker, null);
 		m_RootWidget.SetHandler(this);
         m_SpacerGrid       = GridSpacerWidget.Cast(m_RootWidget.FindAnyWidget("SpacerGrid"));
 
         m_CheckBox         = CheckBoxWidget.Cast(m_RootWidget.FindAnyWidget("CheckBox"));
-        m_ItemNameWidget   = TextWidget.Cast(m_SpacerGrid.FindAnyWidget("ItemName"));
-        m_ItemDistanceWidget = TextWidget.Cast(m_SpacerGrid.FindAnyWidget("ItemDistance"));
+        m_ItemNameWidget   = TextWidget.Cast(m_RootWidget.FindAnyWidget("ItemName"));
+        m_ItemDistanceWidget = TextWidget.Cast(m_RootWidget.FindAnyWidget("ItemDistance"));
         m_bgColor = color;
 
         m_TrackerEntity    = trackedEntity;
@@ -66,6 +66,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         m_ItemDistanceWidget.Update();
 		
 		m_RootWidget.SetSort(1022,true);
+		m_ReferenceAlpha = m_SpacerGrid.GetAlpha(); //max
 		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Insert(this.DoUpdate);
     }
 
@@ -88,7 +89,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			m_RootWidget.Unlink();
 
 		m_catagoryHeaders = {};
-		m_RootWidget = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerDetailed.layout", null);
+		m_RootWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerDetailed, null);
 		m_RootWidget.SetHandler(this);
 		m_SpacerGrid  = GridSpacerWidget.Cast(m_RootWidget);
 		//m_SpacerGrid.SetColor(ARGB(50, ((m_bgColor >> 16) & 0xFF), ((m_bgColor >> 8) & 0xFF), ((m_bgColor >> 0) & 0xFF)));
@@ -98,20 +99,20 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		if (player)
 		{
 			//Player info
-			catagory = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPanelHeader.layout", m_SpacerGrid);
+			catagory = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerPanelHeader, m_SpacerGrid);
 			catagory.GetScript(mgr);
-			mgr.BuildCatagory("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerInfos.layout", "Info", false);
+			mgr.BuildCatagory(VPPATUIConstants.EspTrackerInfos, "Info", false);
 			mgr.SetRootCatagory(true, this);
 			m_catagoryHeaders.Insert(mgr);
 			//Player health
-			catagory = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPanelHeader.layout", m_SpacerGrid);
+			catagory = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerPanelHeader, m_SpacerGrid);
 			catagory.GetScript(mgr);
-			mgr.BuildCatagory("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPlayerHealth.layout", "Health");
+			mgr.BuildCatagory(VPPATUIConstants.EspTrackerPlayerHealth, "Health");
 			m_catagoryHeaders.Insert(mgr);
 			//Player actions
-			catagory = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPanelHeader.layout", m_SpacerGrid);
+			catagory = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerPanelHeader, m_SpacerGrid);
 			catagory.GetScript(mgr);
-			mgr.BuildCatagory("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerActions.layout", "Actions");
+			mgr.BuildCatagory(VPPATUIConstants.EspTrackerActions, "Actions");
 			m_catagoryHeaders.Insert(mgr);
 			
 			m_ItemNameWidget   	 = TextWidget.Cast(m_RootWidget.FindAnyWidget("NameInput"));
@@ -166,9 +167,9 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			//Register lister RPC for aids expansion codelock system
 			GetRPCManager().AddRPC("RPC_VPPESPTools", "HandleCodeFromObj", this, SingeplayerExecutionType.Server);
 			
-			catagory = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPanelHeader.layout", m_SpacerGrid);
+			catagory = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerPanelHeader, m_SpacerGrid);
 			catagory.GetScript(mgr);
-			mgr.BuildCatagory("VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerBaseBuilding.layout", "Base Building", false);
+			mgr.BuildCatagory(VPPATUIConstants.EspTrackerBaseBuilding, "Base Building", false);
 			mgr.SetRootCatagory(true, this);
 			m_catagoryHeaders.Insert(mgr);
 			
@@ -187,17 +188,34 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		}
 		m_RootWidget.Update();
 		m_RootWidget.SetSort(1023,true);
+		m_RootWidget.GetSize(m_ReferenceX, m_ReferenceY);
 	}
 	
-	void ExpandHeaders()
+	void ExpandHeaders(bool healthOnly = false)
 	{
-		if (m_catagoryHeaders){
-			foreach(VPPEspCatagoryHeader header : m_catagoryHeaders){
-				if (!header)
-					continue;
-				
-				header.ChangeState();
-			}
+		if (!m_catagoryHeaders || m_catagoryHeaders.Count() <= 0)
+		{
+			InitPlayerEspWidget();
+			m_DetialedWidget = true;
+		}
+
+		if (healthOnly)
+		{
+			if (m_catagoryHeaders[0]) //player info
+				m_catagoryHeaders[0].ChangeState();
+
+			if (m_catagoryHeaders[1]) //health info
+				m_catagoryHeaders[1].ChangeState();
+
+			return;
+		}
+
+		foreach(VPPEspCatagoryHeader header : m_catagoryHeaders)
+		{
+			if (!header)
+				continue;
+
+			header.ChangeState();
 		}
 	}
 	
@@ -345,6 +363,15 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         return vector.Distance(endPos, m_TrackerEntity.GetPosition());
     }
 
+    protected	float	m_ReferenceX;
+	protected	float	m_ReferenceY;
+	protected	float	m_ReferenceAlpha;
+
+	protected	bool	m_ScaleWithDistance = true;
+	
+	protected	float	m_PivotX = 0.5;
+	protected	float	m_PivotY = 0.5;
+
     void DoUpdate(float tDelta)
 	{
 		if (m_TrackerEntity == null)
@@ -357,10 +384,14 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		{
 			EspToolsMenu espManager;
 			vector startPos = m_TrackerEntity.GetPosition();
+
 			if (player)
 			{
-				MiscGameplayFunctions.GetHeadBonePos(player, startPos); //Calculate offset
-
+				int headBoneIdx = player.GetBoneIndexByName("Head");
+				vector ls = player.GetBonePositionMS(headBoneIdx);
+				ls[1] = ls[1] + 0.3;
+				startPos  = player.CoordToParent(ls);
+				
 				espManager = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
 				if (!player.IsAlive() && !espManager.ShowDeadPlayers())
 				{
@@ -369,7 +400,17 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				}
 			}
 
-            vector ScreenPosRelative = GetGame().GetScreenPosRelative(startPos);
+			vector ScreenPosRelative = GetGame().GetScreenPosRelative(startPos);
+            float alpha = m_SpacerGrid.GetAlpha();
+			float z = ScreenPosRelative[2];
+
+			//Alpha fading
+			if(m_ScaleWithDistance && z >= 75)
+			{
+				alpha = Math.Clamp(m_ReferenceAlpha * (75 / z), 0.005, m_ReferenceAlpha);
+			}
+			m_SpacerGrid.SetAlpha(alpha);
+
             if( ScreenPosRelative[0] >= 1 || ScreenPosRelative[0] == 0 || ScreenPosRelative[1] >= 1 || ScreenPosRelative[1] == 0 ) {
                 m_RootWidget.Show(false);
                 return;
@@ -380,7 +421,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
                 m_RootWidget.Show(true);
             }
 
-            float pos_x,pos_y;
+            float pos_x, pos_y;
             vector ScreenPos = GetGame().GetScreenPos(startPos);
             pos_x = ScreenPos[0];
             pos_y = ScreenPos[1];
@@ -388,19 +429,16 @@ class VPPESPTracker: ScriptedWidgetEventHandler
             pos_x = Math.Ceil(pos_x);
             pos_y = Math.Ceil(pos_y);
 
-            m_RootWidget.SetPos(pos_x,pos_y);
-			if (m_ItemDistanceWidget){
+            m_RootWidget.SetPos(pos_x, pos_y);
+
+			if (m_ItemDistanceWidget)
+			{
 				m_ItemDistanceWidget.SetText( "[" + Math.Floor(CalcDistance()).ToString() + "m]" );
 			}
 
 			BaseBuildingBase baseBuilding;
 			if (player || BaseBuildingBase.CastTo(baseBuilding, m_TrackerEntity) || BasebuildingHelperFuncs.IsItemStorageSafe(m_TrackerEntity))
 			{
-				float width, height;
-				m_RootWidget.GetSize(width, height);
-				
-				vector centerPos = vector.Zero;
-				
 				if (player)
 				{
 					//Check death
@@ -408,37 +446,22 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 					{
 						m_ItemNameWidget.SetText(player.GetIdentity().GetName() + " (Dead)");
 					}
-					centerPos = player.GetPosition();
 				}
-				else
-				{
-					centerPos = m_TrackerEntity.GetPosition();
-				}
-				
-				vector adminPos = GetGame().GetPlayer().GetPosition();
-				if (IsFreeCamActive())
-					adminPos = VPPGetCurrentCameraPosition();
-				
-				float offset = vector.Distance(adminPos, centerPos);
-				float distSize = centerPos[2];
-				
+
 				float current_FOV = Camera.GetCurrentFOV();
 				float config_FOV = GetDayZGame().GetUserFOVFromConfig();
 				float FOV_scale = current_FOV / config_FOV;
+
+				float xs, ys;
+				m_RootWidget.GetSize(xs, ys);
 				
-				width  = (offset / (distSize * 2)) * FOV_scale;
-				if (width > 300.00)
-					width = 300.00;
-				if (width < 284.0)
-					width = 284.0;
-				
-				height = (offset / (distSize * 2)) * FOV_scale;
-				if (height > 45.0)
-					height = 45.0;
-				if (height < 32.5)
-					height = 32.5;
-	
-				m_RootWidget.SetSize(width, height);
+				if(m_ScaleWithDistance && z >= 50)
+				{
+					xs = m_ReferenceX * ((50 / z) * FOV_scale);
+					ys = m_ReferenceY * ((50 / z) * FOV_scale);
+				}
+				//Print(xs.ToString() + " :: " + ys.ToString());
+				m_RootWidget.SetSize(xs, ys, true);
 				m_RootWidget.Update();
 			}
 		

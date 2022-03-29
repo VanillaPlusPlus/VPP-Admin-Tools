@@ -351,7 +351,7 @@ WindowWidgetClass rootFrame {
         WrapSpacerWidgetClass SpacerButtons {
          ignorepointer 1
          color 0 0 0 1
-         size 0.97 0.89
+         size 0.97 0.93
          halign center_ref
          valign bottom_ref
          hexactpos 0
@@ -359,54 +359,122 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Empty
-         Padding 10
+         Padding 5
          Margin 16
          "Size To Content H" 1
          {
           ButtonWidgetClass BtnSpawnPreset {
-           size 0.9 0.15
+           size 0.9 0.18
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
            style Editor
            "no focus" 1
-           text "#VSTR_LBL_SPAWN_PRESET"
            font "gui/fonts/MetronLight14"
+           {
+            TextWidgetClass txtbtn {
+             ignorepointer 1
+             size 1 1
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             text "#VSTR_LBL_SPAWN_PRESET"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "text halign" center
+             "text valign" center
+            }
+           }
           }
           ButtonWidgetClass BtnCreatePreset {
-           size 0.9 0.15
+           size 0.9 0.18
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
            style Editor
            "no focus" 1
-           text "#VSTR_LBL_CREATE_PRESET"
            font "gui/fonts/MetronLight14"
+           {
+            TextWidgetClass txtbtn0 {
+             ignorepointer 1
+             size 1 1
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             text "#VSTR_LBL_CREATE_PRESET"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "text halign" center
+             "text valign" center
+            }
+           }
           }
           ButtonWidgetClass BtnSaveChanges {
-           size 0.9 0.15
+           size 0.9 0.17
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
            style Editor
            "no focus" 1
-           text "#VSTR_LBL_SAVE_CHANGES"
            font "gui/fonts/MetronLight14"
+           {
+            TextWidgetClass txtbtn1 {
+             ignorepointer 1
+             size 1 1
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             text "#VSTR_LBL_SAVE_CHANGES"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "text halign" center
+             "text valign" center
+            }
+           }
           }
           ButtonWidgetClass BtnDeletePreset {
            color 0.8235 0.0941 0.0941 1
-           size 0.9 0.15
+           size 0.9 0.17
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
            style Editor
            "no focus" 1
-           text "#VSTR_LBL_DELETE_PRESET"
            font "gui/fonts/MetronLight14"
+           {
+            TextWidgetClass txtbtn2 {
+             ignorepointer 1
+             size 1 1
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             text "#VSTR_LBL_DELETE_PRESET"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "text halign" center
+             "text valign" center
+            }
+           }
           }
          }
         }
@@ -587,7 +655,7 @@ WindowWidgetClass rootFrame {
         GridSpacerWidgetClass GridSpawnOptions {
          ignorepointer 1
          position 0 0.03
-         size 0.92 0.75
+         size 0.97 0.75
          halign center_ref
          valign bottom_ref
          hexactpos 0
@@ -603,7 +671,7 @@ WindowWidgetClass rootFrame {
           TextWidgetClass TxtQuantity {
            ignorepointer 1
            position 0 0
-           size 0.24 0.25
+           size 0.35 0.25
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -612,15 +680,17 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_QUANTITY"
-           font "gui/fonts/MetronLight14"
-           "size to text h" 1
-           "size to text v" 1
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "size to text h" 0
+           "size to text v" 0
            "text halign" center
            "text valign" center
           }
           EditBoxWidgetClass InputQuantity {
            visible 1
-           size 0.63 0.347
+           size 0.35 0.347
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -631,11 +701,11 @@ WindowWidgetClass rootFrame {
            text "MAX"
            "Use default text" 1
            "exact text" 1
-           font "gui/fonts/MetronLight14"
+           font "gui/fonts/sdf_MetronLight24"
           }
           TextWidgetClass TxtCondition {
            ignorepointer 1
-           size 0.24 0.25
+           size 0.35 0.25
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -644,14 +714,16 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_CONDITION"
-           font "gui/fonts/MetronLight14"
-           "size to text h" 1
-           "size to text v" 1
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "size to text h" 0
+           "size to text v" 0
            "text halign" center
            "text valign" center
           }
           XComboBoxWidgetClass ComboCondition {
-           size 0.6 0.22
+           size 0.35 0.22
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -659,12 +731,12 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style debugUI
-           font "gui/fonts/MetronLight14"
+           font "gui/fonts/MetronLight16"
            items "#VSTR_LBL_PRISTINE;#VSTR_LBL_WORN;#VSTR_LBL_DAMAGED;#VSTR_LBL_BADLY_DAMAGED;#VSTR_LBL_RUIEND"
           }
           TextWidgetClass TxtOtherOptions {
            ignorepointer 1
-           size 0.24 0.14
+           size 0.35 0.14
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -673,15 +745,16 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_SPAWN_IN"
-           font "gui/fonts/MetronLight14"
-           "exact text" 0
-           "size to text h" 1
-           "size to text v" 1
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "size to text h" 0
+           "size to text v" 0
            "text halign" center
            "text valign" center
           }
           XComboBoxWidgetClass ComboPlacement {
-           size 0.69 0.22
+           size 0.35 0.22
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -689,12 +762,12 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style debugUI
-           font "gui/fonts/MetronLight14"
+           font "gui/fonts/MetronLight16"
            items "#VSTR_LBL_IN_INENTORY;#VSTR_LBL_ON_GROUND;#VSTR_LBL_AT_CROSSHAIRS"
           }
           TextWidgetClass TxtOnPlayers {
            ignorepointer 1
-           size 0.24 0.25
+           size 0.35 0.25
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -703,14 +776,16 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_OTHER"
-           font "gui/fonts/MetronLight14"
-           "size to text h" 1
-           "size to text v" 1
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "size to text h" 0
+           "size to text v" 0
            "text halign" center
            "text valign" center
           }
           CheckBoxWidgetClass ChkOnSelectedPlayers {
-           size 0.63 0.281
+           size 0.65 0.281
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -718,7 +793,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_ON_SELECTED_PLAYERS"
-           font "gui/fonts/MetronLight14"
+           font "gui/fonts/MetronLight16"
           }
          }
         }

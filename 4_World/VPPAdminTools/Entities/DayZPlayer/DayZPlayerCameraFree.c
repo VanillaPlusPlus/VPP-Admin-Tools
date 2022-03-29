@@ -18,6 +18,7 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		GetGame().GetPlayer().GetTransform(mat);
 		m_startPos = mat[3];
 		m_startOri = Math3D.MatrixToAngles(mat);
+		m_startOri[1] = 0.0;
 		m_startOri[2] = 0.0;
 		pInput.SetDisabled(true);
 		more_camspeed = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SPEED);
@@ -42,6 +43,7 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		m_pPrevCamera = DayZPlayerCameraBase.Cast(pPrevCamera);
 		m_startPos = GetGame().ObjectModelToWorld(m_pPlayer, pPrevCameraResult.m_CameraTM[3]);
 		m_startOri = Math3D.MatrixToAngles(pPrevCameraResult.m_CameraTM);
+		m_startOri[1] = 0.0;
 		m_startOri[2] = 0.0;
 	}
 	
@@ -67,8 +69,8 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		float yawDiff = input.LocalValue("UACamShiftLeft") - input.LocalValue("UACamShiftRight");
 		float pitchDiff = input.LocalValue("UACamShiftDown") - input.LocalValue("UACamShiftUp");
 		float speedInc = 0.0;
-		Widget underCursor = GetWidgetUnderCursor();
-		if ((underCursor == NULL) || (underCursor && underCursor.GetTypeID() != EditBoxWidgetTypeID) && input.LocalValue("UACamFOV") == 0)
+		//Widget underCursor = GetWidgetUnderCursor();
+		if (/*(underCursor == NULL) || (underCursor && underCursor.GetTypeID() != EditBoxWidgetTypeID) &&*/ input.LocalValue("UACamFOV") == 0)
 		{
 			speedInc = input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct");
 		}
@@ -138,18 +140,18 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		pOutResult.m_CameraTM[3] = m_pPlayer.CoordToLocal(m_startPos);
 		//-----
 		pOutResult.m_fDistance 			 = -0.075;
-		pOutResult.m_fUseHeading 		 = 0;
+		pOutResult.m_fUseHeading 		 = 0.0;
 		pOutResult.m_fInsideCamera 		 = 0.0;
 		pOutResult.m_fShootFromCamera	 = 0.0;
 
 		pOutResult.m_iDirectBone 		 = -1;
 		pOutResult.m_iDirectBoneMode 	 = 0.0;
-
+		
 		pOutResult.m_fPositionModelSpace   = 1.0;
 		pOutResult.m_CollisionIgnoreEntity = m_pPlayer;
 		
-		pOutResult.m_fIgnoreParentRoll  = 0.0;
-		pOutResult.m_fIgnoreParentPitch = 0.0;
+		pOutResult.m_fIgnoreParentRoll  = 1.0;
+		pOutResult.m_fIgnoreParentPitch = 1.0;
 		pOutResult.m_fIgnoreParentYaw 	= 0.0;
 	}
 

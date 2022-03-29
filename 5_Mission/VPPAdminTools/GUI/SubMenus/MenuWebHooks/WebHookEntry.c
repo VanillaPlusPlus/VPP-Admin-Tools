@@ -8,7 +8,7 @@ class WebHookEntry: ScriptedWidgetEventHandler
 
 	void WebHookEntry(GridSpacerWidget parent, string webHookName)
 	{
-		m_Root = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/WebHooksUI/WebHookEntry.layout", parent);
+		m_Root = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.WebHookEntry, parent);
 		m_btnDeleteItem = ButtonWidget.Cast( m_Root.FindAnyWidget( "btnDeleteItem") );
 		m_btnEditItem   = ButtonWidget.Cast( m_Root.FindAnyWidget( "btnEditItem") );
 		Widget rootPr = parent.GetParent().GetParent().GetParent().GetParent();

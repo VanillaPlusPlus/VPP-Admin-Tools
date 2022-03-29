@@ -49,7 +49,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Teleport Manager Menu
 		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
 		//ESP tools menu 
-		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP", "EspToolsMenu:RestPasscodeFence", "EspToolsMenu:RetriveCodeFromObj", "EspToolsMenu:PlayerMeshEsp" });
+		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP", "EspToolsMenu:RestPasscodeFence", "EspToolsMenu:RetriveCodeFromObj", "EspToolsMenu:PlayerMeshEsp", "EspToolsMenu:InstantBaseBuild" });
 		//XML Editor menu
 		AddPermissionType({ "MenuXMLEditor" });
 		//Commands console menu

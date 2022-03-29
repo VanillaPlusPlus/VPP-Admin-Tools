@@ -108,8 +108,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_HEAL_PLAYERS"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_HEAL_PLAYERS"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionKill {
          size 0.4 0.19
@@ -121,8 +138,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "#VSTR_LBL_KILL_PLAYERS"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt0 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_KILL_PLAYERS"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionTpToMe {
          size 0.4 0.19
@@ -133,8 +167,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_TP_TO_ME"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt1 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_TP_TO_ME"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionSendMessage {
          size 0.4 0.19
@@ -146,8 +197,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "#VSTR_LBL_SEND_MESSAGE"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt2 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_SEND_MESSAGE"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionTpMeTo {
          size 0.4 0.19
@@ -158,8 +226,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_TP_ME_TO"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt3 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_TP_ME_TO"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionKickPlayer {
          size 0.4 0.19
@@ -171,8 +256,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "#VSTR_LBL_KICK_PLAYERS"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt4 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_KICK_PLAYERS"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionBanPlayer {
          size 0.4 0.19
@@ -184,8 +286,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "#VSTR_LBL_BAN_PLAYERS"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt5 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_BAN_PLAYERS"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionSpectate {
          size 0.4 0.19
@@ -196,8 +315,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_SPECTATE_PLAYER"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt6 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_SPECTATE_PLAYER"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionMakeVomit {
          visible 1
@@ -211,8 +347,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "#VSTR_LBL_MAKE_VOMIT"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt7 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_MAKE_VOMIT"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionGiveGodmode {
          visible 1
@@ -225,8 +378,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_GODMODE"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt8 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_GODMODE"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionUnlimitedAmmo {
          size 0.4 0.19
@@ -237,8 +407,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_UNLIM_AMMO"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt9 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_UNLIM_AMMO"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionInvisible {
          size 0.4 0.19
@@ -249,8 +436,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_SET_INVIS"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt10 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_SET_INVIS"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionFreezePlayer {
          size 0.4 0.19
@@ -261,8 +465,25 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_LBL_FREEZE_PLAYER"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt11 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_FREEZE_PLAYER"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ActionScalePlayer {
          size 0.4 0.19
@@ -274,8 +495,25 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "ConfirmationEventHandler"
          style Editor
-         text "Set Scale"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt12 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Set Scale"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
        }
       }
@@ -1000,8 +1238,27 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_REFRESH"
          font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass txtbtnrefresh {
+           ignorepointer 1
+           position 0 0
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_REFRESH"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "size to text h" 0
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
        }
       }

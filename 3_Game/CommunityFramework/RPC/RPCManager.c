@@ -1,20 +1,13 @@
 modded class RPCManager
 {
 	protected ref map<string,int> m_LoginAttempts = new map<string,int>;
-	protected const int VPPAT_FRAMEWORK_RPC_ID = 10420;
+	const int VPPAT_FRAMEWORK_RPC_ID = 10420;
 
 	void RPCManager()
 	{
-		EnScript.Watch(m_LoginAttempts, 0);
 	}
 
-	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
-	{
-		VOnRPC(sender, target, rpc_type, ctx);
-		super.OnRPC(sender, target, rpc_type, ctx);
-	}
-
-	protected void VOnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
+	void VOnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 		if (rpc_type != VPPAT_FRAMEWORK_RPC_ID)
 			return;
@@ -24,7 +17,7 @@ modded class RPCManager
 
 		string recievedFrom = "server";
 
-		if (GetGame().IsServer() && GetGame().IsMultiplayer())
+		if (GetGame().IsDedicatedServer())
 		{
 			if (!sender)
 				return; //dip out, all RPCs coming from client must have a valid sender.
@@ -68,7 +61,7 @@ modded class RPCManager
 			}
 		}
 
-		if (GetGame().IsClient())
+		if (GetGame().IsClient() && !GetGame().IsDedicatedServer())
 		{
 			Param2<string, string> clientMetaData;
 			if (!ctx.Read(clientMetaData))
@@ -86,7 +79,7 @@ modded class RPCManager
 			{
 				if ( wrapper.GetInstance() )
 				{
-					auto functionCallData = new Param4< CallType, ref ParamsReadContext, ref PlayerIdentity, ref Object >( CallType.Server, ctx, sender, target );
+					auto functionCallData = new Param4< CallType, ParamsReadContext, PlayerIdentity, Object >( CallType.Server, ctx, sender, target );
 				
 					if ( ( GetGame().IsServer() && GetGame().IsMultiplayer() ) || ( GetGame().IsServer() && !GetGame().IsMultiplayer() && ( wrapper.GetSPExecutionType() == SingleplayerExecutionType.Server || wrapper.GetSPExecutionType() == SingleplayerExecutionType.Both ) ) ) 
 					{

@@ -46,7 +46,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/EspToolsUI/EspToolsMenu.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.EspToolsMenu);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -241,6 +241,8 @@ class EspToolsMenu extends AdminHudSubMenu
 			if (IsFreeCamActive())
 				startPos = VPPGetCurrentCameraPosition();
 
+			array<ref SyncPlayer> data = ClientData.m_PlayerList.m_PlayerList;
+
 			foreach(Man man : players)
 			{
 				if (!man)
@@ -252,6 +254,19 @@ class EspToolsMenu extends AdminHudSubMenu
 				{
 					if (vector.Distance(startPos, man.GetPosition()) <= m_SliderRadius.GetCurrent())
 					{
+						/*HOT FIX :: Redo sometime later*/
+						string pName = man.GetIdentity().GetName();
+						if (pName == "Survivor")
+						{
+							foreach(SyncPlayer syncP : data)
+							{
+								if (syncP && syncP.m_UID == man.GetIdentity().GetId())
+								{
+									pName = syncP.m_PlayerName;
+									Print("pName: " + pName);
+								}
+							}
+						}
 						m_EspTrackers.Insert(man, new VPPESPTracker(man.GetIdentity().GetName(), man, survivorFilter.m_Props.color));
 					}
 				}
@@ -259,17 +274,39 @@ class EspToolsMenu extends AdminHudSubMenu
 		}
 	}
 	
-	void ExpandPlayerTrackerDropDowns()
+	void ExpandPlayerTrackerDropDowns(bool healthOnly = false)
 	{
-		if (m_EspTrackers && m_EspTrackers.Count() > 0){
+		if (m_EspTrackers && m_EspTrackers.Count() > 0)
+		{
 			foreach(VPPESPTracker tracker : m_EspTrackers)
 			{
-				bool expand = SurvivorBase.Cast(tracker.GetTrackingObject()) || BaseBuildingBase.Cast(tracker.GetTrackingObject());
+				if (!tracker)
+					continue;
+
+				EntityAI entity = tracker.GetTrackingObject();
+				if (!entity)
+					continue;
+
+				bool expand = (SurvivorBase.Cast(entity) || BaseBuildingBase.Cast(entity));
 				if (!expand)
 					continue;
 				
-				tracker.ExpandHeaders();
+				tracker.ExpandHeaders(healthOnly);
 			}
+		}
+	}
+
+	void _ToggleQuick()
+	{
+		if (M_SCAN_ACTIVE)
+		{
+			m_btnToggle.SetColor(ARGB(255,255,0,0));
+			M_SCAN_ACTIVE = false;
+			ClearTrackers();
+		}else{
+			M_SCAN_ACTIVE = true;
+			m_btnToggle.SetColor(ARGB(255,0,255,0));
+			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 		}
 	}
 

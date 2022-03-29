@@ -7,7 +7,7 @@ class BannedPlayerEntry: VPPPlayerTemplate
 	void BannedPlayerEntry(GridSpacerWidget grid, BannedPlayer player)
 	{
 		m_Player      = player;
-		m_LayoutPath  = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerList.layout";
+		m_LayoutPath  = VPPATUIConstants.VPPPlayerList;
 		m_EntryBox    = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_CheckBox = CheckBoxWidget.Cast( m_EntryBox.FindAnyWidget("CheckBox") );
 		m_CheckBox.SetText(player.playerName);

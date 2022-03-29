@@ -11,7 +11,7 @@ FrameWidgetClass diagFrame {
  {
   PanelWidgetClass BorderOutline {
    ignorepointer 1
-   color 1 1 1 0.549
+   color 0.9765 0.9765 0.9765 0.549
    position 0 0
    size 0.5 0.3
    halign center_ref
@@ -51,7 +51,7 @@ FrameWidgetClass diagFrame {
        {
         TextWidgetClass TitleText {
          ignorepointer 1
-         size 1 1
+         size 1 0.8
          halign center_ref
          valign center_ref
          hexactpos 0
@@ -65,9 +65,9 @@ FrameWidgetClass diagFrame {
          "bold text" 1
          "text sharpness" 3
          "exact text" 1
-         "exact text size" 22
-         "size to text h" 1
-         "size to text v" 1
+         "exact text size" 24
+         "size to text h" 0
+         "size to text v" 0
          "text halign" center
          "text valign" center
         }
@@ -76,7 +76,7 @@ FrameWidgetClass diagFrame {
       RichTextWidgetClass ContentText {
        ignorepointer 1
        position 0 0.18
-       size 0.981 0.498
+       size 0.981 0.508
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -85,14 +85,13 @@ FrameWidgetClass diagFrame {
        scriptclass ""
        text "This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,"
        font "gui/fonts/sdf_MetronLight24"
-       "exact text" 0
-       "exact text size" 22
-       "size to text h" 1
-       "size to text v" 1
+       "exact text" 1
+       "exact text size" 24
+       "size to text h" 0
+       "size to text v" 0
        "text halign" center
        wrap 1
        "condense whitespace" 1
-       "strip newlines" 1
       }
       GridSpacerWidgetClass ButtonsGrid {
        visible 1
@@ -125,8 +124,25 @@ FrameWidgetClass diagFrame {
          vexactsize 0
          scriptclass ""
          style Editor
-         text "YES"
          font "gui/fonts/MetronLight"
+         {
+          TextWidgetClass txtbuttonyes {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "YES"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 22
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ButtonNO {
          visible 0
@@ -138,8 +154,87 @@ FrameWidgetClass diagFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "NO"
          font "gui/fonts/MetronLight"
+         {
+          TextWidgetClass txtbuttonno {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "NO"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 22
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass ButtonPaste {
+         visible 0
+         disabled 0
+         size 0.25 0.7
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         font "gui/fonts/MetronLight"
+         {
+          TextWidgetClass txtbuttonPaste {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "Paste"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 22
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass ButtonOK {
+         visible 0
+         disabled 0
+         size 0.25 0.7
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         font "gui/fonts/MetronLight"
+         {
+          TextWidgetClass txtbuttonOK {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "OK"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 22
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
         ButtonWidgetClass ButtonCANCEL {
          visible 0
@@ -153,28 +248,31 @@ FrameWidgetClass diagFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "CANCEL"
          font "gui/fonts/MetronLight"
-        }
-        ButtonWidgetClass ButtonOK {
-         visible 0
-         disabled 0
-         size 0.25 0.7
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "OK"
-         font "gui/fonts/MetronLight"
+         {
+          TextWidgetClass txtbuttoncancel {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "CANCEL"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 22
+           "text halign" center
+           "text valign" center
+          }
+         }
         }
        }
       }
       PanelWidgetClass PanelSplitter {
        ignorepointer 1
-       color 0.9333 0.0863 0.0863 1
+       color 0.8392 0.2039 0.2039 1
        position 0 0.14
        size 0.993 0.018
        halign center_ref

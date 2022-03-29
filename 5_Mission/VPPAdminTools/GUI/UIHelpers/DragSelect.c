@@ -13,7 +13,7 @@ class DragSelect extends UIScriptedMenu
 	
 	void DragSelect()
 	{
-		m_root  	  = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDragSelect.layout", NULL);
+		m_root  	  = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPDragSelect, NULL);
 		m_drag_widget = m_root.FindAnyWidget("DragPanel");
 		WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_root, this, "StartClick" );
 		

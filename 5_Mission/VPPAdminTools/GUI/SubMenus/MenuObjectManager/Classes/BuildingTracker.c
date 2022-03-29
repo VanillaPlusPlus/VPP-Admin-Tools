@@ -21,7 +21,7 @@ class BuildingTracker: ScriptedWidgetEventHandler
     void BuildingTracker( Widget parentWidget, string itemName, Object trackedEntity, bool show) 
 	{
 		m_ParentWidget = parentWidget;
-        m_RootWidget = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingTracker.layout", parentWidget);
+        m_RootWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.BuildingTracker, parentWidget);
 		
         m_ItemNameWidget     = TextWidget.Cast( m_RootWidget.FindAnyWidget( "TypeInput" ) );
         m_ItemDistanceWidget = TextWidget.Cast( m_RootWidget.FindAnyWidget( "DistanceInput" ) );

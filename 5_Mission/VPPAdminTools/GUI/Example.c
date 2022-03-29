@@ -20,7 +20,7 @@ class CustomSubMenu extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 		
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/CustomSubMenu.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.CustomSubMenu);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
 		canvas = CanvasWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "CanvasWidget") );

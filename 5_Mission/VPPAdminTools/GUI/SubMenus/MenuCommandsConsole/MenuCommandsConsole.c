@@ -45,7 +45,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/CommandsConsoleUI/CommandsConsoleUI.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.CommandsConsoleUI);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
 		M_SUB_WIDGET.SetHandler(this);
@@ -66,7 +66,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 		
 		foreach(string command, Param2<string,string> params: m_CmdTooltips)
 		{
-			Widget sgElement = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/CommandsConsoleUI/TextElement.layout", m_GridSuggest);
+			Widget sgElement = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.TextElement, m_GridSuggest);
 			MultilineTextWidget.Cast(sgElement.FindAnyWidget("Message")).SetText("Command: " + command + "\n" + "Action: " + params.param1 + "\nExample: " + params.param2);
 			sgElement.Show(false);
 			
@@ -87,7 +87,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 		if (m_HistoryWidgets.Count() >= 99)
 			ClearHistory();
 		
-		Widget historyWidget = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/CommandsConsoleUI/TextElement.layout", m_GridFeed);
+		Widget historyWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.TextElement, m_GridFeed);
 		TextWidget.Cast(historyWidget.FindAnyWidget("Message")).SetText(input);
 		m_HistoryWidgets.Insert(historyWidget);
 		m_GridFeed.Update();

@@ -14,7 +14,7 @@ class VPPPlayerStats : VPPPlayerTemplate
     {
         m_Stats = new map<string, TextWidget>;
         
-        m_LayoutPath  = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerInfoBox.layout";
+        m_LayoutPath  = VPPATUIConstants.VPPPlayerInfoBox;
 		m_stats 	  = stats;
         m_EntryBox	  = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 	    m_IconHealth  = ImageWidget.Cast(m_EntryBox.FindAnyWidget("ImgHealth"));

@@ -30,7 +30,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 		super.OnCreate(RootW);
 		GetRPCManager().VSendRPC( "RPC_PermissionManager", "SendToClient", new Param1<int>(0), true); //Get User Groups % Permissions levels 0 = both 1 = user groups 2 = perms
 
-		M_SUB_WIDGET  = CreateWidgets("VPPAdminTools/GUI/Layouts/PermissionManagerUI/MenuPermissionsEditor.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuPermissionsEditor);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
 		

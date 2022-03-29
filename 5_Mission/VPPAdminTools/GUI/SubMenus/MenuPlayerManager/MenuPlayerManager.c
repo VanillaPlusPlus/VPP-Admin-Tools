@@ -70,7 +70,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 		
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/PlayerManagerUI/MenuPlayerManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuPlayerManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -582,7 +582,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		return null;
 	}
 	
-	private array<ref VPPPlayerEntry> GetSelectedPlayers()
+	array<ref VPPPlayerEntry> GetSelectedPlayers()
 	{
 		array<ref VPPPlayerEntry> selected = new array<ref VPPPlayerEntry>;
 		foreach(VPPPlayerEntry entry : m_PlayerEntries)

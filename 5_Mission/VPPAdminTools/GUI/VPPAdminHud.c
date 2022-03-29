@@ -56,10 +56,15 @@ class VPPAdminHud extends VPPScriptedMenu
    	{
 		if (!m_Init)
 		{
-			layoutRoot   	    = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/AdminToolBar/VPPAdminHud.layout");
+			layoutRoot   	    = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPAdminHud);
 	  	  	m_WrapSpacerWidget  = WrapSpacerWidget.Cast(layoutRoot.FindAnyWidget("WrapSpacerWidget"));
 			m_Init = true;
 			return layoutRoot;
+		}
+		//Call init within children
+		foreach(AdminHudSubMenu m : M_SUB_MENUS)
+		{
+			m.OnAdminHudOpened();
 		}
 		return layoutRoot;
    	}
@@ -82,7 +87,7 @@ class VPPAdminHud extends VPPScriptedMenu
 
 		foreach(VPPButtonProperties data : m_DefinedButtons)
 		{
-			Widget w = GetGame().GetWorkspace().CreateWidgets("VPPAdminTools/GUI/Layouts/AdminToolBar/VPPButton.layout", m_WrapSpacerWidget);
+			Widget w = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPButton, m_WrapSpacerWidget);
 			m_Buttons.Insert(new VPPButton(w, data.param1, data.param2, data.param3, data.param4));
 		}
 	}
@@ -102,6 +107,18 @@ class VPPAdminHud extends VPPScriptedMenu
 			}
 			VPPAdminHud.m_OnPermissionsChanged.Invoke(m_ButtonPerms);
 		}
+	}
+
+	/*
+	* Checks if we have permission to open a submenu
+	* uses cached data after server verification.
+	*/
+	bool HasPermission(string perm)
+	{
+		if (perm == string.Empty)
+			return false;
+
+		return m_ButtonPerms[perm];
 	}
 	
 	override void Update(float timeslice)

@@ -7,7 +7,7 @@ class CustomGridSpacer
 	void CustomGridSpacer(GridSpacerWidget parent)
 	{
 		m_ContentWidget = new array<Widget>;
-		m_Grid  = GridSpacerWidget.Cast(GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/UIHelpers/CustomGridSpacer.layout", parent));
+		m_Grid  = GridSpacerWidget.Cast(GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.CustomGridSpacer, parent));
 		m_Parent = parent;
 		m_Parent.Update();
 	}

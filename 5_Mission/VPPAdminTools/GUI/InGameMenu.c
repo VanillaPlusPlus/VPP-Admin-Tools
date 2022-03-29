@@ -6,7 +6,7 @@
     {
         super.Init();
 		
-		m_CustomButton	 = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/InGameMenuButton.layout", layoutRoot.FindAnyWidget( "top" ));
+		m_CustomButton	 = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.InGameMenuButton, layoutRoot.FindAnyWidget( "top" ));
         return layoutRoot;
     }
 

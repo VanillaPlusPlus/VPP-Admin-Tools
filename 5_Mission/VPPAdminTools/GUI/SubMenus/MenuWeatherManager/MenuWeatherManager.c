@@ -75,7 +75,7 @@ class MenuWeatherManager extends AdminHudSubMenu
 	{
 		super.OnCreate(RootW);
 		//System
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/WeatherManagerUI/MenuWeatherManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuWeatherManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );

@@ -16,8 +16,15 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private EditBoxWidget     m_SearchBoxXML;
 	private CheckBoxWidget    m_chkEnablePreview;
 	private ImageWidget 	  m_ImgInfoXMLToolTip;
+	private CheckBoxWidget 	  m_filterFromXml;
+
+	private Widget 				  m_FilesDropDownWidget;
+	protected ref VPPDropDownMenu m_FilesDropDown;
+	private ref array<string> 	  m_FilePaths;
+
+	private ref array<string> 	  m_ClassTypes; //items store from server, for search filter
 	
-	private ref ItemScanResultScreen m_MapScreen;
+	ref ItemScanResultScreen 	m_MapScreen;
 	
 	private EntityAI 	  	  m_PreviewObject;
 	private int 	 		  m_RotationX;
@@ -26,13 +33,16 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private int    			  m_searchBoxCount;
 	private int    			  prevRow;
 	
+	private ref map<string, string> m_TypesFilesData; //path, name we get from server
 	private ref array<ref Param3<string,string,int>> m_cacheData;
 	private string 									 m_selectedType;
 	
 	void MenuXMLEditor()
 	{
-		GetRPCManager().AddRPC( "RPC_MenuXMLEditor", "HandleDetails", this );
-		GetRPCManager().AddRPC( "RPC_MenuXMLEditor", "HandleStats", this );
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleDetails", this);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleStats", this);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesFiles", this);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesList", this);
 	}
 	
 	void ~MenuXMLEditor()
@@ -47,7 +57,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/XMLEditorUI/MenuXMLEditor.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuXMLEditor);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -75,10 +85,19 @@ class MenuXMLEditor extends AdminHudSubMenu
 		
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		
+		//--
+		m_filterFromXml = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("filterFromXml"));
+
+		m_FilesDropDownWidget  = Widget.Cast(M_SUB_WIDGET.FindAnyWidget("ScriptsDropDown"));
+		m_FilesDropDown  = new VPPDropDownMenu(m_FilesDropDownWidget, "Found files...");
+		m_FilesDropDown.m_OnSelectItem.Insert(OnSelectFile);
+		m_FilesDropDown.SetIndex(-1); //nothing selected
+		//--
+
 		ToolTipHandler toolTipMenu;
 		m_ImgInfoXMLToolTip.GetScript(toolTipMenu);
 		toolTipMenu.SetTitle("#VSTR_TOOLTIP_TITLE");
-		toolTipMenu.SetContentText("#VSTR_XML_MENU_TOOLTIP");
+		toolTipMenu.SetContentText("Edit your types.xml file directly from here. Changes (to the CLE) after saving won't occur until next server restart."); //#VSTR_XML_MENU_TOOLTIP
 
 		ToolTipHandler toolTip;
 		
@@ -112,14 +131,38 @@ class MenuXMLEditor extends AdminHudSubMenu
 		//--
 		m_Loaded = true;
 		UpdateFilter();
+		GetRPCManager().VSendRPC("RPC_XMLEditor", "GetTypesFiles", NULL, true, NULL);
 	}
 	
+	override void OnAdminHudOpened()
+	{
+		super.OnAdminHudOpened();
+		if (!IsSubMenuVisible() || !m_Loaded)
+			return;
+
+		if (m_MapScreen)
+			m_MapScreen.ShowHide(true);
+	}
+
 	override void ShowSubMenu()
 	{
 		super.ShowSubMenu();
 		//Do Something
 	}
 	
+	void OnSelectFile(int index)
+	{
+		if (m_FilePaths == NULL)
+			return;
+		
+		m_FilesDropDown.SetText(m_FilePaths[index]);
+		m_FilesDropDown.SetIndex(index);
+		m_FilesDropDown.Close();
+		m_filterFromXml.SetChecked(false);
+		m_ClassTypes = {};
+		UpdateFilter();
+		ResetInputBoxes();
+	}
 
 	override void OnUpdate(float timeslice)
 	{
@@ -152,8 +195,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 				return false;
 			}
 			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_WAIT_INFO");
-			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
-			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetDetails", new Param1<string>(typeName), true, null);
+			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(), 0, typeName);
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetDetails", new Param2<string, string>(typeName, GetLoadedFilePath()), true, null);
 			return true;
 		}
 
@@ -169,7 +212,26 @@ class MenuXMLEditor extends AdminHudSubMenu
 			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
 			return true;
 		}
+
+		if (w == m_filterFromXml)
+		{
+			if (m_filterFromXml.IsChecked())
+			{
+				GetRPCManager().VSendRPC("RPC_XMLEditor", "GetTypesFromFile", new Param1<string>(GetLoadedFilePath()), true, null);
+			}
+			return true;
+		}
 		return super.OnClick(w, x, y, button);
+	}
+
+	string GetLoadedFilePath()
+	{
+		int selectedIdx = m_FilesDropDown.GetIndex();
+		if (selectedIdx > -1)
+		{
+			return m_TypesFilesData.GetKey(selectedIdx);
+		}
+		return "$mission:db/types.xml"; //the default will always be this
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
@@ -207,7 +269,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		Param1<ref map<string,vector>> data;
 		if (!ctx.Read(data)) return;
 		
-		if ( type == CallType.Client )
+		if (type == CallType.Client)
 		{
 			map<string,vector> result = data.param1;
 			if (m_MapScreen != null)
@@ -305,6 +367,39 @@ class MenuXMLEditor extends AdminHudSubMenu
 		}
 	}
 	
+	void HandleTypesFiles(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type == CallType.Client)
+		{
+			Param1<ref map<string, string>> data; //filePath, name
+			if (!ctx.Read(data))
+				return;
+
+			m_TypesFilesData = data.param1;
+			m_FilesDropDown.RemoveAllElements();
+			m_FilePaths = {};
+			foreach(string filePath, string name : m_TypesFilesData)
+			{
+				m_FilePaths.Insert(filePath);
+				m_FilesDropDown.AddElement(name);
+			}
+		}
+	}
+
+	void HandleTypesList(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type == CallType.Client)
+		{
+			Param1<ref array<string>> data;
+			if (!ctx.Read(data))
+				return;
+
+			m_ClassTypes = {};
+			m_ClassTypes.Copy(data.param1);
+			UpdateFilter();
+		}
+	}
+
 	void UpdateCacheData()
 	{
 		foreach(ref Param3<string,string,int> param : m_cacheData)
@@ -359,7 +454,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 				return;
 			}
 			UpdateCacheData();
-			GetRPCManager().VSendRPC("RPC_XMLEditor", "EditElemets", new Param2<string, ref array<ref Param3<string,string,int>>>(m_selectedType,m_cacheData), true, null);
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "EditElemets", new Param3<string, string, ref array<ref Param3<string,string,int>>>(GetLoadedFilePath(), m_selectedType, m_cacheData), true, null);
 			
 			m_selectedType = "";
 			m_cacheData    = null;
@@ -378,30 +473,47 @@ class MenuXMLEditor extends AdminHudSubMenu
 
         string strSearch = m_SearchBoxXML.GetText();
         strSearch.ToLower();
+        string strName;
+        string lowerCasedName;
 
-        for (int x = 0; x < cfgPaths.Count(); ++x)
+        if (m_filterFromXml.IsChecked())
         {
-            string Config_Path = cfgPaths.Get(x);
-            int nClasses = g_Game.ConfigGetChildrenCount(Config_Path);
+        	for (int i = 0; i < m_ClassTypes.Count(); ++i)
+        	{
+        		strName = m_ClassTypes[i];
+        		lowerCasedName = strName;
+	            lowerCasedName.ToLower();
+	            if ((strSearch != "" && (!lowerCasedName.Contains(strSearch)))) 
+	                continue;
 
-            for ( int nClass = 0; nClass < nClasses; ++nClass )
-            {
-                string strName;
-                GetGame().ConfigGetChildName( Config_Path, nClass, strName );
+	            m_ItemListBoxXML.AddItem(strName, NULL, 0);
+        	}
+        }
+        else
+        {
+        	for(int x = 0; x < cfgPaths.Count(); ++x)
+	        {
+	            string Config_Path = cfgPaths.Get(x);
+	            int nClasses = g_Game.ConfigGetChildrenCount(Config_Path);
 
-                int scope = GetGame().ConfigGetInt( Config_Path + " " + strName + " scope" );
+	            for (int nClass = 0; nClass < nClasses; ++nClass)
+	            {
+	                GetGame().ConfigGetChildName(Config_Path, nClass, strName);
 
-                if ( scope == 0 || scope == 1)
-                    continue;
+	                int scope = GetGame().ConfigGetInt(Config_Path + " " + strName + " scope");
 
-                string lowerCasedName = strName;
-                lowerCasedName.ToLower();
-                if ((strSearch != "" && (!lowerCasedName.Contains(strSearch)))) 
-                {
-                    continue;
-                }
-                m_ItemListBoxXML.AddItem( strName, NULL, 0 );
-            }
+	                if (scope == 0 || scope == 1)
+	                    continue;
+
+	                lowerCasedName = strName;
+	                lowerCasedName.ToLower();
+	                if ((strSearch != "" && (!lowerCasedName.Contains(strSearch)))) 
+	                {
+	                    continue;
+	                }
+	                m_ItemListBoxXML.AddItem(strName, NULL, 0);
+	            }
+	        }
         }
 	}
 	

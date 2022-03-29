@@ -1,8 +1,9 @@
 GridSpacerWidgetClass rootFrameEsp {
  visible 1
+ clipchildren 0
  ignorepointer 0
  position 0 0
- size 1 1
+ size 0.11796 0.0172
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -15,21 +16,25 @@ GridSpacerWidgetClass rootFrameEsp {
  Columns 1
  Rows 1
  {
-  GridSpacerWidgetClass Grid {
+  GridSpacerWidgetClass SpacerGrid {
+   visible 1
+   clipchildren 0
    ignorepointer 0
    color 0 0 0 0.7843
    position 0 0
-   size 1 1
+   size 0.72047 0.97718
+   valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   style Colorable
+   Padding 5
    Margin 0
    "Size To Content H" 1
    "Size To Content V" 1
    content_halign center
    content_valign center
-   Columns 2
    Rows 1
    {
     CheckBoxWidgetClass CheckBox {
@@ -38,76 +43,53 @@ GridSpacerWidgetClass rootFrameEsp {
      ignorepointer 0
      color 1 0 0 0.5882
      position 0 0
-     size 20 15
+     size 15 15
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
      scaled 1
     }
-    GridSpacerWidgetClass SpacerGrid {
-     visible 1
-     ignorepointer 0
-     color 0 0 0 0.3922
+    TextWidgetClass ItemName {
+     ignorepointer 1
+     color 1 1 1 0.7843
      position 0 0
-     size 0.8 1
+     size 1 0.3
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     style Normal
+     text "M4A1M4A1M4A1M4A1M4A1"
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+    TextWidgetClass ItemDistance {
+     ignorepointer 1
+     color 0 1 0.0824 0.7843
+     position 0 0
+     size 1 0.3
+     halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Empty
-     Padding 5
-     Margin 0
-     "Size To Content H" 1
-     "Size To Content V" 1
-     content_halign center
-     content_valign center
-     Columns 2
-     Rows 1
-     {
-      TextWidgetClass ItemName {
-       ignorepointer 1
-       color 1 1 1 0.7843
-       position 0 0
-       size 1 0.3
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scaled 1
-       style Normal
-       text "M4A1"
-       font "gui/fonts/sdf_MetronBook24"
-       "exact text" 1
-       "exact text size" 11
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass ItemDistance {
-       ignorepointer 1
-       color 0 1 0.0824 0.7843
-       position 0 0
-       size 1 0.3
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Bold
-       text "[1250m]"
-       font "gui/fonts/sdf_MetronBook24"
-       "exact text" 1
-       "exact text size" 11
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-     }
+     style Bold
+     text "[1250m]"
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
     }
    }
   }

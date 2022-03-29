@@ -26,7 +26,7 @@ class KillDeathMessage: WebHookMessageBase
 		{
 			field = embed.AddField();
 			field.SetName("Killer:");
-			if (killerName == "Zombie")
+			if (killerName == "Infected")
 				field.SetValue(killerName);
 			else if (killerGUID == victimGUID || killerName == victimName)
 				field.SetValue("Suicide");

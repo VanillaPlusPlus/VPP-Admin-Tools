@@ -1,0 +1,23 @@
+PanelWidgetClass ItemPreview {
+ color 0.3137 0.3137 0.3137 0.6275
+ position 0 0
+ size 1 72
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ style rover_sim_colorable
+ {
+  ItemPreviewWidgetClass Preview {
+   color 0.2745 0.2745 0.2745 0.4706
+   size 1.25 1.25
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   priority 1
+  }
+ }
+}

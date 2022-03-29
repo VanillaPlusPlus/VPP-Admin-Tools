@@ -3,7 +3,7 @@ GridSpacerWidgetClass rootFrameEsp {
  ignorepointer 1
  color 0 0 0 0.7843
  position 0 0
- size 768 65
+ size 337 28
  hexactpos 1
  vexactpos 1
  hexactsize 1

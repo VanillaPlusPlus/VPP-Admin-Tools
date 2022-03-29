@@ -12,7 +12,7 @@ class BuildingSetEntry : VPPPlayerTemplate
     {
 		m_Grid       = grid;
         m_SetName    = itemSetName;
-        m_LayoutPath = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingSetEntry.layout";
+        m_LayoutPath = VPPATUIConstants.BuildingSetEntry;
         m_EntryBox   = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
 		m_StatusCheckBox = CheckBoxWidget.Cast(m_EntryBox.FindAnyWidget("Active"));
 		GetVPPUIManager().HookConfirmationDialog(m_StatusCheckBox, rootWidget,this,"CheckBoxEvent", DIAGTYPE.DIAG_YESNO, "#VSTR_TITLE_WARNING", "#VSTR_TOOLTIP_SELECT_SET");

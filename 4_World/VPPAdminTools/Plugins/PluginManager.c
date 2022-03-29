@@ -21,7 +21,7 @@ modded class PluginManager
 			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
 		}
 
-		if(GetGame().IsServer() && GetGame().IsMultiplayer())
+		if(GetGame().IsDedicatedServer())
 		{
 			RegisterPlugin("XMLEditor", 			 		 false, 	true);
 			RegisterPlugin("PluginFileHandler", 			 false, 	true);
@@ -43,6 +43,7 @@ modded class PluginManager
 			MakeDirectory("$profile:VPPAdminTools");
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins");
 			MakeDirectory("$profile:VPPAdminTools/Exports");
+			MakeDirectory("$profile:VPPAdminTools/Backups");
 		}
 	}
 };

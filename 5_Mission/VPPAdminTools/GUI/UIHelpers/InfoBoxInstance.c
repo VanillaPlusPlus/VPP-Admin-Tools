@@ -11,7 +11,7 @@ class InfoBoxInstance extends UIScriptedMenu
 
 	void InfoBoxInstance(Widget RootWidget, string TargetWidgetName, string TitleText, string InnerText)
 	{
-		m_Root			= GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/UIHelpers/VPPInfoBox.layout", NULL );
+		m_Root			= GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPInfoBox, NULL );
 
 		m_InfoPanelRoot = Widget.Cast( m_Root.FindAnyWidget( "Info_Panel" ) );
 		m_InfoLabel	    = TextWidget.Cast( m_InfoPanelRoot.FindAnyWidget( "LabelText"  ) );

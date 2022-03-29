@@ -41,7 +41,7 @@ class MenuBansManager extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-		M_SUB_WIDGET  = CreateWidgets( "VPPAdminTools/GUI/Layouts/BansManagerUI/MenuBansManager.layout");
+		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuBansManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
@@ -145,7 +145,7 @@ class MenuBansManager extends AdminHudSubMenu
 			if (m_DurationEditor != null) return false;
 			if (selected.Count() < 1) return false;
 			
-			m_DurationEditor = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/BansManagerUI/BanDurationInputPopUp.layout", M_SUB_WIDGET);
+			m_DurationEditor = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.BanDurationInputPopUp, M_SUB_WIDGET);
 			m_DurationEditor.GetScript(m_DurationEditorClass);
 			if (selected.Count() == 1)
 				m_DurationEditorClass.Init(this,selected.Get(0).GetPlayer().expirationDate);
