@@ -46,94 +46,91 @@ class VPPATProfileConstants
 
 class VPPATUIConstants
 {
-	//the root directory layouts exists in
-	const static string PREFIX = "VPPAdminTools/GUI/Layouts/";
-	
 	//Misc
-	const static string VPPNotification 		 	 = PREFIX + "VPPNotification.layout";
-	const static string VPPNotificationParent 		 = PREFIX + "VPPNotificationParent.layout";
-	const static string PlayerESPCanvas 			 = PREFIX + "PlayerESPCanvas.layout";
-	const static string CustomSubMenu 				 = PREFIX + "CustomSubMenu.layout";
-	const static string InGameMenuButton 			 = PREFIX + "InGameMenuButton.layout";
-	const static string SettingsMenuVPPATSection 	 = PREFIX + "SettingsMenuVPPATSection.layout";
-	const static string SettingsMenuElement 		 = PREFIX + "SettingsMenuElement.layout";
+	const static string VPPNotification 		 	 = "VPPAdminTools/GUI/Layouts/VPPNotification.layout";
+	const static string VPPNotificationParent 		 = "VPPAdminTools/GUI/Layouts/VPPNotificationParent.layout";
+	const static string PlayerESPCanvas 			 = "VPPAdminTools/GUI/Layouts/PlayerESPCanvas.layout";
+	const static string CustomSubMenu 				 = "VPPAdminTools/GUI/Layouts/CustomSubMenu.layout";
+	const static string InGameMenuButton 			 = "VPPAdminTools/GUI/Layouts/InGameMenuButton.layout";
+	const static string SettingsMenuVPPATSection 	 = "VPPAdminTools/GUI/Layouts/SettingsMenuVPPATSection.layout";
+	const static string SettingsMenuElement 		 = "VPPAdminTools/GUI/Layouts/SettingsMenuElement.layout";
 
 	//Main toolbar
-	const static string VPPAdminHud 				 = PREFIX + "AdminToolBar/VPPAdminHud.layout";
-	const static string VPPButton 					 = PREFIX + "AdminToolBar/VPPButton.layout";
+	const static string VPPAdminHud 				 = "VPPAdminTools/GUI/Layouts/AdminToolBar/VPPAdminHud.layout";
+	const static string VPPButton 					 = "VPPAdminTools/GUI/Layouts/AdminToolBar/VPPButton.layout";
 
 	//UI Helpers
-	const static string VPPDialogBox 				 = PREFIX + "UIHelpers/VPPDialogBox.layout";
-	const static string CustomGridSpacer 			 = PREFIX + "UIHelpers/CustomGridSpacer.layout";
-	const static string VPPDragSelect 				 = PREFIX + "UIHelpers/VPPDragSelect.layout";
-	const static string VPPInfoBox 					 = PREFIX + "UIHelpers/VPPInfoBox.layout";
-	const static string CustomInputMenu 			 = PREFIX + "UIHelpers/CustomInputMenu.layout";
+	const static string VPPDialogBox 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout";
+	const static string CustomGridSpacer 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/CustomGridSpacer.layout";
+	const static string VPPDragSelect 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDragSelect.layout";
+	const static string VPPInfoBox 					 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPInfoBox.layout";
+	const static string CustomInputMenu 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/CustomInputMenu.layout";
 
 	//Dropdown
-	const static string dropdown_prefab 			 = PREFIX + "VPPDropdown/dropdown_prefab.layout";
-	const static string dropdown_element 			 = PREFIX + "VPPDropdown/dropdown_element.layout";
+	const static string dropdown_prefab 			 = "VPPAdminTools/GUI/Layouts/VPPDropdown/dropdown_prefab.layout";
+	const static string dropdown_element 			 = "VPPAdminTools/GUI/Layouts/VPPDropdown/dropdown_element.layout";
 	
 	//XML Editor
-	const static string MenuXMLEditor 				 = PREFIX + "XMLEditorUI/MenuXMLEditor.layout";
-	const static string itemscanresultscreen 		 = PREFIX + "XMLEditorUI/itemscanresultscreen.layout";
+	const static string MenuXMLEditor 				 = "VPPAdminTools/GUI/Layouts/XMLEditorUI/MenuXMLEditor.layout";
+	const static string itemscanresultscreen 		 = "VPPAdminTools/GUI/Layouts/XMLEditorUI/itemscanresultscreen.layout";
 
 	//Webhooks Manager
-	const static string MenuWebHooks 				 = PREFIX + "WebHooksUI/MenuWebHooks.layout";
-	const static string WebHookEntry 				 = PREFIX + "WebHooksUI/WebHookEntry.layout";
+	const static string MenuWebHooks 				 = "VPPAdminTools/GUI/Layouts/WebHooksUI/MenuWebHooks.layout";
+	const static string WebHookEntry 				 = "VPPAdminTools/GUI/Layouts/WebHooksUI/WebHookEntry.layout";
 
 	//Weather Manager
-	const static string MenuWeatherManager 			 = PREFIX + "WeatherManagerUI/MenuWeatherManager.layout";
+	const static string MenuWeatherManager 			 = "VPPAdminTools/GUI/Layouts/WeatherManagerUI/MenuWeatherManager.layout";
 	
 	//Teleport Manager
-	const static string MenuTeleportManager 		 = PREFIX + "TeleportManagerUI/MenuTeleportManager.layout";
-	const static string PopUpCreatePosition 		 = PREFIX + "TeleportManagerUI/PopUpCreatePosition.layout";
-	const static string TeleportEntry 				 = PREFIX + "TeleportManagerUI/TeleportEntry.layout";
+	const static string MenuTeleportManager 		 = "VPPAdminTools/GUI/Layouts/TeleportManagerUI/MenuTeleportManager.layout";
+	const static string PopUpCreatePosition 		 = "VPPAdminTools/GUI/Layouts/TeleportManagerUI/PopUpCreatePosition.layout";
+	const static string TeleportEntry 				 = "VPPAdminTools/GUI/Layouts/TeleportManagerUI/TeleportEntry.layout";
 
 	//Server Manager
-	const static string MenuServerManager 			 = PREFIX + "ServerManagerUI/MenuServerManager.layout";
+	const static string MenuServerManager 			 = "VPPAdminTools/GUI/Layouts/ServerManagerUI/MenuServerManager.layout";
 
 	//Players Manager
-	const static string MenuPlayerManager 			 = PREFIX + "PlayerManagerUI/MenuPlayerManager.layout";
-	const static string VPPPlayerList 				 = PREFIX + "PlayerManagerUI/VPPPlayerList.layout";
-	const static string VPPPlayerInfoBox 			 = PREFIX + "PlayerManagerUI/VPPPlayerInfoBox.layout";
+	const static string MenuPlayerManager 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/MenuPlayerManager.layout";
+	const static string VPPPlayerList 				 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerList.layout";
+	const static string VPPPlayerInfoBox 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerInfoBox.layout";
 
 	//Permissions Manager
-	const static string MenuPermissionsEditor 		 = PREFIX + "PermissionManagerUI/MenuPermissionsEditor.layout";
-	const static string VPPPermissionBox 			 = PREFIX + "PermissionManagerUI/VPPPermissionBox.layout";
-	const static string VPPUserBox 					 = PREFIX + "PermissionManagerUI/VPPUserBox.layout";
-	const static string VPPUserGroupBox 			 = PREFIX + "PermissionManagerUI/VPPUserGroupBox.layout";
-	const static string SettingsPopUp 				 = PREFIX + "PermissionManagerUI/SettingsPopUp.layout";
+	const static string MenuPermissionsEditor 		 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/MenuPermissionsEditor.layout";
+	const static string VPPPermissionBox 			 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPPermissionBox.layout";
+	const static string VPPUserBox 					 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPUserBox.layout";
+	const static string VPPUserGroupBox 			 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/VPPUserGroupBox.layout";
+	const static string SettingsPopUp 				 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/SettingsPopUp.layout";
 
 	//Objects builder
-	const static string MenuObjectManager 			 = PREFIX + "ObjectManagerUI/MenuObjectManager.layout";
-	const static string EditDialogBuilding 			 = PREFIX + "ObjectManagerUI/EditDialogBuilding.layout";
-	const static string BuildingEntry 				 = PREFIX + "ObjectManagerUI/BuildingEntry.layout";
-	const static string EditDialog 					 = PREFIX + "ObjectManagerUI/EditDialog.layout";
-	const static string BuildingSetEntry 			 = PREFIX + "ObjectManagerUI/BuildingSetEntry.layout";
-	const static string BuildingTracker 			 = PREFIX + "ObjectManagerUI/BuildingTracker.layout";
+	const static string MenuObjectManager 			 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/MenuObjectManager.layout";
+	const static string EditDialogBuilding 			 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/EditDialogBuilding.layout";
+	const static string BuildingEntry 				 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingEntry.layout";
+	const static string EditDialog 					 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/EditDialog.layout";
+	const static string BuildingSetEntry 			 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingSetEntry.layout";
+	const static string BuildingTracker 			 = "VPPAdminTools/GUI/Layouts/ObjectManagerUI/BuildingTracker.layout";
 
 	//Items Manager
-	const static string MenuItemManager 			 = PREFIX + "ItemManagerUI/MenuItemManager.layout";
-	const static string PopUpCreatePreset 			 = PREFIX + "ItemManagerUI/PopUpCreatePreset.layout";
-	const static string EntryPresetItem 			 = PREFIX + "ItemManagerUI/EntryPresetItem.layout";
+	const static string MenuItemManager 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/MenuItemManager.layout";
+	const static string PopUpCreatePreset 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/PopUpCreatePreset.layout";
+	const static string EntryPresetItem 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/EntryPresetItem.layout";
 
 	//ESP Tools
-	const static string EspToolsMenu 				 = PREFIX + "EspToolsUI/EspToolsMenu.layout";
-	const static string EspItemEntry 				 = PREFIX + "EspToolsUI/EspItemEntry.layout";
-	const static string EspTracker 					 = PREFIX + "EspToolsUI/EspTracker.layout";
-	const static string EspTrackerDetailed 			 = PREFIX + "EspToolsUI/EspTrackerDetailed.layout";
-	const static string EspTrackerPanelHeader 		 = PREFIX + "EspToolsUI/EspTrackerPanelHeader.layout";
-	const static string EspTrackerInfos 			 = PREFIX + "EspToolsUI/EspTrackerInfos.layout";
-	const static string EspTrackerBaseBuilding 		 = PREFIX + "EspToolsUI/EspTrackerBaseBuilding.layout";
-	const static string EspTrackerActions 			 = PREFIX + "EspToolsUI/EspTrackerActions.layout";
-	const static string EspTrackerPlayerHealth 		 = PREFIX + "EspToolsUI/EspTrackerPlayerHealth.layout";
-	const static string FilterEntry 				 = PREFIX + "EspToolsUI/FilterEntry.layout";
+	const static string EspToolsMenu 				 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspToolsMenu.layout";
+	const static string EspItemEntry 				 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspItemEntry.layout";
+	const static string EspTracker 					 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTracker.layout";
+	const static string EspTrackerDetailed 			 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerDetailed.layout";
+	const static string EspTrackerPanelHeader 		 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPanelHeader.layout";
+	const static string EspTrackerInfos 			 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerInfos.layout";
+	const static string EspTrackerBaseBuilding 		 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerBaseBuilding.layout";
+	const static string EspTrackerActions 			 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerActions.layout";
+	const static string EspTrackerPlayerHealth 		 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspTrackerPlayerHealth.layout";
+	const static string FilterEntry 				 = "VPPAdminTools/GUI/Layouts/EspToolsUI/FilterEntry.layout";
 
 	//Commands console menu
-	const static string CommandsConsoleUI 			 = PREFIX + "CommandsConsoleUI/CommandsConsoleUI.layout";
-	const static string TextElement 				 = PREFIX + "CommandsConsoleUI/TextElement.layout";
+	const static string CommandsConsoleUI 			 = "VPPAdminTools/GUI/Layouts/CommandsConsoleUI/CommandsConsoleUI.layout";
+	const static string TextElement 				 = "VPPAdminTools/GUI/Layouts/CommandsConsoleUI/TextElement.layout";
 
 	//Bans Manager
-	const static string MenuBansManager 			 = PREFIX + "BansManagerUI/MenuBansManager.layout";
-	const static string BanDurationInputPopUp 		 = PREFIX + "BansManagerUI/BanDurationInputPopUp.layout";
+	const static string MenuBansManager 			 = "VPPAdminTools/GUI/Layouts/BansManagerUI/MenuBansManager.layout";
+	const static string BanDurationInputPopUp 		 = "VPPAdminTools/GUI/Layouts/BansManagerUI/BanDurationInputPopUp.layout";
 };
