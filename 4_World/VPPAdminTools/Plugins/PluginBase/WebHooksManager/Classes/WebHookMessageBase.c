@@ -95,7 +95,7 @@ class WbField
 class WbAuthor
 {
 	string name     = "VPPAdminTools";
-	string url      = "https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078";
+	string url      = "https://steamcommunity.com/sharedfiles/filedetails/?id=1828439124";
 	string icon_url = "https://i.imgur.com/oSEhCJV.png";
 	
 	void SetName(string n)
