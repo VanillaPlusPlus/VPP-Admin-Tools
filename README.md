@@ -42,14 +42,14 @@ First, subscribe to the dependencies: [VPPAdminTools](https://steamcommunity.com
 
 Second, launch the normal DayZ launcher, not DayZ SA Launcher, and in the bottom of the window it should verify that you just recently subscribed, and downloaded the mods. Goto the mods tab, right click on VPPAdminTools, and click on Open Folder.
 
-Inside of the newly opened window, Copy both @VPPAdminTools, @CF and @VPPNotifications from the !Workshop folder to your servers Root Directory. Next, you will have to add these mods to your start up command line. The vanilla process of installing mods is by adding -mod=@CF;@VPPNotifications;@VPPAdminTools to your start up command line (Server). Please make sure that your last mod doesn't end with a semicolon.
+Inside of the newly opened window, Copy both @VPPAdminTools, @CF from the !Workshop folder to your servers Root Directory. Next, you will have to add these mods to your start up command line. The vanilla process of installing mods is by adding -mod=@CF;@VPPAdminTools to your start up command line (Server). Please make sure that your last mod doesn't end with a semicolon.
 
 Many hosting companies have different methods to adding mods to their server, and you will have to figure out the prefered way to add them to your server. Each hosting company is different.
 
 ## Adding Mod to Client
-First, subscribe to [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036) and [VPPNotifications] (https://steamcommunity.com/sharedfiles/filedetails/?id=1680673106) on the Steam Workshop. Steam will force you to download & load the dependencies.
+First, subscribe to [VPPAdminTools](https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078), [CF](https://steamcommunity.com/workshop/filedetails/?id=1559212036) on the Steam Workshop. Steam will force you to download & load the dependencies.
 
-Second, launch the DayZ Launcher. Go to the mod tab, and select CF, VPPNotifications and VPPAdminTools. Click launch, and play.
+Second, launch the DayZ Launcher. Go to the mod tab, and select CF and VPPAdminTools. Click launch, and play.
 
 **Note:**
 Some server owners use DayZ SA launcher, and require you to join the server through the application. Please contact your community staff team for their prefered way to join their server.
