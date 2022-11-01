@@ -124,8 +124,8 @@ class EspToolsMenu extends AdminHudSubMenu
 				if (IsFreeCamActive())
 					startPos = VPPGetCurrentCameraPosition();
 
+				bool extensiveSearch = false;
 				int totalTime = 0;
-				map<EntityAI, int> objects = new map<EntityAI, int>; //This seems to work faster than filtering arrays with Find
 				array<EntityAI> entities = new array<EntityAI>;
 				
 				M_UPDATE_INTERVAL = m_InputUpdateInterval.GetText().ToInt();
@@ -138,8 +138,13 @@ class EspToolsMenu extends AdminHudSubMenu
 				{
 					if (!filter.IsSelected())
 						continue;
-		
-					activeFilters.Insert(filter.GetFilterName().ToType(), filter.m_Props.color);
+			
+					typename fType = filter.GetFilterName().ToType();
+					activeFilters.Insert(fType, filter.m_Props.color);
+					if (fType && (fType.IsInherited(CrashBase) || fType.IsInherited(House) || fType.IsInherited(BuildingSuper)))
+					{
+						extensiveSearch = true;
+					}
 				}
 
 				//Check if survivor only, skip scanning objects to avoid stutter lag on high radius
@@ -149,27 +154,24 @@ class EspToolsMenu extends AdminHudSubMenu
 				}
 				else
 				{
-					ScanObjectsEx(entities, totalTime, objects);
+					ScanObjectsEx(entities, totalTime, extensiveSearch);
 					ScanPlayers();
 				}
 
 				foreach(EntityAI ent : entities)
 				{
-					if (!ent || m_EspTrackers.Get(ent))
+					if (!ent || !ent.IsEntityAI() || !ent.HasNetworkID())
+						continue;
+
+					if (m_EspTrackers.Get(ent))
 						continue;
 
 					if (vector.Distance(startPos, ent.GetPosition()) > m_SliderRadius.GetCurrent())
 						continue;
 
-					string objName = string.Empty;
+					string objName = ent.GetDisplayName();
 					if (m_ChkShowClassName.IsChecked() || objName == string.Empty)
-					{
 						objName = ent.GetType();
-					}
-					else
-					{
-						objName = ent.GetDisplayName();
-					}
 		
 					foreach(typename f, int color : activeFilters)
 					{
@@ -181,9 +183,6 @@ class EspToolsMenu extends AdminHudSubMenu
 				}
 
 				Sleep(Math.Max(0,(M_UPDATE_INTERVAL * 1000.0) - totalTime)); //Next scan
-				#ifdef VPPADMINTOOLS_DEBUG
-				Print("Total: " + objects.Count() + " totalTime: " + totalTime);
-				#endif
 			}
 		}
 	}
@@ -197,7 +196,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		}
 	}
 
-	void ScanObjectsEx(out array<EntityAI> entities, out int totalTime, out map<EntityAI, int> objects)
+	void ScanObjectsEx(out array<EntityAI> entities, out int totalTime, bool extensiveSearch)
 	{
 		int waitIndex = 0;
 
@@ -222,20 +221,19 @@ class EspToolsMenu extends AdminHudSubMenu
 
 		for (int i = 0; i < steps; ++i)
 		{
-		    DayZPlayerUtils.PhysicsGetEntitiesInBox(currentMin, currentMax, entities);
+			if (extensiveSearch) //SLOW & laggy
+			{
+		    	DayZPlayerUtils.PhysicsGetEntitiesInBox(currentMin, currentMax, entities);
+		    	DoSleep((M_UPDATE_INTERVAL * 1000.0) / 4, totalTime, waitIndex);
+			}
+			else
+			{
+		    	DayZPlayerUtils.SceneGetEntitiesInBox(currentMin, currentMax, entities);
+		    }
 
 		    currentMin = currentMin + deltaDistanceVec;
 		    currentMax = currentMax + deltaDistanceVec;
 
-		    foreach(EntityAI ent : entities)
-			{
-				if (!ent || !ent.IsEntityAI() || !ent.HasNetworkID())
-					continue;
-
-				objects.Insert(ent, 0);
-			}
-
-		    DoSleep((M_UPDATE_INTERVAL * 1000.0) / 4, totalTime, waitIndex);
 #ifdef VPPADMINTOOLS_DEBUG
 			DayZPlayerUtils.DrawDebugBox(currentMin, 10.0, ARGB(255,0,0,255));
 			DayZPlayerUtils.DrawDebugBox(currentMax, 10.0, ARGB(255,0,0,255));
@@ -702,7 +700,8 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_FilterProps.Insert(new EspFilterProperties("SurvivorBase",ARGB(255,255,255,255)));
 		m_FilterProps.Insert(new EspFilterProperties("Clothing_Base",ARGB(255,255,255,255)));
 		m_FilterProps.Insert(new EspFilterProperties("Transport",ARGB(255,255,255,255)));
-				
+		m_FilterProps.Insert(new EspFilterProperties("CrashBase",ARGB(255,255,0,0), true));
+
 		SaveFilters();
 		InitFilters();
 	}
@@ -719,9 +718,10 @@ class EspToolsMenu extends AdminHudSubMenu
 	void InitFilters()
 	{
 		m_FilterEntry   = new array<ref VPPFilterEntry>;
-		
 		foreach(EspFilterProperties prop: m_FilterProps)
-			m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, prop ,true));
+		{
+			m_FilterEntry.Insert(new VPPFilterEntry(m_SpacerParent, prop, !prop.slowSearchNeeded));
+		}
 	}
 
 	bool ShowDeadPlayers()
