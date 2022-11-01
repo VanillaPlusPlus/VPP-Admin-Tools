@@ -39,10 +39,10 @@ class MenuXMLEditor extends AdminHudSubMenu
 	
 	void MenuXMLEditor()
 	{
-		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleDetails", this);
-		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleStats", this);
-		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesFiles", this);
-		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesList", this);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleDetails", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleStats", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesFiles", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuXMLEditor", "HandleTypesList", this, SingleplayerExecutionType.Client);
 	}
 	
 	void ~MenuXMLEditor()
@@ -183,7 +183,6 @@ class MenuXMLEditor extends AdminHudSubMenu
 		}
 	}
 	
-	
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
 		string typeName;
@@ -208,8 +207,19 @@ class MenuXMLEditor extends AdminHudSubMenu
 				GetVPPUIManager().DisplayError("#VSTR_XML_ERR_SELECTFIRST");
 				return false;
 			}
-			m_MapScreen = new ItemScanResultScreen();
-			GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
+
+			//Check type for Land_ / House
+			typename t = typeName.ToType();
+			if (t && (t.IsInherited(CrashBase) || t.IsInherited(House) || t.IsInherited(BuildingSuper)))
+			{
+				VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+				dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Warning!", "The type you have selected will use a slower search method. This will cause a brief server performance lag spike!\nProceed?", this, "OnDiagResultConfirmScan");
+			}
+			else
+			{
+				m_MapScreen = new ItemScanResultScreen();
+				GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);	
+			}
 			return true;
 		}
 
@@ -223,6 +233,17 @@ class MenuXMLEditor extends AdminHudSubMenu
 		}
 		return super.OnClick(w, x, y, button);
 	}
+
+	void OnDiagResultConfirmScan(int result)
+    {
+ 		if (result == DIAGRESULT.YES)
+        {
+        	string typeName;
+        	m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(), 0, typeName);
+        	m_MapScreen = new ItemScanResultScreen();
+        	GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
+        }
+    }
 
 	string GetLoadedFilePath()
 	{

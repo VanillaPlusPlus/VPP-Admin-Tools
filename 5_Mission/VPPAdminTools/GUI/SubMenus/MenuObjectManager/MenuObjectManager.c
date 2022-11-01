@@ -1,5 +1,6 @@
 class MenuObjectManager extends AdminHudSubMenu
 {
+	static const PhxInteractionLayers	HIT_MASK = PhxInteractionLayers.CHARACTER|PhxInteractionLayers.BUILDING|PhxInteractionLayers.DOOR|PhxInteractionLayers.VEHICLE|PhxInteractionLayers.ROADWAY|PhxInteractionLayers.TERRAIN|PhxInteractionLayers.ITEM_SMALL|PhxInteractionLayers.ITEM_LARGE|PhxInteractionLayers.FENCE|PhxInteractionLayers.AI;
 	private bool 		      		 m_loaded = false;
 	private EditBoxWidget     		 m_SearchInputBox;
 	private TextListboxWidget 	  	 m_ItemListBox;
@@ -9,19 +10,16 @@ class MenuObjectManager extends AdminHudSubMenu
 	private ButtonWidget             m_btnSaveChanges;
 	private ButtonWidget             m_btnHelp;
 	private CheckBoxWidget           m_chkSnapObjs;
+	private CheckBoxWidget           m_chkGroundMode;
+	private CheckBoxWidget           m_chkObjSurfaceSnap;
 	private int 	 		  		 m_RotationX;
 	private int 	 		  		 m_RotationY;
 	private vector   		  		 m_ItemOrientation;
 	private int                   	 m_searchBoxCount;
 	private int    					 m_prevRow;
 	private ref BuildingSetEditor    m_setAttributesEditor;
-	private ButtonWidget             m_chkFreeCam;
 	private TextWidget               m_title_txt_curr_set;
-	private ButtonWidget             m_chkTopDowncam;
-	private EditBoxWidget            m_EditYaw;
-	private EditBoxWidget            m_EditPitch;
-	private EditBoxWidget            m_EditRoll;
-	private EditBoxWidget            m_EditFOV;
+	private EditBoxWidget 			 m_RotationStep;
 	private ButtonWidget             m_btnReloadSets;
 	private GridSpacerWidget         m_ParentGrid;
 	private CheckBoxWidget           m_chkEnablePreview;
@@ -40,18 +38,18 @@ class MenuObjectManager extends AdminHudSubMenu
 	//---Panels---
 	private Widget    m_PanelBuildingSets;
 	private Widget    m_PanelCurrentSet;
-	private Widget    m_PanelPlaceNew;
-	private Widget    m_PanelCamera;
+	private Widget    m_PanelItemPreview;
 	//------------
 	private ref array<ref Param2<bool,ButtonWidget>> m_ShowHideButtons;
 	private ref array<string> m_BuildingSets; //Names of all saved sets (from server)
-	private Object worldObject;
-	
+	BuildingTracker m_SelectedParent;
+	int keyMsDelay = 0;
+
 	void MenuObjectManager()
 	{
 		/* RPCs */
-		GetRPCManager().AddRPC("RPC_MenuObjectManager", "HandleData", this);
-		GetRPCManager().AddRPC("RPC_MenuObjectManager", "HandleSetsData", this);
+		GetRPCManager().AddRPC("RPC_MenuObjectManager", "HandleData", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuObjectManager", "HandleSetsData", this, SingleplayerExecutionType.Client);
 		//-------
 		
 		m_DataGrids 	  	 = new array<ref CustomGridSpacer>;
@@ -63,48 +61,42 @@ class MenuObjectManager extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-		
 		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuObjectManager);
 		M_SUB_WIDGET.SetHandler(this);
-		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
-		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
+		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget("Header") );
+		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget("BtnClose") );
 		
-		m_title_txt_curr_set = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "title_txt_curr_set"));
-		m_ScrollerBuildingSets = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ScrollerBuildingSets"));
-		m_ScrollerSetItems = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ScrollerSetItems"));
-		m_EditYaw     = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditYawC"));
-		m_EditPitch   = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditPitchC"));
-		m_EditRoll    = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditRollC"));
-		m_EditFOV     = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "EditFOV"));
-		m_chkFreeCam  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkFreeCam"));
-		m_chkSnapObjs  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkSnapObjs"));
-		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges"));
-		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnHelp"));
-	    m_chkTopDowncam = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkTopDowncam"));
-		m_chkTopDowncam.Enable(false);
-	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnCreateNewSet"));
-		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview"));
-		m_chkShowHideCards = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkShowHideCards"));
-		m_ChkFilterByScope = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ChkFilterByScope"));
+		m_title_txt_curr_set = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget("title_txt_curr_set"));
+		m_ScrollerBuildingSets = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ScrollerBuildingSets"));
+		m_ScrollerSetItems = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ScrollerSetItems"));
+		m_RotationStep     = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("RotationStep"));
+		m_chkSnapObjs  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSnapObjs"));
+		m_chkGroundMode = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnableNoClip"));
+		m_chkObjSurfaceSnap = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkObjSurfaceSnap"));
+		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSaveChanges"));
+		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnHelp"));
+	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
+		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnablePreview"));
+		m_chkShowHideCards = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkShowHideCards"));
+		m_ChkFilterByScope = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkFilterByScope"));
 		
 		m_ShowHideButtons = new array<ref Param2<bool,ButtonWidget>>;
 		m_SearchInputBox = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
 		m_ItemListBox    = TextListboxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemListBox") );
 		m_ItemPreview    = ItemPreviewWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ItemPreview") );
 		m_btnReloadSets  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnReloadSets"));
-		m_ShowHideButtons.Insert( new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnShowBuildingSets"))));
-		m_ShowHideButtons.Insert( new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnShowAtts"))));
-		m_ShowHideButtons.Insert( new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnShowCurrSet"))));
-		m_ShowHideButtons.Insert( new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnShowCamOptions"))));
+		m_ShowHideButtons.Insert(new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnShowBuildingSets"))));
+		m_ShowHideButtons.Insert(new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnShowCurrSet"))));
+		m_ShowHideButtons.Insert(new Param2<bool,ButtonWidget>(true,ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnShowCamOptions"))));
 		
 		m_ParentGrid      = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ParentGrid") );
 		m_ParentGridItems = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ParentGridItems") );
 		
 		//---Panels---
-		m_PanelBuildingSets  = M_SUB_WIDGET.FindAnyWidget( "PanelBuildingSets");
-		m_PanelCurrentSet    = M_SUB_WIDGET.FindAnyWidget( "PanelCurrentSet");
-		m_PanelPlaceNew      = M_SUB_WIDGET.FindAnyWidget( "PanelPlaceNew");
-		m_PanelCamera        = M_SUB_WIDGET.FindAnyWidget( "PanelCamera");
+		m_PanelBuildingSets  = M_SUB_WIDGET.FindAnyWidget("PanelBuildingSets");
+		m_PanelCurrentSet    = M_SUB_WIDGET.FindAnyWidget("PanelCurrentSet");
+		m_PanelItemPreview	 = M_SUB_WIDGET.FindAnyWidget("PanelItemPreview");
+		m_PanelItemPreview.Show(false);
 		//------------
 		
 		//Get Data from Server via RPC 
@@ -115,7 +107,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		m_loaded = true;
 	}
-	
+
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
@@ -123,13 +115,10 @@ class MenuObjectManager extends AdminHudSubMenu
 		
 		Input input = GetGame().GetInput();
 		
-		if(GetGame().GetMouseState(MouseState.LEFT) & 0x80000000 && g_Game.IsLeftCtrlDown()) return;
-		
 		if (m_SelectedSetData != null)
 			m_btnSaveChanges.Enable(true);
 		else
 			m_btnSaveChanges.Enable(false);
-		//---
 		
 		int newSrchCount = m_SearchInputBox.GetText().Length();
 		if (newSrchCount != m_searchBoxCount)
@@ -138,115 +127,188 @@ class MenuObjectManager extends AdminHudSubMenu
 			UpdateFilter();
 			m_searchBoxCount = newSrchCount;
 		}
-		
-		if (GetGame().GetMouseState(MouseState.LEFT) & 0x80000000)
-		{
-			vector direction = GetGame().GetPointerDirection();
-			vector start = GetGame().GetCurrentCameraPosition();
-			vector end = start + (direction * 10000);
-			set<Object> hitObjects = new set<Object>;
-			
-			//Select part test
-			if (worldObject == null)
-			{
-				hitObjects = g_Game.GetObjectsAt(start,end,GetGame().GetPlayer(),0.0);
-				if (hitObjects != null && hitObjects.Count() >= 1 && m_SelectedSetData != null)
-				{
-					array<ref SpawnedBuilding> setBuildings = m_SelectedSetData.GetBuildings();
-					foreach(SpawnedBuilding spwnbld: setBuildings)
-					{
-						if (spwnbld.GetNetworkId(true) == hitObjects[0].GetNetworkIDString() || (spwnbld.IsObject(hitObjects[0]) && hitObjects[0] == spwnbld.GetObject()) )
-						{
-							SetSelectedObject(hitObjects[0]);
-						}
-					}
-				}
-			}
-		}
-		
-		//Move x,y,z
-		if (!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding() && input.LocalHold("UASelectObject",false) && worldObject != null)
-		{
-			//worldObject.PlaceOnSurface();
-			vector c_pos;
-			vector c_dir;
-			int    c_component;
-			
-			if ( DayZPhysics.RaycastRV( start, end, c_pos, c_dir, c_component, null, worldObject, GetGame().GetPlayer(), false, false ) )
-			{
-				worldObject.SetPosition(Vector(c_pos[0], worldObject.GetPosition()[1] ,c_pos[2]));
-				if (m_chkSnapObjs.IsChecked())
-				{
-					worldObject.PlaceOnSurface();
-				}
-				FixCollide(worldObject);
-			}
-		}
-		
-		//Move y axis
-		if (g_Game.IsLeftAltHolding() && worldObject != null)
-		{
-			float currentY = worldObject.GetPosition()[1];
-			if (input.LocalValue( "UARotateInc" ))
-				currentY = currentY + (1.0 * timeslice);
-			else if (input.LocalValue( "UARotateDec" ))
-				currentY = currentY - (1.0 * timeslice);
 
-			worldObject.SetPosition(Vector(worldObject.GetPosition()[0],currentY,worldObject.GetPosition()[2]));
-			UpdateTrackerDetails();
-		}
-		
-		//Move Rotation
-		if (g_Game.IsLShiftHolding() && worldObject != null)
+		//Deletion
+		if (input.LocalPress("UADeleteObjCrosshair", false))
 		{
-			float rotation = worldObject.GetOrientation()[0];
-			if (input.LocalValue( "UARotateInc" ))
-				rotation = rotation + (15.0 * timeslice);
-			else if (input.LocalValue( "UARotateDec" ))
-				rotation = rotation - (15.0 * timeslice);
-			
-			worldObject.SetOrientation(Vector(rotation,worldObject.GetOrientation()[1],worldObject.GetOrientation()[2]));
-			UpdateTrackerDetails();
-		}
-		
-		//Deselect
-		if (g_Game.IsLeftCtrlDown() && worldObject != null)
-		{
-			worldObject = null;
-			DeselectAllTrackers();
-			GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_OBJ_DESELECT");
-		}
-		
-		//Camera control update
-		EditBoxWidget editBox = EditBoxWidget.Cast(GetWidgetUnderCursor());
-		if (editBox != null && GetFreeCamInstance())
-		{
-			vector camOrientation = GetFreeCamInstance().GetOrientation();
-			switch(editBox.GetName())
+			int total = 0;
+			foreach(BuildingEntry entry : m_BuildingEntries)
 			{
-				case "EditYawC":
-					if (camOrientation[0] != m_EditYaw.GetText().ToFloat() && m_EditYaw.GetText().ToFloat() > 0)
-						GetFreeCamInstance().SetYaw(m_EditYaw.GetText().ToFloat());
-				break;
-				
-				case "EditPitchC":
-					if (camOrientation[1] != m_EditPitch.GetText().ToFloat() && m_EditPitch.GetText().ToFloat() > 0)
-						GetFreeCamInstance().SetPitch(m_EditPitch.GetText().ToFloat());
-				break;
-				
-				case "EditRollC":
-					if (camOrientation[2] != m_EditRoll.GetText().ToFloat() && m_EditRoll.GetText().ToFloat() > 0)
-						GetFreeCamInstance().SetRoll(m_EditRoll.GetText().ToFloat());
-				break;
-				
-				case "EditFOV":
-					if (GetFreeCamInstance().GetFov() != m_EditFOV.GetText().ToFloat() && m_EditFOV.GetText().ToFloat() > 0)
-						GetFreeCamInstance().SetFov(m_EditFOV.GetText().ToFloat());
-				break;
+				if (total >= 1)
+					break;
+
+				if (!entry || !entry.GetTracker() || !entry.GetTracker().IsSelected())
+					continue;
+
+				total++;
 			}
+
+			if (total <= 0)
+				return;
+
+			VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+			dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Delete Selected", "Are you sure you want to delete selected object(s)?", this, "OnDiagResultDeleteSlected");
+		}
+
+		//Movement part
+		if (input.LocalHold("UASelectObject", false) && GetSelectedParent())
+		{
+			if (GetVPPUIManager().IsSelectionBoxDrawing() || g_Game.IsLeftCtrlDown())
+				return;
+
+			Widget w = GetWidgetUnderCursor();
+			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"))
+			if (!valid)
+				return;
+
+			Object worldObject = GetSelectedParent().GetTrackingObject();
+			if (!worldObject)
+				return;
+
+			vector tm[4];
+			worldObject.GetTransform(tm);
+			vector ray_start = GetGame().GetCurrentCameraPosition();
+			vector ray_end   = ray_start + GetGame().GetPointerDirection() * 10000;
+
+			vector cursor_pos;
+			vector cursor_dir;
+			int    c_component;
+			DayZPhysics.RaycastRV(ray_start, ray_end, cursor_pos, cursor_dir, c_component, null, GetGame().GetPlayer(), worldObject, false, m_chkGroundMode.IsChecked());
+
+			vector minMax[2];
+			worldObject.GetCollisionBox(minMax);
+			vector offSetPos = worldObject.GetPosition();
+
+			if (g_Game.IsLeftAltHolding()) //Z-Only axis
+			{
+				cursor_pos = ray_start + GetGame().GetPointerDirection() * vector.Distance(GetGame().GetCurrentCameraPosition(), worldObject.GetPosition());
+				tm[3][1] = cursor_pos[1];
+			}
+			else if (g_Game.IsLShiftHolding()) //Rotation
+			{
+				vector rotation = worldObject.GetOrientation();
+				float lr = input.LocalValue("UARotateLeft") - input.LocalValue("UARotateRight");
+				float step = m_RotationStep.GetText().ToFloat();
+				if (step <= 0.0)
+					step = 120.0;
+
+				rotation[0] = rotation[0] + (step * lr * timeslice);
+				rotation.RotationMatrixFromAngles(tm);
+				UpdateTrackerDetails();
+			}
+			else
+			{
+				if (m_chkObjSurfaceSnap.IsChecked()) //Surface snap mode (precise)
+				{
+					DayZPhysics.RayCastBullet(ray_start, ray_end, HIT_MASK, worldObject, NULL, cursor_pos, NULL, NULL);
+					if (cursor_pos[1] <= 0)
+						cursor_pos[1] = GetGame().SurfaceY(offSetPos[0], offSetPos[2]);
+					
+					cursor_pos[1] = cursor_pos[1] + ((minMax[1][1] - minMax[0][1]) / 2);
+				}
+				else if (m_chkSnapObjs.IsChecked()) //Terrain snap mode
+				{
+					cursor_pos[1] = GetGame().SurfaceY(tm[3][0], tm[3][2]) + ((minMax[1][1] - minMax[0][1]) / 2);
+				}
+				else
+				{
+					cursor_pos[1] = worldObject.GetPosition()[1]; //default
+				}
+				tm[3] = cursor_pos;
+			}
+			
+			worldObject.SetTransform(tm);
+			offSetPos = tm[3] - offSetPos;
+			
+			array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+			foreach(SpawnedBuilding bld: buildings)
+			{
+				if (!bld.GetObject() || bld.GetObject() == worldObject)
+					continue;
+
+				BuildingTracker tracker = GetTrackerByObject(bld.GetObject());
+				if (!tracker || !tracker.IsSelected())
+					continue;
+
+				//Z-Only axis
+				if (g_Game.IsLeftAltHolding())
+				{
+					bld.GetObject().SetPosition(bld.GetObject().GetPosition() + offSetPos);
+				}
+				else if (g_Game.IsLShiftHolding()) //Rotation axis
+				{
+					bld.GetObject().SetOrientation(worldObject.GetOrientation());
+				}
+
+				//position
+				if (!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding())
+				{
+					bld.GetObject().GetCollisionBox(minMax);
+					vector childPos = bld.GetObject().GetPosition() + offSetPos;
+
+					if (m_chkObjSurfaceSnap.IsChecked())
+					{
+						vector start_c = Vector(childPos[0], tm[3][1], childPos[2]);
+						vector end_c   = Vector(childPos[0], GetGame().SurfaceY(childPos[0], childPos[2]), childPos[2]);
+						vector hitPos;
+						DayZPhysics.RayCastBullet(start_c, end_c, HIT_MASK, bld.GetObject(), NULL, hitPos, NULL, NULL);
+
+						childPos[1] = hitPos[1];
+
+						if (childPos[1] <= 0)
+							childPos[1] = end_c[1];
+
+						childPos[1] = childPos[1] + ((minMax[1][1] - minMax[0][1]) / 2);
+					}
+					else if (m_chkSnapObjs.IsChecked())
+					{
+						childPos[1] = GetGame().SurfaceY(childPos[0], childPos[2]) + ((minMax[1][1] - minMax[0][1]) / 2);
+					}
+					bld.GetObject().SetPosition(childPos);
+				}
+			}
+		}
+
+		//Deselection part
+		//Check bind doesn't collide with "hold <bind> to multi-select"
+		if (input.LocalPress("UADeSelectObject", false))
+		{
+			keyMsDelay = GetGame().GetTime();
+		}
+		else if (input.LocalRelease("UADeSelectObject", false) && (GetGame().GetTime() - keyMsDelay) < 255)
+		{
+			DeselectAllTrackers();
 		}
 	}
 	
+	override void OnMenuShow()
+	{
+		super.OnMenuShow();
+		GetToolbarMenu().AllowSelectBoxDraw(true);
+		GetToolbarMenu().HideIconsPanel(true);
+	}
+
+	override void OnMenuHide()
+	{
+		super.OnMenuHide();
+		GetToolbarMenu().AllowSelectBoxDraw(false);
+		GetToolbarMenu().HideIconsPanel(false);
+	}
+
+	void OnDiagResultDeleteSlected(int result)
+    {
+ 		if (result == DIAGRESULT.YES)
+        {
+        	foreach(BuildingEntry entry : m_BuildingEntries)
+			{
+				if (!entry || !entry.GetTracker() || !entry.GetTracker().IsSelected())
+					continue;
+
+				entry.DeleteItem(DIAGRESULT.YES);
+			}
+        }
+    }
+
 	void UpdateBuildingAttributes(SpawnedBuilding target)
 	{
 		SpawnedBuilding building = m_SelectedSetData.GetSpawnedBuilding(target);
@@ -254,15 +316,29 @@ class MenuObjectManager extends AdminHudSubMenu
 			building.SetActive(target.GetActive());
 	}
 	
-	void SetSelectedObject(Object obj)
+	void SetSelectedObject(Object obj, bool showNotification = false, bool forceMultiSelect = false)
 	{
-		worldObject = obj;
-		DeselectAllTrackers();
-		BuildingTracker tracker = GetTrackerByObject(worldObject);
-		if (tracker != null)
-			tracker.Highlight(true);
+		if (!obj)
+			return;
 
-		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_OB_SELECTED"+ " " + worldObject);
+		BuildingTracker tracker = GetTrackerByObject(obj);
+		if (!tracker)
+			return;
+
+		if (!g_Game.IsLeftCtrlDown() && !forceMultiSelect)
+		{
+			DeselectAllTrackers();
+		}
+
+		tracker.Highlight(true);
+		if (GetSelectedParent() == NULL)
+		{
+			SetSelectedParent(tracker);
+		}
+
+		if (showNotification){
+			GetVPPUIManager().DisplayNotification("", "#VSTR_NOTIFY_OB_SELECTED"+ " " + obj, 0.5);
+		}
 	}
 	
 	void RemoveBuilding(Object toRemove, string networkdID = "")
@@ -282,7 +358,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			//Send RPC to delete selected set
 			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteDeleteSet", new Param1<string>(m_SelectedSetData.GetName()),true,null);
 			m_SelectedSetData = null;
-			worldObject = null;
+			SetSelectedParent(null);
 		}
 	}
 	
@@ -293,7 +369,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			//Send RPC to update selected set
 			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),setName,active),true,null);
 			m_SelectedSetData = null;
-			worldObject = null;
+			SetSelectedParent(null);
 		}
 	}
 	
@@ -311,7 +387,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		}
 		return false;
 	}
-	
+
 	void CreateSetEditor(bool editMode = false)
 	{
 		if (m_setAttributesEditor == null)
@@ -321,6 +397,16 @@ class MenuObjectManager extends AdminHudSubMenu
 				m_setAttributesEditor = new BuildingSetEditor(M_SUB_WIDGET.FindAnyWidget("PanelConfirmationBox"), "NewSet", true, false);
 		else
 			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_ATTS_SHOWING");
+	}
+
+	BuildingTracker GetSelectedParent()
+	{
+		return m_SelectedParent;
+	}
+
+	void SetSelectedParent(BuildingTracker t)
+	{
+		m_SelectedParent = t;
 	}
 	
 	BuildingTracker GetTrackerByObject(Object obj)
@@ -355,8 +441,9 @@ class MenuObjectManager extends AdminHudSubMenu
 	
 	void DeselectAllTrackers()
 	{
+		SetSelectedParent(NULL);
 		foreach(BuildingEntry entry : m_BuildingEntries){
-			if (entry != null && entry.GetTracker() != null){
+			if (entry && entry.GetTracker()){
 				entry.GetTracker().Highlight(false);
 			}
 		}
@@ -469,9 +556,9 @@ class MenuObjectManager extends AdminHudSubMenu
 		if(m_LastGridItems.GetContentCount() < 100){
 			BuildingEntry entry;
 			if (localObj != null){
-				entry = new BuildingEntry(m_LastGridItems.GetGrid(),M_SUB_WIDGET,itemDisplayName,networkId,buildInfo,localObj);
+				entry = new BuildingEntry(m_LastGridItems.GetGrid(), M_SUB_WIDGET, itemDisplayName, networkId, buildInfo, localObj);
 			}else{
-				entry = new BuildingEntry(m_LastGridItems.GetGrid(),M_SUB_WIDGET,itemDisplayName,networkId,buildInfo);
+				entry = new BuildingEntry(m_LastGridItems.GetGrid(), M_SUB_WIDGET, itemDisplayName, networkId, buildInfo);
 			}
 			
 			m_LastGridItems.AddWidget(entry.m_EntryBox);
@@ -516,23 +603,12 @@ class MenuObjectManager extends AdminHudSubMenu
 			array<ref SpawnedBuilding> buildings = new array<ref SpawnedBuilding>;
 			m_SelectedSetData.GetSpawnedBuildings(buildings);
 			foreach(SpawnedBuilding building: buildings)
-				AddBuildingEntry(building.GetTypeName(),building.GetNetworkId(),building);
+				AddBuildingEntry(building.GetTypeName(), building.GetNetworkId(), building);
 		}
 	}
 	/*
 	\------------
 	*/
-	
-	void FixCollide( Object obj )
-	{
-	    if ( obj == null ) return;
-	
-	    vector roll = obj.GetOrientation();
-	    roll[2] = roll[2] - 1;
-	    obj.SetOrientation( roll );
-	    roll[2] = roll[2] + 1;
-	    obj.SetOrientation( roll );
-	}
 	
 	void UpdateFilter()
 	{
@@ -585,9 +661,12 @@ class MenuObjectManager extends AdminHudSubMenu
 	
 	void UpdatePreviewWidget()
 	{
-		if (!IsSubMenuVisible() && !m_loaded) return;
+		if (!IsSubMenuVisible() && !m_loaded)
+			return;
 		
-		if (m_chkEnablePreview.IsChecked())
+		Widget widget_under_mouse = GetWidgetUnderCursor();
+
+		if (m_chkEnablePreview.IsChecked() && (widget_under_mouse && widget_under_mouse.GetName() == "ItemListBox"))
 		{
 			int oRow = m_ItemListBox.GetSelectedRow();
 			string ItemClassName;
@@ -614,6 +693,11 @@ class MenuObjectManager extends AdminHudSubMenu
 				m_ItemOrientation = Vector(0,0,0);
 				m_prevRow = oRow;
 			}
+			m_PanelItemPreview.Show(true);
+		}
+		else
+		{
+			m_PanelItemPreview.Show(false);
 		}
 	}
 	
@@ -642,10 +726,6 @@ class MenuObjectManager extends AdminHudSubMenu
 		{
 			case "btnShowBuildingSets":
 			HideChildren(m_PanelBuildingSets,state);
-			break;
-			
-			case "btnShowAtts":
-			HideChildren(m_PanelPlaceNew,state);
 			break;
 			
 			case "btnShowCurrSet":
@@ -677,13 +757,16 @@ class MenuObjectManager extends AdminHudSubMenu
 	
 	Object CreateLocal(string type, vector pos)
 	{
-		return g_Game.CreateObject( type, pos, true );
+		Object obj = GetGame().CreateObjectEx(type, pos, ECE_LOCAL);
+		vector minMax[2];
+		obj.GetCollisionBox(minMax);
+		obj.SetPosition(Vector(pos[0], pos[1] + minMax[1][1] ,pos[2]));
+
+		return obj;
 	}
 	
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
-		super.OnDoubleClick(w, x, y, button);
-		
 		int oRow = m_ItemListBox.GetSelectedRow();
 		string ItemClassName;
 		if (m_SelectedSetData == null)
@@ -699,23 +782,32 @@ class MenuObjectManager extends AdminHudSubMenu
 		}
 		
 		vector spawnPos;
-		
 		if (w == m_ItemListBox)
 			spawnPos = g_Game.GetCursorPos();
 		else
 			spawnPos = g_Game.GetPosByCursor();
 		
-		if (oRow != -1 && m_SelectedSetData != null && worldObject == null)
+		Widget widget_under_mouse = GetWidgetUnderCursor();
+		string wName = widget_under_mouse.GetName();
+		if (oRow > -1 && m_SelectedSetData)
 		{
-			m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
-			int low, high;
-			Object localObj = CreateLocal(ItemClassName,spawnPos);
-			localObj.GetNetworkID( low, high );
-			AddBuildingEntry(ItemClassName, "0,0", m_SelectedSetData.AddBuildingObject(ItemClassName, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
-			return true;
+			if (GetSelectedParent() && !g_Game.IsLeftCtrlDown())
+			{
+				DeselectAllTrackers();
+			}
+
+			if (wName == m_ItemListBox.GetName() || wName == "rootFrame")
+			{
+				m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
+				int low, high;
+				Object localObj = CreateLocal(ItemClassName,spawnPos);
+				localObj.GetNetworkID(low, high);
+				AddBuildingEntry(ItemClassName, "0,0", m_SelectedSetData.AddBuildingObject(ItemClassName, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
+				SetSelectedObject(localObj, false, true);
+				return true;
+			}
 		}
-		
-		return false;
+		return super.OnDoubleClick(w, x, y, button);
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
@@ -729,7 +821,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		}
 		return false;
 	}
-	
+
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
 		foreach(Param2<bool,ButtonWidget> data : m_ShowHideButtons)
@@ -770,23 +862,9 @@ class MenuObjectManager extends AdminHudSubMenu
 					m_SelectedSetData.ClearBuildings();
 				}
 				m_SelectedSetData = null;
-				worldObject = null;
+				SetSelectedParent(null);
 			}
 			GetRPCManager().VSendRPC("RPC_BuildingSetManager", "GetBuildingSets", null,true,null);
-			break;
-			
-			case m_chkFreeCam:
-			if (!IsFreeCamActive())
-			{
-				m_chkTopDowncam.Enable(true);
-			}else{
-				m_chkTopDowncam.Enable(false);
-			}
-			break;
-			
-			case m_chkTopDowncam:
-			if (GetFreeCamInstance() != null)
-				GetFreeCamInstance().SnapToAngle(-89);
 			break;
 			
 			case m_btnCreateNewSet:
@@ -799,7 +877,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			    GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),m_SelectedSetData.GetName(),m_SelectedSetData.GetActive()),true,null);
 				delete m_SelectedSetData;
 				m_SelectedSetData = null;
-				worldObject = null;
+				SetSelectedParent(null);
 			break;
 			
 			case m_btnHelp:

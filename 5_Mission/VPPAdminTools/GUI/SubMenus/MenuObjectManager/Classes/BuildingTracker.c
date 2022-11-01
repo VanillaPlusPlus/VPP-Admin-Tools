@@ -12,11 +12,16 @@ class BuildingTracker: ScriptedWidgetEventHandler
 	protected EditBoxWidget    m_EditX;
 	protected EditBoxWidget    m_EditZ;
 	protected EditBoxWidget    m_EditY;
+	protected ButtonWidget	   m_BtnSelect;
     protected string           m_ItemName;
 	protected bool             m_TrackerStatus;
+	bool 					   m_IsExpanded;
 	Object 					   m_TrackerEntity;
 	vector                     m_Orientation;
 	vector                     m_Position;
+	bool   					   m_IsSelected;
+	MenuObjectManager 		   objManager; //weak ptr
+	ref ScriptInvoker 		   OnTrackerSelected = new ScriptInvoker();
 
     void BuildingTracker( Widget parentWidget, string itemName, Object trackedEntity, bool show) 
 	{
@@ -35,6 +40,8 @@ class BuildingTracker: ScriptedWidgetEventHandler
 		m_GridYPR 			 = GridSpacerWidget.Cast(m_RootWidget.FindAnyWidget("GridYPR"));
 		m_GridXYZ 			 = GridSpacerWidget.Cast(m_RootWidget.FindAnyWidget("GridXZY"));
 		
+		m_BtnSelect			 = ButtonWidget.Cast(m_RootWidget.FindAnyWidget("BtnSelect"));
+
         m_TrackerEntity    = trackedEntity;
         m_ItemName  	   = itemName;
 		if (m_TrackerEntity)
@@ -52,26 +59,152 @@ class BuildingTracker: ScriptedWidgetEventHandler
 		ShowTracker(show);
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.DoUpdate, 1, true);
 		m_RootWidget.SetHandler(this);
+		m_RootWidget.SetUserData(this);
+		VPPUIManager.WIDGET_PTRs.Insert(m_RootWidget); //For drag-selection
+
+		objManager = MenuObjectManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuObjectManager));
     }
 
     void ~BuildingTracker() 
 	{
+		VPPUIManager.WIDGET_PTRs.RemoveItem(m_RootWidget); //For drag-selection
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.DoUpdate);
         if (m_RootWidget != null) 
 			m_RootWidget.Unlink();
+
+		OnTrackerSelected.Clear();
+    }
+
+    override bool OnClick(Widget w, int x, int y, int button)
+    {
+    	if (w == m_BtnSelect)
+    	{
+    		if (!objManager)
+    			return false;
+
+    		if (IsSelected())
+    		{
+    			Highlight(false);
+    			if (objManager.GetSelectedParent() == this)
+    			{
+    				objManager.SetSelectedParent(NULL);
+    			}
+    		}
+    		else
+    		{
+    			objManager.SetSelectedObject(m_TrackerEntity);
+    		}
+    		return true;
+    	}
+    	return super.OnClick(w, x, y, button);
     }
 	
-	void ForceDeleteLocalObj()
+	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
-		if (m_TrackerEntity != null)
+		if (w == m_BtnSelect)
 		{
-			//GetGame().ObjectDelete(m_TrackerEntity); Does not work locally on MP objects? some protection behind it??
-			
-			//Hack
-			m_TrackerEntity.SetPosition("0 -5000 0"); //Burry it away
+			//Expand/Hide
+			ExpandDetails(!m_IsExpanded);
+			return true;
+		}
+		return super.OnDoubleClick(w, x, y, button);
+	}
+
+	bool shouldHideCalled = false;
+
+	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
+	{
+		if ((w == m_RootWidget || w == m_GridYPR || w == m_GridXYZ) && enterW && enterW.GetName() == "rootFrame")
+		{
+			if (!shouldHideCalled && m_IsExpanded)
+			{
+				int _x, _y;
+	        	GetMousePos(_x, _y);
+				thread _ShouldHideDetails(_x, _y);
+				shouldHideCalled = true;
+				return true;
+			}
+		}
+		return super.OnMouseLeave(w, enterW, x, y);
+	}
+
+	//Acts as a "bounds" checks if mouse moved far away enough from widget, if too far hide it :)
+	private void _ShouldHideDetails(int x, int y)
+	{
+		int current_x, current_y;
+		bool complete;
+		while (!complete)
+		{
+			GetMousePos(current_x, current_y);
+			if (Math.AbsInt(x - current_x) > 65 || Math.AbsInt(y - current_y) > 65) 
+            {
+	            map<Widget, int> validUnderMouse = new map<Widget, int>();
+	            DumpWidget(m_RootWidget, validUnderMouse);
+
+	            //Still inside
+				if (!validUnderMouse.Contains(GetWidgetUnderCursor()))
+				{
+					ExpandDetails(false); //hide details popup
+					shouldHideCalled = false;
+					complete = true;
+					break;
+				}
+            }
+            Sleep(10);
 		}
 	}
 
+	void DumpWidget(Widget w, inout map<Widget, int> widgets)
+	{
+		if ( !w )
+			return;
+	
+		widgets.Insert(w, 0);
+		DumpWidget(w.GetChildren(), widgets);		
+		DumpWidget(w.GetSibling(), widgets);
+	}
+
+	//Callback for when give widget (WIDGET_PTRs) is selected
+	void OnWidgetDragSelect(bool state)
+	{
+		if (!IsTrackerVisible())
+			return;
+		if (IsSelected() && state)
+			return;
+		if (!objManager)
+			return;
+
+		if (state)
+		{
+			objManager.SetSelectedObject(m_TrackerEntity, false, true); //select
+		}
+
+		//deselect
+		if (!state && IsSelected())
+		{
+			Highlight(false);
+			if (objManager.GetSelectedParent() == this)
+			{
+				objManager.SetSelectedParent(NULL);
+			}
+		}
+	}
+
+	void ExpandDetails(bool expand)
+	{
+		m_IsExpanded = expand;
+		m_GridYPR.Show(expand);
+		m_GridXYZ.Show(expand);
+		m_ItemNameWidget.Show(expand);
+		m_ItemDistanceWidget.Show(expand);
+		m_BtnSelect.Show(!expand);
+	}
+
+	void ForceDeleteLocalObj()
+	{
+		if (m_TrackerEntity != null)
+			m_TrackerEntity.SetPosition("0 -5000 0"); //Burry it away
+	}
 
     float CalcDistance() 
 	{
@@ -79,7 +212,11 @@ class BuildingTracker: ScriptedWidgetEventHandler
         vector SnappedPos  = g_Game.SnapToGround( Vector(startPos[0], startPos[1], startPos[2]) );
         vector fn    	   = Vector(SnappedPos[0], SnappedPos[1], SnappedPos[2]);
 		
-        return vector.Distance( GetGame().GetPlayer().GetPosition(), startPos );
+		vector adminPos = GetGame().GetPlayer().GetPosition();
+		if (IsFreeCamActive())
+			adminPos = VPPGetCurrentCameraPosition();
+
+        return vector.Distance(adminPos, startPos);
     }
 	
 	void UpdateDataBoxes(bool useObject = false)
@@ -243,10 +380,28 @@ class BuildingTracker: ScriptedWidgetEventHandler
 	
 	void Highlight(bool state)
 	{
+		SetSelected(state);
 		if (state)
+		{
 			m_RootWidget.SetColor(ARGB(200,0,0,110));
+			m_BtnSelect.SetColor(ARGB(255,94,94,248));
+		}
 		else
+		{
 			m_RootWidget.SetColor(ARGB(145,0,0,0));
+			m_BtnSelect.SetColor(ARGB(255,230,230,243));
+		}
+	}
+
+	bool IsSelected()
+	{
+		return (m_IsSelected && GetTrackingObject() != NULL);
+	}
+
+	void SetSelected(bool state)
+	{
+		m_IsSelected = state;
+		OnTrackerSelected.Invoke(state);
 	}
 	
 	void ShowTracker(bool state)

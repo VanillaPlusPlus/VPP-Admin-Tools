@@ -153,18 +153,24 @@ class SpawnedBuilding
 
 	void SpawnObject()
 	{
-		m_Building = Object.Cast(GetGame().CreateObject(m_ObjectName, m_Position));
-		if (m_Building == null) return;
+		m_Building = GetGame().CreateObjectEx(m_ObjectName, m_Position, ECE_SETUP|ECE_CREATEPHYSICS|ECE_UPDATEPATHGRAPH);
+		if (!m_Building)
+			return;
 		
 		int low, high;
-		m_Building.GetNetworkID( low, high );
+		m_Building.GetNetworkID(low, high);
 		m_NetWorkId = high.ToString() + "," + low.ToString();
+		m_Building.SetOrientation(m_Orientation);
 		if (m_Building.CanAffectPathgraph())
 		{
 			m_Building.SetAffectPathgraph(true, false);
 			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().UpdatePathgraphRegionByObject, 100, false, m_Building);
-			m_Building.SetPosition(m_Position);
-			m_Building.SetOrientation(m_Orientation);
 		}
+		m_Building.Update();
+	}
+
+	void SetRef(Object obj)
+	{
+		m_Building = obj;
 	}
 }

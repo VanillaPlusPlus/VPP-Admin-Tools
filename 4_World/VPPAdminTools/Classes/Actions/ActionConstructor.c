@@ -4,6 +4,5 @@ modded class ActionConstructor
 	{
 		super.RegisterActions(actions);
 		actions.Insert(ActionAdminBaseBuilder);
-		actions.Insert(ActionAdminBuildPartSwitch);
 	}
 };

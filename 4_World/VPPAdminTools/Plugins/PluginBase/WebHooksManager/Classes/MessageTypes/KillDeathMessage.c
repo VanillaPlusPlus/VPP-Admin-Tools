@@ -6,7 +6,33 @@ class KillDeathMessage: WebHookMessageBase
 
 	void KillDeathMessage()
 	{
-		
+	}
+
+	/*
+	* We use this for simplified versions of the webhook messages (without embeds)
+	*/
+	override void SetContent(string str = string.Empty)
+	{
+		if (victimName != "" || victimGUID != "")
+		{
+			content = string.Format("**Player Activity:** [%1](<https://steamcommunity.com/profiles/%2>) ", victimName, victimGUID);
+		}
+
+		if (killerGUID != "" || killerName != "")
+		{
+			if (killerName == "Infected")
+			{
+				content += string.Format("died to an **Infected**.");
+			}
+			else if (killerGUID == victimGUID || killerName == victimName)
+			{
+				content += string.Format("killed **themselves**.");
+			}else{
+				content += string.Format("**killed by** [%1](<https://steamcommunity.com/profiles/%2>) ", killerName, killerGUID);
+			}
+		}
+		content += " " + details;
+		content.Replace("\n", " ");
 	}
 
 	override WbEmbed AddEmbed()

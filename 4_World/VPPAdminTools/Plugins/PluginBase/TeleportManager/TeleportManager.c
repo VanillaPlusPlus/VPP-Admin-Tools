@@ -14,6 +14,8 @@ class TeleportManager : ConfigurablePlugin
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "AddNewPreset", this);
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "EditPreset", this);
 		GetRPCManager().AddRPC( "RPC_TeleportManager", "GetPlayerPositions", this);
+		GetRPCManager().AddRPC( "RPC_TeleportManager", "TeleportToPosition", this);
+		GetRPCManager().AddRPC( "RPC_TeleportManager", "TeleportEntity", this);
 		/*-----*/
 		
 		m_TeleportLocations = new array<ref VPPTeleportLocation>;
@@ -226,6 +228,8 @@ class TeleportManager : ConfigurablePlugin
 				}else{
 					caller.SetPosition(Vector(x, y, z));
 				}
+				GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) teleported to (pos=%3)", caller.GetName(), id, Vector(x, y, z).ToString()));
+				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(id, caller.GetName(), "Teleported to position: " + Vector(x, y, z).ToString()));
 			}
 		}
 	}
@@ -258,6 +262,38 @@ class TeleportManager : ConfigurablePlugin
 	/*
 	 RPC Section
 	*/
+	void TeleportToPosition( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
+	{
+		Param1<vector> data;
+        if (!ctx.Read(data)) return;
+
+        if (type == CallType.Server)
+        {
+        	if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportToCrosshair")) return;
+			PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
+			if (pb == null) return;
+			
+			//pb.m_VPlayerPosCache = data.param1;
+			m_ReturnVectors.Insert(sender.GetPlainId(), data.param1);
+
+			if ( pb.GetCommand_Vehicle() )
+			{
+				Transport veh = pb.GetCommand_Vehicle().GetTransport();
+				if (veh != null)
+				{
+					vector mat[4];
+					veh.GetTransform(mat);
+					mat[3] = data.param1;
+					veh.SetTransform(mat);
+				}
+			}else{
+				pb.SetPosition(data.param1);
+			}
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) teleported to crosshair (pos=%3)", sender.GetName(), sender.GetPlainId(), data.param1.ToString()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Teleported to crosshair @ position: " + data.param1));
+        }
+	}
+
 	void GetPlayerPositions(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if( type == CallType.Server )
@@ -289,7 +325,7 @@ class TeleportManager : ConfigurablePlugin
 				if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuTeleportManager", "", false)) return;
 				
 				Load();
-				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true, sender);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Sent Teleport Presets"));
 			}
 		}
@@ -383,7 +419,7 @@ class TeleportManager : ConfigurablePlugin
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(senderId, sender.GetName(), "[TeleportManager] Deleted Preset(s): " + totalDeleted));
 					Save();
 					//send updated list to client
-					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true, sender);
 				}
 			}
 		}
@@ -403,7 +439,7 @@ class TeleportManager : ConfigurablePlugin
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_ADD_SUCESS"+data.param1+" preset!",NotifyTypes.NOTIFY);
 				//send updated list to client
-				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+				GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true, sender);
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Added new preset: " + data.param1 + " position: " + data.param2));
 			}
 		}
@@ -437,10 +473,53 @@ class TeleportManager : ConfigurablePlugin
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"#VSTR_EDIT_SUCESS"+data.param1+" preset!",NotifyTypes.NOTIFY);
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[TeleportManager] Edited Preset: " + data.param1));
 					//send updated list to client
-					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true);
+					GetRPCManager().VSendRPC("RPC_MenuTeleportManager", "HandleData", new Param1<ref array<ref VPPTeleportLocation>>(m_TeleportLocations), true, sender);
 				}else{
 					GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Unable to edited "+data.param1+" preset, something went wrong!",NotifyTypes.ERROR);
 				}
+			}
+		}
+	}
+
+	void TeleportEntity(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param1<vector> data;
+		if(type == CallType.Server)
+		{
+			if (!ctx.Read(data))
+				return;
+
+			if (!sender)
+				return;
+
+			if(!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportManager:TeleportEntity"))
+				return;
+
+			if (target)
+			{
+				Transport veh;
+				if (Class.CastTo(veh, target))
+				{
+					vector mat[4];
+					veh.GetTransform(mat);
+					mat[3] = data.param1;
+					veh.SetTransform(mat);
+					veh.SetPosition(data.param1);
+					for (int i = 0; i < 5; ++i)
+						veh.Synchronize(); //because this game is a meme, and a giant string
+				}
+				else
+				{
+					target.SetPosition(data.param1);
+				}
+
+				PlayerBase pb = PlayerBase.Cast(target);
+				if (pb)
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ESP] Teleported Player: " + pb.VPlayerGetName() + " : " + pb.VPlayerGetSteamId() +" to position: " + data.param1.ToString()));
+				else
+					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[ESP] Teleported an Entity: " + target + " to position: " + data.param1.ToString()));
+
+				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Entity moved!", NotifyTypes.NOTIFY);	
 			}
 		}
 	}

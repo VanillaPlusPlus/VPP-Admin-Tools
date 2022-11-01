@@ -1,207 +1,256 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <modded_inputs>
-    <inputs>
-        <actions>
-            <input name="UAFocusOnGame" loc="[Hold / DoubleTap] Focus On Game" />
-            <input name="UACollapseESPDropDwn" loc="[DoubleTap] Expand/Collapse ESP Player Details" />
-            <input name="UATogglePlayerDetailEsp" loc="[DoubleTap] Expand/Collapse ESP Player Details" />
-            <input name="UAOpenAdminTools" loc="Open V++ Admin Tools" />
-            <input name="UAToggleAdminTools" loc="Toggle Admin Tools" />
-            <input name="UATeleportToCrosshair" loc="Teleport to Crosshair" />
-            <input name="UADeleteObjCrosshair" loc="Delete Object at Crosshair" />
-            <input name="UAToggleGodMode" loc="Toggle GodMode" />
-			<input name="UACopyPositionClipboard" loc="Copy position to clipboard" />
-			<input name="UARepairVehicleAtCrosshairs" loc="Repair,Build,Refuel vehicles at crosshairs" />
-            <input name="UAToggleFreeCam" loc="Toggle Free Camera" />
-            <input name="UAExitSpectate" loc="Exit Spectate Mode" />
-			<input name="UASelectObject" loc="Select & move world objects (Object Manager)" />
-			<input name="UARotateInc" loc="Increment Axis (Object Manager)" />
-			<input name="UARotateDec" loc="Decrement Axis (Object Manager)" />
-			<input name="UAHealTargets" loc="Heal Self or Player on Crosshairs" />
-			<input name="UASupriseButtSex" loc="Assign Me & Press Me ( ͡° ͜ʖ ͡°)" />
-			<input name="UAToggleCmdConsole" loc="Shortcut key to open commands console" />
-			<input name="UAToggleMeshEsp" loc="Toggle Player Skeleton ESP" />
-			<input name="UAToggleInvis" loc="Toggle Invisibility" />
-			<input name="UAExecuteCommand" loc="" visible="false" />
-			<input name="UAUPCommand" loc="" visible="false" />
-			<input name="UADOWNCommand" loc="" visible="false" />
-			<input name="UACamForward" loc="Camera move forward" />
-			<input name="UACamBackward" loc="Camera move backward" />
-			<input name="UACamRight" loc="Camera move right" />
-			<input name="UACamLeft" loc="Camera move left" />
-			<input name="UACamUp" loc="Camera move up/ascend" />
-			<input name="UACamDown" loc="Camera move down/descend" />
-			<input name="UACamTurbo" loc="Camera turbo" />
-			<input name="UACamShiftLeft" loc="Camera shift left" />
-			<input name="UACamShiftRight" loc="Camera shift right" />
-			<input name="UACamShiftUp" loc="Camera shift up" />
-			<input name="UACamShiftDown" loc="Camera shift down" />
-			<input name="UACamSpeedAdd" loc="Camera Speed increase" />
-			<input name="UACamSpeedDeduct" loc="Camera speed reduce" />
-			<input name="UACamFOV" loc="Hold + Camera zoom in/out to change FOV" />
-			<input name="UACamRelease" loc="" visible="false" />
-			<input name="UAToggleESP" loc="Toggle ESP"/>
-        </actions>
+	<inputs>
+		<actions>
+			<input name="UAToggleAdminTools" loc="vpp_settings_toggleadmintools"/>
+			<input name="UAOpenAdminTools" loc="vpp_settings_openadmintools"/>
+			<input name="UATogglePlayerControls" loc="vpp_bind_unfocus"/>
+			<input name="UAToggleGodMode" loc="vpp_settings_togglegodmode"/>
+			<input name="UAToggleInvis" loc="vpp_settings_invisibility"/>
+			<input name="UATeleportToCrosshair" loc="vpp_settings_teleporttocrosshair"/>
+			<input name="UADeleteObjCrosshair" loc="vpp_settings_deleteobjectatcrosshair"/>
+			<input name="UACollapseESPDropDwn" loc="vpp_settings_collapseesp"/>
+			<input name="UAToggleESP" loc="vpp_settings_toggleesp"/>
+			<input name="UAToggleMeshEsp" loc="vpp_settings_skeletons"/>
+			<input name="UATogglePlayerDetailEsp" loc="vpp_settings_toggleplayerdetail"/>
+			<input name="UACopyPositionClipboard" loc="vpp_settings_copyposition"/>
+			<input name="UARepairVehicleAtCrosshairs" loc="vpp_settings_repairvehicle"/>
+			<input name="UAToggleFreeCam" loc="vpp_settings_togglefreecam"/>
+			<input name="UAHealTargets" loc="vpp_settings_healtarget"/>
+			<input name="UAToggleCmdConsole" loc="vpp_settings_cmdconsole"/>
+			<input name="UASelectObject" loc="vpp_settings_selectobject"/>
+			<input name="UADeSelectObject" loc="vpp_settings_deselectobject"/>
+			<input name="UARotateLeft" loc="vpp_settings_rotateleft"/>
+			<input name="UARotateRight" loc="vpp_settings_rotateright"/>
+			<input name="UASupriseBind" loc="vpp_settings_surprise"/>
+			<input name="UACamForward" loc="vpp_settings_camforward"/>
+			<input name="UACamBackward" loc="vpp_settings_cambackward"/>
+			<input name="UACamRight" loc="vpp_settings_camright"/>
+			<input name="UACamLeft" loc="vpp_settings_camleft"/>
+			<input name="UACamUp" loc="vpp_settings_camup"/>
+			<input name="UACamDown" loc="vpp_settings_camdown"/>
+			<input name="UACamTurbo" loc="vpp_settings_camturbo"/>
+			<input name="UACamShiftLeft" loc="vpp_settings_camshiftleft"/>
+			<input name="UACamShiftRight" loc="vpp_settings_camshiftright"/>
+			<input name="UACamShiftUp" loc="vpp_settings_camshiftup"/>
+			<input name="UACamShiftDown" loc="vpp_settings_camshiftdown"/>
+			<input name="UACamSpeedAdd" loc="vpp_settings_camspeedadd"/>
+			<input name="UACamSpeedDeduct" loc="vpp_settings_camspeeddeduct"/>
+			<input name="UACamFOV" loc="vpp_settings_camfov"/>
+			<input name="UACamRelease" loc="" visible="false"/>
+			<input name="UAFocusOnGame" loc="vpp_focus_on_game"/>
+			<input name="UAExitSpectate" loc="vpp_settings_exitspectate"/>
+			<input name="UAExecuteCommand" loc="" visible="false"/>
+			<input name="UAUPCommand" loc="" visible="false"/>
+			<input name="UADOWNCommand" loc="" visible="false"/>
+		</actions>
+		<sorting name="vpp" loc="vpp_menu_vpp">
+			<input name="UAToggleAdminTools"/>
+			<input name="UAOpenAdminTools"/>
+			<input name="UATogglePlayerControls"/>
+			<input name="UAToggleGodMode"/>
+			<input name="UAToggleInvis"/>
+			<input name="UATeleportToCrosshair"/>
+			<input name="UADeleteObjCrosshair"/>
+			<input name="UACollapseESPDropDwn"/>
+			<input name="UAToggleESP"/>
+			<input name="UAToggleMeshEsp"/>
+			<input name="UATogglePlayerDetailEsp"/>
+			<input name="UACopyPositionClipboard"/>
+			<input name="UARepairVehicleAtCrosshairs"/>
+			<input name="UAToggleFreeCam"/>
+			<input name="UAHealTargets"/>
+			<input name="UAToggleCmdConsole"/>
+			<input name="UASelectObject"/>
+			<input name="UADeSelectObject"/>
+			<input name="UARotateLeft"/>
+			<input name="UARotateRight"/>
+			<input name="UASupriseBind"/>
+			<input name="UACamForward"/>
+			<input name="UACamBackward"/>
+			<input name="UACamRight"/>
+			<input name="UACamLeft"/>
+			<input name="UACamUp"/>
+			<input name="UACamDown"/>
+			<input name="UACamTurbo"/>
+			<input name="UACamShiftLeft"/>
+			<input name="UACamShiftRight"/>
+			<input name="UACamShiftUp"/>
+			<input name="UACamShiftDown"/>
+			<input name="UACamSpeedAdd"/>
+			<input name="UACamSpeedDeduct"/>
+			<input name="UACamFOV"/>
+			<input name="UACamRelease"/>
+			<input name="UAFocusOnGame"/>
+			<input name="UAExitSpectate"/>
+			<input name="UAExecuteCommand"/>
+			<input name="UAUPCommand"/>
+			<input name="UADOWNCommand"/>
+		</sorting>
 		<exclude name="VPPCamControls">
-		<input name="UACamForward"/>
-		<input name="UACamBackward"/>
-		<input name="UACamRight"/>
-		<input name="UACamLeft"/>
-		<input name="UACamUp"/>
-		<input name="UACamDown"/>
-		<input name="UACamTurbo"/>
-		<input name="UACamShiftLeft"/>
-		<input name="UACamShiftRight"/>
-		<input name="UACamShiftUp"/>
-		<input name="UACamShiftDown"/>
-		<input name="UACamSpeedAdd"/>
-		<input name="UACamSpeedDeduct"/>
-		<input name="UACamRelease"/>
-		<input name="UACamFOV"/>
+			<input name="UACamForward"/>
+			<input name="UACamBackward"/>
+			<input name="UACamRight"/>
+			<input name="UACamLeft"/>
+			<input name="UACamUp"/>
+			<input name="UACamDown"/>
+			<input name="UACamTurbo"/>
+			<input name="UACamShiftLeft"/>
+			<input name="UACamShiftRight"/>
+			<input name="UACamShiftUp"/>
+			<input name="UACamShiftDown"/>
+			<input name="UACamSpeedAdd"/>
+			<input name="UACamSpeedDeduct"/>
+			<input name="UACamRelease"/>
+			<input name="UACamFOV"/>
 		</exclude>
-    </inputs>
-    <preset>
+	</inputs>
+	<preset>
+		<input name="UATogglePlayerControls">
+			<btn name="kSpace">
+			</btn>
+		</input>
 		<input name="UAHealTargets">
-            <btn name="kJ">
-            </btn>
-        </input>
+			<btn name="kJ">
+			</btn>
+		</input>
 		<input name="UAToggleFreeCam">
-            <btn name="kBackspace">
-            </btn>
-        </input>
+			<btn name="kBackspace">
+			</btn>
+		</input>
 		<input name="UACopyPositionClipboard">
-            <btn name="kP">
-            </btn>
-        </input>
+			<btn name="kP">
+			</btn>
+		</input>
 		<input name="UARepairVehicleAtCrosshairs">
-            <btn name="kK">
-            </btn>
-        </input>
+			<btn name="kK">
+			</btn>
+		</input>
 		<input name="UAFocusOnGame">
-            <btn name="kTab">
-            </btn>
-        </input>
+			<btn name="kTab">
+			</btn>
+		</input>
 		<input name="UACollapseESPDropDwn">
-            <btn name="kT">
-            </btn>
         </input>
 		<input name="UATogglePlayerDetailEsp">
-            <btn name="kNumpad0">
-            </btn>
         </input>
 		<input name="UAExitSpectate">
-            <btn name="kPrior">
-            </btn>
-        </input>
+			<btn name="kPrior">
+			</btn>
+		</input>
 		<input name="UASelectObject">
-            <btn name="mBLeft">
-            </btn>
-        </input>
-		<input name="UARotateInc">
-            <btn name="mBLeft">
-            </btn>
-        </input>
-		<input name="UARotateDec">
-            <btn name="mBRight">
-            </btn>
-        </input>
+			<btn name="mBLeft">
+			</btn>
+		</input>
+		<input name="UADeSelectObject">
+			<btn name="kLControl">
+			</btn>
+		</input>
 		<input name="UAExecuteCommand">
 			<btn name="kReturn"/>
 			<btn name="kNumpadEnter"/>
-        </input>
+		</input>
 		<input name="UAUPCommand">
 			<btn name="kUP"/>
-        </input>
+		</input>
 		<input name="UADOWNCommand">
 			<btn name="kDown"/>
-        </input>
-        <input name="UAToggleAdminTools">
+		</input>
+		<input name="UAToggleAdminTools">
 			<btn name="kEnd">
-            </btn>
+			</btn>
 		</input>
 		<input name="UAToggleMeshEsp">
 			<btn name="kY">
-            </btn>
+			</btn>
 		</input>
 		<input name="UAOpenAdminTools">
 			<btn name="kHome">
-            </btn>
+		</btn>
 		</input>
 		<input name="UATeleportToCrosshair">
 			<btn name="kH">
-            </btn>
+		</btn>
 		</input>
 		<input name="UADeleteObjCrosshair">
 			<btn name="kDelete">
-            </btn>
+		</btn>
 		</input>
 		<input name="UAToggleGodMode">
 			<btn name="kInsert">
-            </btn>
+		</btn>
 		</input>
 		<input name="UACamForward">
-            <btn name="kW">
-            </btn>
-        </input>
+			<btn name="kW">
+		</btn>
+		</input>
 		<input name="UACamBackward">
-            <btn name="kS">
-            </btn>
-        </input>
+			<btn name="kS">
+		</btn>
+		</input>
 		<input name="UACamRight">
-            <btn name="kD">
-            </btn>
-        </input>
+			<btn name="kD">
+		</btn>
+		</input>
 		<input name="UACamLeft">
-            <btn name="kA">
-            </btn>
-        </input>
+			<btn name="kA">
+		</btn>
+		</input>
 		<input name="UACamUp">
-            <btn name="kQ">
-            </btn>
-        </input>
+			<btn name="kQ">
+		</btn>
+		</input>
 		<input name="UACamDown">
-            <btn name="kZ">
-            </btn>
-        </input>
+			<btn name="kZ">
+		</btn>
+		</input>
 		<input name="UACamTurbo">
-            <btn name="kLShift">
-            </btn>
-        </input>
+			<btn name="kLShift">
+		</btn>
+		</input>
 		<input name="UACamFOV">
-            <btn name="kLControl">
-            </btn>
-        </input>
+			<btn name="kLControl">
+		</btn>
+		</input>
+		<input name="UARotateLeft">
+			<btn name="mLeft">
+			</btn>
+		</input>
+		<input name="UARotateRight">
+			<btn name="mRight">
+			</btn>
+		</input>
 		<input name="UACamShiftLeft">
-            <btn name="mLeft">
-            </btn>
-        </input>
+			<btn name="mLeft">
+			</btn>
+		</input>
 		<input name="UACamShiftRight">
-            <btn name="mRight">
-            </btn>
-        </input>
+			<btn name="mRight">
+			</btn>
+		</input>
 		<input name="UACamShiftUp">
-            <btn name="mUp">
-            </btn>
-        </input>
+			<btn name="mUp">
+      </btn>
+		</input>
 		<input name="UACamShiftDown">
-            <btn name="mDown">
-            </btn>
-        </input>
+			<btn name="mDown">
+			</btn>
+		</input>
 		<input name="UACamSpeedAdd">
-            <btn name="mWheelUp">
-            </btn>
-        </input>
+			<btn name="mWheelUp">
+			</btn>
+		</input>
 		<input name="UACamSpeedDeduct">
-            <btn name="mWheelDown">
-            </btn>
-        </input>
+			<btn name="mWheelDown">
+			</btn>
+		</input>
 		<input name="UACamRelease">
-            <btn name="kLControl">
+			<btn name="kLControl">
+			</btn>
+		</input>
+		<input name="UAToggleInvis">
+			<btn name="kI">
             </btn>
-        </input>
-		<input name="UAToggleESP">
-            <btn name="kU">
-            </btn>
-        </input>
-    </preset>
+		</input>
+	</preset>
 </modded_inputs>

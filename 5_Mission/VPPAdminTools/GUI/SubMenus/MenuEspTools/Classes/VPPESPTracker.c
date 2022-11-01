@@ -11,8 +11,8 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 	protected string 			m_BBtypeName; //for basebuilding typenames
 	protected string 			m_BaseItemCode;
 	
-	protected string       	m_GUIDInput;
-	protected string       	m_GUID64Input;
+	protected string       		m_GUIDInput;
+	protected string       		m_GUID64Input;
 	protected ButtonWidget 		m_GUIDCopy;
 	protected ButtonWidget 		m_SteamIDCopy;
 	protected ButtonWidget 		m_CopyAll;
@@ -34,15 +34,15 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 	protected bool				m_DetialedWidget;
 	protected SurvivorBase		player;
 	protected int				m_bgColor;
-	Object						m_TrackerEntity;
+	EntityAI					m_TrackerEntity;
 	
+	ref VPPHoldLeftClickEvent   m_MouseEventHold;
 
 	protected ref array<ref VPPEspCatagoryHeader> m_catagoryHeaders;
 
-    void VPPESPTracker(string itemName, Object trackedEntity, int color = -1, bool visible = true ) 
+    void VPPESPTracker(string itemName, EntityAI trackedEntity, int color = -1, bool visible = true ) 
 	{
         m_RootWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTracker, null);
-		m_RootWidget.SetHandler(this);
         m_SpacerGrid       = GridSpacerWidget.Cast(m_RootWidget.FindAnyWidget("SpacerGrid"));
 
         m_CheckBox         = CheckBoxWidget.Cast(m_RootWidget.FindAnyWidget("CheckBox"));
@@ -68,10 +68,14 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		m_RootWidget.SetSort(1022,true);
 		m_ReferenceAlpha = m_SpacerGrid.GetAlpha(); //max
 		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Insert(this.DoUpdate);
+		m_RootWidget.SetHandler(this);
+		m_RootWidget.SetUserData(this); //for callbacks
+		VPPUIManager.WIDGET_PTRs.Insert(m_RootWidget); //For drag-selection
     }
 
     void ~VPPESPTracker() 
 	{
+		VPPUIManager.WIDGET_PTRs.RemoveItem(m_RootWidget); //For drag-selection
 		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Remove(this.DoUpdate);
         if (m_RootWidget != null)
 			m_RootWidget.Unlink();
@@ -165,7 +169,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		if (BasebuildingHelperFuncs.IsRelatedToBaseBuilding(m_TrackerEntity, m_BBtypeName))
 		{
 			//Register lister RPC for aids expansion codelock system
-			GetRPCManager().AddRPC("RPC_VPPESPTools", "HandleCodeFromObj", this, SingeplayerExecutionType.Server);
+			GetRPCManager().AddRPC("RPC_VPPESPTools", "HandleCodeFromObj", this, SingeplayerExecutionType.Client);
 			
 			catagory = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.EspTrackerPanelHeader, m_SpacerGrid);
 			catagory.GetScript(mgr);
@@ -242,7 +246,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			break;
 			
 			case m_PassCodeReset:
-				GetRPCManager().VSendRPC("RPC_VPPESPTools", "RestPasscodeFence", new Param1<Object>(m_TrackerEntity), true);
+				GetRPCManager().VSendRPC("RPC_VPPESPTools", "RestPasscodeFence", new Param1<EntityAI>(m_TrackerEntity), true);
 				m_Passcode.SetText("Unlocked.");
 				return true;
 			break;
@@ -311,44 +315,74 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				return true;
 			break;
 		}		
-		//---
+		
 		if (w != null && w == m_CheckBox)
 		{
-			EspToolsMenu espManager = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
-			if (m_CheckBox.IsChecked())
+			HandleCheckBox();
+			return true;
+		}
+		return false;
+	}
+
+	void HandleCheckBox()
+	{
+		if (!m_CheckBox)
+			return;
+
+		EspToolsMenu espManager = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
+		
+		if (m_CheckBox.IsChecked())
+		{
+			if (player)
 			{
-				if (player)
-				{
-					InitPlayerEspWidget();
-					m_DetialedWidget = true;
-					return true;
-				}
-				
-				if (BaseBuildingBase.Cast(m_TrackerEntity) || BasebuildingHelperFuncs.IsItemStorageSafe(m_TrackerEntity))
-				{
-					InitPlayerEspWidget();
-					m_DetialedWidget = true;
-					if (espManager)
-					{
-						espManager.AddEntry(m_ItemName, m_TrackerEntity);
-					}
-					return true;
-				}
-				//Color update
-				m_CheckBox.SetColor(ARGB(150,0,255,21));
-				//Add
+				InitPlayerEspWidget();
+				m_DetialedWidget = true;
+				return;
+			}
+			
+			if (BaseBuildingBase.Cast(m_TrackerEntity) || BasebuildingHelperFuncs.IsItemStorageSafe(m_TrackerEntity))
+			{
+				InitPlayerEspWidget();
+				m_DetialedWidget = true;
 				if (espManager)
 				{
 					espManager.AddEntry(m_ItemName, m_TrackerEntity);
 				}
-			}else{
-				//Color update
-				m_CheckBox.SetColor(ARGB(150,255,0,0));
-				//Remove
-				if (espManager){
-					espManager.RemoveEntryByObject(m_TrackerEntity);
-				}
+				return;
 			}
+			//Color update
+			m_CheckBox.SetColor(ARGB(150,0,255,21));
+			if (espManager) //Add
+				espManager.AddEntry(m_ItemName, m_TrackerEntity);
+		}
+		else
+		{
+			m_CheckBox.SetColor(ARGB(150,255,0,0)); //Color update
+			//Remove
+			if (espManager)
+				espManager.RemoveEntryByObject(m_TrackerEntity);
+		}
+	}
+
+	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
+	{
+		super.OnMouseButtonDown(w, x, y, button);
+		if (w == m_SpacerGrid)
+		{
+			if (!m_MouseEventHold)
+				m_MouseEventHold = new VPPHoldLeftClickEvent(this, "OnDragTracker", "OnDragTrackerStop");
+
+			m_MouseEventHold.SetActive(true);
+			return true;
+		}
+		return false;
+	}
+
+	override bool OnDoubleClick(Widget w, int x, int y, int button)
+	{
+		super.OnDoubleClick(w, x, y, button);
+		if (w == m_SpacerGrid)
+		{
 			return true;
 		}
 		return false;
@@ -380,7 +414,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			return;
 		}
 		
-        if (IsMarkerVisible() && m_RootWidget != NULL && GetGame().GetPlayer()) 
+        if (IsMarkerVisible() && m_RootWidget && GetGame().GetPlayer()) 
 		{
 			EspToolsMenu espManager;
 			vector startPos = m_TrackerEntity.GetPosition();
@@ -393,7 +427,7 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				startPos  = player.CoordToParent(ls);
 				
 				espManager = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
-				if (!player.IsAlive() && !espManager.ShowDeadPlayers())
+				if (!player.IsAlive() && (espManager && !espManager.ShowDeadPlayers()))
 				{
 					espManager.RemoveTracker(this);
 					return;
@@ -490,12 +524,44 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         }
     }
 	
+	//For teleport feature
+	void OnDragTracker()
+	{
+		m_SpacerGrid.SetColor(ARGB(m_SpacerGrid.GetAlpha() * 255, 27, 27, 255));
+	}
+
+	void OnDragTrackerStop()
+	{
+		if (m_MouseEventHold)
+			m_MouseEventHold.SetActive(false);
+
+		if (m_TrackerEntity)
+		{
+			vector posMarker = m_MouseEventHold.GetMarker().GetPosition();
+			GetRPCManager().VSendRPC("RPC_TeleportManager", "TeleportEntity", new Param1<vector>(posMarker), true, NULL, m_TrackerEntity);
+		}
+
+		m_SpacerGrid.SetColor(ARGB(m_SpacerGrid.GetAlpha() * 255, 0, 0, 0));
+	}
+
+	//Callback for when give widget (WIDGET_PTRs) is selected
+	void OnWidgetDragSelect(bool state)
+	{
+		if (!IsMarkerVisible())
+			return;
+		if (IsChecked() && state)
+			return;
+
+		SetChecked(state);
+		HandleCheckBox();
+	}
+
 	//Handle callback from server for shitty ideas
 	void HandleCodeFromObj(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if(type == CallType.Client)
 		{
-			Param2<string,Object> data;
+			Param2<string,EntityAI> data;
 			if(!ctx.Read(data))
 				return;
 			
@@ -539,8 +605,13 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 		return obj.GetNetworkIDString() == m_TrackerEntity.GetNetworkIDString();
 	}
 	
-	Object GetTrackingObject()
+	EntityAI GetTrackingObject()
 	{
 		return m_TrackerEntity;
+	}
+
+	Widget GetRootWidget()
+	{
+		return m_RootWidget;
 	}
 };

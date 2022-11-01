@@ -14,9 +14,15 @@ modded class MissionServer
         {
             g_Game.DisablePasswordProtection(true);
         }
-        //Post message of server status
-        GetWebHooksManager().PostData(ServerStatusMessage, new ServerStatusMessage());
         new VPPATInventorySlots;
+
+        string serverName = GetServerName();
+        if (serverName == "[SERVER NAME NOT FOUND]")
+        {
+            if (GetSteamAPIManager().m_ServerDataCache)
+                serverName = GetSteamAPIManager().m_ServerDataCache.name;
+        }
+        g_Game.SetServerName(serverName);
     }
 
     override void OnMissionFinish()
@@ -35,7 +41,6 @@ modded class MissionServer
         VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect").Insert(HandleOnPlayerConnect);
         VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected").Insert(HandleOnPlayerDisconnected);
 
-        g_Game.SetServerName(GetServerName());
         //=============RPC's====================
         GetRPCManager().AddRPC( "RPC_MissionServer", "RequestLockServer", this, SingeplayerExecutionType.Server );
         GetRPCManager().AddRPC( "RPC_MissionServer", "HandleChatCommand", this, SingeplayerExecutionType.Server );      
@@ -55,6 +60,19 @@ modded class MissionServer
 
         switch(eventTypeId)
         {
+            case ClientNewReadyEventTypeID:
+            ClientNewReadyEventParams newReadyParams; //PlayerIdentity, Man
+            Class.CastTo(newReadyParams, params);
+
+            identity = newReadyParams.param1;
+            player   = PlayerBase.Cast(newReadyParams.param2);
+
+            onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
+            if(onPlayerConnect)
+                onPlayerConnect.Invoke(player, identity, false, true); //works when a new player is spawned.
+
+            break;
+
             case ClientReadyEventTypeID:
             ClientReadyEventParams readyParams;
             Class.CastTo(readyParams, params);
@@ -175,6 +193,9 @@ modded class MissionServer
             m_LoginTimeMs = 3000.0;  //No hive, keep timer short.
             return;
         }
+
+        //Post message of server status
+        GetWebHooksManager().PostServerBootup();
 
         m_LoginTimeMs = (GetCEApi().GetCEGlobalInt("TimeLogin") * 1000) + 1200.0;
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.FindLoginTime);
@@ -335,7 +356,7 @@ modded class MissionServer
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) re-connected to server [canceledLogout]", identity.GetName(), identity.GetPlainId()));
         }
 
-        if(identity)
+        if(identity && player)
         {
             if(!GetPlayerListManager().HasPlayerInList(identity.GetPlainId()))
                 GetPlayerListManager().AddUserServer(identity.GetName(), identity.GetPlainId(), identity.GetPlayerId());

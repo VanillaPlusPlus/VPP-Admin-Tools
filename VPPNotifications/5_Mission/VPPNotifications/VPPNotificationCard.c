@@ -15,9 +15,9 @@ class VPPNotificationCard
 	void VPPNotificationCard(VPPMessageProps properties, GridSpacerWidget grid, bool showNow = true)
 	{
 		#ifndef VPPNOTIFICATIONS
-		m_Card 			= GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/VPPNotification.layout", grid);
+		m_Card 			= GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPNotification, grid);
 		#else
-		m_Card 			= GetGame().GetWorkspace().CreateWidgets( "VPPNotifications/GUI/Layouts/VPPNotification.layout", grid);
+		m_Card 			= GetGame().GetWorkspace().CreateWidgets("VPPNotifications/GUI/Layouts/VPPNotification.layout", grid);
 		#endif
 		
 		m_TitleText 	= TextWidget.Cast(m_Card.FindAnyWidget("TitleText"));

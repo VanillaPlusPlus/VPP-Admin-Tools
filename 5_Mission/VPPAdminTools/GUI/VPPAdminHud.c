@@ -14,7 +14,7 @@ class VPPAdminHud extends VPPScriptedMenu
 	
 	void VPPAdminHud()
 	{
-		GetRPCManager().AddRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_VPPAdminHud", "VerifyButtonsPermission", this, SingleplayerExecutionType.Client );
 		M_SUB_MENUS      = new array<ref AdminHudSubMenu>;
 		m_ButtonPerms    = new map<string,bool>;
 		m_DefinedButtons = {};
@@ -120,6 +120,17 @@ class VPPAdminHud extends VPPScriptedMenu
 
 		return m_ButtonPerms[perm];
 	}
+
+	override void HideMenu()
+	{
+		MenuObjectManager objEditor = GetSubMenuByType(MenuObjectManager);
+		if (objEditor && objEditor.IsSubMenuVisible())
+		{
+			objEditor.HideSubMenu();
+			return;
+		}
+		super.HideMenu();
+	}
 	
 	override void Update(float timeslice)
 	{
@@ -177,5 +188,11 @@ class VPPAdminHud extends VPPScriptedMenu
 			}
 		}
 		return NULL;
+	}
+
+	//toggle hide/show
+	void HideIconsPanel(bool hide)
+	{
+		layoutRoot.FindAnyWidget("IconsPanel").Show(!hide);
 	}
 };

@@ -9,21 +9,36 @@ class PlayerManager extends PluginBase
 		GetRPCManager().AddRPC("RPC_PlayerManager", "MakePlayerVomit", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PlayerManager", "GetPlayerStatsGroup", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_PlayerManager", "RequestInvisibility", this, SingleplayerExecutionType.Server);
-		GetRPCManager().AddRPC("RPC_PlayerManager", "ToggleGodmode", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "SendMessage", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "SetPlayerStats", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "HealPlayers", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "KillPlayers", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "SpectatePlayer", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "TeleportHandle", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "KickPlayer", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "BanPlayer", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveGodmode", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveUnlimitedAmmo", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "FreezePlayers", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC("RPC_PlayerManager", "ChangePlayerScale", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC("RPC_PlayerManager", "ToggleGodmode", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "SendMessage", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "SetPlayerStats", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "HealPlayers", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "KillPlayers", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "SpectatePlayer", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "TeleportHandle", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "KickPlayer", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "BanPlayer", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveGodmode", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "GiveUnlimitedAmmo", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "FreezePlayers", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "ChangePlayerScale", this, SingeplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PlayerManager", "GetPlayerCount", this, SingeplayerExecutionType.Server);
 	}
 	
+	void GetPlayerCount(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if(type != CallType.Server)
+			return;
+	#ifndef DIAG_DEVELOPER
+		if(sender == null)
+			return;
+	#endif
+		if (GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuPlayerManager"))
+		{
+			GetRPCManager().VSendRPC( "RPC_MenuPlayerManager", "SetPlayerCount", new Param1<string>(GetSteamAPIManager().GetTotalPlayerCount()), true, sender);
+		}
+	}
+
 	void ChangePlayerScale(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if(type != CallType.Server)
@@ -32,10 +47,10 @@ class PlayerManager extends PluginBase
 		Param2<ref array<string>, float> data;
 		if(!ctx.Read(data))
 			return;
-
+	#ifndef DIAG_DEVELOPER
 		if(sender == null)
 			return;
-
+	#endif
 		array<string> ids = data.param1;
 		foreach(string targetID : ids)
 		{
@@ -60,7 +75,9 @@ class PlayerManager extends PluginBase
 		Param2<ref array<string>, int> data;
 
 		if(!ctx.Read(data)) return;
+	#ifndef DIAG_DEVELOPER
 		if(sender == null) return;
+	#endif
 		
 		array<string> ids = data.param1;
 
@@ -143,8 +160,8 @@ class PlayerManager extends PluginBase
 	{
 		if (type == CallType.Server)
         {
-        	Param2<bool,ref array<string>> data; //opertation type,targets
-        	if ( !ctx.Read( data ) ) return;
+        	Param2<VPPAT_TeleportType,ref array<string>> data; //opertation type,targets
+        	if (!ctx.Read(data)) return;
 			
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportToPlayer") || !GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportPlayerTo")) return;
 			
@@ -152,15 +169,22 @@ class PlayerManager extends PluginBase
 			array<string> ids = data.param2;
 			foreach(string targetId: ids)
 			{
-				if (data.param1) //TeleportToPlayer
-				{					
-					GetTeleportManager().GotoPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), PlayerBase.Cast(self), sender.GetPlainId());
-				}
-				else
+				switch(data.param1)
 				{
-					if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportPlayerTo",targetId)) return;
+					case VPPAT_TeleportType.GOTO:
+						GetTeleportManager().GotoPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), PlayerBase.Cast(self), sender.GetPlainId());
+					break;
+
+					case VPPAT_TeleportType.BRING:
+						if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"PlayerManager:TeleportPlayerTo",targetId))
+							return;
 					
-					GetTeleportManager().BringPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), self.GetPosition(), "");
+						GetTeleportManager().BringPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), self.GetPosition(), "");
+					break;
+
+					case VPPAT_TeleportType.RETURN:
+						GetTeleportManager().ReturnPlayer(GetPermissionManager().GetPlayerBaseByID(targetId), sender.GetPlainId());
+					break;
 				}
 			}
 		}
@@ -370,8 +394,10 @@ class PlayerManager extends PluginBase
         	Param1<ref array<string>> data; // player id's
 			if(!ctx.Read(data)) return;
 
+		#ifndef DIAG_DEVELOPER
 			if (sender == null)
 				return;
+		#endif
 
 			array<string> ids = data.param1;
 			if (ids.Count() < 1) return;
@@ -410,8 +436,9 @@ class PlayerManager extends PluginBase
 			Param1<ref array<string>> data; // player id's
 			if(!ctx.Read(data)) return;
 		
-
+		#ifndef DIAG_DEVELOPER
 			if (sender == null) return;
+		#endif
 			
 			string adminID  = sender.GetPlainId();
 			if (!GetPermissionManager().VerifyPermission(adminID, "PlayerManager:HealPlayers")) return;

@@ -24,8 +24,8 @@ class MenuTeleportManager extends AdminHudSubMenu
 	void MenuTeleportManager()
 	{
 		/*RPCs*/
-		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "HandleData", this);
-		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "UpdateMap", this);
+		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "HandleData", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC( "RPC_MenuTeleportManager", "UpdateMap", this, SingleplayerExecutionType.Client);
 		/*-----*/
 		
 		m_Entries   = new array<ref TeleportEntry>;
@@ -35,7 +35,6 @@ class MenuTeleportManager extends AdminHudSubMenu
 	override void OnCreate(Widget RootW)
 	{
 		super.OnCreate(RootW);
-
 		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuTeleportManager);
 		M_SUB_WIDGET.SetHandler(this);
 		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
@@ -51,8 +50,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_Scroller       = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "Scroller") );
 		m_ParentGrid     = GridSpacerWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SpacerParent") );
 		m_Map 		     = MapWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "MapWidget"));
-		WidgetEventHandler.GetInstance().RegisterOnDoubleClick( m_Map, this, "MapDoubleClick" );
-		
+
 		m_btnRefresh     = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRefresh"));
 		m_btnAddPos      = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnAddPos"));
 		m_btnEditPos     = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnEditPos"));
@@ -129,47 +127,55 @@ class MenuTeleportManager extends AdminHudSubMenu
 	{
 		Param1<ref array<ref VPPPlayerData>> data;
 		if(!ctx.Read(data)) return;
-		
+
 		array<ref VPPPlayerData> temp = data.param1;
-		if( type == CallType.Client )
+		if (type == CallType.Client)
 		{
-			if(m_Map != null)
+			if (!m_Map)
+				return;
+
+			m_Map.ClearUserMarks();
+			UpdateMapEx();
+			DayZPlayer client = GetGame().GetPlayer();
+			MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
+			array<ref VPPPlayerEntry> selectedPlayers = {};
+			if (pManager)
+				selectedPlayers = pManager.GetSelectedPlayers();
+
+			foreach(VPPPlayerData info : temp)
 			{
-				m_Map.ClearUserMarks();
-				DayZPlayer client = GetGame().GetPlayer();
-				MenuPlayerManager pManager = MenuPlayerManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuPlayerManager));
-				array<ref VPPPlayerEntry> selectedPlayers = {};
-				if (pManager)
-					selectedPlayers = pManager.GetSelectedPlayers();
-
-				foreach(VPPPlayerData info : temp)
+				if(client && client.GetPosition() == info.m_PlayerPos)
 				{
-					if(client && client.GetPosition() == info.m_PlayerPos)
-					{
-						m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
-						continue;
-					}
+					m_Map.AddUserMark(info.m_PlayerPos, "Me", ARGB(255,255,244,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+					continue;
+				}
 
-					if (!selectedPlayers || selectedPlayers.Count() <= 0)
+				if (!selectedPlayers || selectedPlayers.Count() <= 0)
+				{
+					m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+					continue;
+				}
+				//check if player is selected
+				for (int i = 0; i < selectedPlayers.Count(); ++i)
+				{
+					if (info.m_PlayerName == selectedPlayers[i].GetPlayerName() && selectedPlayers[i].IsSelected())
 					{
-						m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,0,255,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
-						continue;
+						m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,255,0,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
+						break;
 					}
-					//check if player is selected
-					for (int i = 0; i < selectedPlayers.Count(); ++i)
-					{
-						if (info.m_PlayerName == selectedPlayers[i].GetPlayerName() && selectedPlayers[i].IsSelected())
-						{
-							m_Map.AddUserMark(info.m_PlayerPos, info.m_PlayerName, ARGB(255,255,0,0), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\waypoint_CA.paa");
-							break;
-						}
-					}
-				}	
+				}
 			}
 		}
-	 }
+	}
 	
-	
+	//override to add your markers, don't call method yourself. It's called from UpdateMap()
+	//This method is called on every update RPC received from server (interval of 1 second)
+	//To Refresh player markers
+	void UpdateMapEx()
+	{
+		//Make sure to call super
+	}
+
 	//Called by PopUpNewPositionEditor, by this stage duplication check and proper data check is done.
 	void SaveNewMarker(string name, vector position, bool editMode, string oldName = "", vector oldPosition = "0 0 0")
 	{
@@ -208,18 +214,24 @@ class MenuTeleportManager extends AdminHudSubMenu
 		}
 		return false;
 	}
-	
-	void MapDoubleClick(Widget w, int x, int y, int button)
+
+	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
 		if (button == MouseState.LEFT)
 		{
-			if (g_Game.IsLeftCtrlDown())
-				CreatePositionPopUp(ScreenToWorld());
-			else
-				PreformTeleport(true);
-		}
-	}
+			if (w == m_Map)
+			{
+				if (g_Game.IsLeftCtrlDown())
+					CreatePositionPopUp(ScreenToWorld());
+				else
+					PreformTeleport(true);
 
+				return true;
+			}
+		}
+		return super.OnDoubleClick(w, x, y, button);
+	}
+	
 	vector ScreenToWorld()
 	{
 		vector world_pos,ScreenToMap,dir,from,to;

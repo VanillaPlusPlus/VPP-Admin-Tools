@@ -95,7 +95,16 @@ class XMLEditor extends PluginBase
 			array<vector> ScanPockets = GetScanPositions();
 
 			array<EntityAI> entities = new array<EntityAI>;
-			DayZPlayerUtils.SceneGetEntitiesInBox("0 0 0", "20000.0 1200.0 20000.0", entities);
+
+			string typeTosearch = data.param1;
+			typename t = typeTosearch.ToType();
+			if (t && (t.IsInherited(CrashBase) || t.IsInherited(House) || t.IsInherited(BuildingSuper)))
+			{
+				//Land_ / House hybrid type search (SLOW!)
+				DayZPlayerUtils.PhysicsGetEntitiesInBox("0.0 -1200.0 0.0", "20000.0 1200.0 20000.0", entities);
+			}else{
+				DayZPlayerUtils.SceneGetEntitiesInBox("0.0 -1200.0 0.0", "20000.0 1200.0 20000.0", entities);
+			}
 
 			for (int i = 0; i < entities.Count(); ++i)
 			{

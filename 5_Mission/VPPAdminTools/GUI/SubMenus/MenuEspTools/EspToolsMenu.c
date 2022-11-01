@@ -25,7 +25,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	
 	ref array<ref VPPFilterEntry>   m_FilterEntry;
 	ref array<ref VPPESPItemEntry>  m_EspItemsEntry;
-	ref map<Object, ref VPPESPTracker>	  m_EspTrackers;
+	ref map<EntityAI, ref VPPESPTracker>	  m_EspTrackers;
 	ref array<ref CustomGridSpacer> m_DataGrids;
 	ref array<ref EspFilterProperties> m_FilterProps;
 	
@@ -34,7 +34,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_FilterEntry   = new array<ref VPPFilterEntry>;
 		m_EspItemsEntry = new array<ref VPPESPItemEntry>;
 		m_DataGrids     = new array<ref CustomGridSpacer>;
-		m_EspTrackers	= new map<Object, ref VPPESPTracker>;
+		m_EspTrackers	= new map<EntityAI, ref VPPESPTracker>;
 		m_FilterProps   = new array<ref EspFilterProperties>;
 	}
 
@@ -90,6 +90,18 @@ class EspToolsMenu extends AdminHudSubMenu
 		thread UpdateEsp();
 	}
 	
+	override void OnMenuShow()
+	{
+		super.OnMenuShow();
+		GetToolbarMenu().AllowSelectBoxDraw(true);
+	}
+
+	override void OnMenuHide()
+	{
+		super.OnMenuHide();
+		GetToolbarMenu().AllowSelectBoxDraw(false);
+	}
+
 	override void HideBrokenWidgets(bool state)
 	{
 		m_ScrollerItems.Show(!state);
@@ -108,15 +120,18 @@ class EspToolsMenu extends AdminHudSubMenu
 			
 			if (M_SCAN_ACTIVE)
 			{
+				vector startPos = GetGame().GetPlayer().GetPosition();
+				if (IsFreeCamActive())
+					startPos = VPPGetCurrentCameraPosition();
+
 				int totalTime = 0;
-				map<Object, int> objects = new map<Object, int>; //This seems to work faster than filtering arrays with Find
+				map<EntityAI, int> objects = new map<EntityAI, int>; //This seems to work faster than filtering arrays with Find
+				array<EntityAI> entities = new array<EntityAI>;
 				
 				M_UPDATE_INTERVAL = m_InputUpdateInterval.GetText().ToInt();
 				if (M_UPDATE_INTERVAL <= 0)
 					M_UPDATE_INTERVAL = 1;
 				
-				ScanObjects(objects, totalTime);
-				ScanPlayers();
 				
 				map<typename,int> activeFilters = new map<typename,int>;
 				foreach(VPPFilterEntry filter : m_FilterEntry)
@@ -126,41 +141,53 @@ class EspToolsMenu extends AdminHudSubMenu
 		
 					activeFilters.Insert(filter.GetFilterName().ToType(), filter.m_Props.color);
 				}
-		
-				foreach(Object obj, int useless : objects)
+
+				//Check if survivor only, skip scanning objects to avoid stutter lag on high radius
+				if (activeFilters.Count() == 1 && activeFilters.GetKey(0) == SurvivorBase) 
 				{
-					if (!obj)
+					ScanPlayers();
+				}
+				else
+				{
+					ScanObjectsEx(entities, totalTime, objects);
+					ScanPlayers();
+				}
+
+				foreach(EntityAI ent : entities)
+				{
+					if (!ent || m_EspTrackers.Get(ent))
 						continue;
-					if (!obj.HasNetworkID())
+
+					if (vector.Distance(startPos, ent.GetPosition()) > m_SliderRadius.GetCurrent())
 						continue;
-		
-					string objName = obj.GetDisplayName();
+
+					string objName = string.Empty;
 					if (m_ChkShowClassName.IsChecked() || objName == string.Empty)
-						objName = obj.GetType();
+					{
+						objName = ent.GetType();
+					}
+					else
+					{
+						objName = ent.GetDisplayName();
+					}
 		
 					foreach(typename f, int color : activeFilters)
 					{
-						if (obj.IsInherited(f))
+						if (ent.IsInherited(f))
 						{
-							m_EspTrackers.Insert(obj, new VPPESPTracker(objName, obj, color));
+							m_EspTrackers.Insert(ent, new VPPESPTracker(objName, ent, color));
 						}
 					}
 				}
 
 				Sleep(Math.Max(0,(M_UPDATE_INTERVAL * 1000.0) - totalTime)); //Next scan
 				#ifdef VPPADMINTOOLS_DEBUG
-				//Print("Total: " + objects.Count() + " totalTime: " + totalTime);
+				Print("Total: " + objects.Count() + " totalTime: " + totalTime);
 				#endif
 			}
 		}
 	}
 	
-	void DoWait(int time, out int totalTime)
-	{
-		Sleep(time);
-		totalTime += time;
-	}
-
 	void DoSleep(int time, out int totalTime, inout int waitIndex)
 	{
 		waitIndex += 1;
@@ -169,7 +196,54 @@ class EspToolsMenu extends AdminHudSubMenu
 			totalTime += time;
 		}
 	}
+
+	void ScanObjectsEx(out array<EntityAI> entities, out int totalTime, out map<EntityAI, int> objects)
+	{
+		int waitIndex = 0;
+
+		float distance   = m_SliderRadius.GetCurrent();
+		vector centerPos = GetGame().GetPlayer().GetPosition();
+		if (IsFreeCamActive())
+			centerPos = VPPGetCurrentCameraPosition();
+
+		int steps = Math.Clamp(distance / 10, 10, 100);
+		float totalDistance = 2 * distance;
+		float deltaDistance = totalDistance / steps;
+
+		vector deltaDistanceVec = vector.Forward * deltaDistance;
+		vector currentMin = centerPos - Vector(distance, distance, distance);
+		vector currentMax = currentMin + Vector(1, 1, 0) * totalDistance + deltaDistanceVec;
+
+#ifdef VPPADMINTOOLS_DEBUG
+		DayZPlayerUtils.DrawStartFrame();
+		DayZPlayerUtils.DrawDebugBox(currentMin, 10.0, ARGB(255,0,255,0));
+		DayZPlayerUtils.DrawDebugBox(currentMax, 10.0, ARGB(255,0,255,0));
+#endif
+
+		for (int i = 0; i < steps; ++i)
+		{
+		    DayZPlayerUtils.PhysicsGetEntitiesInBox(currentMin, currentMax, entities);
+
+		    currentMin = currentMin + deltaDistanceVec;
+		    currentMax = currentMax + deltaDistanceVec;
+
+		    foreach(EntityAI ent : entities)
+			{
+				if (!ent || !ent.IsEntityAI() || !ent.HasNetworkID())
+					continue;
+
+				objects.Insert(ent, 0);
+			}
+
+		    DoSleep((M_UPDATE_INTERVAL * 1000.0) / 4, totalTime, waitIndex);
+#ifdef VPPADMINTOOLS_DEBUG
+			DayZPlayerUtils.DrawDebugBox(currentMin, 10.0, ARGB(255,0,0,255));
+			DayZPlayerUtils.DrawDebugBox(currentMax, 10.0, ARGB(255,0,0,255));
+#endif
+		}
+	}
 	
+	//~~depreciated~~
 	void ScanObjects(out map<Object, int> objects, out int totalTime)
 	{
 		int currentIteration = 1;
@@ -247,28 +321,30 @@ class EspToolsMenu extends AdminHudSubMenu
 			{
 				if (!man)
 					continue;
+
+				if (m_EspTrackers.Get(man) != NULL)
+					continue;
+
 				if (!man.IsAlive() && !ShowDeadPlayers())
 					continue;
 
-				if (man.GetIdentity())
+				if (!man.GetIdentity() && !ShowDeadPlayers())
+					continue;
+
+				if (vector.Distance(startPos, man.GetPosition()) <= m_SliderRadius.GetCurrent())
 				{
-					if (vector.Distance(startPos, man.GetPosition()) <= m_SliderRadius.GetCurrent())
+					string pName = man.GetIdentity().GetName();
+					if (pName == "Survivor")
 					{
-						/*HOT FIX :: Redo sometime later*/
-						string pName = man.GetIdentity().GetName();
-						if (pName == "Survivor")
+						foreach(SyncPlayer syncP : data)
 						{
-							foreach(SyncPlayer syncP : data)
+							if (syncP && syncP.m_UID == man.GetIdentity().GetId())
 							{
-								if (syncP && syncP.m_UID == man.GetIdentity().GetId())
-								{
-									pName = syncP.m_PlayerName;
-									Print("pName: " + pName);
-								}
+								pName = syncP.m_PlayerName;
 							}
 						}
-						m_EspTrackers.Insert(man, new VPPESPTracker(man.GetIdentity().GetName(), man, survivorFilter.m_Props.color));
 					}
+					m_EspTrackers.Insert(man, new VPPESPTracker(pName, man, survivorFilter.m_Props.color));
 				}
 			}
 		}
@@ -394,6 +470,8 @@ class EspToolsMenu extends AdminHudSubMenu
 			{
 				foreach(Object obj : objects)
 				{
+					if (!obj)
+						continue;
 					if (obj.IsBuilding() && !obj.IsInherited(GardenBase))
 						continue;
 					if (obj.IsRock())
@@ -501,7 +579,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		int index = m_EspItemsEntry.Find(entry);
 		if (index > -1)
 		{
-			VPPESPTracker tracker = m_EspTrackers.Get(tracker.GetTrackingObject());
+			VPPESPTracker tracker = m_EspTrackers.Get(entry.GetTargetObject());
 			if (tracker)
 			{
 				tracker.SetChecked(false);
@@ -523,11 +601,6 @@ class EspToolsMenu extends AdminHudSubMenu
 		}
 	}
 	
-	bool CheckDuplicateTracker(Object obj)
-	{
-		return m_EspTrackers.Contains(obj);
-	}
-	
 	void RemoveTracker(VPPESPTracker t)
 	{
 		VPPESPTracker tracker = m_EspTrackers.Get(t.GetTrackingObject());
@@ -539,7 +612,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	void ClearTrackers()
 	{
 		m_EspTrackers.Clear();
-		m_EspTrackers  = new map<Object, ref VPPESPTracker>;
+		m_EspTrackers  = new map<EntityAI, ref VPPESPTracker>;
 	}
 	
 	void InitEspItemsList()

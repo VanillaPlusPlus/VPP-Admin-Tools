@@ -4,13 +4,15 @@ class WebHooksManager: ConfigurablePlugin
 	private ref WebHookConnectionManager m_ConnectionManager;
 	[NonSerialized()]
 	private bool m_ReportServerStatus;
+	[NonSerialized()]
+	static ref ScriptInvoker m_Invoker = new ScriptInvoker();
 
 	private ref array<ref WebHook> 		 M_DATA;
 
 	void WebHooksManager()
 	{
 		M_DATA = new array<ref WebHook>;
-		m_ConnectionManager = new WebHookConnectionManager(""); //https://discordapp.com/api/webhooks/
+		m_ConnectionManager = new WebHookConnectionManager("");
 
 		if (!FileExist("$profile:VPPAdminTools/ConfigurablePlugins/WebHooksManager"))
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins/WebHooksManager");
@@ -29,29 +31,15 @@ class WebHooksManager: ConfigurablePlugin
 	override void OnInit()
 	{
 		Load();
-		if ( M_DATA )
-		{
-			foreach(WebHook hook: M_DATA)
-			{
-				if (hook && hook.ReportServerStatus())
-				{
-					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.PostServerStatus, hook.GetServerStatsInterval() * 1000, true);
-				}
-			}
-		}
-	}
-
-	void PostServerStatus()
-	{
-		PostData(ServerStatusMessage, new ServerStatusMessage(false));
+		SetupInvokerQueue();
 	}
 
 	override void Load()
 	{
 		if (FileExist( JSONPATH ))
 		{
-			Print("[WebHooksManager] Loading Saved Webhooks configuration");
 			JsonFileLoader<WebHooksManager>.JsonLoadFile(JSONPATH, this);
+			Print("[WebHooksManager] Loading Saved Webhooks configuration");
 		}
 	}
 
@@ -60,73 +48,35 @@ class WebHooksManager: ConfigurablePlugin
 		JsonFileLoader<WebHooksManager>.JsonSaveFile(JSONPATH, this);
 	}
 
+	void SetupInvokerQueue()
+	{
+		if (!M_DATA || M_DATA.Count() <= 0)
+			return;
+
+		foreach(WebHook hook: M_DATA)
+		{
+			if (!hook)
+				continue;
+
+			hook.InitTimer();
+			WebHooksManager.m_Invoker.Insert(hook.PostMessage);
+		}
+	}
+
+	void PostServerBootup()
+	{
+		PostData(ServerStatusMessage, new ServerStatusMessage(true));
+	}
+
 	/*
 		Called from many other instances such as admin logs and vppat plugins
 	*/
 	void PostData(typename messageType, WebHookMessageBase dataClass)
 	{
-		if (M_DATA.Count() > 0)
-		{
-			foreach(WebHook hook: M_DATA)
-			{
-				if (hook)
-				{
-					//Post sent data according to each webhooks configuration
-					switch(messageType)
-					{
-						case AdminActivityMessage:
-						if (hook.SendAdminActivityLogs())
-						{
-							AdminActivityMessage aam;
-							Class.CastTo( aam, dataClass);
+		if (!M_DATA || M_DATA.Count() <= 0)
+			return;
 
-							m_ConnectionManager.Post(hook.GetURL(), aam.BuildMessage());
-						}
-						break;
-
-						case KillDeathMessage:
-						if (hook.SendDeathKillLogs())
-						{
-							KillDeathMessage kdm;
-							Class.CastTo( kdm, dataClass);
-
-							m_ConnectionManager.Post(hook.GetURL(), kdm.BuildMessage());
-						}
-						break;
-
-						case JoinLeaveMessage:
-						if (hook.SendJoinLeaveLogs())
-						{
-							JoinLeaveMessage jlm;
-							Class.CastTo( jlm, dataClass);
-							
-							m_ConnectionManager.Post(hook.GetURL(), jlm.BuildMessage());
-						}
-						break;
-
-						case HitDamageMessage:
-						if (hook.SendHitLogs())
-						{
-							HitDamageMessage hdm;
-							Class.CastTo( hdm, dataClass);
-
-							m_ConnectionManager.Post(hook.GetURL(), hdm.BuildMessage());
-						}
-						break;
-
-						case ServerStatusMessage:
-						if (hook.ReportServerStatus())
-						{
-							ServerStatusMessage stm;
-							Class.CastTo( stm, dataClass);
-
-							m_ConnectionManager.Post(hook.GetURL(), stm.BuildMessage());
-						}
-						break;
-					}
-				}
-			}
-		}
+		WebHooksManager.m_Invoker.Invoke(messageType, dataClass);
 	}
 
 	void GetWebHooks(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -154,11 +104,13 @@ class WebHooksManager: ConfigurablePlugin
 			if (data.param1 != -1 && M_DATA.Get(data.param1).GetName() == data.param2)
 			{
 				GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Deleted WebHook: " + M_DATA.Get(data.param1).GetName()));
-				M_DATA.RemoveOrdered( data.param1 );
+				M_DATA.RemoveOrdered(data.param1);
 				Save();
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"WebHook: "+data.param2 + " was successfully deleted!", NotifyTypes.NOTIFY);
 				GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
-			}else{
+			}
+			else
+			{
 				//Failed
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Error deleting webhook: "+data.param2 + "\nobject not found in array!", NotifyTypes.NOTIFY);
 			}
@@ -178,7 +130,10 @@ class WebHooksManager: ConfigurablePlugin
 				return;
 
 			WebHook webHook = data.param1;
-			M_DATA.Insert( webHook );
+			M_DATA.Insert(webHook);
+			webHook.InitTimer();
+			WebHooksManager.m_Invoker.Insert(webHook.PostMessage);
+
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Created new WebHook: " + data.param1.GetName()));
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"New WebHook: " + data.param1.GetName() + " successfully created and saved!", NotifyTypes.NOTIFY);
 			Save();
@@ -198,15 +153,22 @@ class WebHooksManager: ConfigurablePlugin
 			if (!ctx.Read(data))
 				return;
 
-			WebHook old = M_DATA.Get( data.param1 );
+			WebHook old = M_DATA.Get(data.param1);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Edited WebHook: " + old.GetName()));
 			if (old && old.GetName() == data.param2)
 			{
-				M_DATA.Set(data.param1, data.param3);
+				delete old; //call destructor to stop timers n invokers
+				WebHooksManager.m_Invoker.Clear();
+				M_DATA.RemoveOrdered(data.param1);
+				M_DATA.Insert(data.param3);
+				SetupInvokerQueue();
+
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"WebHook: " + data.param3.GetName() + " was successfully edited & saved!", NotifyTypes.NOTIFY);
 				Save();
 				GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(M_DATA), true, sender); //Reload data for client
-			}else{
+			}
+			else
+			{
 				//Failed
 				GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Failed to save changes to webhook: " + data.param3.GetName() + "\n\nCould not find old instance, another admin deleted it?", NotifyTypes.NOTIFY);
 			}

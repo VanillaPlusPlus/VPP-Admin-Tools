@@ -19,6 +19,7 @@ class VPPPlayerEntry : VPPPlayerTemplate
         m_PlayerToggle.SetText(playerName);
         m_PlayerToggle.SetChecked(startCheck);
 		m_IsVisible = true;
+        LabelOwnerName();
     }
 	
 	void RedrawWidgets(CustomGridSpacer newGrid , bool selected = false)
@@ -32,12 +33,19 @@ class VPPPlayerEntry : VPPPlayerTemplate
         m_PlayerToggle.SetChecked(selected);
 		newGrid.AddWidget(m_EntryBox);
 		m_IsVisible = true;
+        LabelOwnerName();
 	}
     
     void ~VPPPlayerEntry()
     {
         if (m_EntryBox != null)
         m_EntryBox.Unlink();
+    }
+
+    void LabelOwnerName()
+    {
+        if (GetID() == g_Game.VPPAT_GetSteam64Id())
+            m_PlayerToggle.SetTextColor(ARGB(255,0,255,2));
     }
 	
 	void SetVisible(bool state)
@@ -79,6 +87,15 @@ class VPPPlayerEntry : VPPPlayerTemplate
 	
     bool IsSelected()
     {
-        return (m_PlayerToggle && m_PlayerToggle.IsChecked());
+        if (!m_EntryBox)
+            return false;
+
+        bool isSelected = (m_PlayerToggle && m_PlayerToggle.IsChecked());
+        if (isSelected)
+            m_EntryBox.SetColor(ARGB(140,0,0,255));
+        else
+            m_EntryBox.SetColor(ARGB(140,255,255,255));
+
+        return isSelected;
     }
 };

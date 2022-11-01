@@ -4,7 +4,7 @@ class VPPNotificationUI
 	private const int        m_maxVisible = 5;   //how many cards can show max at same time
 	private const float      m_updateTick = 1.0; //in seconds
 	private bool 			 m_IsVisible;
-	private ref AbstractWave m_SoundWave;
+	private AbstractWave 	 m_SoundWave;
 	private float            m_Tick = 0.0;
 
 	private Widget       				   	   m_MenuRoot;
@@ -20,7 +20,7 @@ class VPPNotificationUI
 		#ifdef VPPNOTIFICATIONS
 		m_MenuRoot = GetGame().GetWorkspace().CreateWidgets( "VPPNotifications/GUI/Layouts/VPPNotificationParent.layout" );
 		#else
-		m_MenuRoot = GetGame().GetWorkspace().CreateWidgets( "VPPAdminTools/GUI/Layouts/VPPNotificationParent.layout" );
+		m_MenuRoot = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPNotificationParent);
 		#endif
 
 		m_Grid     = GridSpacerWidget.Cast(m_MenuRoot.FindAnyWidget("Grid"));
@@ -138,7 +138,6 @@ class VPPNotificationUI
 		if ( m_SoundWave )
 		{
 			m_SoundWave.Stop();
-			delete m_SoundWave;
 		}
 	}
 }

@@ -62,7 +62,7 @@ class VPPATUIConstants
 	//UI Helpers
 	const static string VPPDialogBox 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout";
 	const static string CustomGridSpacer 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/CustomGridSpacer.layout";
-	const static string VPPDragSelect 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDragSelect.layout";
+	const static string VPPDragSelect 				 = "~NOT USED~";
 	const static string VPPInfoBox 					 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPInfoBox.layout";
 	const static string CustomInputMenu 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/CustomInputMenu.layout";
 
@@ -133,4 +133,7 @@ class VPPATUIConstants
 	//Bans Manager
 	const static string MenuBansManager 			 = "VPPAdminTools/GUI/Layouts/BansManagerUI/MenuBansManager.layout";
 	const static string BanDurationInputPopUp 		 = "VPPAdminTools/GUI/Layouts/BansManagerUI/BanDurationInputPopUp.layout";
+
+	//Spectate Tools
+	const static string MenuSpectateTools 			 = "VPPAdminTools/GUI/Layouts/SpectateUI/MenuSpectateTools.layout";
 };

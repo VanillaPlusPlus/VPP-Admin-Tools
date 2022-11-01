@@ -282,6 +282,46 @@ FrameWidgetClass rootFrame {
          Columns 1
          Rows 5
          {
+          FrameWidgetClass webHookOption6 {
+           ignorepointer 1
+           position 0 0
+           size 29 27
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           {
+            TextWidgetClass Label6 {
+             ignorepointer 1
+             size 1 1
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "#VSTR_LBL_SIMPLIFIED_LOGS"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 16
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+            CheckBoxWidgetClass simplifiedLogs {
+             ignorepointer 0
+             position 0 0
+             size 0.08 1
+             halign right_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             checked 0
+            }
+           }
+          }
           FrameWidgetClass webHookOption {
            ignorepointer 1
            position 0 0

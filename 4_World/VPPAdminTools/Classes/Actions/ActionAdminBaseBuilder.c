@@ -5,6 +5,7 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 		m_CommandUID  	= DayZPlayerConstants.CMD_ACTIONFB_CHECKPULSE;
 		m_FullBody 		= true;
 		m_StanceMask 	= DayZPlayerConstants.STANCEMASK_ERECT;
+		m_Text = "[Admin] #build";
 	}
 
 	override void CreateConditionComponents()  
@@ -13,40 +14,35 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 		m_ConditionTarget = new CCTSelf;
 	}
 
-	override typename GetInputType()
-	{
-		return ContinuousDefaultActionInput;
-	}
-
-	override bool IsInstant()
-	{
-		return true;
-	}
-
-	override string GetText()
-	{
-		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-		if ( player )
-		{
-			ConstructionActionData construction_action_data = player.GetConstructionActionData();
-			ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
-			
-			if ( constrution_part )
-			{
-				return "[Admin] #build" + " " + constrution_part.GetName();
-			}
-		}
-		return "";
-	}
-
 	override bool UseMainItem()
 	{
 		return false;
 	}
 
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+	
+	override bool IsInstant()
+	{
+		return true;
+	}
+
 	override bool HasTarget()
 	{
 		return true;
+	}
+
+	override void OnActionInfoUpdate( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		ConstructionActionData construction_action_data = player.GetConstructionActionData();
+		ConstructionPart constrution_part = construction_action_data.VPPAT_GetBuildPartAtIndex(m_VariantID);
+			
+		if (constrution_part)
+		{
+			m_Text = "[Admin] #build " + constrution_part.GetName();
+		}
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
@@ -55,7 +51,7 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 			return false;
 		
 		//hack - gate
-		if (target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
+		if (target.GetObject() && !target.GetObject().CanUseConstructionBuild())
 			return false;
 		
 		if ( (!GetGame().IsDedicatedServer()) )
@@ -69,38 +65,21 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 			if (!construction_action_data)
 				return false;
 
-			int start_index = construction_action_data.m_PartIndex;
-			if (construction_action_data.GetConstructionPartsCount() > 0)
-			{
-				for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
-				{
-					if (BuildCheckSimpleClient(player, target, item))
-					{
-						return true;
-					}
-					else
-					{
-						construction_action_data.SetNextIndex();
-					}
-				}
-				construction_action_data.m_PartIndex = start_index;
-			}
-			return false;
+			return BuildCheckSimpleClient(player, target, item);
 		}
 		return true;
 	}
 
-	protected bool BuildCheckSimpleClient(PlayerBase player, ActionTarget target, ItemBase item, string partName = "")
+	protected bool BuildCheckSimpleClient(PlayerBase player, ActionTarget target, ItemBase item)
 	{
-		BaseBuildingBase base_building = BaseBuildingBase.Cast(target.GetObject());
+		BaseBuildingBase base_building = BaseBuildingBase.Cast( target.GetObject() );
 		if (base_building)
 		{
 			Construction construction = base_building.GetConstruction();
-			if (construction && BuildCondition(player, target, item))
+			if (construction && BuildCondition(player, target))
 			{
 				ConstructionActionData construction_action_data = player.GetConstructionActionData();
-				if (partName == "")
-					partName = construction_action_data.GetCurrentBuildPart().GetPartName();
+				string partName = construction_action_data.VPPAT_GetBuildPartAtIndex(m_VariantID).GetPartName();
 
 				if (player.IsPlacingLocal() || player.IsPlacingServer())
 					return false;
@@ -111,8 +90,8 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 		return false;
 	}
 
-	protected bool BuildCondition(PlayerBase player, ActionTarget target, ItemBase item)
-	{	
+	protected bool BuildCondition(PlayerBase player, ActionTarget target)
+	{
 		if (player && !player.IsLeaning())
 		{
 			Object targetObject = target.GetObject();
@@ -121,15 +100,8 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
 				ConstructionActionData construction_action_data = player.GetConstructionActionData();
 				construction_action_data.SetTarget( targetObject );
-				
-				string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
-				
-				if (GetGame().IsMultiplayer() || GetGame().IsServer())
-				{
-					construction_action_data.VPPAT_RefreshPartsToBuild(main_part_name, item);
-				}
-				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
-				return constrution_part != NULL;
+	
+				return (construction_action_data.VPPAT_GetBuildPartAtIndex(m_VariantID) != NULL);
 			}
 		}
 		return false;
@@ -177,18 +149,18 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 	//setup
 	override bool SetupAction( PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL )
 	{	
-		if (super.SetupAction( player, target, item, action_data, extra_data ))
+		if ( super.SetupAction( player, target, item, action_data, extra_data ) )
 		{
 			if (!GetGame().IsDedicatedServer())
 			{
 				ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
-				BuildPartActionData.Cast(action_data).m_PartType = construction_action_data.GetCurrentBuildPart().GetPartName();
+				BuildPartActionData.Cast(action_data).m_PartType = construction_action_data.VPPAT_GetBuildPartAtIndex(m_VariantID).GetPartName();
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
 	{
 		super.WriteToContext(ctx, action_data);
@@ -227,11 +199,5 @@ class ActionAdminBaseBuilder: ActionSingleUseBase
 		
 		string message = string.Format("Admin Built %1 on %2", partName, action_data.m_Target.GetObject().GetDisplayName());
 		return message;
-	}
-	
-	void SetNextIndex(ActionData action_data)
-	{
-		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
-		construction_action_data.SetNextIndex();
 	}
 };

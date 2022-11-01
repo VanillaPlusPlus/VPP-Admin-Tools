@@ -1,8 +1,14 @@
 class VPPUIManager extends PluginBase
 {
+	static ref array<Widget> WIDGET_PTRs = {}; //Only for draw-to-select feature, hold a weak ptr to widgets to search for.
+
 	private ref array<ref VPPScriptedMenu> M_SCRIPTED_UI_INSTANCES;
 	private bool m_LockCommandKeybinds;
-	
+	private bool m_IsDraggingSubWindow;
+	private bool m_IsSelectBoxDrawing;
+	Widget m_DrawCanvas;
+	CanvasWidget m_DrawCanvasWidget;
+
 	void VPPUIManager()
 	{
 		M_SCRIPTED_UI_INSTANCES = new array<ref VPPScriptedMenu>;
@@ -11,6 +17,8 @@ class VPPUIManager extends PluginBase
 	override void OnInit()
 	{
 		Print("Client: VPPUIManager Plugin Init!");
+		m_DrawCanvas = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PlayerESPCanvas);
+		m_DrawCanvasWidget = CanvasWidget.Cast(m_DrawCanvas.FindAnyWidget("CanvasWidget"));
 	}
 	
 	void ~VPPUIManager()
@@ -29,6 +37,9 @@ class VPPUIManager extends PluginBase
 				}
 			}
 		}
+
+		if (m_DrawCanvas)
+			m_DrawCanvas.Unlink();
 	}
 	
 	/*
@@ -133,6 +144,16 @@ class VPPUIManager extends PluginBase
 	{
 		return m_LockCommandKeybinds;
 	}
+
+	void SetDraggingWindow(bool state)
+	{
+		m_IsDraggingSubWindow = state;
+	}
+
+	bool IsDraggingWindow()
+	{
+		return m_IsDraggingSubWindow;
+	}
 	
 	bool IsTyping()
 	{
@@ -140,7 +161,7 @@ class VPPUIManager extends PluginBase
 		Widget underCursor = GetWidgetUnderCursor();
 		UIScriptedMenu chatInput = GetGame().GetUIManager().FindMenu(MENU_CHAT_INPUT);
 				
-		if (underCursor != null && (underCursor.GetTypeID() == EditBoxWidgetTypeID || underCursor.GetTypeID() == MultilineEditBoxWidgetTypeID))
+		if (underCursor && GetGame().GetUIManager().IsCursorVisible() && (underCursor.GetTypeID() == EditBoxWidgetTypeID || underCursor.GetTypeID() == MultilineEditBoxWidgetTypeID))
 			return true;
 		
 		if (chatInput != null && chatInput.IsVisible())
@@ -148,6 +169,74 @@ class VPPUIManager extends PluginBase
 		
 		return false;
 	}
+
+	void DrawSelectionBoxEx()
+	{
+		int x, y;
+        GetMousePos(x, y);
+        thread DrawSelectionBox(x, y);
+	}
+
+	private void DrawSelectionBox(int mouse_x, int mouse_y)
+    {
+        int current_x, current_y;
+        while ((GetGame().GetMouseState(MouseState.RIGHT) & MB_PRESSED_MASK) && !IsDraggingWindow() && !g_Game.IsLeftCtrlDown())
+        {
+            m_IsSelectBoxDrawing = true;
+            GetMousePos(current_x, current_y);
+            m_DrawCanvasWidget.Clear();
+
+            if (Math.AbsInt(mouse_x - current_x) > 15 || Math.AbsInt(mouse_y - current_y) > 15) 
+            {
+                m_DrawCanvasWidget.DrawLine(mouse_x, mouse_y, current_x, mouse_y, 1, ARGB(255,0,0,255));
+                m_DrawCanvasWidget.DrawLine(mouse_x, mouse_y, mouse_x, current_y, 1, ARGB(255,0,0,255));
+                m_DrawCanvasWidget.DrawLine(mouse_x, current_y, current_x, current_y, 1, ARGB(255,0,0,255));
+                m_DrawCanvasWidget.DrawLine(current_x, mouse_y, current_x, current_y, 1, ARGB(255,0,0,255));
+                
+                int x_avg = (mouse_x + current_x) / 2;
+                m_DrawCanvasWidget.DrawLine(x_avg, mouse_y, x_avg, current_y, current_x - mouse_x, ARGB(50,0,0,255)); 
+                
+                int total = VPPUIManager.WIDGET_PTRs.Count();
+                if (total > 0)
+                {
+                	for (int i = 0; i < total; ++i)
+                	{
+                		Widget w = VPPUIManager.WIDGET_PTRs[i];
+                		if (!w)
+                			continue;
+
+                		Class cbPtr;
+		            	w.GetUserData(cbPtr);
+		            	if (!cbPtr)
+		            		continue;
+
+                		float posX, posY;
+                        w.GetPos(posX, posY);
+
+                        //Check is within drawbox
+                        bool isInBounds = ((posX < Math.Max(mouse_x, current_x) && posX > Math.Min(mouse_x, current_x)) && (posY < Math.Max(mouse_y, current_y) && posY > Math.Min(mouse_y, current_y)));
+                        //Preform callback
+                        if (isInBounds)
+                        {
+                        	GetGame().GameScript.CallFunction(cbPtr, "OnWidgetDragSelect", NULL, true);
+                        }
+                        else if (!g_Game.IsLShiftHolding())
+                        {
+                        	GetGame().GameScript.CallFunction(cbPtr, "OnWidgetDragSelect", NULL, false);
+                        }
+                	}
+                }
+            }
+            Sleep(10);
+        }
+        m_IsSelectBoxDrawing = false;
+        m_DrawCanvasWidget.Clear();
+    }
+
+    bool IsSelectionBoxDrawing()
+    {
+    	return m_IsSelectBoxDrawing;
+    }
 };
 
 VPPUIManager GetVPPUIManager()
@@ -164,6 +253,8 @@ Create a new menu example: VPPAdminHud adminUI = VPPAdminHud.Cast(GetVPPUIManage
 //Menu Instance base type (use instead of UIScriptedMenu)
 class VPPScriptedMenu extends UIScriptedMenu
 {
+	private bool m_AllowSelectBoxDraw;
+
 	bool menuStatus; //True == showing
 	bool m_GameFocus;
 	bool m_toggleFocus;
@@ -185,7 +276,6 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (!menuStatus) return;
 		
 		Input input = GetGame().GetInput();
-
 		if (input.LocalDbl("UAFocusOnGame", false))
 		{
 			if (m_toggleFocus)
@@ -207,7 +297,23 @@ class VPPScriptedMenu extends UIScriptedMenu
 				SetFocus(null);
 				UnlockPlayerControl();
 			}
-		}else if (input.LocalRelease("UAFocusOnGame", false) && !m_toggleFocus && menuStatus){
+		}
+		else if (input.LocalRelease("UAFocusOnGame", false) && !m_toggleFocus && menuStatus)
+		{
+			LockPlayerControl();
+		}
+	}
+
+	//Toggle of control focus
+	void HandleGameFocus()
+	{
+		m_toggleFocus = !m_toggleFocus;
+
+		if (m_toggleFocus)
+		{
+			SetFocus(null);
+			UnlockPlayerControl();
+		}else{
 			LockPlayerControl();
 		}
 	}
@@ -272,8 +378,7 @@ class VPPScriptedMenu extends UIScriptedMenu
 	{
 		GetVPPUIManager().SetKeybindsStatus(true); //Lock shortcut keys
 		GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
-		GetUApi().ActivateExclude("VPPCamControls");
-		GetUApi().UpdateControls();
+		//GetGame().GetMission().AddActiveInputExcludes({"VPPCamControls"});
 		GetGame().GetUIManager().ShowUICursor( true );
 		GetGame().GetMission().GetHud().Show( false );
 		m_GameFocus = false;
@@ -284,15 +389,26 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (IsFreeCamActive())
 		{
 			GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
+			//GetGame().GetMission().RemoveActiveInputExcludes({"VPPCamControls"});
 		}
 		GetVPPUIManager().SetKeybindsStatus(false); //unlock shortcut keys
-		GetGame().GetMission().PlayerControlEnable(false);
+		GetGame().GetMission().PlayerControlEnable(true);
 		GetGame().GetInput().ResetGameFocus();
 		GetGame().GetUIManager().ShowUICursor( false );
 		GetGame().GetMission().GetHud().Show( true );
 		m_GameFocus = true;
 	}
 	
+	void AllowSelectBoxDraw(bool allow)
+    {
+    	m_AllowSelectBoxDraw = allow;
+    }
+
+    bool CanDrawSelectBox()
+    {
+    	return m_AllowSelectBoxDraw && !GetVPPUIManager().IsSelectionBoxDrawing();
+    }
+
 	/* Widget Events */
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
@@ -301,6 +417,17 @@ class VPPScriptedMenu extends UIScriptedMenu
 
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
 	{
+		if (button == MouseState.RIGHT)
+        {
+			if (!IsShowing() || !CanDrawSelectBox())
+				return false;
+
+            if (!GetVPPUIManager().IsDraggingWindow() && !GetVPPUIManager().IsTyping())
+            {
+                GetVPPUIManager().DrawSelectionBoxEx();
+                return true;
+            }
+        }
 		return super.OnMouseButtonDown( w, x, y, button);
 	}
 

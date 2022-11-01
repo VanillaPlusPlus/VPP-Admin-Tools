@@ -35,10 +35,10 @@ class MenuServerManager extends AdminHudSubMenu
 	void MenuServerManager()
 	{
 		/*RPCs*/
-		GetRPCManager().AddRPC( "RPC_MenuServerManager", "UpdateServerMonitor", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_MenuServerManager", "UpdateActivityMap", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_MenuServerManager", "SortScriptList", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_MenuServerManager", "HandleLogViewer", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_MenuServerManager", "UpdateServerMonitor", this, SingeplayerExecutionType.Client );
+		GetRPCManager().AddRPC( "RPC_MenuServerManager", "UpdateActivityMap", this, SingeplayerExecutionType.Client );
+		GetRPCManager().AddRPC( "RPC_MenuServerManager", "SortScriptList", this, SingeplayerExecutionType.Client );
+		GetRPCManager().AddRPC( "RPC_MenuServerManager", "HandleLogViewer", this, SingeplayerExecutionType.Client );
 		/*-----*/
 	}
 	

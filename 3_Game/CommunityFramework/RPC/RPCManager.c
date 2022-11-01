@@ -103,21 +103,75 @@ modded class RPCManager
 		}
 	}
 
+#ifdef DIAG_DEVELOPER
 	void VSendRPC(string modName, string funcName, Param params = NULL, bool guaranteed = false, PlayerIdentity sendToIdentity = NULL, Object sendToTarget = NULL)
 	{
-		string sendTo = "server";
+		bool isDiagOfflineClient = !GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer(); //Diag offline client 
+		bool isDiagServer 		 = GetGame().IsMultiplayer() && GetGame().IsDedicatedServer();   //Diag server
+		bool isDiagMPClient		 = GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer();  //Diag client connected to a MP session
 
-		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
+		auto sendData = new array<ref Param>;
+
+		//Diag client connected to a MP session
+		if (isDiagMPClient)
 		{
-			if ( sendToIdentity == NULL )
-			{
-				sendTo = "everyone";
-			}else 
-			{
-				sendTo = sendToIdentity.GetPlainId();
-			}
+			string pw = string.Empty;
+			EnScript.GetClassVar(GetGame().GetMission(), "m_VAdminPassword", 0, pw);
+			sendData.Insert(new Param3<string, string, string>(pw, modName, funcName));
+		}
+		else if (isDiagServer)
+		{
+			//Server in MP
+			sendData.Insert(new Param2<string,string>(modName, funcName));
 		}
 
+		sendData.Insert(params);
+
+		//Process locally on offline diag client
+		if (isDiagOfflineClient)
+		{
+			//"Pack data"
+			ScriptReadWriteContext ctx = new ScriptReadWriteContext;
+			ctx.GetWriteContext().Write(sendData);
+
+			map<string, ref RPCMetaWrapper> functions;
+			if (m_RPCActions.Find(modName, functions))
+			{
+				RPCMetaWrapper wrapper;
+				if (functions.Find(funcName, wrapper))
+				{
+					if (wrapper.GetInstance())
+					{
+						CallType callType = CallType.Server;
+
+						SingleplayerExecutionType execType = wrapper.GetSPExecutionType();
+						if (execType == SingleplayerExecutionType.Server)
+							callType == CallType.Client;
+
+						auto functionCallData = new Param4<CallType, ParamsReadContext, PlayerIdentity, Object>(callType, ctx.GetReadContext(), NULL, sendToTarget);
+						GetGame().GameScript.CallFunctionParams(wrapper.GetInstance(), funcName, NULL, functionCallData);
+					}
+				}
+				else
+				{
+					Error("tried sending " + modName + "::<" + funcName + "> which does not seem to exist!");
+				}
+			}
+			else
+			{
+				Error("tried sending <" + modName + ">::" + funcName + " which does not seem to exist!");
+			}
+		}
+		
+		if (isDiagServer || isDiagMPClient)
+		{
+			GetGame().RPC(sendToTarget, VPPAT_FRAMEWORK_RPC_ID, sendData, guaranteed, sendToIdentity);
+		}
+	}
+#else
+	//Regular server/client operation
+	void VSendRPC(string modName, string funcName, Param params = NULL, bool guaranteed = false, PlayerIdentity sendToIdentity = NULL, Object sendToTarget = NULL)
+	{
 		auto sendData = new array< ref Param >;
 		if (GetGame().IsClient())
 		{
@@ -147,6 +201,7 @@ modded class RPCManager
 		}
 		GetGame().RPC( sendToTarget, VPPAT_FRAMEWORK_RPC_ID, sendData, guaranteed, sendToIdentity );
 	}
+#endif
 
 	private void WriteToLogs(string data)
 	{

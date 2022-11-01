@@ -2,12 +2,14 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 {
 	protected bool         m_IsVisible;
 	protected string       m_layoutPath;
-	ref Widget   	  	   M_SUB_WIDGET;
+	Widget   	  	   	   M_SUB_WIDGET;
 	protected ButtonWidget m_closeButton;
 	protected Widget       m_TitlePanel;
 	protected Widget       m_RootWidget;
 	protected float        m_posX, m_posY;
-	
+	protected float 	   m_SizeW, m_SizeH;
+	protected bool 		   m_WindowExpanded;
+
 	void AdminHudSubMenu()
 	{
 	}
@@ -27,6 +29,14 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	void OnAdminHudOpened()
 	{
 	}
+
+	void OnMenuShow()
+	{
+	}
+
+	void OnMenuHide()
+	{
+	}
 	
 	/*
 		Update is always called even if window is hidden.
@@ -38,6 +48,11 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	void OnWidgetScriptInit(Widget w)
 	{
 		m_RootWidget.SetHandler(this);
+	}
+
+	VPPAdminHud GetToolbarMenu()
+	{
+		return VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
 	}
 	
 	override bool OnUpdate(Widget w)
@@ -58,7 +73,8 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 			m_posY = y - m_posY;
 			m_TitlePanel.SetPos( 0, 0, true );
 			m_TitlePanel.SetPos( 0, 0, false );
-			
+			GetVPPUIManager().SetDraggingWindow(true);
+
 			return false;
 		}
 		return true;
@@ -69,6 +85,7 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		if ( w == m_TitlePanel )
 		{
 			SetWindowPos(x - m_posX, y - m_posY);
+			GetVPPUIManager().SetDraggingWindow(true);
 			return false;
 		}
 		return true;
@@ -79,6 +96,7 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		if ( w == m_TitlePanel )
 		{
 			SetWindowPos(x - m_posX, y - m_posY);
+			GetVPPUIManager().SetDraggingWindow(false);
 			return false;
 		}
 		return true;
@@ -92,7 +110,9 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 	
 	protected Widget CreateWidgets(string path)
 	{
-		return GetGame().GetWorkspace().CreateWidgets( path, m_RootWidget.FindAnyWidget("Panel_Content"));
+		Widget w = GetGame().GetWorkspace().CreateWidgets(path, m_RootWidget.FindAnyWidget("Panel_Content"));
+		w.GetSize(m_SizeW, m_SizeH);
+		return w;
 	}
 	
 	bool IsSubMenuVisible()
@@ -107,6 +127,7 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		M_SUB_WIDGET.Update();
 		VPPAdminHud rootHud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
 		rootHud.SetWindowPriorty(this);
+		OnMenuShow();
 	}
 	
 	void HideSubMenu()
@@ -114,12 +135,29 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 		m_IsVisible = false;
 		M_SUB_WIDGET.Show(false);
 		M_SUB_WIDGET.Update();
+		OnMenuHide();
 	}
 	
 	//TEMP: use it to hide scrollbars and map widgets when the window is not in focus. Stupid dayz bug
 	void HideBrokenWidgets(bool state)
 	{
 		//true == hide scroll bars etc...
+	}
+
+	void ResizeWindow(bool expand)
+	{
+		m_WindowExpanded = expand;
+		if (m_WindowExpanded)
+		{
+			//Expand
+			M_SUB_WIDGET.SetSize(0.848, 1.0, true);
+			M_SUB_WIDGET.SetPos(0.0, 0.0, true);
+		}
+		else
+		{
+			//Original 
+			M_SUB_WIDGET.SetSize(m_SizeW, m_SizeH, true);
+		}
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -140,5 +178,18 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 			return true;
 		}
 		return false;
+	}
+
+	override bool OnDoubleClick(Widget w, int x, int y, int button)
+	{
+		if (button == MouseState.LEFT)
+		{
+			if (w == m_TitlePanel)
+			{
+				ResizeWindow(!m_WindowExpanded);
+				return true;
+			}
+		}
+		return super.OnDoubleClick(w, x, y, button);
 	}
 };

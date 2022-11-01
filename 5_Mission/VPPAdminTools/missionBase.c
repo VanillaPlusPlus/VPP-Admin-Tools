@@ -11,10 +11,6 @@ modded class MissionBase
 				case VPP_ADMIN_HUD:
                 menu = new VPPAdminHud;
                 break;
-
-                case DRAG_TEST:
-                menu = new DragSelect;
-                break;
             }
             if (menu)
             {

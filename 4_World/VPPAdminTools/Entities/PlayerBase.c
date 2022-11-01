@@ -1,3 +1,9 @@
+enum InvisToggleType
+{
+	PLAYER = 1,
+	SCRIPT
+};
+
 modded class PlayerBase
 {
 	private bool    hasGodmode;
@@ -6,11 +12,14 @@ modded class PlayerBase
 	bool			m_isInvisible;
 	float           m_VPlayerScale;
 	bool    		m_VScalePlayer;
+	vector 			m_VPlayerPosCache;
 	private bool    m_VfreezePlayer;
 	private string  m_VPlayerName;
 	private string  m_VPlayerSteamId;
 	private string  m_VPlayerHashedId;
 	private int     m_VPlayerSessionId;
+
+	private InvisToggleType m_invisType;
 
 	override void Init()
 	{
@@ -19,7 +28,7 @@ modded class PlayerBase
 		RegisterNetSyncVariableBool("m_VfreezePlayer");
 		RegisterNetSyncVariableBool("m_VScalePlayer");
 		RegisterNetSyncVariableFloat("m_VPlayerScale", 0.01, 100.0, 3);
-		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingleplayerExecutionType.Client );
 	}
 
 	void ~PlayerBase()
@@ -58,8 +67,7 @@ modded class PlayerBase
 	override void SetActions(out TInputActionMap InputActionMap)
 	{
 		super.SetActions(InputActionMap);
-		AddAction(ActionAdminBuildPartSwitch);
-		AddAction(ActionAdminBaseBuilder);
+		AddAction(ActionAdminBaseBuilder, InputActionMap);
 	}
 
 	private void ResetEntityName()
@@ -112,6 +120,24 @@ modded class PlayerBase
 		VPPFreezePlayer(m_VfreezePlayer);
 	}
 
+	/*
+	override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
+	{
+		super.OnRPC(sender, rpc_type, ctx);
+		if (GetGame().IsDedicatedServer() && sender && rpc_type == VPPATRPCs.RPC_SYNC_FREECAM_POS)
+		{
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera"))
+				return;
+
+			vector camPos;
+			if (ctx.Read(camPos))
+			{
+				SetPosition(camPos);
+			}
+		}
+	}
+	*/
+
 	void VPPSetScaleValue(float scale)
 	{
 		if (GetGame().IsServer())
@@ -125,16 +151,40 @@ modded class PlayerBase
 		}
 	}
 	
-	void VPPSetInvisibility(bool state)
+	void VPPSetInvisibility(bool state, InvisToggleType toggleType = InvisToggleType.PLAYER)
 	{
 		if (GetGame().IsServer())
 		{
+			m_invisType = toggleType;
+			/*
+			if (!state)
+			{
+				//trigger update network bubble for clients
+				SetAllowDamage(false);
+				dBodyEnableGravity(this, false);
+				vector realPos = GetPosition();
+				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.PosRelocation, 1000, false, realPos);
+				SetPosition("0 1200 0");
+			}
+			*/
+
 			m_isInvisible = state;
 			SetSynchDirty();
 			ScriptRPC rpc = new ScriptRPC();
 			rpc.Write(state);
 			rpc.Send(this, VPPATRPCs.RPC_SYNC_INVISIBILITY, true, NULL);
 		}
+	}
+
+	void PosRelocation(vector pos)
+	{
+		if (!GetGame().IsDedicatedServer() || !GetGame().IsServer())
+			return;
+
+		SetPosition(pos);
+		dBodyEnableGravity(this, true);
+		if (!GodModeStatus())
+			SetAllowDamage(true);
 	}
 	
 	void setGodMode(bool trigger)
@@ -172,6 +222,11 @@ modded class PlayerBase
 		return hasGodmode;
 	}
 	
+	InvisToggleType InvisibilityToggleType()
+	{
+		return m_invisType;
+	}
+
 	bool InvisibilityStatus()
 	{
 		return m_isInvisible;

@@ -3,7 +3,6 @@ class BuildingEntry : VPPPlayerTemplate
     private TextWidget 	   m_BuildingDisplayNameWidget;
 	private CheckBoxWidget m_StatusCheckBox;
 	private ButtonWidget   m_DeleteItem;
-	private ButtonWidget   m_btnSelect;
 	private ButtonWidget   m_btnEditItem;
 	private ButtonWidget   m_btnPhysicsDrop;
     private string 		   m_BuildingDisplayName;
@@ -28,7 +27,6 @@ class BuildingEntry : VPPPlayerTemplate
 		
 		m_DeleteItem  = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
 		m_btnEditItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
-		m_btnSelect   = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnSelect"));
 		m_btnPhysicsDrop = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnPhysicsDrop"));
 		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2"+displayName+"#VSTR_ESP_DEL_CONFIRM_3");
 		GetVPPUIManager().HookConfirmationDialog(m_btnPhysicsDrop, rootWidget,this,"PhysicsDrop", DIAGTYPE.DIAG_YESNO, "#VSTR_ALERT_ENABLE_PHYSICS", "#VSTR_TOOLTIP_PHYSICS");
@@ -43,16 +41,21 @@ class BuildingEntry : VPPPlayerTemplate
 		{
 			placedObject = localObj;
 			m_TrackerWidget = new BuildingTracker(rootWidget, displayName, localObj, true);
-		}else{
-		//Find object using its network ID
+		}
+		else
+		{
+			//Find object using its network ID
 			TStringArray strs = new TStringArray;
 			objectID.Split( ",",strs );
 			Object trackerObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
-			if (trackerObj != null){
+			if (trackerObj != null)
+			{
 				placedObject = trackerObj;
 				m_TrackerWidget = new BuildingTracker(rootWidget, displayName, trackerObj, true);
+				m_SpawnedBuilding.SetRef(trackerObj);
 			}
 		}
+		m_TrackerWidget.OnTrackerSelected.Insert(this.OnTrackerSelecet);
 		
 		//Set to show tracker by defualt 
 		m_StatusCheckBox.SetColor(ARGB(255,0,255,0));
@@ -65,6 +68,23 @@ class BuildingEntry : VPPPlayerTemplate
         	m_EntryBox.Unlink();
     }
 	
+	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
+	{
+		if (m_TrackerWidget == null)
+			return false;
+
+		if (w == m_EntryBox.FindAnyWidget("PnlBg") || w == m_EntryBox.FindAnyWidget("entry_content"))
+		{
+			MenuObjectManager objMenu = MenuObjectManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuObjectManager));
+			if (objMenu)
+			{
+				objMenu.SetSelectedObject(placedObject, false);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
 		MenuObjectManager objMenu;
@@ -78,15 +98,6 @@ class BuildingEntry : VPPPlayerTemplate
 		
 		if (m_TrackerWidget == null) return false;
 		
-		if (w == m_btnSelect)
-		{
-			objMenu = MenuObjectManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuObjectManager));
-			if (objMenu)
-			{
-				objMenu.SetSelectedObject(placedObject);
-			}
-		}
-		
 		if (w == m_StatusCheckBox)
 		{
 			if (m_StatusCheckBox.IsChecked()){
@@ -99,6 +110,17 @@ class BuildingEntry : VPPPlayerTemplate
 		}
 		
 		return false;
+	}
+
+	void OnTrackerSelecet(bool state)
+	{
+		int color;
+		if (state)
+			color = ARGB(255,94,94,248);
+		else
+			color = ARGB(140,255,255,255);
+
+		m_EntryBox.SetColor(color);
 	}
 	
 	void DeleteItem(int result)

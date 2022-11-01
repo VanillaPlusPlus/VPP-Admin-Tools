@@ -2,6 +2,7 @@ class WebHookMessageBase
 {
 	protected ref array<ref WbEmbed> embeds;
 	ref JsonSerializer serializer;
+	string content;
 
 	void WebHookMessageBase()
 	{
@@ -20,11 +21,24 @@ class WebHookMessageBase
 		return null;
 	}
 
-	string BuildMessage()
+	void SetContent(string str = string.Empty)
+	{
+		content = str;
+	}
+
+	string GetContent()
+	{
+		return content;
+	}
+
+	string BuildMessage(bool simplified = false)
 	{
 		string result = "";
-		serializer.WriteToString( embeds, false, result );
-		return "{" + "\"embeds\": " + result + "}";
+		serializer.WriteToString(embeds, true, result);
+		if (!simplified)
+			return "{" + "\"embeds\": " + result + "}";
+
+		return "{ \"content\": \""+ GetContent() + "\", \"embeds\": null, \"username\": \"VPPAdminTools\", \"avatar_url\": \"https://i.imgur.com/oSEhCJV.png\", \"attachments\": [] }";
 	}
 };
 
@@ -95,7 +109,7 @@ class WbField
 class WbAuthor
 {
 	string name     = "VPPAdminTools";
-	string url      = "https://steamcommunity.com/sharedfiles/filedetails/?id=1708571078";
+	string url      = "https://steamcommunity.com/sharedfiles/filedetails/?id=1828439124";
 	string icon_url = "https://i.imgur.com/oSEhCJV.png";
 	
 	void SetName(string n)

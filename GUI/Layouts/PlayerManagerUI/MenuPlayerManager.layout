@@ -158,6 +158,35 @@ FrameWidgetClass rootFrame {
           }
          }
         }
+        ButtonWidgetClass ActionFreezePlayer {
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Editor
+         font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt11 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_FREEZE_PLAYER"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
         ButtonWidgetClass ActionTpToMe {
          size 0.4 0.19
          halign center_ref
@@ -171,6 +200,7 @@ FrameWidgetClass rootFrame {
          {
           TextWidgetClass actiontxt1 {
            ignorepointer 1
+           position 0 0
            size 1 1
            halign center_ref
            valign center_ref
@@ -179,36 +209,6 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_TP_TO_ME"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 16
-           "text halign" center
-           "text valign" center
-          }
-         }
-        }
-        ButtonWidgetClass ActionSendMessage {
-         size 0.4 0.19
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         scriptclass "ConfirmationEventHandler"
-         style Editor
-         font "gui/fonts/MetronLight14"
-         {
-          TextWidgetClass actiontxt2 {
-           ignorepointer 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_SEND_MESSAGE"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
            "exact text size" 16
@@ -238,6 +238,36 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_TP_ME_TO"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass ActionReturnPlayer {
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt13 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_RETURN_PLAYERS"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
            "exact text size" 16
@@ -427,6 +457,36 @@ FrameWidgetClass rootFrame {
           }
          }
         }
+        ButtonWidgetClass ActionSendMessage {
+         size 0.4 0.19
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "ConfirmationEventHandler"
+         style Editor
+         font "gui/fonts/MetronLight14"
+         {
+          TextWidgetClass actiontxt2 {
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           text "#VSTR_LBL_SEND_MESSAGE"
+           font "gui/fonts/sdf_MetronLight24"
+           "exact text" 1
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
         ButtonWidgetClass ActionInvisible {
          size 0.4 0.19
          halign center_ref
@@ -448,35 +508,6 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_SET_INVIS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 16
-           "text halign" center
-           "text valign" center
-          }
-         }
-        }
-        ButtonWidgetClass ActionFreezePlayer {
-         size 0.4 0.19
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         font "gui/fonts/MetronLight14"
-         {
-          TextWidgetClass actiontxt11 {
-           ignorepointer 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_FREEZE_PLAYER"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 1
            "exact text size" 16
@@ -623,8 +654,8 @@ FrameWidgetClass rootFrame {
      "no focus" 0
      text "#VSTR_SEARCH"
      "Use default text" 1
-     "exact text" 1
-     font "gui/fonts/MetronLight16"
+     "exact text" 0
+     font "gui/fonts/MetronLight28"
     }
     PanelWidgetClass PanelSliders {
      ignorepointer 1
@@ -732,6 +763,7 @@ FrameWidgetClass rootFrame {
          style Default
          vertical 0
          flipped 0
+         "fill in" 1
          {
           TextWidgetClass SliderHealthDisplay {
            ignorepointer 1
@@ -785,6 +817,7 @@ FrameWidgetClass rootFrame {
          style Default
          maximum 5000
          current 2500
+         "fill in" 1
          {
           TextWidgetClass SliderBloodDisplay {
            clipchildren 1
@@ -838,6 +871,7 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "SliderEventHandler"
          style Default
+         "fill in" 1
          {
           TextWidgetClass SliderShockDisplay {
            ignorepointer 1
@@ -891,6 +925,7 @@ FrameWidgetClass rootFrame {
          style Default
          maximum 5000
          current 2500
+         "fill in" 1
          {
           TextWidgetClass SliderWaterDisplay {
            ignorepointer 1
@@ -947,6 +982,7 @@ FrameWidgetClass rootFrame {
          maximum 20000
          step 10
          current 10000
+         "fill in" 1
          {
           TextWidgetClass SliderEnergyDisplay {
            ignorepointer 1
@@ -1204,7 +1240,7 @@ FrameWidgetClass rootFrame {
         }
         TextWidgetClass txtPlayerCount {
          ignorepointer 1
-         position 0.07 0
+         position 0.09 0
          size 0.2 1
          valign center_ref
          hexactpos 0
@@ -1212,10 +1248,12 @@ FrameWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Bold
-         text "0"
+         text "2/155 (99 Queued)"
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
-         "exact text size" 16
+         "exact text size" 12
+         "size to text h" 1
+         "size to text v" 1
          "text halign" center
          "text valign" center
         }
@@ -1259,6 +1297,29 @@ FrameWidgetClass rootFrame {
            "text valign" center
           }
          }
+        }
+        TextWidgetClass txtPlayerCountSelected {
+         visible 0
+         ignorepointer 1
+         color 0 0.5882 1 1
+         position 0.3 0
+         size 0.2 1
+         halign right_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Bold
+         text "[999]"
+         font "gui/fonts/sdf_MetronLight24"
+         "text color" 0 0.0078 1 1
+         "exact text" 1
+         "exact text size" 12
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
         }
        }
       }

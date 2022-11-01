@@ -21,7 +21,13 @@ modded class PluginManager
 			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
 		}
 
-		if(GetGame().IsDedicatedServer())
+#ifndef SERVER
+	#ifdef DIAG_DEVELOPER //offline client Diag only
+		if ((GetGame().IsMultiplayer() && GetGame().IsDedicatedServer()) || (!GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer()))
+	#endif
+#else
+		if (GetGame().IsDedicatedServer()) //Otherwise server only
+#endif
 		{
 			RegisterPlugin("XMLEditor", 			 		 false, 	true);
 			RegisterPlugin("PluginFileHandler", 			 false, 	true);
@@ -39,6 +45,7 @@ modded class PluginManager
 			RegisterPlugin("VPPItemManager",		         false,		true);
 			RegisterPlugin("VPPESPTools",		             false,		true);
 			RegisterPlugin("BuildingSetManager", 			 false, 	true);
+			RegisterPlugin("SteamAPIManager", 			 	 false, 	true);
 
 			MakeDirectory("$profile:VPPAdminTools");
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins");

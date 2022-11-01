@@ -45,7 +45,7 @@ class MenuItemManager extends AdminHudSubMenu
 		m_PresetItemData = new array<ref PresetItemData>;
 		
 		/* RPCs */
-		GetRPCManager().AddRPC("RPC_MenuItemManager", "HandleData", this);
+		GetRPCManager().AddRPC("RPC_MenuItemManager", "HandleData", this, SingleplayerExecutionType.Client);
 		//-------
 	}
 	
@@ -62,7 +62,7 @@ class MenuItemManager extends AdminHudSubMenu
 		
 		M_SUB_WIDGET  = CreateWidgets(VPPATUIConstants.MenuItemManager);
 		M_SUB_WIDGET.SetHandler(this);
-		m_TitlePanel  = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "Header") );
+		m_TitlePanel  = Widget.Cast(M_SUB_WIDGET.FindAnyWidget("Header"));
 		m_closeButton = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnClose") );
 		
 		m_Main		  	 = M_SUB_WIDGET.FindAnyWidget( "Main");
@@ -222,7 +222,7 @@ class MenuItemManager extends AdminHudSubMenu
 	{
 		if (w == m_ItemListBox)
 		{
-			if( button == MouseState.LEFT)
+			if(button == MouseState.LEFT)
 			{
 				string typeName;
 				m_ItemListBox.GetItemText(m_ItemListBox.GetSelectedRow(),0,typeName);
@@ -242,7 +242,7 @@ class MenuItemManager extends AdminHudSubMenu
 			}
 			return true;
 		}
-		return false;
+		return super.OnDoubleClick(w, x, y, button);
 	}
 	
 	void DeletePreset(string presetName)

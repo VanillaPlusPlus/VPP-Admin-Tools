@@ -44,6 +44,7 @@ GridSpacerWidgetClass SpacerGrid {
    style Default
    vertical 0
    flipped 0
+   "fill in" 1
   }
   ImageWidgetClass IconBlood {
    position 0.52 116.537
@@ -72,6 +73,7 @@ GridSpacerWidgetClass SpacerGrid {
    style Default
    maximum 5000
    current 2500
+   "fill in" 1
   }
  }
 }

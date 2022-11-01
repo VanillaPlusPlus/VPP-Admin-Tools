@@ -406,7 +406,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        "no focus" 0
-       text "3"
+       text "1"
        "Use default text" 1
        "exact text" 0
        font "gui/fonts/Metron"
@@ -509,6 +509,7 @@ FrameWidgetClass rootFrame {
        current 500
        vertical 0
        flipped 0
+       "fill in" 1
        {
         TextWidgetClass SliderRadiusDisplay {
          ignorepointer 1

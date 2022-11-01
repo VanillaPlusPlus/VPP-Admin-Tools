@@ -8,6 +8,7 @@ class MenuWebHooks extends AdminHudSubMenu
 	private CheckBoxWidget 			  m_admHitLog;
 	private CheckBoxWidget			  m_joinLeaveLog;
 	private CheckBoxWidget 			  m_serverStatusLog;
+	private CheckBoxWidget 			  m_simplifiedLogs;
 	private ButtonWidget 			  m_btnSaveChanges;
 	private ButtonWidget 			  m_btnCreateWebhook;
 	private XComboBoxWidget 		  m_ComboTimer;
@@ -23,7 +24,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_webHookEntries = new array<ref WebHookEntry>;
 		m_webHooksData   = new array<ref WebHook>;
 		//------RPCs-------
-		GetRPCManager().AddRPC( "RPC_MenuWebHooks", "PopulateList", this);
+		GetRPCManager().AddRPC( "RPC_MenuWebHooks", "PopulateList", this, SingleplayerExecutionType.Client);
 		//-----------------
 	}
 
@@ -44,6 +45,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_joinLeaveLog = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "joinLeaveLog") );
 		m_btnSaveChanges = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges") );
 		m_serverStatusLog = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "serverStatusLog") );
+		m_simplifiedLogs  = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "simplifiedLogs") );
 		m_ComboTimer       = XComboBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboTimer") );
 		GetVPPUIManager().HookConfirmationDialog(m_btnSaveChanges, M_SUB_WIDGET, this, "SaveEdits", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_SAVE_CHANGE", "#VSTR_TOOLTIP_SAVE_CHANGE");
 		
@@ -136,6 +138,7 @@ class MenuWebHooks extends AdminHudSubMenu
 				newWebHook.m_admHitLog 		  = m_admHitLog.IsChecked();
 				newWebHook.m_joinLeaveLog 	  = m_joinLeaveLog.IsChecked();
 				newWebHook.m_serverStatusLog  = m_serverStatusLog.IsChecked();
+				newWebHook.m_simplifiedMessages   = m_simplifiedLogs.IsChecked();
 				newWebHook.SetServerStatsInterval(GetSelectedThreshold());
 				GetRPCManager().VSendRPC("RPC_WebHooksManager", "CreateWebHooks", new Param1<ref WebHook>(newWebHook), true);
 				createMode = false;
@@ -154,6 +157,7 @@ class MenuWebHooks extends AdminHudSubMenu
 					data.m_admHitLog 		= m_admHitLog.IsChecked();
 					data.m_joinLeaveLog 	= m_joinLeaveLog.IsChecked();
 					data.m_serverStatusLog  = m_serverStatusLog.IsChecked();
+					data.m_simplifiedMessages   = m_simplifiedLogs.IsChecked();
 					data.SetServerStatsInterval(GetSelectedThreshold());
 					GetRPCManager().VSendRPC("RPC_WebHooksManager", "EditWebHooks", new Param3<int,string,ref WebHook>(m_selectedIndex, oldName, data), true);
 				}
@@ -191,6 +195,7 @@ class MenuWebHooks extends AdminHudSubMenu
 			m_admHitLog.SetChecked(dataClass.m_admHitLog);
 			m_joinLeaveLog.SetChecked(dataClass.m_joinLeaveLog);
 			m_serverStatusLog.SetChecked(dataClass.m_serverStatusLog);
+			m_simplifiedLogs.SetChecked(dataClass.m_simplifiedMessages);
 
 			if ( dataClass.m_serverStatsInterval == VPPWebHookServerStatsTime.ONE_MINUTE)
 				m_ComboTimer.SetCurrentItem(0);
@@ -231,6 +236,7 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_admHitLog.SetChecked( false );
 		m_joinLeaveLog.SetChecked( false );
 		m_serverStatusLog.SetChecked( false );
+		m_simplifiedLogs.SetChecked( false );
 		m_urlText.SetText("");
 		m_webHookName.SetText("");
 		m_webHookEntries = new array<ref WebHookEntry>;

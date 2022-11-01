@@ -62,7 +62,7 @@ WindowWidgetClass rootFrame {
       PanelWidgetClass info_title {
        ignorepointer 1
        color 0 0 0 1
-       position -0 0
+       position 0 0
        size 0.9996 0.06329
        halign center_ref
        hexactpos 0

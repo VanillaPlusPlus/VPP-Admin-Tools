@@ -91,7 +91,6 @@ FrameWidgetClass diagFrame {
        "size to text v" 0
        "text halign" center
        wrap 1
-       "condense whitespace" 1
       }
       GridSpacerWidgetClass ButtonsGrid {
        visible 1

@@ -67,8 +67,8 @@ class MenuWeatherManager extends AdminHudSubMenu
 		timePresetNames = new array<string>;
 		weatherPresetNames = new array<string>;
 		
-		GetRPCManager().AddRPC("RPC_WeatherUI", "HandleTimeData", this, SingleplayerExecutionType.Server);
-		GetRPCManager().AddRPC("RPC_WeatherUI", "HandleWeatherData", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WeatherUI", "HandleTimeData", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_WeatherUI", "HandleWeatherData", this, SingleplayerExecutionType.Client);
 	}
 	
 	override void OnCreate(Widget RootW)

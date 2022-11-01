@@ -10,6 +10,15 @@ class AdminActivityMessage: WebHookMessageBase
 		m_msg  = "**" + msg + "**";
 		m_name = name;
 		AddEmbed();
+		SetContent();
+	}
+
+	/*
+	* We use this for simplified versions of the webhook messages (without embeds)
+	*/
+	override void SetContent(string str = string.Empty)
+	{
+		content = string.Format("**Admin Activity:** [%1](<https://steamcommunity.com/profiles/%2>) Details: %3", m_name, m_uid, m_msg);
 	}
 
 	override WbEmbed AddEmbed()

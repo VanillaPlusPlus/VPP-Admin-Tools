@@ -20,10 +20,10 @@ modded class PluginAdminLog
 		
 		if ( !identity )
 		{
-			return string.Format("Player [ Unknown/Dead Entity ]\nID: [ Unknown ]\nPosition: [ %1,%2,%3 ]\n", PosArray[0], PosArray[2], PosArray[1]);
+			return string.Format("Player (Unknown/Dead Entity)\nID: (Unknown)\nPosition: <%1, %2, %3>\n", PosArray[0], PosArray[2], PosArray[1]);
 		}
 		
-		return string.Format("Player: [ %1 ]\nID: [ %2 ]\nPosition: [ %3,%4,%5 ]\n",  identity.VPlayerGetName(), identity.VPlayerGetSteamId(), PosArray[0], PosArray[2], PosArray[1]);
+		return string.Format("Player: (%1)\nID: (%2)\nPosition: <%3, %4, %5>\n",  identity.VPlayerGetName(), identity.VPlayerGetSteamId(), PosArray[0], PosArray[2], PosArray[1]);
 	}
 
 	string VPPGetHitMessage( TotalDamageResult damageResult, int component, string zone, string ammo) 
@@ -31,11 +31,11 @@ modded class PluginAdminLog
 		if ( damageResult )	
 		{
 			float dmg = damageResult.GetHighestDamage("Health");
-			return " into Zone: [" + zone + "] Component: [" + component.ToString() + "] Damage Dealt: [" + dmg.ToString() + "] Damage Type: [" + ammo + "] ";
+			return " into Zone: (" + zone + ") Component: (" + component.ToString() + ") Damage Dealt: (" + dmg.ToString() + ") Damage Type: (" + ammo + ") ";
 		}
 		else
 		{
-			return " into Block: [" + component.ToString() + "] 0 damage dealt ";
+			return " into Block: (" + component.ToString() + ") 0 damage dealt ";
 		}
 	}
 
@@ -43,7 +43,7 @@ modded class PluginAdminLog
 	{
 		if ( player && source )		
 		{
-			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition() , player ) + " HP: [" + player.GetHealth().ToString() + "] \n";
+			string PlayerPrefix = VPPGetPlayerPrefix( player.GetPosition() , player ) + " HP: (" + player.GetHealth().ToString() + ") \n";
 			string HitMessage   = VPPGetHitMessage( damageResult, component, dmgZone, ammo );
 			HitDamageMessage rpt = new HitDamageMessage();
 			int srcId = -1;
@@ -64,9 +64,9 @@ modded class PluginAdminLog
 						rpt.sourceId   = "_obj";
 						rpt.details    = PlayerPrefix + " hit by " + source.GetDisplayName() + HitMessage;
 					}			
-					else if ( source.IsPlayer() )				// Fists
+					else if ( source.IsPlayer() || (source.GetHierarchyRootPlayer() && source.GetHierarchyRootPlayer().IsPlayer()) )		// Fists, includes bayonets and weapon bitch slaps 
 					{
-						m_Source = PlayerBase.Cast( source );
+						m_Source = PlayerBase.Cast(source.GetHierarchyRootPlayer());
 						m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
 						
 						rpt.sourceName = m_Source.VPlayerGetName();
@@ -74,9 +74,9 @@ modded class PluginAdminLog
 						rpt.details    = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage;
 					}
 					else if ( source.IsMeleeWeapon() )			// Melee weapons
-					{				
+					{
 						m_ItemInHands = source.GetDisplayName();		
-						m_Source = PlayerBase.Cast( source.GetHierarchyParent() );
+						m_Source = PlayerBase.Cast( source.GetHierarchyRootPlayer() );
 						m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
 
 						rpt.sourceName = m_Source.VPlayerGetName();
@@ -104,20 +104,20 @@ modded class PluginAdminLog
 					if ( source.IsWeapon() )
 					{
 						m_ItemInHands = source.GetDisplayName();				
-						m_Source = PlayerBase.Cast( source.GetHierarchyParent() );
+						m_Source = PlayerBase.Cast(source.GetHierarchyRootPlayer());
 						m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
 						m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
 						
 						rpt.sourceName = m_Source.VPlayerGetName();
 						rpt.sourceId   = m_Source.VPlayerGetSteamId();
 
-						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with [" + m_ItemInHands + "] from [" + m_Distance + "] meters ";
+						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with ("+ m_ItemInHands +") from (" + m_Distance + ") meters ";
 					}
 					else 
 					{
 						rpt.sourceName = source.GetType();
 						rpt.sourceId   = "_obj";
-						rpt.details = PlayerPrefix + " hit by [" + source.GetType() + "] " + HitMessage;		
+						rpt.details = PlayerPrefix + " hit by (" + source.GetType() + ") " + HitMessage;		
 					}
 					break;
 				
@@ -130,19 +130,19 @@ modded class PluginAdminLog
 					m_Source = PlayerBase.Cast(GetGame().GetObjectByNetworkId(low, high));
 
 					if (m_Source)
-						rpt.details = PlayerPrefix + " hit by explosion [" + ammo + "]\n " + "Caused by " + VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
+						rpt.details = PlayerPrefix + " hit by explosion (" + ammo + ")\n " + "Caused by " + VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
 					else
-						rpt.details = PlayerPrefix + " hit by explosion [" + ammo + "] ";
+						rpt.details = PlayerPrefix + " hit by explosion (" + ammo + ") ";
 					break;
 						
 				case DT_STUN: 		// unused atm
-					rpt.details = PlayerPrefix + " stunned by [" + ammo + "] ";
+					rpt.details = PlayerPrefix + " stunned by (" + ammo + ") ";
 					break;
 						
 				case DT_CUSTOM:		// Others (Vehicle hit, fall, fireplace, barbed wire ...)
 					if ( ammo == "FallDamage" )			// Fall
 					{
-						rpt.details = PlayerPrefix + " hit by [" + ammo + "]";
+						rpt.details = PlayerPrefix + " hit by (" + ammo + ")";
 						rpt.sourceName = player.VPlayerGetName();
 						rpt.sourceId   = player.VPlayerGetSteamId();
 					}
@@ -153,22 +153,23 @@ modded class PluginAdminLog
 						{
 							rpt.sourceName = parent.GetType();
 							rpt.sourceId   = "_obj";
-							rpt.details = PlayerPrefix + " hit by [" + parent.GetType() + "] with [" + ammo + "] ";
+							rpt.details = PlayerPrefix + " hit by (" + parent.GetType() + ") with (" + ammo + ") ";
 						}
 					}
 					else
 					{
 						rpt.sourceName = source.GetType();
 						rpt.sourceId   = "_obj";
-						rpt.details = PlayerPrefix + " hit by [" + source.GetType() + "] with [" + ammo + "] ";
+						rpt.details = PlayerPrefix + " hit by (" + source.GetType() + ") with (" + ammo + ") ";
 					}
 					break;
 											
 				default:
-					rpt.details ="WARNING: PlayerHitBy Unknown damageType: [" + ammo + "]";
+					rpt.details ="WARNING: PlayerHitBy Unknown damageType: (" + ammo + ")";
 					break;
 			}
 			//Wrap up and send
+			rpt.SetContent();
 			rpt.AddEmbed();
 			GetWebHooksManager().PostData(HitDamageMessage, rpt);
 		}
@@ -233,7 +234,7 @@ modded class PluginAdminLog
 			}
 			else if ( source.IsWeapon() || source.IsMeleeWeapon() )  // player
 			{
-				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyParent() );
+				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyRootPlayer() );
 				string name;
 				string guid;
 
@@ -269,6 +270,7 @@ modded class PluginAdminLog
 				}
 				rpt.details = PlayerPrefix + " killed by: " + source.GetType();
 			}
+			rpt.SetContent();
 			rpt.AddEmbed();
 			GetWebHooksManager().PostData(KillDeathMessage, rpt);
 		}

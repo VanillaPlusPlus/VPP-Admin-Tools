@@ -4,6 +4,9 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private GridSpacerWidget 			  m_GridPlayerInfo;
 	private GridSpacerWidget 			  m_GridPlayerList;
 	private TextWidget                    m_txtPlayerCount;
+	private TextWidget 					  m_txtPlayerCountSelected;
+	private string 						  m_TotalPlayersCount;
+
 	private ref CustomGridSpacer 			m_LastGrid;
 	private ref array<ref CustomGridSpacer> m_DataGrids;
 	
@@ -52,12 +55,14 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_ActionInvisible;
 	private ButtonWidget m_ActionFreezePlayer;
 	private ButtonWidget m_ActionScalePlayer;
+	private ButtonWidget m_ActionReturnPlayer;
 	//----------------
 	
 	void MenuPlayerManager()
 	{
-		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerStats", this, SingleplayerExecutionType.Server);
-		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "InitSpectate", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerStats", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "InitSpectate", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "SetPlayerCount", this, SingleplayerExecutionType.Client);
 		
 		m_DataGrids     = new array<ref CustomGridSpacer>;
 		m_PlayerEntries = new array<ref VPPPlayerEntry>;
@@ -81,6 +86,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_PlayerInfoScroll 	   = ScrollWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "PlayerInfoScroll") );
 		m_SearchInputBox 	   = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchInputBox") );
 		m_txtPlayerCount 	   = TextWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "txtPlayerCount") );
+		m_txtPlayerCountSelected = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget("txtPlayerCountSelected"));
 		
 		m_SelectAllPlayers 	   = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers") );
 		m_BtnRefreshPlayerList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRefreshPlayerList"));
@@ -120,6 +126,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionBanPlayer  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionBanPlayer"));
 		GetVPPUIManager().HookConfirmationDialog(m_ActionBanPlayer, M_SUB_WIDGET,this,"BanPlayer", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_BAN_PLAYER", "#VSTR_TOOLTIP_BAN_PLAYER");
 		
+		m_ActionReturnPlayer  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ActionReturnPlayer"));
+		GetVPPUIManager().HookConfirmationDialog(m_ActionReturnPlayer, M_SUB_WIDGET,this,"ReturnPlayer", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_RET_PLAYER", "#VSTR_TOOLTIP_RET_PLAYER");
 		
 		m_ActionTpToMe  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionTpToMe"));
 		m_ActionTpMeTo  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionTpMeTo"));
@@ -195,29 +203,36 @@ class MenuPlayerManager extends AdminHudSubMenu
 		}
 		
 		array<ref VPPPlayerEntry> selectedPlayers = GetSelectedPlayers();
+		int pCount = selectedPlayers.Count();
+
+		m_txtPlayerCountSelected.Show(pCount >= 1);
+		if (pCount >= 1)
+			m_txtPlayerCountSelected.SetText(string.Format("[%1]", pCount.ToString()));
+
 		//Enable Actions
-		m_ActionKickPlayer.Enable(selectedPlayers.Count() >= 1);
-		m_ActionBanPlayer.Enable(selectedPlayers.Count() >= 1);
-		m_ActionHeal.Enable(selectedPlayers.Count() >= 1);
-		m_ActionMakeVomit.Enable(selectedPlayers.Count() >= 1);
-		m_ActionScalePlayer.Enable(selectedPlayers.Count() >= 1);
-		m_ActionKill.Enable(selectedPlayers.Count() >= 1);
-		m_ActionSendMessage.Enable(selectedPlayers.Count() >= 1);
-		m_ActionTpToMe.Enable(selectedPlayers.Count() >= 1);
-		m_ActionTpMeTo.Enable(selectedPlayers.Count() == 1);
-		m_ActionGiveGodmode.Enable(selectedPlayers.Count() == 1);
-		m_ActionUnlimitedAmmo.Enable(selectedPlayers.Count() == 1);
-		m_ActionInvisible.Enable(selectedPlayers.Count() >= 1);
-		m_ActionFreezePlayer.Enable(selectedPlayers.Count() >= 1);
-		m_ActionSpectate.Enable(selectedPlayers.Count() == 1 & !g_Game.IsSpectateMode());
+		m_ActionKickPlayer.Enable(pCount >= 1);
+		m_ActionBanPlayer.Enable(pCount >= 1);
+		m_ActionHeal.Enable(pCount >= 1);
+		m_ActionMakeVomit.Enable(pCount >= 1);
+		m_ActionScalePlayer.Enable(pCount >= 1);
+		m_ActionReturnPlayer.Enable(pCount >= 1);
+		m_ActionKill.Enable(pCount >= 1);
+		m_ActionSendMessage.Enable(pCount >= 1);
+		m_ActionTpToMe.Enable(pCount >= 1);
+		m_ActionTpMeTo.Enable(pCount == 1);
+		m_ActionGiveGodmode.Enable(pCount == 1);
+		m_ActionUnlimitedAmmo.Enable(pCount == 1);
+		m_ActionInvisible.Enable(pCount >= 1);
+		m_ActionFreezePlayer.Enable(pCount >= 1);
+		m_ActionSpectate.Enable(pCount == 1 & !g_Game.IsSpectateMode());
 		
 		//Sliders apply btns
-		m_BtnApplyHealth.Enable(selectedPlayers.Count() >= 1);
-		m_BtnApplyBlood.Enable(selectedPlayers.Count() >= 1);
-		m_BtnApplyShock.Enable(selectedPlayers.Count() >= 1);
-		m_BtnApplyWater.Enable(selectedPlayers.Count() >= 1);
-		m_BtnApplyEnergy.Enable(selectedPlayers.Count() >= 1);
-		m_BtnApplyTemperature.Enable(selectedPlayers.Count() >= 1);
+		m_BtnApplyHealth.Enable(pCount >= 1);
+		m_BtnApplyBlood.Enable(pCount >= 1);
+		m_BtnApplyShock.Enable(pCount >= 1);
+		m_BtnApplyWater.Enable(pCount >= 1);
+		m_BtnApplyEnergy.Enable(pCount >= 1);
+		m_BtnApplyTemperature.Enable(pCount >= 1);
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -248,6 +263,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 				foreach(VPPPlayerEntry e : m_PlayerEntries)
 		    	{
 					e.GetCheckWidget().SetChecked(m_SelectAllPlayers.IsChecked());
+					e.SetSelected(m_SelectAllPlayers.IsChecked());
 				}
 				
 			array<string> uids = GetSelectedPlayersIDs();
@@ -285,11 +301,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 			
 			case m_ActionTpToMe:
-			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(false,GetSelectedPlayersIDs()),true);
+			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<VPPAT_TeleportType,ref array<string>>(VPPAT_TeleportType.BRING,GetSelectedPlayersIDs()),true);
 			break;
 			
 			case m_ActionTpMeTo:
-			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<bool,ref array<string>>(true,GetSelectedPlayersIDs()),true);
+			GetRPCManager().VSendRPC("RPC_PlayerManager","TeleportHandle",new Param2<VPPAT_TeleportType,ref array<string>>(VPPAT_TeleportType.GOTO,GetSelectedPlayersIDs()),true);
 			break;
 			
 			//Sliders apply buttons
@@ -356,6 +372,17 @@ class MenuPlayerManager extends AdminHudSubMenu
 		if (!m_Init) return;
 			UpdateEntries();
 		
+	}
+
+	/*
+		CallBack method used from confirmation box
+	*/
+	void ReturnPlayer(int result)
+	{
+		if (result == DIAGRESULT.YES)
+		{
+			GetRPCManager().VSendRPC("RPC_PlayerManager", "TeleportHandle", new Param2<VPPAT_TeleportType,ref array<string>>(VPPAT_TeleportType.RETURN,GetSelectedPlayersIDs()), true);
+		}
 	}
 	
 	/*
@@ -465,6 +492,19 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_SelectionMode = state;
 	}	
 	
+	void SetPlayerCount(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if(type == CallType.Client)
+		{
+			Param1<string> data;
+			if(!ctx.Read(data))
+				return;
+
+			m_TotalPlayersCount = data.param1;
+			m_txtPlayerCount.SetText(m_TotalPlayersCount);
+		}
+	}
+
 	void HandlePlayerStats( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
 	{
 		Param1<ref PlayerStatsData> data;
@@ -595,8 +635,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 	
 	private void UpdateEntries()
 	{
+		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerCount", NULL, true);
 		array<ref VPPUser> playerList = GetPlayerListManager().GetUsers();
-		
 		if(playerList)
 		{
 			m_PlayerEntries = Compare(playerList);
@@ -627,7 +667,7 @@ class MenuPlayerManager extends AdminHudSubMenu
     {
         array<ref VPPPlayerEntry> new_list = new array<ref VPPPlayerEntry>;		
 		
-		m_txtPlayerCount.SetText(b.Count().ToString());
+		//m_txtPlayerCount.SetText(b.Count().ToString());
 		
 		foreach(VPPUser player : b)
 		{

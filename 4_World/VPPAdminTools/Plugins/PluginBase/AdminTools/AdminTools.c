@@ -5,7 +5,6 @@ class AdminTools extends PluginBase
 		//---RPC's-----
 		//GetRPCManager().AddRPC( "RPC_AdminTools", "AttachTo", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "DeleteObject", this, SingeplayerExecutionType.Server );
-		GetRPCManager().AddRPC( "RPC_AdminTools", "TeleportToPosition", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "ToggleFreeCam", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "RepairVehicles", this, SingeplayerExecutionType.Server );
 		//-------------
@@ -43,43 +42,55 @@ class AdminTools extends PluginBase
 	    data.param1.SetPosition( relativeLocalPos );
 	    target.AddChild( data.param1, -1, false );
 	}
-
-	void TeleportToPosition( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
-	{
-		Param1<vector> data;
-        if ( !ctx.Read( data ) ) return;
-
-        if (type == CallType.Server)
-        {
-        	if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "TeleportToCrosshair")) return;
-			PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
-			if (pb == null) return;
-			
-			
-			if ( pb.GetCommand_Vehicle() )
-			{
-				Transport veh = pb.GetCommand_Vehicle().GetTransport();
-				if (veh != null)
-				{
-					vector mat[4];
-					veh.GetTransform(mat);
-					mat[3] = data.param1;
-					veh.SetTransform(mat);
-				}
-			}else{
-				pb.SetPosition(data.param1);
-			}
-			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) teleported to crosshair (pos=%3)", sender.GetName(), sender.GetPlainId(), data.param1.ToString()));
-			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Teleported to crosshair @ position: " + data.param1));
-        }
-	}
 	
 	void ToggleFreeCam(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
         if (type == CallType.Server && sender != null)
         {
+        	Param1<bool> data; //if true, freecam is already active.
+        	if (!ctx.Read(data))
+        		return;
+
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera")) return;
 			
+			PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
+			if (pb == null)
+				return;
+
+			DayZPlayerImplement dpi = DayZPlayerImplement.Cast(pb);
+
+			if (!data.param1)
+			{
+				//pb.m_VPlayerPosCache = pb.GetPosition();
+				//toggle on
+				//if (!pb.InvisibilityStatus())
+					//pb.VPPSetInvisibility(true, InvisToggleType.SCRIPT);
+
+				//command handler to freeze player
+				if (!dpi.GetCommand_Vehicle())
+				{
+					dpi.InitTablesCmd();
+                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(dpi, dpi.m_VPPCamHmnCmd);
+                	dpi.StartCommand_Script(cmdFS);
+				}
+			}
+			else
+			{
+				//toggle off
+				//pb.SetPosition(pb.m_VPlayerPosCache);
+
+				//if (pb.InvisibilityStatus() && pb.InvisibilityToggleType() == InvisToggleType.SCRIPT)
+					//pb.VPPSetInvisibility(false, InvisToggleType.SCRIPT);
+
+				//command handler to unfreeze player
+                HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(dpi.GetCommand_Script());
+                if (hcs)
+                {
+                    hcs.SetFlagFinished(true);
+                    hcs.m_bNeedFinish = true;
+                }
+			}
+
 			GetRPCManager().VSendRPC( "RPC_HandleFreeCam", "HandleFreeCam", new Param1<bool>(true), true, sender);
 			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) toggled freecam", sender.GetName(), sender.GetPlainId()));
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] Toggled Freecam"));

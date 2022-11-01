@@ -35,7 +35,7 @@ class MenuBansManager extends AdminHudSubMenu
 	{
 		m_DataGrids = new array<ref CustomGridSpacer>;
 		m_Entries   = new array<ref BannedPlayerEntry>;
-		GetRPCManager().AddRPC("BanManagerClient", "HandleData", this);
+		GetRPCManager().AddRPC("BanManagerClient", "HandleData", this, SingleplayerExecutionType.Client);
 	}
 	
 	override void OnCreate(Widget RootW)

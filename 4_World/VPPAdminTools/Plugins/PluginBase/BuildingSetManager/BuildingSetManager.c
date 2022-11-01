@@ -8,31 +8,20 @@ class BuildingSetManager : ConfigurablePlugin
       m_BuildingSets = new array<ref BuildingSet>;
 
       /* RPCs */
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "GetBuildingSets", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "GetSetData", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteAddNewSet", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteUpdateSet", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteDeleteSet", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteSaveEdits", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteQuickDeleteObject", this);
-      GetRPCManager().AddRPC("RPC_BuildingSetManager", "ExportSetToCode", this);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "GetBuildingSets", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "GetSetData", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteAddNewSet", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteUpdateSet", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteDeleteSet", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteSaveEdits", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "RemoteQuickDeleteObject", this, SingleplayerExecutionType.Server);
+      GetRPCManager().AddRPC("RPC_BuildingSetManager", "ExportSetToCode", this, SingleplayerExecutionType.Server);
       //-------
    }
 
    override void OnInit()
    {
 		Load();
-		
-		//Test
-		/*for(int i = 0; i < 1; i++)
-		{
-			string setName  = "BuildingSet" +i;
-			AddBuildingSet(setName, true);
-			for(int x = 0; x < 1; x++)
-			{
-				AddBuildingToSet(setName, "land_container_1moh", "4353.2402 27.91 3178.1599", "0 0 0", true);
-			}
-		}*/
    }
 	
    override void Load()

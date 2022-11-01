@@ -16,7 +16,7 @@ WindowWidgetClass hud_root {
    clipchildren 1
    ignorepointer 1
    position 0 0
-   size 0.99 1
+   size 1 1
    hexactpos 0
    vexactpos 0
    hexactsize 0
@@ -24,6 +24,7 @@ WindowWidgetClass hud_root {
    priority 90
   }
   PanelWidgetClass IconsPanel {
+   visible 1
    ignorepointer 0
    color 0 0 0 0.7843
    position 0.003 0.003

@@ -16,7 +16,7 @@ modded class Construction
 	}
 
 	//Get all construction parts that can be build (at that current time)
-	void VPPAT_GetConstructionPartsToBuild(string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool, out string real_constructionTarget)
+	void VPPAT_GetConstructionPartsToBuild(string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool)
 	{
 		construction_parts.Clear();
 		string part_name;

@@ -76,7 +76,7 @@ class VPPESPTools extends PluginBase
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu:RetriveCodeFromObj", "", false)) return;
 			
-			Param1<Object> data;
+			Param1<EntityAI> data;
 			if(!ctx.Read(data))
 				return;
 			
@@ -85,7 +85,7 @@ class VPPESPTools extends PluginBase
 			{
 				string code;
 				EnScript.GetClassVar(itemB, "m_Code", 0, code);
-				GetRPCManager().VSendRPC("RPC_VPPESPTools", "HandleCodeFromObj", new Param2<string,Object>(code, data.param1), true, sender);
+				GetRPCManager().VSendRPC("RPC_VPPESPTools", "HandleCodeFromObj", new Param2<string,EntityAI>(code, data.param1), true, sender);
 			}
 		}
 	}

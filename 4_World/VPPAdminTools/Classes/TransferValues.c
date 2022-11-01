@@ -1,8 +1,8 @@
+/*
+* Instance initialized within playerbase, on client & server. Per player
+*/
 modded class TransferValues 
 {
-	const float VALUE_CHECK_INTERVAL = 3;
-
-	//include admin clients to receive the RPC
 	override void SendValue(int value_type, float value)
 	{
 		super.SendValue(value_type, value);

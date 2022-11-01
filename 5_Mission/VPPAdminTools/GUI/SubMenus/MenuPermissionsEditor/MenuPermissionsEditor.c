@@ -21,8 +21,8 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 		m_DataGrids  	  = new array<ref CustomGridSpacer>;
 		m_UserGroups      = new array<ref UserGroupTemplate>;
 		m_PermissionBoxes = new array<ref PermissionBox>;
-		GetRPCManager().AddRPC("RPC_PermissionMenu","HandleUserGroups", this, SingleplayerExecutionType.Server);
-		GetRPCManager().AddRPC("RPC_PermissionMenu","HandlePermissions", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_PermissionMenu","HandleUserGroups", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_PermissionMenu","HandlePermissions", this, SingleplayerExecutionType.Client);
 	}
 	
 	override void OnCreate(Widget RootW)

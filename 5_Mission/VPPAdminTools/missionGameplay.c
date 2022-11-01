@@ -1,9 +1,6 @@
 typedef Param2<string, string> ESPBonesParams; //from, to
 modded class MissionGameplay
 {
-	static ref ScriptInvoker m_OnMissionPaused = new ScriptInvoker();
-	static ref ScriptInvoker m_OnMissionUnpaused = new ScriptInvoker();
-
 	//Client vars
     private bool   m_AllowPasswordInput;
     private bool   m_Toggles;
@@ -22,14 +19,10 @@ modded class MissionGameplay
 
 	void MissionGameplay()
 	{
-		MissionGameplay.m_OnMissionPaused.Insert(OnMissionPaused);
-		MissionGameplay.m_OnMissionUnpaused.Insert(OnMissionUnpaused);
 	}
 	
 	void ~MissionGameplay()
 	{
-		MissionGameplay.m_OnMissionPaused.Clear();
-		MissionGameplay.m_OnMissionUnpaused.Clear();
 	}
 
 	override void OnInit()
@@ -58,13 +51,13 @@ modded class MissionGameplay
         m_EspBones.Insert(new ESPBonesParams("rightleg",     "rightfoot"));
         m_EspBones.Insert(new ESPBonesParams("rightfoot",    "righttoebase"));
 
-        GetRPCManager().AddRPC("RPC_MissionGameplay", "AuthCheck", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_MissionGameplay", "ServerLoginError", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_MissionGameplay", "LoginAttemptFail", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableToggles", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingeplayerExecutionType.Server);
-        GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingeplayerExecutionType.Server);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "AuthCheck", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "ServerLoginError", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "LoginAttemptFail", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableToggles", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingleplayerExecutionType.Client);
 
         VPPKeybindsManager.RegisterBind("UAToggleAdminTools", VPPBinds.Press, "ToggleAdminTools", this);
         VPPKeybindsManager.RegisterBind("UAOpenAdminTools", VPPBinds.Press, "OpenAdminTools", this);
@@ -73,7 +66,7 @@ modded class MissionGameplay
         VPPKeybindsManager.RegisterBind("UADeleteObjCrosshair", VPPBinds.Press, "DeleteObjCrosshair", this);
         VPPKeybindsManager.RegisterBind("UAToggleGodMode", VPPBinds.Press, "ToggleGodMode", this);
         VPPKeybindsManager.RegisterBind("UAToggleFreeCam", VPPBinds.Press, "ToggleFreeCam", this);
-        VPPKeybindsManager.RegisterBind("UASupriseButtSex", VPPBinds.Press, "SupriseButtSex", this);
+        VPPKeybindsManager.RegisterBind("UASupriseBind", VPPBinds.Press, "SupriseBindMeme", this);
         VPPKeybindsManager.RegisterBind("UACopyPositionClipboard", VPPBinds.Press, "CopyPositionClipboard", this);
         VPPKeybindsManager.RegisterBind("UARepairVehicleAtCrosshairs", VPPBinds.Press, "RepairVehicleAtCrosshairs", this);
         VPPKeybindsManager.RegisterBind("UAExitSpectate", VPPBinds.Press, "ExitSpectate", this);
@@ -83,6 +76,7 @@ modded class MissionGameplay
         VPPKeybindsManager.RegisterBind("UAToggleInvis", VPPBinds.Press, "TogglePlayerInvis", this);
         VPPKeybindsManager.RegisterBind("UAHealTargets", VPPBinds.Press, "HealTargetAtCrosshairs", this);
         VPPKeybindsManager.RegisterBind("UAToggleESP", VPPBinds.Press, "ToggleESP", this);
+        VPPKeybindsManager.RegisterBind("UATogglePlayerControls", VPPBinds.Press, "ToggleControlsFocus", this);
 
         m_EspCanvas = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PlayerESPCanvas);
         m_EspCanvasWidget = CanvasWidget.Cast(m_EspCanvas.FindAnyWidget("CanvasWidget"));
@@ -99,6 +93,47 @@ modded class MissionGameplay
         super.OnMissionFinish();
         Print("[MissionGameplay] OnMissionFinish - Client");
     }
+
+    override void OnMouseButtonPress(int button)
+    {
+#ifndef DIAG_DEVELOPER
+        super.OnMouseButtonPress(button); //don't call super when running in DIAG mode (resolves conflicting keybinds)
+#endif
+    }
+
+    override void OnKeyPress(int key) 
+    {
+        //Avoid Escape key exit done by other mods (stops a client-crash)
+        VPPScriptedMenu menu = VPPScriptedMenu.Cast(GetGame().GetUIManager().GetMenu());
+        if (menu && key == KeyCode.KC_ESCAPE)
+        {
+            VPPAdminHud AdminTab = VPPAdminHud.Cast(GetGame().GetUIManager().FindMenu(VPP_ADMIN_HUD));
+            if (AdminTab != NULL && AdminTab.IsShowing())
+            {
+                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuXMLEditor));
+                if (xmlMenu)
+                {
+                    if (xmlMenu.m_MapScreen)
+                        xmlMenu.m_MapScreen.ShowHide(false);
+                }
+                AdminTab.HideMenu();
+            }
+            return;
+        }
+#ifndef DIAG_DEVELOPER
+        super.OnKeyPress(key); //don't call super when running in DIAG mode (resolves conflicting keybinds)
+#endif
+    }
+
+#ifdef DIAG_DEVELOPER
+    override void OnKeyRelease(int key)
+    {
+    }
+
+    override void OnMouseButtonRelease(int button)
+    {
+    }
+#endif
 
     override bool VPPAT_AdminToolsToggled()
     {
@@ -120,37 +155,50 @@ modded class MissionGameplay
         transformed_pos[1] = screen_pos[1] * parent_height;
         return transformed_pos;
     }
-	
-	void OnMissionPaused()
-	{
-		GetUApi().ActivateExclude("VPPCamControls");
-		GetUApi().UpdateControls();
-	}
-	
-	void OnMissionUnpaused()
-	{
-		GetUApi().ActivateGroup("VPPCamControls");
-		GetUApi().UpdateControls();
-	}
-	
-	override void Pause()
-	{
-        super.Pause();
 
-		MissionGameplay.m_OnMissionPaused.Invoke();
-	}
-	
-	override void Continue()
-	{
-        super.Continue();
-
-        MissionGameplay.m_OnMissionUnpaused.Invoke();
-	}
+    private vector m_LastCamPos;
+    private float  m_LastCamUpdate;
 
 	override void OnUpdate(float timeslice)
     {
         super.OnUpdate(timeslice);
         UpdatePlayerMeshEsp();
+
+        //Free camera position updates
+        /*
+        DayZPlayerImplement player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
+        if (player && player.IsFreeCamActive())
+        {
+            m_LastCamUpdate += timeslice;
+            if (m_LastCamUpdate > 2.0)
+            {
+                DayZPlayerCameraFree cam = DayZPlayerCameraFree.Cast(PlayerBase.Cast(GetGame().GetPlayer()).GetCurrentPlayerCamera());
+                if (!cam)
+                    return;
+
+                vector camPos = cam.GetCurrentPosition();
+                if (vector.Distance(m_LastCamPos, camPos) >= 2.5)
+                {
+                    ScriptRPC rpc = new ScriptRPC();
+                    rpc.Write(camPos);
+                    rpc.Send(GetGame().GetPlayer(), VPPATRPCs.RPC_SYNC_FREECAM_POS, true, NULL);
+                    m_LastCamPos = camPos;
+                }
+                m_LastCamUpdate = 0.0;
+            }
+        }
+        */
+    }
+
+    //toggle player controls on/off when in menu
+    void ToggleControlsFocus()
+    {
+        VPPAdminHud adminHud;
+        if (!Class.CastTo(adminHud, GetVPPUIManager().GetMenuByType(VPPAdminHud)))
+            return;
+
+        if (adminHud.IsShowing() && !GetVPPUIManager().IsTyping())
+            adminHud.HandleGameFocus();
     }
 
     protected void UpdatePlayerMeshEsp()
@@ -264,29 +312,6 @@ modded class MissionGameplay
     {
         return m_systemMessage;
     }
-
-    override void OnKeyPress(int key) 
-    {
-        //Avoid Escape key exit done by other mods (stops a client-crash)
-        VPPScriptedMenu menu = VPPScriptedMenu.Cast(GetGame().GetUIManager().GetMenu());
-        if (menu && key == KeyCode.KC_ESCAPE)
-        {
-            VPPAdminHud AdminTab = VPPAdminHud.Cast(GetGame().GetUIManager().FindMenu(VPP_ADMIN_HUD));
-            if (AdminTab != NULL && AdminTab.IsShowing())
-            {
-                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuXMLEditor));
-                if (xmlMenu)
-                {
-                    if (xmlMenu.m_MapScreen)
-                        xmlMenu.m_MapScreen.ShowHide(false);
-                }
-                AdminTab.HideMenu();
-            }
-            return;
-        }
-        super.OnKeyPress(key);
-    }
-
     /*
     **
     *  ///////////Client RPCs Section/////////////////
@@ -490,7 +515,7 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            GetRPCManager().VSendRPC( "RPC_AdminTools", "TeleportToPosition", new Param1<vector>(g_Game.GetCursorPos()), true);
+            GetRPCManager().VSendRPC( "RPC_TeleportManager", "TeleportToPosition", new Param1<vector>(g_Game.GetCursorPos()), true);
         }
     }
 
@@ -535,11 +560,12 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            GetRPCManager().VSendRPC( "RPC_AdminTools", "ToggleFreeCam", NULL, true);
+            DayZPlayerImplement player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
+            GetRPCManager().VSendRPC( "RPC_AdminTools", "ToggleFreeCam", new Param1<bool>(player.IsFreeCamActive()), true);
         }
     }
 
-    void SupriseButtSex()
+    void SupriseBindMeme()
     {
         if ((!m_Toggles) || (!m_ToolsToggled))
             return;
@@ -560,7 +586,7 @@ modded class MissionGameplay
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
             Object target = g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL);
-            string targetType;
+            string targetType, toCopy;
 
             if (target)
                 targetType = target.GetType();
@@ -569,16 +595,22 @@ modded class MissionGameplay
             if ( target == NULL )
             {
                 notificationMsg = "#VSTR_NOTIFY_COPY_CLIPBOARD" + "\n\nPosition: " + PosToString(GetGame().GetPlayer().GetPosition());
-                GetGame().CopyToClipboard(GetGame().GetPlayer().GetPosition().ToString());
+                toCopy = "Position: " + GetGame().GetPlayer().GetPosition().ToString();
+                toCopy += "\nOrientation: " + GetGame().GetPlayer().GetOrientation().ToString();
+                toCopy += "\nConfig-Type: " + GetGame().GetPlayer().GetType();
+                GetGame().CopyToClipboard(toCopy);
             }
             else
             {
-                if ( targetType == "" || targetType == string.Empty)
+                if (targetType == "" || targetType == string.Empty)
                     notificationMsg = string.Format("#VSTR_NOTIFY_COPY_POS" + "\n\nPosition:%1", PosToString(target.GetPosition()));
                 else
                     notificationMsg = string.Format("Copied position of object: %1 to clipboard\n\nPosition: %2", target.GetType(), PosToString(target.GetPosition()));
                 
-                GetGame().CopyToClipboard(target.GetPosition().ToString());
+                toCopy = "Position: " + target.GetPosition().ToString();
+                toCopy += "\nOrientation: " + target.GetOrientation().ToString();
+                toCopy += "\nConfig-Type: " + target.GetType();
+                GetGame().CopyToClipboard(toCopy);
             }
             GetVPPUIManager().DisplayNotification(notificationMsg, "V++ Admin Tools:", 10.0);
         }
@@ -754,9 +786,32 @@ modded class MissionGameplay
                 if (!player.IsFreeCamActive())
                 {
                     DayZPlayer.Cast(GetGame().GetPlayer()).GetDayZPlayerType().RegisterCameraCreator(DayZPlayerCameras.VPP_FREE_CAMERA, DayZPlayerCameraFree);
+                    //command handler to freeze player
+                    if (!player.GetCommand_Vehicle())
+                    {
+                        player.InitTablesCmd();
+                        HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(player, player.m_VPPCamHmnCmd);
+                        player.StartCommand_Script(cmdFS);
+                    }
                     player.SetFreeCamActive(true);
-                }else{
+                    GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
+                    AddActiveInputExcludes({"movement", "aiming", "menu"});
+                }
+                else
+                {
                     player.SetFreeCamActive(false);
+                    //command handler to unfreeze player
+                    HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(player.GetCommand_Script());
+                    if (hcs)
+                    {
+                        hcs.SetFlagFinished(true);
+                        hcs.m_bNeedFinish = true;
+                    }
+                    PlayerControlEnable(true);
+                    GetGame().GetInput().ResetGameFocus();
+                    GetGame().GetUIManager().ShowUICursor(false);
+                    RemoveActiveInputExcludes({"menu", "movement", "aiming"},true);
+                    RefreshExcludes();
                 }
             }
         }

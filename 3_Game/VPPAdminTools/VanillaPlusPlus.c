@@ -8,19 +8,161 @@ modded class DayZGame
 	private int    m_FailedLoginCount = 0;
 	private string m_AdminPassword;
 
+	private string 			  m_VServerIP;
+
 	private string 			  m_ServerName;
 	private int 			  m_Vtps = 0;
     private int 			  m_Vtps_time = 0;
     private int 			  m_Vticks = 0;
 
+    private bool 					m_VPPATOnlineServicesInit;
     private ref VPPATProfileOptions m_VPPATProfileOptions;
+
+    private ref map<string,string> 	 m_VPPDebugMissions; //terrain name, path
 
 	void DayZGame()
 	{
+		m_VPPDebugMissions = new map<string,string>;
 		Print("[DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.");
 		vppatEventHandler = new VPPEventHandler();
 		GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RegisterRPCs, 500, false); //Register RPCs after 10 seconds of game boot
 		m_VPPATProfileOptions = new VPPATProfileOptions();
+
+		SetupDebugMission("ChernarusPlus");
+		SetupDebugMission("Enoch");
+	}
+
+	void CreateDirectoriesFromPath(string basePath, string path)
+	{
+		array<string> output = {};
+		path.Split("\\", output);
+		for (int i = 0; i < output.Count() - 1; ++i)
+			MakeDirectory(string.Format("%1/%2", basePath, output[i]));
+	}
+
+	void SetupDebugMission(string terrain, bool forceOverride = false)
+	{
+		terrain.ToLower();
+		string path = string.Format("$saves:VPPDebugMissions/Debug.%1", terrain);
+
+		MakeDirectory("$saves:VPPDebugMissions");
+		string missionPath = string.Format("$saves:VPPDebugMissions/Debug.%1", terrain);
+		if (FileExist(missionPath) && !forceOverride)
+		{
+			Print("Default Mission: " + missionPath + " exists!");
+			m_VPPDebugMissions.Insert(terrain, path); //exists already
+			return;
+		}
+
+		if (forceOverride)
+			FileProcessingFuncs.DeleteRecursive(missionPath, true); //Delete existing
+
+		MakeDirectory(missionPath);
+		CopyFile("VPPAdminTools/Extra/init.c", path + "/init.c");
+
+		string fileName;
+		FileAttr fileAttributes;
+		FindFileFlags flags = FindFileFlags.ARCHIVES;
+		
+		FindFileHandle fHandle = FindFile(string.Format("dz/worlds/%1/ce/*", terrain), fileName, fileAttributes, flags);
+		CreateDirectoriesFromPath(path, fileName);
+		CopyFile(string.Format("dz/worlds/%1/ce/%2", terrain, fileName), path + "/" + fileName);
+
+		int i = 0;
+		while(FindNextFile(fHandle, fileName, fileAttributes))
+		{
+			CreateDirectoriesFromPath(path, fileName);
+			CopyFile(string.Format("dz/worlds/%1/ce/%2", terrain, fileName), path + "/" + fileName);
+			i++;
+		}
+
+		m_VPPDebugMissions.Insert(terrain, path);
+	}
+
+	bool SearchForCustomDebugMission(out array<string> paths)
+	{
+		paths = {};
+		string fileName;
+		FileAttr fileAtts;
+		FindFileFlags flags = FindFileFlags.ARCHIVES;
+
+		FindFileHandle fHandle = FindFile("$CurrentDir:/*", fileName, fileAtts, flags);
+		if (FileExist(string.Format("$CurrentDir:%1/init.c", fileName)) && fileAtts == FileAttr.DIRECTORY)
+			paths.Insert(fileName);
+
+		int i = 0;
+		while(FindNextFile(fHandle, fileName, fileAtts))
+		{
+			if (FileExist(string.Format("$CurrentDir:%1/init.c", fileName)) && fileAtts == FileAttr.DIRECTORY)
+				paths.Insert(fileName);
+
+			i++;
+		}
+
+		//Append paths to vanilla missions:
+		foreach(string terrain, string path: m_VPPDebugMissions)
+		{
+			paths.Insert(path);
+		}
+		return true;
+	}
+
+	void PlayCustomMission(string path)
+	{
+		Print("PlayCustomMission: " + path);
+		SetGameState(DayZGameState.IN_GAME);
+		SetLoadState(DayZLoadState.MISSION_START);
+		path.Replace("/", "\\");
+		PlayMission(path);
+	}
+
+	override bool OnInitialize()
+	{
+		string value;
+		if (CommandlineGetParam("CEDebugMode", value))
+		{
+			value.ToLower();
+			if (GetLoadState() == DayZLoadState.UNDEFINED)
+			{
+				ParticleList.PreloadParticles();
+				InitNotifications();
+
+				switch(value)
+				{
+					case "chernarusplus":
+						PlayCustomMission(m_VPPDebugMissions["chernarusplus"]);
+					break;
+
+					case "enoch":
+					case "livonia":
+						PlayCustomMission(m_VPPDebugMissions["enoch"]);
+					break;
+
+					default:
+						//Search for a custom mission
+						Print("[VPPAdminTools] FAILED TO LOAD DEBUG MISSION: " + value + " unknown terrain map");
+						DebugModeDialog diag;
+						GetGame().GetWorkspace().CreateWidgets("VPPAdminTools\\GUI\\Layouts\\VPPNotificationDebug.layout").GetScript(diag);
+						string errorMsg = string.Format("Unable to find a mission folder for world: %1\n", value);
+						errorMsg += "\n-Make sure the world name is correct according to the config of the world.";
+						errorMsg += "\n-Copy a valid mission folder to the root directory of DayZ Client and click 'SEARCH AGAIN'.";
+						errorMsg += "\n\n-Missions under '$saves' are created by default directly from game data (CLE PBOs)";
+						errorMsg += "\nYou can find those missions in:";
+						errorMsg += "\n\n[when '-profiles' param is NOT used]:\nC:\\Users\\(PC_NAME)\\Documents\\DayZ\\VPPDebugMissions\\";
+						errorMsg += "\n\n[when '-profiles' param is used]: $profile:VPPDebugMissions\\";
+						errorMsg += "\n\n'$profile' is the path you set with the startup parameter '-profiles'";
+						errorMsg += "\n\nDouble-click a mission from the list below to start!";
+						diag.SetError("ERROR: No Debug mission files found!", errorMsg);
+						diag.RefreshSearch();
+					break;
+				}
+			}
+		}
+		else
+		{
+			return super.OnInitialize();
+		}
+		return false;
 	}
 	
 	override void OnKeyPress(int key)
@@ -78,6 +220,16 @@ modded class DayZGame
 		m_ServerName = str;
 	}
 
+	void VSetServerIP(string ip)
+	{
+		m_VServerIP = ip;
+	}
+
+	string VGetServerIP()
+	{
+		return m_VServerIP;
+	}
+
 	VPPEventHandler VPPATGetEventHandler()
 	{
 		return vppatEventHandler;
@@ -86,8 +238,8 @@ modded class DayZGame
 	//Register early RPCs after game is running.
 	void RegisterRPCs()
 	{
-		GetRPCManager().AddRPC( "RPC_MissionGameplay", "KickClientHandle", this );
-		GetRPCManager().AddRPC( "RPC_MissionGameplay", "GetConnectedSession", this );
+		GetRPCManager().AddRPC( "RPC_MissionGameplay", "KickClientHandle", this, SingleplayerExecutionType.Client );
+		GetRPCManager().AddRPC( "RPC_MissionGameplay", "GetConnectedSession", this, SingleplayerExecutionType.Client );
 	}
 	
 	void KickClientHandle( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target )
@@ -197,6 +349,29 @@ modded class DayZGame
 		return m_ConnectPassword;
 	}
 	
+	string VPPAT_GetSteam64Id()
+	{
+		if ( !m_VPPATOnlineServicesInit )
+		{
+			OnlineServices.Init();
+			m_VPPATOnlineServicesInit = true;
+		}
+        
+		BiosUserManager user_manager = GetGame().GetUserManager();
+		if( user_manager )
+		{
+		    if( user_manager.GetTitleInitiator() )
+		    {
+		        user_manager.SelectUserEx( user_manager.GetTitleInitiator() );
+		    }
+		}
+
+		if ( user_manager && user_manager.GetSelectedUser() )
+		    return user_manager.GetSelectedUser().GetUid();
+
+		return "-1";
+	}
+
 	/*
 		Reconnects player to same session
 	*/

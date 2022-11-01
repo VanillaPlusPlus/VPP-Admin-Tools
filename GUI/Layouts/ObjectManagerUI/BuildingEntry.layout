@@ -1,11 +1,10 @@
 PanelWidgetClass PanelEntry {
- ignorepointer 1
- keepsafezone 1
+ visible 1
+ ignorepointer 0
+ keepsafezone 0
  color 1 1 1 0.549
- position 0 0
- size 1 0.11
+ size 1 0.04
  halign center_ref
- valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
@@ -13,8 +12,10 @@ PanelWidgetClass PanelEntry {
  style DayZDefaultPanel
  {
   PanelWidgetClass PnlBg {
-   ignorepointer 1
+   visible 1
+   ignorepointer 0
    color 0 0 0 1
+   position 0 0
    size 0.995 0.944
    halign center_ref
    valign center_ref
@@ -27,7 +28,7 @@ PanelWidgetClass PanelEntry {
   GridSpacerWidgetClass entry_content {
    ignorepointer 0
    color 0 0 0 0
-   size 1 0
+   size 1 0.8
    halign center_ref
    valign center_ref
    hexactpos 0
@@ -37,12 +38,11 @@ PanelWidgetClass PanelEntry {
    style DayZDefaultPanelBottom
    Padding 0
    Margin 0
-   "Size To Content V" 1
    Columns 1
    Rows 1
    {
     FrameWidgetClass ItemFrame {
-     ignorepointer 0
+     ignorepointer 1
      position 0 0
      size 48 28
      halign center_ref
@@ -54,8 +54,8 @@ PanelWidgetClass PanelEntry {
      {
       TextWidgetClass ItemName {
        ignorepointer 1
-       position 0.06 0
-       size 0.65 1
+       position 0.02 0
+       size 0.66 1
        halign right_ref
        valign center_ref
        hexactpos 0
@@ -63,9 +63,11 @@ PanelWidgetClass PanelEntry {
        hexactsize 0
        vexactsize 0
        text "Item Display Name"
-       font "gui/fonts/MetronLight"
-       "exact text" 0
-       "exact text size" 11
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 12
+       "size to text h" 1
+       "size to text v" 1
        "text valign" center
       }
       ButtonWidgetClass btnDeleteItem {
@@ -136,20 +138,6 @@ PanelWidgetClass PanelEntry {
          stretch 1
         }
        }
-      }
-      ButtonWidgetClass btnSelect {
-       clipchildren 1
-       size 0.18 1
-       halign right_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scriptclass ""
-       style Editor
-       text "#VSTR_LBL_SELECT"
-       font "gui/fonts/MetronLight"
       }
       ButtonWidgetClass btnPhysicsDrop {
        visible 1

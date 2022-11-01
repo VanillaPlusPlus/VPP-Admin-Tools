@@ -47,7 +47,7 @@ class PermissionManager extends ConfigurablePlugin
 		//WebHooks Menu
 		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
 		//Teleport Manager Menu
-		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset" });
+		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset", "TeleportManager:TeleportEntity" });
 		//ESP tools menu 
 		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP", "EspToolsMenu:RestPasscodeFence", "EspToolsMenu:RetriveCodeFromObj", "EspToolsMenu:PlayerMeshEsp", "EspToolsMenu:InstantBaseBuild" });
 		//XML Editor menu
@@ -107,8 +107,10 @@ class PermissionManager extends ConfigurablePlugin
 	{
 		if( type == CallType.Server )
         {
+        #ifndef DIAG_DEVELOPER
 			if (sender == NULL)
 				return;
+		#endif
 
 			//At this point, password matched. Check for a valid user group.
 			Print(string.Format("[Permissions Manager] Admin (%2) (%1) Successfully Logged in!", sender.GetPlainId(), sender.GetName()));
@@ -159,10 +161,12 @@ class PermissionManager extends ConfigurablePlugin
 		
 		if(type == CallType.Server)
 		{
+		#ifndef DIAG_DEVELOPER
 			if (sender == null) {
 				GetSimpleLogger().Log("[PermissionManager] SendToClient: Error! Unable to send perms and user groups to target! NULL IDENTITY!!");
 				return;
 			}
+		#endif
 			if (data.param1 == 0){
 				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandlePermissions", new Param1<ref array<string>>(m_Permissions), true, sender);
 				GetRPCManager().VSendRPC( "RPC_PermissionMenu", "HandleUserGroups", new Param1<ref array<ref UserGroup>>(m_UserGroups), true, sender);

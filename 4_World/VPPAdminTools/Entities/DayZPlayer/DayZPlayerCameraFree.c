@@ -20,15 +20,13 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		m_startOri = Math3D.MatrixToAngles(mat);
 		m_startOri[1] = 0.0;
 		m_startOri[2] = 0.0;
-		pInput.SetDisabled(true);
+
 		more_camspeed = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SPEED);
 		more_fov	  = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV);
 	}
 
 	void ~DayZPlayerCameraFree()
 	{
-		HumanInputController hic = m_pPlayer.GetInputController();
-		hic.SetDisabled(false);
 	}
 
 	override vector GetBaseAngles()
@@ -55,24 +53,25 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		float CAM_MOUSE_SENSE 	= g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_MOUSE_SENSE);
 		float CAM_SMOOTHNESS 	= g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SMOOTHNESS);
 
-		HumanInputController hic = m_pPlayer.GetInputController();
-		if (hic)
-			hic.SetDisabled(true);
-
 		vector mat[4];
 		GetCamera(0, mat);
 		
 		Input input = GetGame().GetInput();
-		float forward  = input.LocalValue("UACamForward") - input.LocalValue("UACamBackward");
-		float strafe   = input.LocalValue("UACamRight") - input.LocalValue("UACamLeft");
-		float altitude = input.LocalValue("UACamUp") - input.LocalValue("UACamDown");
-		float yawDiff = input.LocalValue("UACamShiftLeft") - input.LocalValue("UACamShiftRight");
-		float pitchDiff = input.LocalValue("UACamShiftDown") - input.LocalValue("UACamShiftUp");
-		float speedInc = 0.0;
-		//Widget underCursor = GetWidgetUnderCursor();
-		if (/*(underCursor == NULL) || (underCursor && underCursor.GetTypeID() != EditBoxWidgetTypeID) &&*/ input.LocalValue("UACamFOV") == 0)
+		float forward, strafe, altitude, yawDiff, pitchDiff, speedInc = 0.0;
+
+		if (CanControl())
 		{
-			speedInc = input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct");
+			forward  = input.LocalValue("UACamForward") - input.LocalValue("UACamBackward");
+			strafe   = input.LocalValue("UACamRight") - input.LocalValue("UACamLeft");
+			altitude = input.LocalValue("UACamUp") - input.LocalValue("UACamDown");
+			yawDiff = input.LocalValue("UACamShiftLeft") - input.LocalValue("UACamShiftRight");
+			pitchDiff = input.LocalValue("UACamShiftDown") - input.LocalValue("UACamShiftUp");
+			speedInc = 0.0;
+		}
+		
+		if (CanControl() && input.LocalValue("UACamFOV") == 0)
+		{
+			speedInc = (input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct")) * 1.5;
 		}
 		bool increaseSpeeds = input.LocalValue("UACamTurbo");
 
@@ -81,11 +80,13 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		more_camspeed 	+= (more_camspeed * speedInc / CAM_BOOST);
 		local_camspeed  += more_camspeed;
 
-		if (local_camspeed < VPPATProfileConstants.MIN_CAM_SPEED)
-			local_camspeed = VPPATProfileConstants.MIN_CAM_SPEED;
-		
 		if(increaseSpeeds)
 			local_camspeed = local_camspeed * CAM_BOOST;
+
+		if (local_camspeed < VPPATProfileConstants.MIN_CAM_SPEED){
+			local_camspeed = VPPATProfileConstants.MIN_CAM_SPEED;
+			more_camspeed  = VPPATProfileConstants.MIN_CAM_SPEED;
+		}
 		
 		vector up = vector.Up;
 		vector direction = mat[2];
@@ -101,10 +102,10 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		m_startPos = m_startPos + localVelocity;
 
 		//FOV override toggle
-		if (input.LocalDbl("UACamFOV"))
+		if (input.LocalDbl("UACamFOV") && CanControl())
 			m_forceFovOverride = !m_forceFovOverride;
 
-		if (input.LocalValue("UACamFOV") > 0 || m_forceFovOverride)
+		if ((input.LocalValue("UACamFOV") > 0 && CanControl()) || m_forceFovOverride)
 		{
 			CAM_MOUSE_SENSE = 0.1;
 			float camFov = input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct");
@@ -153,6 +154,30 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		pOutResult.m_fIgnoreParentRoll  = 1.0;
 		pOutResult.m_fIgnoreParentPitch = 1.0;
 		pOutResult.m_fIgnoreParentYaw 	= 0.0;
+	}
+
+	vector GetCurrentPosition()
+	{
+		return m_startPos;
+	}
+
+	bool CanControl()
+	{
+		bool isTyping;
+
+		if (GetGame().GetUIManager().GetMenu() == null)
+			isTyping = false;
+
+		Widget underCursor = GetWidgetUnderCursor();
+		UIScriptedMenu chatInput = GetGame().GetUIManager().FindMenu(MENU_CHAT_INPUT);
+				
+		if (underCursor && GetGame().GetUIManager().IsCursorVisible() && (underCursor.GetTypeID() == EditBoxWidgetTypeID || underCursor.GetTypeID() == MultilineEditBoxWidgetTypeID))
+			isTyping = true;
+		
+		if (chatInput != null && chatInput.IsVisible())
+			isTyping = true;
+		
+		return (!isTyping && !GetGame().GetUIManager().IsCursorVisible());
 	}
 
 	override string GetCameraName()
