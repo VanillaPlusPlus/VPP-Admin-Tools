@@ -108,6 +108,15 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_loaded = true;
 	}
 
+	float Normalize(float a)
+	{
+		a = Math.ModFloat(a, 360.0); //calculate remainder between x, 360.0
+		if (a < 0)
+			a += 360.0;
+
+		return a;
+	}
+
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
@@ -126,6 +135,40 @@ class MenuObjectManager extends AdminHudSubMenu
 			//Update Filter
 			UpdateFilter();
 			m_searchBoxCount = newSrchCount;
+		}
+
+		//XML event groups copy
+		if (input.LocalPress("UACopyPositionClipboard", false) && g_Game.IsLShiftHolding())
+		{
+			if (GetSelectedParent())
+			{
+				Object pObj = GetSelectedParent().GetTrackingObject();
+				vector parentPos = pObj.GetPosition();
+				vector originLocal = pObj.CoordToLocal(pObj.GetPosition());
+				float angleParent = Normalize(pObj.GetOrientation()[0]);
+
+				string outPut = string.Format("\t<!--<pos x=\"%1\" z=\"%2\" a=\"0\" y=\"%3\" group=\"GROUP_NAME\"/>-->\n", parentPos[0], parentPos[2], parentPos[1]);
+				outPut += "\t<group name=\"GROUP_NAME_HERE\">\n";
+				outPut += string.Format("\t\t<child type=\"%1\" deloot=\"0\" lootmax=\"3\" lootmin=\"1\" x=\"%2\" z=\"%3\" y=\"%4\" a=\"%5\"/>\n", pObj.GetType(), originLocal[0], originLocal[2], originLocal[1], angleParent);
+				
+				array<ref SpawnedBuilding> buildings_ = m_SelectedSetData.GetBuildings();
+				foreach(SpawnedBuilding childObj: buildings_)
+				{
+					if (!childObj.GetObject() || childObj.GetObject() == pObj)
+						continue;
+
+					BuildingTracker tracker_ = GetTrackerByObject(childObj.GetObject());
+					if (!tracker_ || !tracker_.IsSelected())
+						continue;
+
+					vector cPos = childObj.GetObject().GetPosition() - parentPos;
+					float angle = Normalize(childObj.GetObject().GetOrientation()[0]);
+					outPut += string.Format("\t\t<child type=\"%1\" deloot=\"0\" lootmax=\"3\" lootmin=\"1\" x=\"%2\" z=\"%3\" y=\"%4\" a=\"%5\"/>\n", childObj.GetObject().GetType(), cPos[0], cPos[2], cPos[1], angle);
+				}
+				outPut += "\t</group>";
+				GetGame().CopyToClipboard(outPut);
+				GetVPPUIManager().DisplayNotification("Successfully copied XML (eventgroups) formatting of objects to clipboard!", "Success", 3.0);
+			}
 		}
 
 		//Deletion

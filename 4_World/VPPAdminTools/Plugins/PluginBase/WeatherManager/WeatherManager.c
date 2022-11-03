@@ -133,7 +133,7 @@ class WeatherManager : ConfigurablePlugin
 		float fog = s.GetFogActual(), fogRate = s.GetFogRate(), fogDur = s.GetFogDur();
 		float rain = s.GetRainActual(), rainRate = s.GetRainRate(), rainDur = s.GetRainDur();
 		float wind = s.GetWindActual();
-	
+		
 		GetSimpleLogger().Log("[Weather Manager] ApplyWeatherSetting to: " + s.GetName());
 
 		Weather w = GetGame().GetWeather();
@@ -141,11 +141,20 @@ class WeatherManager : ConfigurablePlugin
 		Fog f = w.GetFog();
 		Rain r = w.GetRain();
 		
-		w.SetWindSpeed(wind);
-		w.SetWindFunctionParams(0.9, 1.0, 100.0);
 		o.Set(overcast, overcastRate, overcastDur);
 		f.Set(fog,fogRate,fogDur);
 		r.Set(rain,rainRate,rainDur);
+
+		if (wind < 0.1)
+			wind = 0.1;
+		if (wind > w.GetWindMaximumSpeed())
+			wind = w.GetWindMaximumSpeed();
+
+		VPPAT_FORCE_WIND_OVERRIDE = true;
+		VPPAT_WIND_OVERRIDE_VAL = wind;
+
+		w.SetWindFunctionParams(wind, wind, -1);
+		w.SetWindSpeed(wind);
 	}
 
 	void ApplyWeather(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -163,18 +172,27 @@ class WeatherManager : ConfigurablePlugin
 			array<float> fog = data.param2;
 			array<float> rain = data.param3;
 			
-			float wind = data.param4;
-			
 			Weather w = GetGame().GetWeather();
+
+			float wind = data.param4;
+			if (wind < 0.1)
+				wind = 0.1;
+			if (wind > w.GetWindMaximumSpeed())
+				wind = w.GetWindMaximumSpeed();
+			
+			VPPAT_FORCE_WIND_OVERRIDE = true;
+			VPPAT_WIND_OVERRIDE_VAL = wind;
+
 			Overcast o = w.GetOvercast();
 			Fog f = w.GetFog();
 			Rain r = w.GetRain();
-			
-			w.SetWindSpeed(wind);
-			w.SetWindFunctionParams(0.9, 1.0, 100.0);
+
 			o.Set(overcast[0], overcast[1], overcast[2]);
 			f.Set(fog[0],fog[1],fog[2]);
 			r.Set(rain[0],rain[1],rain[2]);
+
+			w.SetWindFunctionParams(wind, wind, -1);
+			w.SetWindSpeed(wind);
 		}
 	}
 	
