@@ -164,13 +164,22 @@ modded class DayZGame
 		}
 		return false;
 	}
-	
+
 	override void OnKeyPress(int key)
 	{
 		super.OnKeyPress(key);
 		if ( key == KeyCode.KC_LSHIFT ) 
 		{
 			m_IsLShiftHolding = true;
+		}
+
+		if ((IsLeftAltHolding() || IsLeftAltHolding()) && key == KeyCode.KC_F4)
+		{
+			LogoutRequestTime();
+			GetMission().Pause();
+			GetCallQueue(CALL_CATEGORY_GUI).Call(GetMission().CreateLogoutMenu, GetGame().GetUIManager().GetMenu());
+			GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetMission().AbortMission, 1000);
+			GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RequestExit, 500, false, 0);
 		}
 	}
 	

@@ -482,7 +482,7 @@ class EspToolsMenu extends AdminHudSubMenu
 						continue;
 					if (obj.IsTree())
 						continue;
-					if (EntityAI.Cast(obj).IsPlayer())
+					if (EntityAI.Cast(obj) && EntityAI.Cast(obj).IsPlayer())
 						continue;
 					if (objectType == string.Empty){
 						AddEntry(obj.GetType(), obj);

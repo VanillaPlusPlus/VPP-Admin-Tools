@@ -1,3 +1,6 @@
+bool VPPAT_FORCE_WIND_OVERRIDE = false;
+float VPPAT_WIND_OVERRIDE_VAL;
+
 modded class ChernarusPlusData
 {
 	override bool WeatherOnBeforeChange(EWeatherPhenomenon type, float actual, float change, float time)

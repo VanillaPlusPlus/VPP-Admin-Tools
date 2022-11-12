@@ -90,7 +90,7 @@ class ClientPlayerListManager : PluginBase
         {
             VPPUser user = new VPPUser(name, id, sessionId);
             m_Users.Insert(user);
-            GetRPCManager().VSendRPC( "RPC_ClientPlayerList", "ReceiveAddData", new Param1<ref VPPUser>(user), true);
+            GetRPCManager().VSendRPC("RPC_ClientPlayerList", "ReceiveAddData", new Param1<ref VPPUser>(user), true);
         }
     }
 
