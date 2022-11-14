@@ -79,20 +79,35 @@ modded class MissionServer
 
                 identity = clientPrepareParams.param1;
 
+                if (GetPermissionManager().HasUserGroup(identity.GetPlainId()))
+                {
+                    VPPATPlayerList.AddReceiver(identity);
+                    VPPATPlayerList.AddEntry(identity.GetId(), identity);
+                    VPPATPlayerList.SyncListToClient(identity);
+                }
+                else
+                {
+                    VPPATPlayerList.AddEntry(identity.GetId(), identity);
+                }
+
                 BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(identity.GetPlainId());
                 if (bannedPlayer != NULL)
                 {
+                    Print("Banned player");
                     BanDuration expireDate = bannedPlayer.expirationDate;
                     string banReason = bannedPlayer.banReason;
                     if (expireDate.Permanent)
-                        banReason += "\n Expiration Date: Permanent";
-                    else
-                        banReason += string.Format("\n Expiration Date %1/%2/%3  %4%5%6",expireDate.Year.ToString(),expireDate.Month.ToString(),expireDate.Day.ToString(),expireDate.Hour.ToString(),":",expireDate.Minute.ToString());
-
-                    if ( !m_KickQueue.Contains(identity.GetPlainId()) )
                     {
+                        banReason += "\n Expiration Date: Permanent";
+                    }else{
+                        banReason += string.Format("\n Expiration Date %1/%2/%3  %4%5%6",expireDate.Year.ToString(),expireDate.Month.ToString(),expireDate.Day.ToString(),expireDate.Hour.ToString(),":",expireDate.Minute.ToString());
+                    }
+
+                    if (!m_KickQueue.Contains(identity.GetPlainId()))
+                    {
+                        Print("Add to ban queue");
                         m_KickQueue.Insert(identity.GetPlainId(), 0);
-                        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, true, identity.GetPlainId(), banReason); 
+                        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, 1/*m_LoginTimeMs*/, true, identity.GetPlainId(), banReason); 
                     }
                 }
                 
@@ -105,12 +120,14 @@ modded class MissionServer
             //Called when a saved player joins (READY STAGE)
             case ClientReadyEventTypeID:
             {
-                Print("ClientReadyEventTypeID");
                 ClientReadyEventParams readyParams;
                 Class.CastTo(readyParams, params);
                 
                 identity = readyParams.param1;
                 player   = PlayerBase.Cast(readyParams.param2);
+
+                VPPATPlayerList.SyncEntryToReceivers(identity.GetId()); //sync player list
+                Print("ClientReadyEventTypeID::SyncEntryToReceivers");
 
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
@@ -125,7 +142,6 @@ modded class MissionServer
             //Called when player joins(new character)/respawns (2nd PREP STAGE)
             case ClientNewEventTypeID:
             {
-                Print("ClientNewEventTypeID");
                 ClientNewEventParams newParams;
                 Class.CastTo(newParams, params);
                 break;
@@ -134,12 +150,14 @@ modded class MissionServer
             //Called when player joins(new character)/respawns (READY STAGE)
             case ClientNewReadyEventTypeID:
             {
-                Print("ClientNewReadyEventTypeID");
                 ClientNewReadyEventParams newReadyParams; //PlayerIdentity, Man
                 Class.CastTo(newReadyParams, params);
 
                 identity = newReadyParams.param1;
                 player   = PlayerBase.Cast(newReadyParams.param2);
+
+                VPPATPlayerList.SyncEntryToReceivers(identity.GetId()); //sync player list
+                Print("ClientNewReadyEventTypeID::SyncEntryToReceivers");
 
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
@@ -154,7 +172,6 @@ modded class MissionServer
             //????
             case ClientReconnectEventTypeID:
             {
-                Print("ClientReconnectEventTypeID");
                 ClientReconnectEventParams reconnectParams;
                 Class.CastTo(reconnectParams, params);
                 
@@ -170,7 +187,6 @@ modded class MissionServer
             //Called when logout is canceled by player before the logout timer expired.
             case LogoutCancelEventTypeID:
             {
-                Print("LogoutCancelEventTypeID");
                 LogoutCancelEventParams logoutCancelParams;
                 Class.CastTo(logoutCancelParams, params);               
                 Class.CastTo(player, logoutCancelParams.param1);
@@ -189,7 +205,6 @@ modded class MissionServer
             //Called for disconnect process start.
             case ClientDisconnectedEventTypeID:
             {
-                Print("ClientDisconnectedEventTypeID");
                 ClientDisconnectedEventParams discoParams;
                 Class.CastTo(discoParams, params);      
                 
@@ -206,9 +221,16 @@ modded class MissionServer
                 }
                 else if (!IsLogoutTimeExpired(player))
                 {
-                    GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), player.VPlayerGetSteamId()));
-                    Print(string.Format("Player \"%1\" (steamid=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), player.VPlayerGetSteamId()));
-                    GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "disconnected early from server (EXIT NOW)."));
+                    string steam64 = player.VPlayerGetSteamId();
+                    GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
+                    Print(string.Format("Player \"%1\" (steamid=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
+                    GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), steam64, "disconnected early from server (EXIT NOW)."));
+                    
+                    if (GetPlayerListManager().HasPlayerInList(steam64))
+                    {
+                        GetPlayerListManager().RemoveUserServer(steam64);
+                        Print("[VPPAT] Updating VPP Sync List! removed: "+ steam64);
+                    }
                 }
                 break;
             }
@@ -230,6 +252,11 @@ modded class MissionServer
         else if (player)
         {
             GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "left the server!"));
+        }
+
+        if (VPPATPlayerList.RemoveEntry(uid))
+        {
+            Print("PlayerDisconnected -> VPPATPlayerList.RemoveEntry ► " + uid);
         }
 
         ScriptInvoker onClientDisconnectedEvent = VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected");    
@@ -370,14 +397,16 @@ modded class MissionServer
             m_KickQueue.Set(id, attempts);
 
             if ( attempts >= m_MaxKickAttempts ){
+                Print("max reached attempts kicking banned player");
                 m_KickQueue.Remove(id);
                 GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
             }
         }
-
+        
         PlayerIdentity identity = GetPermissionManager().GetIdentityById( id );
         if( identity != NULL )
         {
+            Print("Send kick RPC");
             GetSimpleLogger().Log(string.Format("Kicking banned player \"%1\" (steamId=%2) kick message: (%3)", identity.GetName(), id, msg));
             GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
             GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);
@@ -453,6 +482,12 @@ modded class MissionServer
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected from server.", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("Player \"%1\" (steamid=%2) disconnected from server.", identity.GetName(), identity.GetPlainId()));
             
+
+            if (VPPATPlayerList.RemoveEntry(identity.GetId(), true))
+            {
+                Print("HandleOnPlayerDisconnected -> VPPATPlayerList.RemoveEntry ► " + identity.GetId());
+            }
+
             string uid = identity.GetPlainId();
             if (GetPlayerListManager().HasPlayerInList(uid))
             {
