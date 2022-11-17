@@ -113,8 +113,10 @@ class PermissionManager extends ConfigurablePlugin
 		#endif
 
 			//At this point, password matched. Check for a valid user group.
-			Print(string.Format("[Permissions Manager] Admin (%2) (%1) Successfully Logged in!", sender.GetPlainId(), sender.GetName()));
 			bool hasUsergrp = HasUserGroup(sender.GetPlainId());
+			if (hasUsergrp)
+				Print(string.Format("[Permissions Manager] Admin (%2) (%1) Successfully Logged in!", sender.GetPlainId(), sender.GetName()));
+			
         	GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(hasUsergrp), true, sender);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] User was authorized and password accepted."));
 		}
@@ -332,11 +334,25 @@ class PermissionManager extends ConfigurablePlugin
 				AddMembersToGroup(new VPPUser(name, steam64), data.param2, sender.GetPlainId());
 				GetSimpleLogger().Log(string.Format("[PermissionManager] Added \"%1\" (steamid=%2) to user group (%3) by: \"%4\" (steamid=%5)", name, steam64, data.param2, sender.GetName(), sender.GetPlainId()));
 
-				if (player != NULL)
-				{
-					GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, player.GetIdentity());
-					GetPlayerListManager().SendPlayerList(player.GetIdentity());
-				}
+				if (player == NULL)
+					continue;
+
+				PlayerIdentity identity = player.GetIdentity();
+				if (!identity)
+					continue;
+
+				PlayerListManager.AddReceiver(identity);
+				PlayerListManager.SyncListToClient(identity);
+
+				GetRPCManager().SendRPC("RPC_MissionGameplay", "AuthCheck", new Param1<bool>(true), true, identity);
+                if (g_Game.IsPasswordProtectionDisabled())
+                {
+                    GetRPCManager().VSendRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", new Param1<bool>(true), true, identity);
+                }
+                else
+                {
+                	GetRPCManager().VSendRPC("RPC_MissionGameplay", "EnableToggles", new Param1<bool>(true), true, identity);
+                }
 			}
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Adding Users to User Group: " +data.param2 + " Total: " + tmp.Count()));
 		}
@@ -376,8 +392,10 @@ class PermissionManager extends ConfigurablePlugin
 			if (removed)
 			{
 				PlayerIdentity identity = GetIdentityById(data.param1);	
-				if (identity != null){
-					GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
+				if (identity != null)
+				{
+					PlayerListManager.RemoveReceiver(identity);
+					GetRPCManager().VSendRPC("RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
 				}
 			}
 		}
@@ -516,7 +534,10 @@ class PermissionManager extends ConfigurablePlugin
 				{
 					PlayerIdentity identity = GetIdentityById(user.GetUserId());
 					if (identity != null)
+					{
+						PlayerListManager.RemoveReceiver(identity);
 		   				GetRPCManager().VSendRPC( "RPC_MissionGameplay", "EnableToggles", new Param1<bool>(false), true, identity);
+					}
 				}
 				m_UserGroups.RemoveItem(group);
 				delete group;

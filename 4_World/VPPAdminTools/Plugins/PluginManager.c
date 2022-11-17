@@ -13,7 +13,6 @@ modded class PluginManager
 		//----------------------------------------------------------------------
 		//		        Module Class Name 				Client	Server
 		//----------------------------------------------------------------------
-		RegisterPlugin("ClientPlayerListManager",		 true,		true);
 
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{

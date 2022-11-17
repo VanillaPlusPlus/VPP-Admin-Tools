@@ -8,15 +8,14 @@
 * PLAYERS / PLAYERS_CLIENT is everyone
 */
 
-class VPPATPlayerList
+class PlayerListManager
 {
-	static bool InitMaps = Init();
-
-	static ref VPPATPlayerList m_Instance = new VPPATPlayerList();
+	static ref PlayerListManager m_Instance = new PlayerListManager();
 	static ref map<string, PlayerIdentity> PLAYERS; 	//Bohemia UID, Identity ref (server only)
 	static ref map<string, ref VPPUser> PLAYERS_CLIENT; //sending this via RPC to clients (client + server)
 	static ref array<PlayerIdentity> RECEIVERS;			//hold onto administrator identities (server only)
 
+	static bool InitMaps = Init();
 	static bool Init()
 	{
 		PLAYERS = new map<string, PlayerIdentity>;
@@ -25,14 +24,16 @@ class VPPATPlayerList
 		return true;
 	}
 
-	void VPPATPlayerList()
+	void PlayerListManager()
 	{
+		m_Instance = this;
 		g_Game.Event_OnRPC.Insert(OnRPC);
 	}
 
-	void ~VPPATPlayerList()
+	void ~PlayerListManager()
 	{
-		g_Game.Event_OnRPC.Remove(OnRPC);
+		if (g_Game)
+			g_Game.Event_OnRPC.Remove(OnRPC);
 	}
 
 	/*
@@ -45,33 +46,30 @@ class VPPATPlayerList
 #else
 		if (rpc_type == VPPATRPCs.RPC_SYNC_PLAYER_LIST)
 		{
-			VPPATPlayerList.PLAYERS_CLIENT.Clear();
-			if (!ctx.Read(VPPATPlayerList.PLAYERS_CLIENT))
+			map<string, VPPUser> tmp = new map<string, VPPUser>;
+			if (!ctx.Read(tmp))
 			{
 				Print("VPPATRPCs.RPC_SYNC_PLAYER_LIST ~ FAIELD ~");
 				return;
 			}
 
-			VPPATPlayerList.DebugListClient();
+			PlayerListManager.PLAYERS_CLIENT.Clear();
+			PlayerListManager.PLAYERS_CLIENT.Copy(tmp);
+			PlayerListManager.DebugListClient();
 		}
 
 		string uid;
-
 		if (rpc_type == VPPATRPCs.RPC_PLAYERLIST_ADD)
 		{
-			VPPUser data;
-
-			ctx.Read(uid);
-			ctx.Read(data);
-
-			if (uid == string.Empty || !data)
+			ref VPPUser user;
+			if (!ctx.Read(uid) || !ctx.Read(user))
 			{
-				Print("VPPATRPCs.RPC_PLAYERLIST_ADD: took a shite");
+				Print("VPPATRPCs.RPC_PLAYERLIST_ADD: error unable to break down RPC data!");
 				return;
 			}
 
-			bool added = AddEntryClient(uid, data);
-			Print(string.Format("VPPATRPCs.RPC_PLAYERLIST_ADD: %1 %2 %3", uid, data, added));
+			bool added = AddEntryClient(uid, user);
+			Print(string.Format("VPPATRPCs.RPC_PLAYERLIST_ADD: %1 %2 %3", uid, user.GetUserName(), added));
 		}
 
 		if (rpc_type == VPPATRPCs.RPC_PLAYERLIST_REMOVE)
@@ -90,13 +88,13 @@ class VPPATPlayerList
 	*/
 	bool AddEntryClient(string uid, VPPUser data)
 	{
-		if (VPPATPlayerList.PLAYERS_CLIENT.Contains(uid))
+		if (PlayerListManager.PLAYERS_CLIENT.Contains(uid))
 		{
-			VPPATPlayerList.PLAYERS_CLIENT.Set(uid, data);
+			PlayerListManager.PLAYERS_CLIENT.Set(uid, data);
 			return true;
 		}
 
-		VPPATPlayerList.PLAYERS_CLIENT.Insert(uid, data);
+		PlayerListManager.PLAYERS_CLIENT.Insert(uid, data);
 		return true;
 	}
 
@@ -105,12 +103,63 @@ class VPPATPlayerList
 	*/
 	bool RemoveEntryClient(string uid)
 	{
-		if (VPPATPlayerList.PLAYERS_CLIENT.Contains(uid))
+		if (PlayerListManager.PLAYERS_CLIENT.Contains(uid))
 		{
-			VPPATPlayerList.PLAYERS_CLIENT.Remove(uid);
+			PlayerListManager.PLAYERS_CLIENT.Remove(uid);
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	* Give the player count from what World module has. 
+	* Best used to determine if our list is out of sync somehow
+	*/
+	int GetCountActual()
+	{
+		array<Man> players = new array<Man>;
+       	GetGame().GetWorld().GetPlayerList(players);
+       	return players.Count();
+	}
+
+	int GetCount()
+	{
+		if (GetGame().IsDedicatedServer() && GetGame().IsMultiplayer())
+		{
+			return PlayerListManager.PLAYERS.Count();
+		}
+		return PlayerListManager.PLAYERS_CLIENT.Count();
+	}
+	
+	array<ref VPPUser> GetUsers()
+	{
+		//On server only
+		if (GetGame().IsDedicatedServer() && GetGame().IsMultiplayer())
+		{
+			if (PLAYERS_CLIENT.Count() != GetCountActual())
+				PlayerListManager.BuildList(); 
+		}
+
+		array<ref VPPUser> elements = {};
+		for (int i = 0; i < PlayerListManager.PLAYERS_CLIENT.Count(); i++)
+		{
+			elements.Insert(PlayerListManager.PLAYERS_CLIENT.GetElement(i));
+		}
+
+		return elements;
+	}
+
+	/*
+	* Works ONLY with Bohemia ID
+	* Server / Client supported
+	*/
+	bool HasPlayerInList(string id)
+	{
+		if (GetGame().IsDedicatedServer() && GetGame().IsMultiplayer())
+		{
+			return PlayerListManager.PLAYERS[id] != NULL;
+		}
+		return PlayerListManager.PLAYERS_CLIENT[id] != NULL;
 	}
 
 //start-server-methods
@@ -120,7 +169,7 @@ class VPPATPlayerList
 			return; //duplicate check.
 
 		RECEIVERS.Insert(identity);
-		Print("[VPPATPlayerList] AddReceiver ► added: " + identity);
+		Print("[PlayerListManager] AddReceiver ► added: " + identity);
 	}
 
 	static void RemoveReceiver(notnull PlayerIdentity identity)
@@ -129,7 +178,7 @@ class VPPATPlayerList
 		if (identity && index > -1)
 		{
 			RECEIVERS.RemoveOrdered(index);
-			Print("[VPPATPlayerList] RemoveReceiver ► removed: " + identity);
+			Print("[PlayerListManager] RemoveReceiver ► removed: " + identity);
 		}
 	}
 
@@ -157,7 +206,7 @@ class VPPATPlayerList
 		if (PLAYERS.Contains(uid) && (ignoreNull || PLAYERS[uid] == NULL))
 		{
 			PLAYERS.Remove(uid);
-			VPPATPlayerList.SyncEntryToReceivers(uid);
+			PlayerListManager.SyncEntryToReceivers(uid);
 			return true;
 		}
 		return false;
@@ -171,7 +220,7 @@ class VPPATPlayerList
 		if (identity && PLAYERS.Contains(identity.GetId()))
 		{
 			PLAYERS.Remove(identity.GetId());
-			VPPATPlayerList.SyncEntryToReceivers(identity.GetId());
+			PlayerListManager.SyncEntryToReceivers(identity.GetId());
 			return true;
 		}
 		return false;
@@ -181,8 +230,13 @@ class VPPATPlayerList
 	{
 		if (PLAYERS.Count() <= 0)
 		{
-			Error("[VPPATPlayerList] BuildList() ► PLAYERS list is empty!");
-			return;
+			//fail-safe measure incase PLAYERS was wiped, rebuild one from world array
+			array<Man> players = new array<Man>;
+       		GetGame().GetWorld().GetPlayerList(players);
+       		for (int i = 0; i < players.Count(); ++i)
+       		{
+       			PLAYERS.Insert(players[i].GetIdentity().GetId(), players[i].GetIdentity());
+       		}
 		}
 
 		PLAYERS_CLIENT.Clear();
@@ -218,12 +272,15 @@ class VPPATPlayerList
 		if (RECEIVERS.Count() <= 0)
 			return false;
 
+		if (PLAYERS_CLIENT.Count() != GetPlayerListManager().GetCountActual())
+			BuildList();
+
 		int rpc_type = VPPATRPCs.RPC_PLAYERLIST_ADD;
 		PlayerIdentity identity = PLAYERS[uid];
 		
 		if (!PLAYERS.Contains(uid) || !identity)
 		{
-			Print("[VPPATPlayerList] SyncEntryToReceivers ► uid: " + uid + " isn't in the players list! sending a remove.");
+			Print("[PlayerListManager] SyncEntryToReceivers ► uid: " + uid + " isn't in the players list! sending a remove.");
 			rpc_type = VPPATRPCs.RPC_PLAYERLIST_REMOVE;
 		}
 
@@ -232,9 +289,14 @@ class VPPATPlayerList
 
 		if (identity && rpc_type == VPPATRPCs.RPC_PLAYERLIST_ADD)
 		{
-			rpc.Write(new VPPUser(identity.GetName(), identity.GetPlainId(), identity.GetPlayerId()));
+			if (!PLAYERS_CLIENT[uid])
+			{
+				Print("[PlayerListManager] SyncEntryToReceivers:: ERROR! unable to fetch VPPUser ► " + uid);
+				return false;
+			}
+			rpc.Write(PLAYERS_CLIENT[uid]);
 		}
-
+		
 		for (int i = 0; i < RECEIVERS.Count(); ++i)
 		{
 			if (!RECEIVERS[i])
@@ -250,21 +312,26 @@ class VPPATPlayerList
 
 	static void DebugListServer()
 	{
-		Print("[VPPATPlayerList] ~debug~\n");
+		Print("[PlayerListManager] ~debug~\n");
 		foreach(string uid, PlayerIdentity identity : PLAYERS)
 		{
 			Print(string.Format("\t ► uid: %1 identity: %2", uid, identity));
 		}
-		Print("[VPPATPlayerList] Total entries in map: " + PLAYERS.Count());
+		Print("[PlayerListManager] Total entries in map: " + PLAYERS.Count());
 	}
 
 	static void DebugListClient()
 	{
-		Print("[VPPATPlayerList] ~debug~\n");
+		Print("[PlayerListManager] ~debug~\n");
 		foreach(string uid, VPPUser data : PLAYERS_CLIENT)
 		{
 			Print(string.Format("\t ► uid: %1 data: %2 %3 %4", uid, data.GetUserId(), data.GetUserName(), data.GetSessionId()));
 		}
-		Print("[VPPATPlayerList] Total entries in map: " + PLAYERS_CLIENT.Count());
+		Print("[PlayerListManager] Total entries in map: " + PLAYERS_CLIENT.Count());
 	}
+};
+
+PlayerListManager GetPlayerListManager()
+{
+    return PlayerListManager.m_Instance;
 };

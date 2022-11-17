@@ -636,12 +636,8 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private void UpdateEntries()
 	{
 		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerCount", NULL, true);
-		array<ref VPPUser> playerList = GetPlayerListManager().GetUsers();
-		if(playerList)
-		{
-			m_PlayerEntries = Compare(playerList);
-			SendForPlayerStats();
-		}
+		m_PlayerEntries = Compare();
+		SendForPlayerStats();
 	}
 	
 	void SendForPlayerStats()
@@ -663,14 +659,15 @@ class MenuPlayerManager extends AdminHudSubMenu
 		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerStatsGroup", new Param1<ref array<string>>(IDs), true);
 	}
 	
-	private array<ref VPPPlayerEntry> Compare(array<ref VPPUser> b)
+	private array<ref VPPPlayerEntry> Compare()
     {
         array<ref VPPPlayerEntry> new_list = new array<ref VPPPlayerEntry>;		
-		
-		//m_txtPlayerCount.SetText(b.Count().ToString());
-		
-		foreach(VPPUser player : b)
+		array<ref VPPUser> playerList = GetPlayerListManager().GetUsers();
+
+		//m_txtPlayerCount.SetText(playerList.Count().ToString());
+		for (int i = 0; i < playerList.Count(); ++i)
 		{
+			VPPUser player = playerList[i];
 			string id = player.GetUserId();
 			string name = player.GetUserName();
 			VPPPlayerEntry entry = GetPlayerEntry(id);

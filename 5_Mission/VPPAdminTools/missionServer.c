@@ -81,13 +81,13 @@ modded class MissionServer
 
                 if (GetPermissionManager().HasUserGroup(identity.GetPlainId()))
                 {
-                    VPPATPlayerList.AddReceiver(identity);
-                    VPPATPlayerList.AddEntry(identity.GetId(), identity);
-                    VPPATPlayerList.SyncListToClient(identity);
+                    PlayerListManager.AddReceiver(identity);
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
+                    PlayerListManager.SyncListToClient(identity);
                 }
                 else
                 {
-                    VPPATPlayerList.AddEntry(identity.GetId(), identity);
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
                 }
 
                 BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(identity.GetPlainId());
@@ -126,13 +126,13 @@ modded class MissionServer
                 identity = readyParams.param1;
                 player   = PlayerBase.Cast(readyParams.param2);
 
-                VPPATPlayerList.SyncEntryToReceivers(identity.GetId()); //sync player list
+                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
                 Print("ClientReadyEventTypeID::SyncEntryToReceivers");
 
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
                 {
-                    announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetPlainId());
+                    announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetId());
                     onPlayerConnect.Invoke(player, identity, false, announceLogin);
                 }
 
@@ -156,13 +156,13 @@ modded class MissionServer
                 identity = newReadyParams.param1;
                 player   = PlayerBase.Cast(newReadyParams.param2);
 
-                VPPATPlayerList.SyncEntryToReceivers(identity.GetId()); //sync player list
+                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
                 Print("ClientNewReadyEventTypeID::SyncEntryToReceivers");
 
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
                 {
-                    announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetPlainId());
+                    announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetId());
                     onPlayerConnect.Invoke(player, identity, false, announceLogin);
                 }
 
@@ -225,12 +225,6 @@ modded class MissionServer
                     GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
                     Print(string.Format("Player \"%1\" (steamid=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
                     GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), steam64, "disconnected early from server (EXIT NOW)."));
-                    
-                    if (GetPlayerListManager().HasPlayerInList(steam64))
-                    {
-                        GetPlayerListManager().RemoveUserServer(steam64);
-                        Print("[VPPAT] Updating VPP Sync List! removed: "+ steam64);
-                    }
                 }
                 break;
             }
@@ -254,9 +248,9 @@ modded class MissionServer
             GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "left the server!"));
         }
 
-        if (VPPATPlayerList.RemoveEntry(uid))
+        if (PlayerListManager.RemoveEntry(uid))
         {
-            Print("PlayerDisconnected -> VPPATPlayerList.RemoveEntry ► " + uid);
+            Print("PlayerDisconnected -> PlayerListManager.RemoveEntry ► " + uid);
         }
 
         ScriptInvoker onClientDisconnectedEvent = VPPATGetEventHandler().GetEventInvoker("OnPlayerDisconnected");    
@@ -448,12 +442,8 @@ modded class MissionServer
 
         if(identity && player)
         {
-            if(!GetPlayerListManager().HasPlayerInList(identity.GetPlainId()))
-                GetPlayerListManager().AddUserServer(identity.GetName(), identity.GetPlainId(), identity.GetPlayerId());
-            
             if(GetPermissionManager().HasUserGroup(identity.GetPlainId()))
             {
-                GetPlayerListManager().SendPlayerList(identity);
                 GetRPCManager().SendRPC("RPC_MissionGameplay", "AuthCheck", new Param1<bool>(true), true, identity);
                 if (g_Game.IsPasswordProtectionDisabled())
                 {
@@ -483,16 +473,9 @@ modded class MissionServer
             Print(string.Format("Player \"%1\" (steamid=%2) disconnected from server.", identity.GetName(), identity.GetPlainId()));
             
 
-            if (VPPATPlayerList.RemoveEntry(identity.GetId(), true))
+            if (PlayerListManager.RemoveEntry(identity.GetId(), true))
             {
-                Print("HandleOnPlayerDisconnected -> VPPATPlayerList.RemoveEntry ► " + identity.GetId());
-            }
-
-            string uid = identity.GetPlainId();
-            if (GetPlayerListManager().HasPlayerInList(uid))
-            {
-                GetPlayerListManager().RemoveUserServer(uid);
-                Print("[VPPAT] Updating VPP Sync List! removed: "+uid);
+                Print("HandleOnPlayerDisconnected -> PlayerListManager.RemoveEntry ► " + identity.GetId());
             }
         }
     }
