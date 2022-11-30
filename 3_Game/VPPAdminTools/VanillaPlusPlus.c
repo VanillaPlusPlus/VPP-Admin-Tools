@@ -22,6 +22,7 @@ modded class DayZGame
 
 	void DayZGame()
 	{
+		new PlayerListManager();
 		m_VPPDebugMissions = new map<string,string>;
 		Print("[DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.");
 		vppatEventHandler = new VPPEventHandler();

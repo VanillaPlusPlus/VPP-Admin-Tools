@@ -635,6 +635,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	
 	private void UpdateEntries()
 	{
+		GetPlayerListManager().RequestForceSync();
 		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerCount", NULL, true);
 		m_PlayerEntries = Compare();
 		SendForPlayerStats();

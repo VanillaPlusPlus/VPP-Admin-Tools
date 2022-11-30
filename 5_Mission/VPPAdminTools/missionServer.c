@@ -73,27 +73,14 @@ modded class MissionServer
             //Called when player joins/respawns (PREP STAGE)
             case ClientPrepareEventTypeID:
             {
-                Print("ClientPrepareEventTypeID");
                 ClientPrepareEventParams clientPrepareParams;
                 Class.CastTo(clientPrepareParams, params);
 
                 identity = clientPrepareParams.param1;
 
-                if (GetPermissionManager().HasUserGroup(identity.GetPlainId()))
-                {
-                    PlayerListManager.AddReceiver(identity);
-                    PlayerListManager.AddEntry(identity.GetId(), identity);
-                    PlayerListManager.SyncListToClient(identity);
-                }
-                else
-                {
-                    PlayerListManager.AddEntry(identity.GetId(), identity);
-                }
-
                 BannedPlayer bannedPlayer = GetBansManager().GetBannedPlayer(identity.GetPlainId());
                 if (bannedPlayer != NULL)
                 {
-                    Print("Banned player");
                     BanDuration expireDate = bannedPlayer.expirationDate;
                     string banReason = bannedPlayer.banReason;
                     if (expireDate.Permanent)
@@ -105,9 +92,8 @@ modded class MissionServer
 
                     if (!m_KickQueue.Contains(identity.GetPlainId()))
                     {
-                        Print("Add to ban queue");
                         m_KickQueue.Insert(identity.GetPlainId(), 0);
-                        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, 1/*m_LoginTimeMs*/, true, identity.GetPlainId(), banReason); 
+                        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.InvokeKickPlayer, m_LoginTimeMs, true, identity.GetPlainId(), banReason); 
                     }
                 }
                 
@@ -126,8 +112,6 @@ modded class MissionServer
                 identity = readyParams.param1;
                 player   = PlayerBase.Cast(readyParams.param2);
 
-                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
-                Print("ClientReadyEventTypeID::SyncEntryToReceivers");
 
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
@@ -135,6 +119,19 @@ modded class MissionServer
                     announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetId());
                     onPlayerConnect.Invoke(player, identity, false, announceLogin);
                 }
+
+                if (GetPermissionManager().HasUserGroup(identity.GetPlainId()))
+                {
+                    PlayerListManager.AddReceiver(identity);
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
+                    PlayerListManager.SyncListToClient(identity);
+                }
+                else
+                {
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
+                }
+
+                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
 
                 break;
             }
@@ -156,15 +153,25 @@ modded class MissionServer
                 identity = newReadyParams.param1;
                 player   = PlayerBase.Cast(newReadyParams.param2);
 
-                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
-                Print("ClientNewReadyEventTypeID::SyncEntryToReceivers");
-
                 onPlayerConnect = VPPATGetEventHandler().GetEventInvoker("OnPlayerConnect");
                 if(onPlayerConnect)
                 {
                     announceLogin = !GetPlayerListManager().HasPlayerInList(identity.GetId());
                     onPlayerConnect.Invoke(player, identity, false, announceLogin);
                 }
+
+                if (GetPermissionManager().HasUserGroup(identity.GetPlainId()))
+                {
+                    PlayerListManager.AddReceiver(identity);
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
+                    PlayerListManager.SyncListToClient(identity);
+                }
+                else
+                {
+                    PlayerListManager.AddEntry(identity.GetId(), identity);
+                }
+
+                PlayerListManager.SyncEntryToReceivers(identity.GetId()); //sync player list
 
                 break;
             }
@@ -400,7 +407,6 @@ modded class MissionServer
         PlayerIdentity identity = GetPermissionManager().GetIdentityById( id );
         if( identity != NULL )
         {
-            Print("Send kick RPC");
             GetSimpleLogger().Log(string.Format("Kicking banned player \"%1\" (steamId=%2) kick message: (%3)", identity.GetName(), id, msg));
             GetRPCManager().SendRPC( "RPC_MissionGameplay", "KickClientHandle", new Param1<string>( msg ), true, identity);
             GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.InvokeKickPlayer);

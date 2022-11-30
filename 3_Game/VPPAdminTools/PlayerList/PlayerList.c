@@ -10,7 +10,7 @@
 
 class PlayerListManager
 {
-	static ref PlayerListManager m_Instance = new PlayerListManager();
+	static ref PlayerListManager m_Instance;
 	static ref map<string, PlayerIdentity> PLAYERS; 	//Bohemia UID, Identity ref (server only)
 	static ref map<string, ref VPPUser> PLAYERS_CLIENT; //sending this via RPC to clients (client + server)
 	static ref array<PlayerIdentity> RECEIVERS;			//hold onto administrator identities (server only)
@@ -42,7 +42,13 @@ class PlayerListManager
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 #ifdef SERVER
+		if (rpc_type == VPPATRPCs.RPC_PLAYERLIST_FORCESYNC)
+		{
+			if (!sender || !GetGame().IsDedicatedServer())
+				return;
 
+			PlayerListManager.SyncListToClient(sender, true);
+		}
 #else
 		if (rpc_type == VPPATRPCs.RPC_SYNC_PLAYER_LIST)
 		{
@@ -55,7 +61,7 @@ class PlayerListManager
 
 			PlayerListManager.PLAYERS_CLIENT.Clear();
 			PlayerListManager.PLAYERS_CLIENT.Copy(tmp);
-			PlayerListManager.DebugListClient();
+			Print("YUP");
 		}
 
 		string uid;
@@ -112,6 +118,16 @@ class PlayerListManager
 	}
 
 	/*
+	* (client)
+	* Send RPC to server to force build a list and send back to all RECEIVERS
+	*/
+	void RequestForceSync()
+	{
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Send(NULL, VPPATRPCs.RPC_PLAYERLIST_FORCESYNC, true, NULL);
+	}
+
+	/*
 	* Give the player count from what World module has. 
 	* Best used to determine if our list is out of sync somehow
 	*/
@@ -137,7 +153,7 @@ class PlayerListManager
 		if (GetGame().IsDedicatedServer() && GetGame().IsMultiplayer())
 		{
 			if (PLAYERS_CLIENT.Count() != GetCountActual())
-				PlayerListManager.BuildList(); 
+				PlayerListManager.BuildList();
 		}
 
 		array<ref VPPUser> elements = {};
@@ -226,11 +242,11 @@ class PlayerListManager
 		return false;
 	}
 
-	static void BuildList()
+	static void BuildList(bool useWorldPtr = false)
 	{
-		if (PLAYERS.Count() <= 0)
+		if (useWorldPtr || PLAYERS.Count() <= 0)
 		{
-			//fail-safe measure incase PLAYERS was wiped, rebuild one from world array
+			//rebuild one from world array
 			array<Man> players = new array<Man>;
        		GetGame().GetWorld().GetPlayerList(players);
        		for (int i = 0; i < players.Count(); ++i)
@@ -242,6 +258,11 @@ class PlayerListManager
 		PLAYERS_CLIENT.Clear();
 		foreach(string uid, PlayerIdentity identity : PLAYERS)
 		{
+			if (!identity)
+			{
+				Print("[PlayerListManager] UID: " + uid + " no identity");
+				continue;
+			}
 			PLAYERS_CLIENT.Insert(uid, new VPPUser(identity.GetName(), identity.GetPlainId(), identity.GetPlayerId()));
 		}
 	}
@@ -249,12 +270,12 @@ class PlayerListManager
 	/*
 	* Sends entire Sync list to a specified client via RPC
 	*/
-	static void SyncListToClient(notnull PlayerIdentity identity)
+	static void SyncListToClient(notnull PlayerIdentity identity, bool useWorldPtr = false)
 	{
 		if (!identity)
 			return;
 
-		BuildList();
+		BuildList(useWorldPtr);
 
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(PLAYERS_CLIENT);
