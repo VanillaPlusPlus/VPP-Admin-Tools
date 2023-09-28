@@ -37,7 +37,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 		m_CmdTooltips.Insert("/kill", new Param2<string,string>("#VSTR_TOOLTIP_KILL", "<PlayerName> OR self"));
 		m_CmdTooltips.Insert("/strip", new Param2<string,string>("#VSTR_TOOLTIP_STRIP", "<PlayerName> OR self"));
 		m_CmdTooltips.Insert("/clear", new Param2<string,string>("#VSTR_TOOLTIP_CLEAR", ""));
-		if (VPPAT_IsModLoadded("NamalskSurvival")){
+		if (VPPAT_IsModLoadded("Namalsk_Survival")){
 			m_CmdTooltips.Insert("/runevent", new Param2<string,string>("Force start a Namalsk global event, types of events from init.c", "/runevent EVRStorm"));
 		}
 	}
