@@ -309,6 +309,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				}
 
 				//position
+				// not rotate, not y-axis or duplicate
 				if ((!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding()) || (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()))
 				{
 					bld.GetObject().GetCollisionBox(minMax);
