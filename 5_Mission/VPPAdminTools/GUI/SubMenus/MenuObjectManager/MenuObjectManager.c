@@ -200,7 +200,8 @@ class MenuObjectManager extends AdminHudSubMenu
 				return;
 
 			// duplicate items
-			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()) {
+			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding())
+			{
 				// currently selected items
 				array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
 				// deselect all drag handles
@@ -215,6 +216,7 @@ class MenuObjectManager extends AdminHudSubMenu
 					int low, high;
 					// create local copy of building
 					Object localObj = CreateLocal(ogClass, ogPos);
+					localObj.SetOrientation(bld.GetObject().GetOrientation());
 					// get network ids, maybe it initializes them? copied from create
 					localObj.GetNetworkID(low, high);
 					// add building to set list
