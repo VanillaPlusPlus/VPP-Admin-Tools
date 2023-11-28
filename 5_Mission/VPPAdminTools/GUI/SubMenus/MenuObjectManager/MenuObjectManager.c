@@ -44,6 +44,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private ref array<string> m_BuildingSets; //Names of all saved sets (from server)
 	BuildingTracker m_SelectedParent;
 	int keyMsDelay = 0;
+	int duplicated = 0;
 
 	void MenuObjectManager()
 	{
@@ -137,6 +138,11 @@ class MenuObjectManager extends AdminHudSubMenu
 			m_searchBoxCount = newSrchCount;
 		}
 
+		if (input.LocalRelease("UACamTurbo", false)) {
+			// if left shift is released, we can be sure it will be a new copy
+			duplicated = 0;
+		}
+
 		//XML event groups copy
 		if (input.LocalPress("UACopyPositionClipboard", false) && g_Game.IsLShiftHolding())
 		{
@@ -209,8 +215,10 @@ class MenuObjectManager extends AdminHudSubMenu
 				return;
 
 			// duplicate items
-			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding())
+			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding() && !duplicated)
 			{
+				// set to make sure it only happens ONCE
+				duplicated = 1;
 				// currently selected items
 				array<ref SpawnedBuilding> ogBuildings = m_SelectedSetData.GetBuildings();
 				// deselect all drag handles
