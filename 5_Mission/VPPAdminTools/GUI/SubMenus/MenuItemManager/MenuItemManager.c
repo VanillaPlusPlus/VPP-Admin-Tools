@@ -16,6 +16,7 @@ class MenuItemManager extends AdminHudSubMenu
 	private XComboBoxWidget          m_ComboPlacement;
 	private EditBoxWidget          	 m_InputQuantity;
 	private CheckBoxWidget           m_ChkOnSelectedPlayers;
+	private CheckBoxWidget 			 m_ChkUseCESetup;
 	private CheckBoxWidget           m_chkBoxPreview;
 	private Widget 					 m_SavedPresetsWidget;
 	protected ref VPPDropDownMenu 	 m_SavedPresetsDropDown;
@@ -81,6 +82,7 @@ class MenuItemManager extends AdminHudSubMenu
 	 	m_ComboPlacement = XComboBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboPlacement") );
 	 	m_InputQuantity  = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputQuantity") );
 		m_ChkOnSelectedPlayers = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkOnSelectedPlayers") );
+		m_ChkUseCESetup	 = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkUseCESetup") );
 		m_chkBoxPreview  = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkBoxPreview") );
 
 		m_ImgInfoAddPreset = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoAddPreset") );
@@ -184,8 +186,7 @@ class MenuItemManager extends AdminHudSubMenu
 			break;
 			
 			case m_chkBoxPreview:
-				if (m_chkBoxPreview.IsChecked())
-					UpdatePreviewWidget();
+				UpdatePreviewWidget();
 			break;
 		}
 		return false;
@@ -252,9 +253,30 @@ class MenuItemManager extends AdminHudSubMenu
 	
 	void RequestSpawn(bool singleItem = false, string typeName = "")
 	{
-		int quantity = m_InputQuantity.GetText().ToInt();
-		if (quantity <= 0) quantity = -1; //-1 == MAX
-		
+		ItemBase ib = ItemBase.Cast(m_PreviewObject);
+		float quantity = m_InputQuantity.GetText().ToFloat();
+
+		bool isMag = ib.IsMagazine();
+
+		if (m_InputQuantity.GetText() == string.Empty)
+		{
+			if (isMag)
+				quantity = ib.ConfigGetInt("count");
+			else
+				quantity = ib.GetQuantityMax();
+		}
+
+		//Handles mags, ammo etc (clamps it between 0..1)
+		if (ib.HasQuantity())
+		{
+			if (isMag)
+			{
+				quantity = Math.Clamp((quantity - 0.0) / (ib.ConfigGetInt("count") - 0.0), 0, 1);
+			}else{
+				quantity = Math.Clamp((quantity - ib.GetQuantityMin()) / (ib.GetQuantityMax() - ib.GetQuantityMin()), 0, 1);
+			}
+		}
+
 		int condition = m_ComboCondition.GetCurrentItem();
 		int placementType = m_ComboPlacement.GetCurrentItem();
 		string presetName = m_SavedPresetsDropDown.GetText();
@@ -294,9 +316,9 @@ class MenuItemManager extends AdminHudSubMenu
 		
 
 		if (singleItem && typeName != "")
-			GetRPCManager().VSendRPC("RPC_VPPItemManager", "SpawnItem", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(typeName, pos, quantity, condition, placementType, trgIDs)), true, null);
+			GetRPCManager().VSendRPC("RPC_VPPItemManager", "SpawnItem", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(typeName, pos, quantity, condition, placementType, trgIDs, m_ChkUseCESetup.IsChecked())), true, null);
 			else
-			GetRPCManager().VSendRPC("RPC_VPPItemManager", "RemoteSpawnPreset", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(presetName, pos, quantity, condition, placementType, trgIDs)), true, null);
+			GetRPCManager().VSendRPC("RPC_VPPItemManager", "RemoteSpawnPreset", new Param1<ref ItemSpawnParams>(new ItemSpawnParams(presetName, pos, quantity, condition, placementType, trgIDs, m_ChkUseCESetup.IsChecked())), true, null);
 	}
 	
 	void ReloadPresetData()
@@ -400,36 +422,33 @@ class MenuItemManager extends AdminHudSubMenu
 	{
 		if (!IsSubMenuVisible() && !m_loaded) return;
 		
-		if (m_chkBoxPreview.IsChecked())
+		int oRow = m_ItemListBox.GetSelectedRow();
+		string ItemClassName;
+		
+		if (oRow != -1 && oRow != prevRow)
 		{
-			int oRow = m_ItemListBox.GetSelectedRow();
-			string ItemClassName;
+			m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
+			if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
 			
-			if (oRow != -1 && oRow != prevRow)
+			if (m_PreviewObject != null)
 			{
-				m_ItemListBox.GetItemText(oRow, 0, ItemClassName);
-				if (GetGame().IsKindOf( ItemClassName, "dz_lightai" ) || ItemClassName == "") return;
-				
-				if (m_PreviewObject != null)
-				{
-					m_ItemPreview.SetItem(null);
-					GetGame().ObjectDelete(m_PreviewObject);
-				}
-				
-				m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
-				if (m_PreviewObject != null)
-				{
-					m_ItemPreview.SetItem( m_PreviewObject );
-					m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
-					m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
-					m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
-					m_ItemPreview.Show(true);
-				}else{
-					m_ItemPreview.Show(false);
-				}
-				m_ItemOrientation = Vector(0,0,0);
-				prevRow = oRow;
+				m_ItemPreview.SetItem(null);
+				GetGame().ObjectDelete(m_PreviewObject);
 			}
+			
+			m_PreviewObject = EntityAI.Cast(GetGame().CreateObject(ItemClassName,vector.Zero,true,false,false));
+			if (m_PreviewObject != null && m_chkBoxPreview.IsChecked())
+			{
+				m_ItemPreview.SetItem( m_PreviewObject );
+				m_ItemPreview.SetModelPosition( Vector(0,0,0.5) );
+				m_ItemPreview.SetModelOrientation( Vector(0,0,0) );
+				m_ItemPreview.SetView( m_ItemPreview.GetItem().GetViewIndex() );
+				m_ItemPreview.Show(true);
+			}else{
+				m_ItemPreview.Show(false);
+			}
+			m_ItemOrientation = Vector(0,0,0);
+			prevRow = oRow;
 		}
 	}
 	

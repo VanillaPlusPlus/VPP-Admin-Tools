@@ -264,6 +264,8 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (!GetGame().IsClient())
 			return;
 		
+		UnlockPlayerControl();
+		
 		if ( GetVPPUIManager() != NULL)
 			GetVPPUIManager().DestroyMenuInstanceByType(GetType());
 

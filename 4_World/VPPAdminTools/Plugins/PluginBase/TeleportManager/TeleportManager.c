@@ -97,12 +97,14 @@ class TeleportManager : ConfigurablePlugin
 			lowerTownName.ToLower();
 			if(lowerTownName == name)
 			{
-				townPos = g_Game.SnapToGround(location.GetLocation());
+				//townPos = g_Game.SnapToGround(location.GetLocation());
+				townPos = location.GetLocation();
+				break;
 			}
 		}
 		
 		if(townPos == "0 0 0")
-		{	
+		{
 			GetPermissionManager().NotifyPlayer(PlayerBase.Cast(teleportee).VPlayerGetSteamId(), "Invalid Town Name.", NotifyTypes.ERROR);
 			return;
 		}

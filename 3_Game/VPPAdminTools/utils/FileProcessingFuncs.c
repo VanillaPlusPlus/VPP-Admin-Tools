@@ -71,4 +71,62 @@ class FileProcessingFuncs
 			complete = !FindNextFile(fHandle, fileName, fileAtts);
 		}
 	}
+
+	/*
+	* Helper functions to find users drive paths
+	* Credit to: @wrdg#2323 Enfusion Modders Discord.
+	*/
+	static string GetAbsoluteProfileDirectory() // $profile
+	{
+	    string defined;
+	    if (GetGame().CommandlineGetParam("profiles", defined))
+	        return defined;
+
+	    string directory = GetAbsoluteUserDirectory();
+	    if (directory)
+	        return directory + "AppData\\Local\\DayZ\\";
+
+	    return string.Empty;
+	}
+
+	static string GetAbsoluteSavesDirectory() // $saves
+	{
+	    string defined, directory;
+	    if (GetGame().CommandlineGetParam("profiles", defined))
+	    {
+	    	string pName;
+	    	if (!GetGame().CommandlineGetParam("name", pName))
+	    		pName = "Survior";
+	    	
+	        directory = GetAbsoluteUserDirectory(string.Format("%1\\Users\\%2\\", defined, pName));
+	        if (directory)
+	            return directory;
+	    }
+	    else
+	    {
+	        directory = GetAbsoluteUserDirectory();
+	        if (directory)
+	            return directory + "Documents\\DayZ\\";
+	    }
+
+	    return string.Empty;
+	}
+
+	static string GetAbsoluteUserDirectory(string rootDirectory = "$saves:")
+	{
+	    string fileName;
+	    FileAttr fileAttr;
+	    Print("GetAbsoluteUserDirectory:: " + rootDirectory + "*.core.xml");
+	    FindFileHandle file = FindFile(rootDirectory + "*.core.xml", fileName, fileAttr, 0); // just get the first instance (cross fingers)
+
+	    if (file)
+	    {
+	        string username = fileName.Substring(0, fileName.IndexOf(".core.xml"));
+	        CloseFindFile(file);
+	        return string.Format("C:\\Users\\%1\\", username);
+	    }
+
+	    CloseFindFile(file);
+	    return string.Empty;
+	}
 };

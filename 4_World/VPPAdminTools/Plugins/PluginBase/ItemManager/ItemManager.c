@@ -107,10 +107,10 @@ class VPPItemManager: ConfigurablePlugin
 				if (targetPlayer == null) continue;
 				
 				if (params.placementType == PlacementTypes.IN_INVENTORY)
-					parent = CreateEntity(parentType, "0 0 0", params.condition, params.quantity, targetPlayer);
+					parent = CreateEntity(parentType, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer);
 				
 				if (params.placementType == PlacementTypes.ON_GROUND || params.placementType == PlacementTypes.AT_CROSSHAIR)
-					parent = CreateEntity(parentType, targetPlayer.GetPosition(), params.condition, params.quantity);
+					parent = CreateEntity(parentType, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef);
 				
 				items = ToSpawn.GetItemTypes();
 				foreach(string itemType : items)
@@ -118,11 +118,11 @@ class VPPItemManager: ConfigurablePlugin
 					if (parent != null && itemType == parent.GetType() && ToSpawn.IsParent(itemType)) continue;
 					
 					if (parent != null)
-						childEntity = CreateEntity(itemType, "0 0 0", params.condition, params.quantity, parent);
+						childEntity = CreateEntity(itemType, "0 0 0", params.condition, params.quantity, params.useCEDef, parent);
 					else if (params.placementType == PlacementTypes.ON_GROUND || params.placementType == PlacementTypes.AT_CROSSHAIR)
-						childEntity = CreateEntity(itemType, targetPlayer.GetPosition(), params.condition, params.quantity);
+						childEntity = CreateEntity(itemType, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef);
 					else
-						childEntity = CreateEntity(itemType, "0 0 0", params.condition, params.quantity, targetPlayer);
+						childEntity = CreateEntity(itemType, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer);
 				}
 			}
 		}else{
@@ -135,13 +135,13 @@ class VPPItemManager: ConfigurablePlugin
 			}
 			
 			if (params.placementType == PlacementTypes.IN_INVENTORY)
-					parent = CreateEntity(parentType, "0 0 0", params.condition, params.quantity, targetPlayer);
+					parent = CreateEntity(parentType, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer);
 			
 			if (params.placementType == PlacementTypes.ON_GROUND)
-				parent = CreateEntity(parentType, targetPlayer.GetPosition(), params.condition, params.quantity);
+				parent = CreateEntity(parentType, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef);
 			
 			if (params.placementType == PlacementTypes.AT_CROSSHAIR)
-				parent = CreateEntity(parentType, params.position, params.condition, params.quantity);
+				parent = CreateEntity(parentType, params.position, params.condition, params.quantity, params.useCEDef);
 				
 			items = ToSpawn.GetItemTypes();
 			foreach(string typeName : items)
@@ -149,26 +149,28 @@ class VPPItemManager: ConfigurablePlugin
 				if (parent != null && typeName == parent.GetType() && ToSpawn.IsParent(typeName)) continue;
 				
 				if (parent != null)
-					childEntity = CreateEntity(typeName, "0 0 0", params.condition, params.quantity, parent);
+					childEntity = CreateEntity(typeName, "0 0 0", params.condition, params.quantity, params.useCEDef, parent);
 				else if (params.placementType == PlacementTypes.ON_GROUND)
-					childEntity = CreateEntity(typeName, targetPlayer.GetPosition(), params.condition, params.quantity);
+					childEntity = CreateEntity(typeName, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef);
 				else if (params.placementType == PlacementTypes.AT_CROSSHAIR)
-					childEntity = CreateEntity(typeName, params.position, params.condition, params.quantity);
+					childEntity = CreateEntity(typeName, params.position, params.condition, params.quantity, params.useCEDef);
 				else
-					childEntity = CreateEntity(typeName, "0 0 0", params.condition, params.quantity, targetPlayer);
+					childEntity = CreateEntity(typeName, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer);
 			}
 		}
 	}
 	
-	private EntityAI CreateEntity(string type, vector position, float health = -1, int quantity = -1, EntityAI parentEntity = null, bool debugSpawn = false)
+	private EntityAI CreateEntity(string type, vector position, float health, float quantity, bool useCEDef, EntityAI parentEntity = null, bool debugSpawn = false)
 	{
 		EntityAI itemEntity;
 		ItemBase itemBase;
 		bool isAi = GetGame().IsKindOf( type, "DZ_LightAI" ) || GetGame().IsKindOf(type, "SurvivorBase");
 		int iFlags = ECE_SETUP|ECE_KEEPHEIGHT|ECE_PLACE_ON_SURFACE;
-		
+		if (useCEDef)
+			iFlags |= ECE_EQUIP|ECE_EQUIP_CONTAINER;
+
 		if (isAi)
-			iFlags = ECE_INITAI|ECE_CREATEPHYSICS|iFlags;
+			iFlags |= ECE_INITAI|ECE_CREATEPHYSICS;
 
 		if (parentEntity != NULL)
 		{
@@ -183,7 +185,7 @@ class VPPItemManager: ConfigurablePlugin
 		if (Transport.Cast(itemEntity))
 		{
 			dBodyApplyImpulse(itemEntity, vector.Up);
-			if (debugSpawn)
+			if (debugSpawn && !useCEDef)
 				itemEntity.OnDebugSpawn();
 		}
 
@@ -220,16 +222,7 @@ class VPPItemManager: ConfigurablePlugin
 		if (itemEntity.IsInherited(ItemBase) && !isAi)
 		{
 			itemBase = ItemBase.Cast(itemEntity);
-			if (quantity <= -1)
-			{
-				int varQuantityInit = GetGame().ConfigGetInt("cfgVehicles " + itemBase.GetType() + " varQuantityInit");
-				if (varQuantityInit <= -1)
-					varQuantityInit = itemBase.GetQuantityMax();
-				
-				itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), varQuantityInit);
-			}else{
-				itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
-			}
+			itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
 		}
 
 		itemEntity.PlaceOnSurface();
@@ -349,12 +342,12 @@ class VPPItemManager: ConfigurablePlugin
 					switch(params.placementType)
 					{
 						case PlacementTypes.IN_INVENTORY:
-						CreateEntity(params.presetName, "0 0 0", params.condition, params.quantity, targetPlayer, true);
+						CreateEntity(params.presetName, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer, true);
 						break;
 						
 						case PlacementTypes.AT_CROSSHAIR:
 						case PlacementTypes.ON_GROUND:
-						CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity, NULL, true);
+						CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef, NULL, true);
 						break;
 					}
 					GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) Spawned Item: (%3) on \"%4\" (steamid=%5)", sender.GetName(), sender.GetPlainId(), params.presetName, targetPlayer.VPlayerGetName(), targetID));
@@ -373,15 +366,15 @@ class VPPItemManager: ConfigurablePlugin
 				switch(params.placementType)
 				{
 					case PlacementTypes.IN_INVENTORY:
-					CreateEntity(params.presetName, "0 0 0", params.condition, params.quantity, targetPlayer, true);
+					CreateEntity(params.presetName, "0 0 0", params.condition, params.quantity, params.useCEDef, targetPlayer, true);
 					break;
 					
 					case PlacementTypes.AT_CROSSHAIR:
-					CreateEntity(params.presetName, params.position, params.condition, params.quantity, NULL, true);
+					CreateEntity(params.presetName, params.position, params.condition, params.quantity, params.useCEDef, NULL, true);
 					break;
 				
 					case PlacementTypes.ON_GROUND:
-					CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity, NULL, true);
+					CreateEntity(params.presetName, targetPlayer.GetPosition(), params.condition, params.quantity, params.useCEDef, NULL, true);
 					break;
 				}
 			}

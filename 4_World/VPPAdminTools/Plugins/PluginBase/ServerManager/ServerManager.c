@@ -135,7 +135,7 @@ class ServerManager extends PluginBase
 			{
 				if (PlayerBase.Cast(player) != null)
 				{
-					GetPermissionManager().NotifyPlayer(PlayerBase.Cast(player).VPlayerGetSteamId(),"#VSTR_NOTIFY_RESTART_IN"+m_TimeCounter,NotifyTypes.NOTIFY);
+					GetPermissionManager().NotifyPlayer(PlayerBase.Cast(player).VPlayerGetSteamId(),"#VSTR_NOTIFY_RESTART_IN "+m_TimeCounter, NotifyTypes.NOTIFY, 0.2);
 				}
 			}
 		}

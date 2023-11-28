@@ -12,7 +12,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	private ref PopUpNewPositionEditor  m_PopUpPositionEditor;
 	private Widget           m_PopUpPositionEditorWidget;
 	private Widget           m_Main;
-	private MapWidget 	 	 m_Map;
+	MapWidget 	 	 		 m_Map;
 	private ButtonWidget     m_btnAddPos;
 	private ButtonWidget     m_btnEditPos;
 	private ButtonWidget     m_BtnRemove;
@@ -20,6 +20,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 	private ButtonWidget     m_btnRefresh;
 	private CheckBoxWidget   m_ChkTpSelected;
 	private CheckBoxWidget   m_chkSelectAll;
+	private CheckBoxWidget   m_ChkShowMarkers;
 	
 	void MenuTeleportManager()
 	{
@@ -61,6 +62,7 @@ class MenuTeleportManager extends AdminHudSubMenu
 		m_btnTeleport    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnTeleport"));
 		m_ChkTpSelected  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ChkTpSelected"));
 		m_chkSelectAll   = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "chkSelectAll"));
+		m_ChkShowMarkers = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ChkShowMarkers"));
 		
 		GetTeleportPositions();
 		GetRPCManager().VSendRPC( "RPC_TeleportManager", "GetPlayerPositions", null, true, null);
@@ -174,6 +176,16 @@ class MenuTeleportManager extends AdminHudSubMenu
 	void UpdateMapEx()
 	{
 		//Make sure to call super
+
+		//Add Teleport positions markers on map
+		if (m_ChkShowMarkers.IsChecked())
+		{
+			foreach(TeleportEntry entry : m_Entries)
+			{
+				VPPTeleportLocation loc = entry.GetVPPTeleportLocation();
+				m_Map.AddUserMark(loc.GetLocation(), loc.GetName(), ARGB(255,255,0,255), "VPPAdminTools\\GUI\\Textures\\CustomMapIcons\\objective_CA.paa");
+			}
+		}
 	}
 
 	//Called by PopUpNewPositionEditor, by this stage duplication check and proper data check is done.

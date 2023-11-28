@@ -241,7 +241,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		}
 	}
 	
-	//~~depreciated~~
+	//~~deprecated~~
 	void ScanObjects(out map<Object, int> objects, out int totalTime)
 	{
 		int currentIteration = 1;

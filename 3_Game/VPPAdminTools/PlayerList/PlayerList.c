@@ -61,13 +61,12 @@ class PlayerListManager
 
 			PlayerListManager.PLAYERS_CLIENT.Clear();
 			PlayerListManager.PLAYERS_CLIENT.Copy(tmp);
-			Print("YUP");
 		}
 
 		string uid;
 		if (rpc_type == VPPATRPCs.RPC_PLAYERLIST_ADD)
 		{
-			ref VPPUser user;
+			VPPUser user;
 			if (!ctx.Read(uid) || !ctx.Read(user))
 			{
 				Print("VPPATRPCs.RPC_PLAYERLIST_ADD: error unable to break down RPC data!");
