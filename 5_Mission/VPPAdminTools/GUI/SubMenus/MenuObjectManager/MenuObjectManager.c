@@ -201,18 +201,26 @@ class MenuObjectManager extends AdminHudSubMenu
 
 			// duplicate items
 			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()) {
+				// currently selected items
 				array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+				// deselect all drag handles
 				DeselectAllTrackers();
+				// copy the selected items
 				foreach(SpawnedBuilding bld: buildings)
 				{
-					vector childPos = bld.GetObject().GetPosition();
-					string childClass = bld.getObject().GetClassName();
+					// get pos of og building
+					vector ogPos = bld.GetObject().GetPosition();
+					// get class of og building
+					string ogClass = bld.getObject().GetClassName();
 					int low, high;
-					Object localObj = CreateLocal(ItemClassName, childPos);
+					// create local copy of building
+					Object localObj = CreateLocal(ogClass, ogPos);
+					// get network ids, maybe it initializes them? copied from create
 					localObj.GetNetworkID(low, high);
-					AddBuildingEntry(ItemClassName, "0,0", m_SelectedSetData.AddBuildingObject(ItemClassName, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
+					// add building to set list
+					AddBuildingEntry(ogClass, "0,0", m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
+					// select drag handle of new item
 					SetSelectedObject(localObj, false, true);
-					m_SelectedSetData.RemoveBuilding(bld);
 				}
 			}
 
