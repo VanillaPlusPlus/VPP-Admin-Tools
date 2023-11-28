@@ -199,6 +199,23 @@ class MenuObjectManager extends AdminHudSubMenu
 			if (GetVPPUIManager().IsSelectionBoxDrawing() || g_Game.IsLeftCtrlDown())
 				return;
 
+			// duplicate items
+			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()) {
+				array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+				DeselectAllTrackers();
+				foreach(SpawnedBuilding bld: buildings)
+				{
+					vector childPos = bld.GetObject().GetPosition();
+					string childClass = bld.getObject().GetClassName();
+					int low, high;
+					Object localObj = CreateLocal(ItemClassName, childPos);
+					localObj.GetNetworkID(low, high);
+					AddBuildingEntry(ItemClassName, "0,0", m_SelectedSetData.AddBuildingObject(ItemClassName, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
+					SetSelectedObject(localObj, false, true);
+					m_SelectedSetData.RemoveBuilding(bld);
+				}
+			}
+
 			Widget w = GetWidgetUnderCursor();
 			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"))
 			if (!valid)
@@ -222,12 +239,12 @@ class MenuObjectManager extends AdminHudSubMenu
 			worldObject.GetCollisionBox(minMax);
 			vector offSetPos = worldObject.GetPosition();
 
-			if (g_Game.IsLeftAltHolding()) //Z-Only axis
+			if (g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding()) //Z-Only axis
 			{
 				cursor_pos = ray_start + GetGame().GetPointerDirection() * vector.Distance(GetGame().GetCurrentCameraPosition(), worldObject.GetPosition());
 				tm[3][1] = cursor_pos[1];
 			}
-			else if (g_Game.IsLShiftHolding()) //Rotation
+			else if (g_Game.IsLShiftHolding() && !g_Game.IsLeftAltHolding()) //Rotation
 			{
 				vector rotation = worldObject.GetOrientation();
 				float lr = input.LocalValue("UARotateLeft") - input.LocalValue("UARotateRight");
@@ -284,7 +301,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				}
 
 				//position
-				if (!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding())
+				if ((!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding()) || (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()))
 				{
 					bld.GetObject().GetCollisionBox(minMax);
 					vector childPos = bld.GetObject().GetPosition() + offSetPos;
