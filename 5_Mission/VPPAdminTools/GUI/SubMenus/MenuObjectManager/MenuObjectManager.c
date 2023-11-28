@@ -199,33 +199,6 @@ class MenuObjectManager extends AdminHudSubMenu
 			if (GetVPPUIManager().IsSelectionBoxDrawing() || g_Game.IsLeftCtrlDown())
 				return;
 
-			// duplicate items
-			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding())
-			{
-				// currently selected items
-				array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
-				// deselect all drag handles
-				DeselectAllTrackers();
-				// copy the selected items
-				foreach(SpawnedBuilding bld: buildings)
-				{
-					// get pos of og building
-					vector ogPos = bld.GetObject().GetPosition();
-					// get class of og building
-					string ogClass = bld.getObject().GetClassName();
-					int low, high;
-					// create local copy of building
-					Object localObj = CreateLocal(ogClass, ogPos);
-					localObj.SetOrientation(bld.GetObject().GetOrientation());
-					// get network ids, maybe it initializes them? copied from create
-					localObj.GetNetworkID(low, high);
-					// add building to set list
-					AddBuildingEntry(ogClass, "0,0", m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
-					// select drag handle of new item
-					SetSelectedObject(localObj, false, true);
-				}
-			}
-
 			Widget w = GetWidgetUnderCursor();
 			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"))
 			if (!valid)
@@ -234,6 +207,35 @@ class MenuObjectManager extends AdminHudSubMenu
 			Object worldObject = GetSelectedParent().GetTrackingObject();
 			if (!worldObject)
 				return;
+
+			// duplicate items
+			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding())
+			{
+				// currently selected items
+				array<ref SpawnedBuilding> ogBuildings = m_SelectedSetData.GetBuildings();
+				// deselect all drag handles
+				DeselectAllTrackers();
+				// copy the selected items
+				foreach(SpawnedBuilding ogBld: ogBuildings)
+				{	
+					if (!ogBld.GetObject() || ogBld.GetObject() == worldObject)
+						continue;
+					// get pos of og building
+					vector ogPos = ogBld.GetObject().GetPosition();
+					// get class of og building
+					string ogClass = ogBld.GetObject().GetType();
+					int ogLow, ogHigh;
+					// create local copy of building
+					Object localObj = CreateLocal(ogClass, ogPos);
+					localObj.SetOrientation(ogBld.GetObject().GetOrientation());
+					// get network ids, maybe it initializes them? copied from create
+					localObj.GetNetworkID(ogLow, ogHigh);
+					// add building to set list
+					AddBuildingEntry(ogClass, "0,0", m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
+					// select drag handle of new item
+					SetSelectedObject(localObj, false, true);
+				}
+			}
 
 			vector tm[4];
 			worldObject.GetTransform(tm);
