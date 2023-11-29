@@ -76,7 +76,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_chkObjSurfaceSnap = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkObjSurfaceSnap"));
 		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSaveChanges"));
 		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnHelp"));
-	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
+	    	m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
 		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnablePreview"));
 		m_chkShowHideCards = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkShowHideCards"));
 		m_ChkFilterByScope = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkFilterByScope"));
@@ -221,12 +221,12 @@ class MenuObjectManager extends AdminHudSubMenu
 				duplicated = 1;
 				// currently selected items
 				array<ref SpawnedBuilding> ogBuildings = m_SelectedSetData.GetBuildings();
-				// deselect all drag handles
-				DeselectAllTrackers();
+				// currently selected items
+				array<ref SpawnedBuilding> newBuildings = new array<ref SpawnedBuilding>;
 				// copy the selected items
 				foreach(SpawnedBuilding ogBld: ogBuildings)
-				{	
-					if (!ogBld.GetObject() || ogBld.GetObject() == worldObject)
+				{
+					if (!ogBld.GetObject())
 						continue;
 					// get pos of og building
 					vector ogPos = ogBld.GetObject().GetPosition();
@@ -236,12 +236,22 @@ class MenuObjectManager extends AdminHudSubMenu
 					// create local copy of building
 					Object localObj = CreateLocal(ogClass, ogPos);
 					localObj.SetOrientation(ogBld.GetObject().GetOrientation());
-					// get network ids, maybe it initializes them? copied from create
 					localObj.GetNetworkID(ogLow, ogHigh);
-					// add building to set list
-					AddBuildingEntry(ogClass, "0,0", m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj), localObj);
-					// select drag handle of new item
-					SetSelectedObject(localObj, false, true);
+					// create building in game and add it to the set
+					// SpawnedBuilding AddBuildingObject(string name, vector pos, vector orientation, bool active, Object activeObj)
+					SpawnedBuilding newBuilding = m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj);
+					// AddBuildingEntry(string itemDisplayName, string networkId, SpawnedBuilding buildInfo = null, Object localObj = null)
+					// Add to set item list
+					AddBuildingEntry(ogClass, "0,0", newBuilding, localObj);
+					newBuildings.Insert(newBuilding);
+				}
+				// deselect all trackers
+				DeselectAllTrackers();
+				foreach(SpawnedBuilding newBld: newBuildings)
+				{
+					// select tracker of new item
+					// void SetSelectedObject(Object obj, bool showNotification = false, bool forceMultiSelect = false)
+					SetSelectedObject(newBld.getObject(), false, true);
 				}
 			}
 
@@ -348,6 +358,7 @@ class MenuObjectManager extends AdminHudSubMenu
 					bld.GetObject().SetPosition(childPos);
 				}
 			}
+			UpdateTrackerDetails();
 		}
 
 		//Deselection part
@@ -626,7 +637,8 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_ParentGrid.Update();
 		m_LastGrid.GetGrid().Update();
 	}
-	
+
+	// add to sets item list
 	void AddBuildingEntry(string itemDisplayName, string networkId, SpawnedBuilding buildInfo = null, Object localObj = null)
 	{
 		if(m_LastGridItems.GetContentCount() == 100){
