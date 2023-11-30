@@ -228,6 +228,11 @@ class MenuObjectManager extends AdminHudSubMenu
 				{
 					if (!ogBld.GetObject())
 						continue;
+
+					BuildingTracker tracker = GetTrackerByObject(ogBld.GetObject());
+					if (!tracker || !tracker.IsSelected())
+						continue;
+
 					// get pos of og building
 					vector ogPos = ogBld.GetObject().GetPosition();
 					// get class of og building
