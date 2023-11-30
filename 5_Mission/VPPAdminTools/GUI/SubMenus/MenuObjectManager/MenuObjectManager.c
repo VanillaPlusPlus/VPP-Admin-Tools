@@ -251,7 +251,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				{
 					// select tracker of new item
 					// void SetSelectedObject(Object obj, bool showNotification = false, bool forceMultiSelect = false)
-					SetSelectedObject(newBld.getObject(), false, true);
+					SetSelectedObject(newBld.GetObject(), false, true);
 				}
 			}
 
