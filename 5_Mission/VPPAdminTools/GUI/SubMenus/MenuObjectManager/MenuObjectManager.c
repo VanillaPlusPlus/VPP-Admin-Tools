@@ -210,10 +210,6 @@ class MenuObjectManager extends AdminHudSubMenu
 			if (!valid)
 				return;
 
-			Object worldObject = GetSelectedParent().GetTrackingObject();
-			if (!worldObject)
-				return;
-
 			// duplicate items
 			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding() && !duplicated)
 			{
@@ -259,6 +255,10 @@ class MenuObjectManager extends AdminHudSubMenu
 					SetSelectedObject(newBld.GetObject(), false, true);
 				}
 			}
+
+			Object worldObject = GetSelectedParent().GetTrackingObject();
+			if (!worldObject)
+				return;
 
 			vector tm[4];
 			worldObject.GetTransform(tm);
