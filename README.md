@@ -17,5 +17,5 @@ VPP Admin Tools is a feature-rich DayZ Workshop add-on which aims to add adminis
 
 ## Donation Information:
 ### Support the development team! ❤️
-- [DaOne](https://www.paypal.me/duhonez)
+- [DaOne](https://www.dayzvpp.com/donate)
 - [GravityWolf](http://paypal.me/GravityWolf)
