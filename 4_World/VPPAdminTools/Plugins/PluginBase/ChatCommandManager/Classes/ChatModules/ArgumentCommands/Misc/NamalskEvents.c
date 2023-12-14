@@ -3,15 +3,13 @@ class NamalskEvents extends ChatCommand
 	override void ExecuteCommand(PlayerBase caller, array<Man> targets, array<string> args)
     {
         if(caller == null) return;
-
-		Mission ms = GetGame().GetMission();
-		Class eventManager;
-		EnScript.GetClassVar(ms, "m_EventManagerServer", 0, eventManager);
-		
 		string eventTypeStr = args[0];
 		typename eventType = eventTypeStr.ToType();
 		if (eventType && eventType.IsInherited(String("NamEventBase").ToType()))
 		{
+			Class eventManager;
+			GetGame().GameScript.CallFunction(GetGame().GetMission(), "GetNamEventManager", eventManager, null);
+
 			bool isRunning;
 			GetGame().GameScript.CallFunction(eventManager, "IsEventActive", isRunning, eventType);
 			if (isRunning)
