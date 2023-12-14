@@ -44,6 +44,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private ref array<string> m_BuildingSets; //Names of all saved sets (from server)
 	BuildingTracker m_SelectedParent;
 	int keyMsDelay = 0;
+	int duplicated = 0;
 
 	void MenuObjectManager()
 	{
@@ -75,7 +76,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_chkObjSurfaceSnap = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkObjSurfaceSnap"));
 		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSaveChanges"));
 		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnHelp"));
-	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
+	    	m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
 		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnablePreview"));
 		m_chkShowHideCards = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkShowHideCards"));
 		m_ChkFilterByScope = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkFilterByScope"));
@@ -135,6 +136,11 @@ class MenuObjectManager extends AdminHudSubMenu
 			//Update Filter
 			UpdateFilter();
 			m_searchBoxCount = newSrchCount;
+		}
+
+		if (input.LocalRelease("UACamTurbo", false)) {
+			// if left shift is released, we can be sure it will be a new copy
+			duplicated = 0;
 		}
 
 		//XML event groups copy
@@ -204,6 +210,52 @@ class MenuObjectManager extends AdminHudSubMenu
 			if (!valid)
 				return;
 
+			// duplicate items
+			if (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding() && !duplicated)
+			{
+				// set to make sure it only happens ONCE
+				duplicated = 1;
+				// currently selected items
+				array<ref SpawnedBuilding> ogBuildings = m_SelectedSetData.GetBuildings();
+				// currently selected items
+				array<ref SpawnedBuilding> newBuildings = new array<ref SpawnedBuilding>;
+				// copy the selected items
+				foreach(SpawnedBuilding ogBld: ogBuildings)
+				{
+					if (!ogBld.GetObject())
+						continue;
+
+					BuildingTracker ogTracker = GetTrackerByObject(ogBld.GetObject());
+					if (!ogTracker || !ogTracker.IsSelected())
+						continue;
+
+					// get pos of og building
+					vector ogPos = ogBld.GetObject().GetPosition();
+					// get class of og building
+					string ogClass = ogBld.GetObject().GetType();
+					int ogLow, ogHigh;
+					// create local copy of building
+					Object localObj = CreateLocal(ogClass, ogPos);
+					localObj.SetOrientation(ogBld.GetObject().GetOrientation());
+					localObj.GetNetworkID(ogLow, ogHigh);
+					// create building in game and add it to the set
+					// SpawnedBuilding AddBuildingObject(string name, vector pos, vector orientation, bool active, Object activeObj)
+					SpawnedBuilding newBuilding = m_SelectedSetData.AddBuildingObject(ogClass, localObj.GetPosition(), localObj.GetOrientation(), true, localObj);
+					// AddBuildingEntry(string itemDisplayName, string networkId, SpawnedBuilding buildInfo = null, Object localObj = null)
+					// Add to set item list
+					AddBuildingEntry(ogClass, "0,0", newBuilding, localObj);
+					newBuildings.Insert(newBuilding);
+				}
+				// deselect all trackers
+				DeselectAllTrackers();
+				foreach(SpawnedBuilding newBld: newBuildings)
+				{
+					// select tracker of new item
+					// void SetSelectedObject(Object obj, bool showNotification = false, bool forceMultiSelect = false)
+					SetSelectedObject(newBld.GetObject(), false, true);
+				}
+			}
+
 			Object worldObject = GetSelectedParent().GetTrackingObject();
 			if (!worldObject)
 				return;
@@ -222,12 +274,12 @@ class MenuObjectManager extends AdminHudSubMenu
 			worldObject.GetCollisionBox(minMax);
 			vector offSetPos = worldObject.GetPosition();
 
-			if (g_Game.IsLeftAltHolding()) //Z-Only axis
+			if (g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding()) //Z-Only axis
 			{
 				cursor_pos = ray_start + GetGame().GetPointerDirection() * vector.Distance(GetGame().GetCurrentCameraPosition(), worldObject.GetPosition());
 				tm[3][1] = cursor_pos[1];
 			}
-			else if (g_Game.IsLShiftHolding()) //Rotation
+			else if (g_Game.IsLShiftHolding() && !g_Game.IsLeftAltHolding()) //Rotation
 			{
 				vector rotation = worldObject.GetOrientation();
 				float lr = input.LocalValue("UARotateLeft") - input.LocalValue("UARotateRight");
@@ -284,7 +336,8 @@ class MenuObjectManager extends AdminHudSubMenu
 				}
 
 				//position
-				if (!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding())
+				// not rotate, not y-axis or duplicate
+				if ((!g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding()) || (g_Game.IsLShiftHolding() && g_Game.IsLeftAltHolding()))
 				{
 					bld.GetObject().GetCollisionBox(minMax);
 					vector childPos = bld.GetObject().GetPosition() + offSetPos;
@@ -310,6 +363,7 @@ class MenuObjectManager extends AdminHudSubMenu
 					bld.GetObject().SetPosition(childPos);
 				}
 			}
+			UpdateTrackerDetails();
 		}
 
 		//Deselection part
@@ -588,7 +642,8 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_ParentGrid.Update();
 		m_LastGrid.GetGrid().Update();
 	}
-	
+
+	// add to sets item list
 	void AddBuildingEntry(string itemDisplayName, string networkId, SpawnedBuilding buildInfo = null, Object localObj = null)
 	{
 		if(m_LastGridItems.GetContentCount() == 100){
