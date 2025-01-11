@@ -200,7 +200,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				return;
 
 			Widget w = GetWidgetUnderCursor();
-			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"))
+			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"));
 			if (!valid)
 				return;
 
