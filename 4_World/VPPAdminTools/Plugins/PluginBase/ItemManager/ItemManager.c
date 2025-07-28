@@ -222,7 +222,7 @@ class VPPItemManager: ConfigurablePlugin
 		if (itemEntity.IsInherited(ItemBase) && !isAi)
 		{
 			itemBase = ItemBase.Cast(itemEntity);
-			itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
+			SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
 		}
 
 		itemEntity.PlaceOnSurface();

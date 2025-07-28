@@ -67,8 +67,6 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_DataGrids     = new array<ref CustomGridSpacer>;
 		m_PlayerEntries = new array<ref VPPPlayerEntry>;
 		m_PlayerStats   = new array<ref VPPPlayerStats>;
-
-		VPPAdminHud.m_OnUpdate.Insert(this.OnUpdate);
 	}
 	
 	override void OnCreate(Widget RootW)

@@ -10,7 +10,6 @@ class VPPAdminHud extends VPPScriptedMenu
 	private ref array<ref VPPButton> m_Buttons;
 
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
-	static ref ScriptInvoker m_OnUpdate = new ScriptInvoker(); //update queue
 	
 	void VPPAdminHud()
 	{
@@ -45,8 +44,6 @@ class VPPAdminHud extends VPPScriptedMenu
 
 	void ~VPPAdminHud()
 	{
-		if (VPPAdminHud.m_OnUpdate)
-			VPPAdminHud.m_OnUpdate.Clear();
 	}
 	
 	/*
@@ -123,7 +120,7 @@ class VPPAdminHud extends VPPScriptedMenu
 
 	override void HideMenu()
 	{
-		MenuObjectManager objEditor = GetSubMenuByType(MenuObjectManager);
+		MenuObjectManager objEditor = MenuObjectManager.Cast(GetSubMenuByType(MenuObjectManager));
 		if (objEditor && objEditor.IsSubMenuVisible())
 		{
 			objEditor.HideSubMenu();

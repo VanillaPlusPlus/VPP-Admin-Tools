@@ -198,7 +198,7 @@ class MenuItemManager extends AdminHudSubMenu
 		if (w == m_ItemPreview)
 		{
 			GetGame().GetDragQueue().Call(this, "UpdateItemRotation");
-			g_Game.GetMousePos(m_RotationX, m_RotationY);
+			GetMousePos(m_RotationX, m_RotationY);
 			return true;
 		}
 		return false;

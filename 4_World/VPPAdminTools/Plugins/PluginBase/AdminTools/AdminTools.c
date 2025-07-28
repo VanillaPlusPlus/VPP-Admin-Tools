@@ -57,33 +57,20 @@ class AdminTools extends PluginBase
 			if (pb == null)
 				return;
 
-			DayZPlayerImplement dpi = DayZPlayerImplement.Cast(pb);
-
 			if (!data.param1)
 			{
-				//pb.m_VPlayerPosCache = pb.GetPosition();
-				//toggle on
-				//if (!pb.InvisibilityStatus())
-					//pb.VPPSetInvisibility(true, InvisToggleType.SCRIPT);
-
 				//command handler to freeze player
-				if (!dpi.GetCommand_Vehicle())
+				if (!pb.GetCommand_Vehicle())
 				{
-					dpi.InitTablesCmd();
-                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(dpi, dpi.m_VPPCamHmnCmd);
-                	dpi.StartCommand_Script(cmdFS);
+					pb.InitTablesCmd();
+                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(pb, pb.m_VPPCamHmnCmd);
+                	pb.StartCommand_Script(cmdFS);
 				}
 			}
 			else
 			{
-				//toggle off
-				//pb.SetPosition(pb.m_VPlayerPosCache);
-
-				//if (pb.InvisibilityStatus() && pb.InvisibilityToggleType() == InvisToggleType.SCRIPT)
-					//pb.VPPSetInvisibility(false, InvisToggleType.SCRIPT);
-
 				//command handler to unfreeze player
-                HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(dpi.GetCommand_Script());
+                HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(pb.GetCommand_Script());
                 if (hcs)
                 {
                     hcs.SetFlagFinished(true);

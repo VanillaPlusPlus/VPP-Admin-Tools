@@ -50,11 +50,11 @@ class WbEmbed
 	ref array<ref WbField> fields;
 	string timestamp;
 	
-	void WbEmbed(string title = "WebHook Title", int color = 25500, string authorName = "", string authorURL = "", string authorImg = "")
+	void WbEmbed(string ltitle = "WebHook Title", int lcolor = 25500, string authorName = "", string authorURL = "", string authorImg = "")
 	{
 		fields = new array<ref WbField>;
-		this.title = title;
-		this.color = color;
+		this.title = ltitle;
+		this.color = lcolor;
 		author = new WbAuthor();
 		author.SetName(authorName);
 		author.SetURL(authorURL);

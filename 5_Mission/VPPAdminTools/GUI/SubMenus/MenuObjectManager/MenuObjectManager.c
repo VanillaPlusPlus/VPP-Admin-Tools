@@ -200,7 +200,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				return;
 
 			Widget w = GetWidgetUnderCursor();
-			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"))
+			bool valid = (w == NULL || (w && w.GetName() == "BtnSelect") || (w && w.GetName() == "rootFrame"));
 			if (!valid)
 				return;
 
@@ -859,7 +859,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (w == m_ItemPreview && button == MouseState.LEFT)
 		{
 			GetGame().GetDragQueue().Call(this, "UpdateItemRotation");
-			g_Game.GetMousePos(m_RotationX, m_RotationY);
+			GetMousePos(m_RotationX, m_RotationY);
 			return true;
 		}
 		return false;

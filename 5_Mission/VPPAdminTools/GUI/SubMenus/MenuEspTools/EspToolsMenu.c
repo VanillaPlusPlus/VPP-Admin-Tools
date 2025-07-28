@@ -577,7 +577,8 @@ class EspToolsMenu extends AdminHudSubMenu
 		int index = m_EspItemsEntry.Find(entry);
 		if (index > -1)
 		{
-			VPPESPTracker tracker = m_EspTrackers.Get(entry.GetTargetObject());
+			EntityAI targetEnt = EntityAI.Cast(entry.GetTargetObject());
+			VPPESPTracker tracker = VPPESPTracker.Cast(m_EspTrackers.Get(targetEnt));
 			if (tracker)
 			{
 				tracker.SetChecked(false);

@@ -261,7 +261,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		if (w == m_ItemPreviewXML)
 		{
 			GetGame().GetDragQueue().Call(this, "UpdateItemRotation");
-			g_Game.GetMousePos(m_RotationX, m_RotationY);
+			GetMousePos(m_RotationX, m_RotationY);
 			return true;
 		}
 		return false;

@@ -35,7 +35,7 @@ class VPPDebugMission: MissionGameplay
 
     void SpawnPlayer()
     {
-    	m_Player = GetGame().CreatePlayer(NULL, "SurvivorM_Boris", "1256.313 211.82 9349.465"/*GenerateSpawnPosition()*/, 0, "NONE");
+    	m_Player = PlayerBase.Cast(GetGame().CreatePlayer(NULL, "SurvivorM_Boris", "1256.313 211.82 9349.465"/*GenerateSpawnPosition()*/, 0, "NONE"));
     	EquipCharacter(GetGame().GetMenuDefaultCharacterData());
 		GetGame().SelectPlayer(NULL, m_Player);
 		m_Player.SetAllowDamage(false);
