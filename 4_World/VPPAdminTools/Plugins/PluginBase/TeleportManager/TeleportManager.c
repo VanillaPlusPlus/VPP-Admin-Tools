@@ -507,8 +507,7 @@ class TeleportManager : ConfigurablePlugin
 					mat[3] = data.param1;
 					veh.SetTransform(mat);
 					veh.SetPosition(data.param1);
-					for (int i = 0; i < 5; ++i)
-						veh.Synchronize(); //because this game is a meme, and a giant string
+					dBodyApplyImpulse(veh, vector.Up);
 				}
 				else
 				{

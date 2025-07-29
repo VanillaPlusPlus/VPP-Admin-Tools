@@ -255,21 +255,23 @@ class MenuItemManager extends AdminHudSubMenu
 	{
 		ItemBase ib = ItemBase.Cast(m_PreviewObject);
 		float quantity = m_InputQuantity.GetText().ToFloat();
-
-		bool isMag = ib.IsMagazine();
-
-		if (m_InputQuantity.GetText() == string.Empty)
+		
+		string txtQuant = m_InputQuantity.GetText();
+		txtQuant.ToLower();
+		
+		if (txtQuant == "max" || txtQuant == string.Empty)
 		{
-			if (isMag)
+			if (ib.IsMagazine()){
 				quantity = ib.ConfigGetInt("count");
-			else
+			}else{
 				quantity = ib.GetQuantityMax();
+			}
 		}
 
 		//Handles mags, ammo etc (clamps it between 0..1)
 		if (ib.HasQuantity())
 		{
-			if (isMag)
+			if (ib.IsMagazine())
 			{
 				quantity = Math.Clamp((quantity - 0.0) / (ib.ConfigGetInt("count") - 0.0), 0, 1);
 			}else{

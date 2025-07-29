@@ -1,4 +1,5 @@
 FrameWidgetClass rootFrame {
+ ignorepointer 0
  position 0 0
  size 1 0.1
  hexactpos 0
@@ -8,6 +9,7 @@ FrameWidgetClass rootFrame {
  {
   ButtonWidgetClass Button {
    clipchildren 1
+   ignorepointer 0
    color 1 0 0 1
    position 0 0
    size 1 1
@@ -33,8 +35,8 @@ FrameWidgetClass rootFrame {
      image0 ""
      mode blend
      "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     "clamp mode" clamp
+     "stretch mode" stretch_w_h
      "flip u" 0
      "flip v" 0
      filter 1

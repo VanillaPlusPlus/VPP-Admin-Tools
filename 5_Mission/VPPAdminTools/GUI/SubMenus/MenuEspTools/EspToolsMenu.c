@@ -128,6 +128,9 @@ class EspToolsMenu extends AdminHudSubMenu
 				int totalTime = 0;
 				array<EntityAI> entities = new array<EntityAI>;
 				
+				if (!m_InputUpdateInterval || m_FilterEntry == NULL) //break out of thread when UI was destroyed
+					break;
+				
 				M_UPDATE_INTERVAL = m_InputUpdateInterval.GetText().ToInt();
 				if (M_UPDATE_INTERVAL <= 0)
 					M_UPDATE_INTERVAL = 1;

@@ -8,6 +8,16 @@ class VPPAdminHud extends VPPScriptedMenu
 	private ref array<ref AdminHudSubMenu> M_SUB_MENUS;
 	private WrapSpacerWidget m_WrapSpacerWidget;
 	private ref array<ref VPPButton> m_Buttons;
+	private Widget m_IconsPanel;
+
+	protected float   m_HoverProgress;
+    protected bool    m_IsHovered;
+    protected float   m_AnimSpeed = 5.0;  //progress units per second
+    protected float   m_PosOffset = 0.110; //multiplier on pos offset
+
+    //pixel positions for hover effect
+    protected float   m_StartX, m_StartY;
+    protected float   m_EndX,   m_EndY;
 
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
 	
@@ -54,8 +64,23 @@ class VPPAdminHud extends VPPScriptedMenu
 		if (!m_Init)
 		{
 			layoutRoot   	    = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPAdminHud);
+			m_IconsPanel 		= layoutRoot.FindAnyWidget("IconsPanel");
 	  	  	m_WrapSpacerWidget  = WrapSpacerWidget.Cast(layoutRoot.FindAnyWidget("WrapSpacerWidget"));
 			m_Init = true;
+
+	        m_IconsPanel.GetPos(m_StartX, m_StartY);
+
+	        float parentW, parentH;
+	        Widget parent = m_IconsPanel.GetParent();
+	        parent.GetSize(parentW, parentH);
+
+	        float offsetX = parentW * m_PosOffset;
+	        m_EndX   = m_StartX + offsetX;
+	        m_EndY   = m_StartY;
+
+	        m_HoverProgress = 0.0;
+	        m_IsHovered     = false;
+
 			return layoutRoot;
 		}
 		//Call init within children
@@ -128,12 +153,39 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 		super.HideMenu();
 	}
-	
+
 	override void Update(float timeslice)
 	{
 		super.Update(timeslice);
-		foreach(AdminHudSubMenu m : M_SUB_MENUS)
-		{
+
+		//advance or rewind the hover progress
+        float delta = timeslice * m_AnimSpeed;
+        if (m_IsHovered && m_HoverProgress < 1.0)
+        {
+            m_HoverProgress = Math.Min(1.0, m_HoverProgress + delta);
+        }
+   		else if (!m_IsHovered && m_HoverProgress > 0.0)
+   		{
+            m_HoverProgress = Math.Max(0.0, m_HoverProgress - delta);
+        }
+
+        //interpolate pos
+        float curX = m_StartX + (m_EndX - m_StartX) * m_HoverProgress;
+        float curY = m_StartY + (m_EndY - m_StartY) * m_HoverProgress;
+        m_IconsPanel.SetPos(curX, curY);
+
+        Widget w = GetWidgetUnderCursor();
+        if (w == layoutRoot)
+        {
+        	m_IsHovered = false;
+        }
+        else
+        {
+        	if (w && (w.GetName() == "Button" || w == m_IconsPanel || w.GetName() == "ScrollWidget"))
+        		m_IsHovered = true;
+        }
+
+		foreach(AdminHudSubMenu m : M_SUB_MENUS){
 			m.OnUpdate(timeslice);
 		}
 	}
@@ -190,6 +242,6 @@ class VPPAdminHud extends VPPScriptedMenu
 	//toggle hide/show
 	void HideIconsPanel(bool hide)
 	{
-		layoutRoot.FindAnyWidget("IconsPanel").Show(!hide);
+		m_IconsPanel.Show(!hide);
 	}
 };

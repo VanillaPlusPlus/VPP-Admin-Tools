@@ -443,7 +443,7 @@ class VPPScriptedMenu extends UIScriptedMenu
 		return super.OnChange( w, x, y, finished);
 	}
 	
-     override bool OnMouseEnter( Widget w, int x, int y )
+    override bool OnMouseEnter( Widget w, int x, int y )
 	{
 		return super.OnMouseEnter( w, x, y );
 	}

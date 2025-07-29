@@ -27,7 +27,7 @@ WindowWidgetClass hud_root {
    visible 1
    ignorepointer 0
    color 0 0 0 0.7843
-   position 0.003 0.003
+   position -0.11 0.003
    size 0.15 0.75
    halign right_ref
    hexactpos 0
