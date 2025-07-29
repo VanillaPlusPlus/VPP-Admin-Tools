@@ -10,23 +10,37 @@ class HealPlayerChatModule : ChatCommand
         foreach(Man target : targets)
         {
             PlayerBase playerTarget = PlayerBase.Cast(target);
-            if(playerTarget != null)
+            if (playerTarget != null)
             {
                 string targetName = playerTarget.VPlayerGetName();
                 string targetID   = playerTarget.VPlayerGetSteamId();
 
-				playerTarget.SetHealth(playerTarget.GetMaxHealth("", ""));
-				playerTarget.SetHealth( "","Blood", playerTarget.GetMaxHealth("","Blood"));
-                playerTarget.SetHealth("","Shock", playerTarget.GetMaxHealth("","Shock"));
-				playerTarget.GetStatHeatComfort().Set(playerTarget.GetStatHeatComfort().GetMax());
-				playerTarget.GetStatTremor().Set(playerTarget.GetStatTremor().GetMin());
-				playerTarget.GetStatWet().Set(playerTarget.GetStatWet().GetMin());
-				playerTarget.GetStatEnergy().Set(playerTarget.GetStatEnergy().GetMax());
-				playerTarget.GetStatWater().Set(playerTarget.GetStatWater().GetMax());
-				playerTarget.GetStatDiet().Set(playerTarget.GetStatDiet().GetMax());
-				playerTarget.GetStatSpecialty().Set(playerTarget.GetStatSpecialty().GetMax());
-                playerTarget.HealBrokenLegs();
+                DamageSystem.ResetAllZones(playerTarget);
+                playerTarget.GetModifiersManager().ResetAll();
                 
+                //Stats
+                if (playerTarget.GetPlayerStats())
+                {
+                    playerTarget.GetPlayerStats().ResetAllStats();
+
+                    playerTarget.GetStatBloodType().Set(playerTarget.GetStatBloodType().Get());
+                    playerTarget.GetStatHeatComfort().Set(playerTarget.GetStatHeatComfort().GetMax());
+                    playerTarget.GetStatTremor().Set(playerTarget.GetStatTremor().GetMin());
+                    playerTarget.GetStatWet().Set(playerTarget.GetStatWet().GetMin());
+                    playerTarget.GetStatEnergy().Set(playerTarget.GetStatEnergy().GetMax());
+                    playerTarget.GetStatWater().Set(playerTarget.GetStatWater().GetMax());
+                    playerTarget.GetStatDiet().Set(playerTarget.GetStatDiet().GetMax());
+                    playerTarget.GetStatSpecialty().Set(playerTarget.GetStatSpecialty().GetMax());
+                    playerTarget.GetStatHeatBuffer().Set(playerTarget.GetStatHeatBuffer().GetMax());
+                }
+    
+                //Agents
+                playerTarget.RemoveAllAgents();
+                
+                //Broken legs
+                playerTarget.HealBrokenLegs();
+
+                //Bleeding sources
                 if (playerTarget.GetBleedingManagerServer())
                 {
                     int attempts = 0; //Fail safe, so we dont get stuck lol

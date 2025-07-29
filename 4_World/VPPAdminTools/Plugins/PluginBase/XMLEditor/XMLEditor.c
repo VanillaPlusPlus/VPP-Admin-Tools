@@ -83,7 +83,7 @@ class XMLEditor extends PluginBase
 	
 	void GetScanInfo(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<string> data;
+		Param2<string,float> data;
 		if (!ctx.Read(data)) return;
 		
 		if ( type == CallType.Server )
@@ -92,18 +92,20 @@ class XMLEditor extends PluginBase
 			
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[XMLEditor] Started a loot scan for item: " + data.param1));
 			map<string,vector> ItemPositons = new map<string,vector>;
-			array<vector> ScanPockets = GetScanPositions();
-
 			array<EntityAI> entities = new array<EntityAI>;
 
 			string typeTosearch = data.param1;
+			float radius = data.param2;
+
+			vector mapRadius = Vector(radius, 1200.0, radius);
+
 			typename t = typeTosearch.ToType();
 			if (t && (t.IsInherited(CrashBase) || t.IsInherited(House) || t.IsInherited(BuildingSuper)))
 			{
 				//Land_ / House hybrid type search (SLOW!)
-				DayZPlayerUtils.PhysicsGetEntitiesInBox("0.0 -1200.0 0.0", "20000.0 1200.0 20000.0", entities);
+				DayZPlayerUtils.PhysicsGetEntitiesInBox("0.0 -1200.0 0.0", mapRadius, entities);
 			}else{
-				DayZPlayerUtils.SceneGetEntitiesInBox("0.0 -1200.0 0.0", "20000.0 1200.0 20000.0", entities);
+				DayZPlayerUtils.SceneGetEntitiesInBox("0.0 -1200.0 0.0", mapRadius, entities);
 			}
 
 			for (int i = 0; i < entities.Count(); ++i)

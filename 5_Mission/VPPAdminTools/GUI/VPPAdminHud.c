@@ -9,15 +9,15 @@ class VPPAdminHud extends VPPScriptedMenu
 	private WrapSpacerWidget m_WrapSpacerWidget;
 	private ref array<ref VPPButton> m_Buttons;
 	private Widget m_IconsPanel;
-
+	
 	protected float   m_HoverProgress;
-    protected bool    m_IsHovered;
-    protected float   m_AnimSpeed = 5.0;  //progress units per second
-    protected float   m_PosOffset = 0.110; //multiplier on pos offset
-
-    //pixel positions for hover effect
-    protected float   m_StartX, m_StartY;
-    protected float   m_EndX,   m_EndY;
+	protected bool    m_IsHovered;
+	protected float   m_AnimSpeed = 5.0;  //progress units per second
+	protected float   m_PosOffset = 0.110; //multiplier on pos offset
+	
+	//pixel positions for hover effect
+	protected float   m_StartX, m_StartY;
+	protected float   m_EndX,   m_EndY;
 
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
 	

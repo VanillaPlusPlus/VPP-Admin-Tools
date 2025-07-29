@@ -29,8 +29,10 @@ modded class DayZGame
 		GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.RegisterRPCs, 500, false); //Register RPCs after 10 seconds of game boot
 		m_VPPATProfileOptions = new VPPATProfileOptions();
 
-		SetupDebugMission("ChernarusPlus");
-		SetupDebugMission("Enoch");
+		#ifndef SERVER
+			SetupDebugMission("ChernarusPlus");
+			SetupDebugMission("Enoch");
+		#endif
 	}
 
 	void CreateDirectoriesFromPath(string basePath, string path)

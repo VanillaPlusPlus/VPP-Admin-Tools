@@ -454,19 +454,32 @@ class PlayerManager extends PluginBase
 					targetPlayer = GetPermissionManager().GetPlayerBaseByID(id);
 					if (targetPlayer != null)
 					{
-						targetPlayer.SetHealth(targetPlayer.GetMaxHealth("", ""));
-						targetPlayer.SetHealth("","Blood", targetPlayer.GetMaxHealth("","Blood"));
-						targetPlayer.SetHealth("","Shock", targetPlayer.GetMaxHealth("","Shock"));
-						targetPlayer.GetStatHeatComfort().Set(targetPlayer.GetStatHeatComfort().GetMax());
-						targetPlayer.GetStatTremor().Set(targetPlayer.GetStatTremor().GetMin());
-						targetPlayer.GetStatWet().Set(targetPlayer.GetStatWet().GetMin());
-						targetPlayer.GetStatEnergy().Set(targetPlayer.GetStatEnergy().GetMax());
-						targetPlayer.GetStatWater().Set(targetPlayer.GetStatWater().GetMax());
-						targetPlayer.GetStatDiet().Set(targetPlayer.GetStatDiet().GetMax());
-						targetPlayer.GetStatSpecialty().Set(targetPlayer.GetStatSpecialty().GetMax());
-						targetPlayer.GetStatHeatBuffer().Set(targetPlayer.GetStatHeatBuffer().GetMax());
-						
-						targetPlayer.HealBrokenLegs();
+						DamageSystem.ResetAllZones(targetPlayer);
+		                targetPlayer.GetModifiersManager().ResetAll();
+		                
+		                //Stats
+		                if (targetPlayer.GetPlayerStats())
+		                {
+		                    targetPlayer.GetPlayerStats().ResetAllStats();
+
+		                    targetPlayer.GetStatBloodType().Set(targetPlayer.GetStatBloodType().Get());
+		                    targetPlayer.GetStatHeatComfort().Set(targetPlayer.GetStatHeatComfort().GetMax());
+		                    targetPlayer.GetStatTremor().Set(targetPlayer.GetStatTremor().GetMin());
+		                    targetPlayer.GetStatWet().Set(targetPlayer.GetStatWet().GetMin());
+		                    targetPlayer.GetStatEnergy().Set(targetPlayer.GetStatEnergy().GetMax());
+		                    targetPlayer.GetStatWater().Set(targetPlayer.GetStatWater().GetMax());
+		                    targetPlayer.GetStatDiet().Set(targetPlayer.GetStatDiet().GetMax());
+		                    targetPlayer.GetStatSpecialty().Set(targetPlayer.GetStatSpecialty().GetMax());
+		                    targetPlayer.GetStatHeatBuffer().Set(targetPlayer.GetStatHeatBuffer().GetMax());
+		                }
+		    
+		                //Agents
+		                targetPlayer.RemoveAllAgents();
+		                
+		                //Broken legs
+		                targetPlayer.HealBrokenLegs();
+
+						//Bleeding sources
 						if (targetPlayer.GetBleedingManagerServer())
 		                {
 		                    int attempts = 0; //fail safe, so we dont get stuck lol

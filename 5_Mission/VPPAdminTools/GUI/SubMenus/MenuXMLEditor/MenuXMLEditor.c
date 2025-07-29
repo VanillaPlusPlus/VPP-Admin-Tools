@@ -17,6 +17,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private CheckBoxWidget    m_chkEnablePreview;
 	private ImageWidget 	  m_ImgInfoXMLToolTip;
 	private CheckBoxWidget 	  m_filterFromXml;
+	private EditBoxWidget 	  m_InputRadius;
 
 	private Widget 				  m_FilesDropDownWidget;
 	protected ref VPPDropDownMenu m_FilesDropDown;
@@ -71,6 +72,9 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_InputCost = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputCost") );
 		m_SearchBoxXML = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchBoxXML") );
 		m_chkEnablePreview = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview") );
+		
+		m_InputRadius = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputRadius") );
+		m_InputRadius.SetText(GetGame().GetWorld().GetWorldSize().ToString());
 		
 		m_ImgInfoXMLToolTip = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoXMLToolTip") );
 
@@ -129,6 +133,11 @@ class MenuXMLEditor extends AdminHudSubMenu
 		toolTip.SetTitle("#VSTR_XML_TITLE_COST");
 		toolTip.SetContentText("#VSTR_XML_COST");
 		//--
+		m_InputRadius.GetScript(toolTip);
+		toolTip.SetTitle("#VSTR_XML_TITLE_RADIUS");
+		toolTip.SetContentText("#VSTR_XML_RADIUS");
+		//--
+
 		m_Loaded = true;
 		UpdateFilter();
 		GetRPCManager().VSendRPC("RPC_XMLEditor", "GetTypesFiles", NULL, true, NULL);
@@ -214,11 +223,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 			{
 				VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
 				dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Warning!", "The type you have selected will use a slower search method. This will cause a brief server performance lag spike!\nProceed?", this, "OnDiagResultConfirmScan");
-			}
-			else
-			{
-				m_MapScreen = new ItemScanResultScreen();
-				GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);	
+			}else{
+				OnDiagResultConfirmScan(DIAGRESULT.YES);
 			}
 			return true;
 		}
@@ -240,8 +246,12 @@ class MenuXMLEditor extends AdminHudSubMenu
         {
         	string typeName;
         	m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(), 0, typeName);
+        	float radius = m_InputRadius.GetText().ToFloat();
+        	if (radius <= 0)
+        		radius = 20000; //default 
+
         	m_MapScreen = new ItemScanResultScreen();
-        	GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
+        	GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param2<string,float>(typeName, radius), true, null);
         }
     }
 

@@ -145,7 +145,7 @@ class AdminTools extends PluginBase
 				}
 			}
 
-			//Repair existing attachments or create if missing
+			//Repair existing attachments
 			TStringArray SlotNames = new TStringArray;
 			string cfg_path = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
 			GetGame().ConfigGetTextArray(cfg_path, SlotNames);	
@@ -155,29 +155,27 @@ class AdminTools extends PluginBase
 				carSlot.ToLower();
 				int slotId = InventorySlots.GetSlotIdFromString(carSlot);
 				EntityAI attachment = vehicle.GetInventory().FindAttachment(slotId);
-				if (!attachment)
-				{
-					string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
-					typeName.ToLower();
-					if (typeName.Contains("_ruined"))
-						typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
-
-					vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
-				}
-				else
+				if (attachment) 
 				{
 					string partType = attachment.GetType();
 					partType.ToLower();
-					if (partType.Contains("_ruined"))
+					
+					if (attachment.IsInherited(CarDoor))
+					{
+						GetGame().ObjectDelete(attachment);
+						
+						vehicle.GetInventory().CreateInInventory(partType); 
+					}
+					else if (partType.Contains("_ruined"))
 					{
 						partType.Replace("_ruined", "");
 						GetGame().ObjectDelete(attachment);
-						vehicle.GetInventory().CreateInInventory(partType);
+						vehicle.GetInventory().CreateInInventory(partType); 
 					}
 					else
 					{
-						attachment.SetHealthMax("", "Health");
-						attachment.SetSynchDirty();
+						attachment.SetHealthMax("", "Health"); 
+						attachment.SetSynchDirty(); 
 					}
 				}
 			}
