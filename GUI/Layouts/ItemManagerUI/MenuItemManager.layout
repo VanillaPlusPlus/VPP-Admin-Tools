@@ -22,13 +22,13 @@ WindowWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanel
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PanelSearchBox {
      ignorepointer 1
-     position 0.01 0.1
-     size 0.35 0.5
+     position 0.01 0.12
+     size 0.35 0.48
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -46,12 +46,12 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_txt_itm_list {
          ignorepointer 1
          position 0 0
-         size 0.99 1.303
+         size 0.99 1.3
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -59,8 +59,8 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ITEMS_LIST"
-         font "gui/fonts/sdf_MetronLight42"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -72,7 +72,6 @@ WindowWidgetClass rootFrame {
        disabled 0
        clipchildren 1
        inheritalpha 0
-       color 0.6706 0.6706 0.6706 1
        position 0 0
        size 0.98 0.93
        halign center_ref
@@ -84,7 +83,7 @@ WindowWidgetClass rootFrame {
        scaled 1
        style Editor
        "title visible" 0
-       font "gui/fonts/MetronBook16"
+       font "vppadmintools/gui/fonts/InterDisplay-Medium14"
       }
      }
     }
@@ -110,7 +109,7 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       ItemPreviewWidgetClass ItemPreview {
        visible 1
@@ -136,12 +135,12 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_txt_itm_prev {
          ignorepointer 1
          position 0 0
-         size 0.99 1.303
+         size 0.99 1.3
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -149,8 +148,8 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ITEM_PREVIEW"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 20
          "text halign" center
          "text valign" center
@@ -158,20 +157,20 @@ WindowWidgetClass rootFrame {
        }
       }
       CheckBoxWidgetClass chkBoxPreview {
-       position 0.033 0.077
+       position 0.033 0.085
        size 0.939 0.07
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        text "#VSTR_ENABLE_PREVIEW"
-       font "gui/fonts/sdf_MetronLight24"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
      }
     }
     EditBoxWidgetClass SearchInputBox {
      position 0.01 0.04
-     size 0.35 0.03
+     size 0.35 0.05
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -181,7 +180,7 @@ WindowWidgetClass rootFrame {
      text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
-     font "gui/fonts/MetronLight22"
+     font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
     }
     PanelWidgetClass PanelItemSets {
      ignorepointer 1
@@ -198,18 +197,18 @@ WindowWidgetClass rootFrame {
        ignorepointer 1
        color 0 0 0 1
        position 0 0.002
-       size 0.99 0.043
+       size 0.965 0.043
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_presets_text {
          ignorepointer 1
          position 0 0
-         size 0.99 0.892
+         size 0.99 1.3
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -217,8 +216,8 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ITEM_SETS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 22
          "text halign" center
          "text valign" center
@@ -226,9 +225,7 @@ WindowWidgetClass rootFrame {
         ImageWidgetClass ImgInfoAddPreset {
          ignorepointer 0
          color 1 0 0 1
-         position 0.01 0
          size 0.06 0.95
-         halign right_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -240,6 +237,8 @@ WindowWidgetClass rootFrame {
          "src alpha" 1
          "clamp mode" clamp
          "stretch mode" stretch_w_h
+         "flip u" 0
+         "flip v" 0
         }
        }
       }
@@ -263,7 +262,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
         }
         WrapSpacerWidgetClass PresetsDropDown {
          visible 1
@@ -289,12 +288,12 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass title_saved_presets_text {
            ignorepointer 1
            position -0.05 0
-           size 0.99 0.892
+           size 0.99 1.3
            valign center_ref
            hexactpos 0
            vexactpos 0
@@ -302,15 +301,15 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_SAVED_ITEM_SETS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
           }
           ButtonWidgetClass btnRefresh {
            position 0.01 0.01
-           size 0.258 0.8
+           size 0.15 0.84
            halign right_ref
            valign center_ref
            hexactpos 0
@@ -318,8 +317,28 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "#VSTR_LBL_RELOAD"
-           font "gui/fonts/MetronLight14"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           {
+            TextWidgetClass txtBtnRefreshh {
+             ignorepointer 1
+             position 0 0
+             size 1 1
+             halign center_ref
+             valign center_ref
+             hexactpos 0
+             vexactpos 0
+             hexactsize 0
+             vexactsize 0
+             text "↻"
+             font "vppadmintools/gui/fonts/InterDisplay-Bold"
+             "exact text" 0
+             "exact text size" 22
+             "size to text h" 0
+             "size to text v" 0
+             "text halign" center
+             "text valign" center
+            }
+           }
           }
          }
         }
@@ -346,7 +365,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
         }
         WrapSpacerWidgetClass SpacerButtons {
          ignorepointer 1
@@ -375,7 +394,7 @@ WindowWidgetClass rootFrame {
            {
             TextWidgetClass txtbtn {
              ignorepointer 1
-             size 1 1
+             size 1 1.3
              halign center_ref
              valign center_ref
              hexactpos 0
@@ -383,8 +402,8 @@ WindowWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SPAWN_PRESET"
-             font "gui/fonts/sdf_MetronLight24"
-             "exact text" 1
+             font "vppadmintools/gui/fonts/InterDisplay-Regular"
+             "exact text" 0
              "exact text size" 16
              "text halign" center
              "text valign" center
@@ -403,7 +422,7 @@ WindowWidgetClass rootFrame {
            {
             TextWidgetClass txtbtn0 {
              ignorepointer 1
-             size 1 1
+             size 1 1.3
              halign center_ref
              valign center_ref
              hexactpos 0
@@ -411,8 +430,8 @@ WindowWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_CREATE_PRESET"
-             font "gui/fonts/sdf_MetronLight24"
-             "exact text" 1
+             font "vppadmintools/gui/fonts/InterDisplay-Regular"
+             "exact text" 0
              "exact text size" 16
              "text halign" center
              "text valign" center
@@ -431,7 +450,7 @@ WindowWidgetClass rootFrame {
            {
             TextWidgetClass txtbtn1 {
              ignorepointer 1
-             size 1 1
+             size 1 1.3
              halign center_ref
              valign center_ref
              hexactpos 0
@@ -439,8 +458,8 @@ WindowWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_SAVE_CHANGES"
-             font "gui/fonts/sdf_MetronLight24"
-             "exact text" 1
+             font "vppadmintools/gui/fonts/InterDisplay-Regular"
+             "exact text" 0
              "exact text size" 16
              "text halign" center
              "text valign" center
@@ -460,7 +479,7 @@ WindowWidgetClass rootFrame {
            {
             TextWidgetClass txtbtn2 {
              ignorepointer 1
-             size 1 1
+             size 1 1.3
              halign center_ref
              valign center_ref
              hexactpos 0
@@ -468,8 +487,8 @@ WindowWidgetClass rootFrame {
              hexactsize 0
              vexactsize 0
              text "#VSTR_LBL_DELETE_PRESET"
-             font "gui/fonts/sdf_MetronLight24"
-             "exact text" 1
+             font "vppadmintools/gui/fonts/InterDisplay-Regular"
+             "exact text" 0
              "exact text size" 16
              "text halign" center
              "text valign" center
@@ -488,12 +507,12 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass title_txt_prst_action {
            ignorepointer 1
            position 0 0
-           size 0.99 1
+           size 0.99 1.3
            valign center_ref
            hexactpos 0
            vexactpos 0
@@ -501,8 +520,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_PRESET_ACTIONS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 14
            "text halign" center
            "text valign" center
@@ -532,7 +551,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
         }
         ScrollWidgetClass ScrollerItemList {
          ignorepointer 0
@@ -574,12 +593,12 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass title_saved_presets_txt_items {
            ignorepointer 1
            position 0 0
-           size 0.99 1
+           size 0.99 1.3
            valign center_ref
            hexactpos 0
            vexactpos 0
@@ -587,8 +606,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_ITEMS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -619,7 +638,7 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
         }
         PanelWidgetClass title_itemOptions {
          ignorepointer 1
@@ -631,12 +650,12 @@ WindowWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass title_txt_itm_options {
            ignorepointer 1
            position 0 0
-           size 0.99 1
+           size 0.99 1.3
            valign center_ref
            hexactpos 0
            vexactpos 0
@@ -644,8 +663,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_SPAWN_OPTIONS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 14
            "text halign" center
            "text valign" center
@@ -680,8 +699,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_QUANTITY"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 0
            "size to text v" 0
@@ -701,7 +720,7 @@ WindowWidgetClass rootFrame {
            text "MAX"
            "Use default text" 1
            "exact text" 1
-           font "gui/fonts/sdf_MetronLight24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           TextWidgetClass TxtCondition {
            ignorepointer 1
@@ -712,10 +731,10 @@ WindowWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           style Bold
+           style None
            text "#VSTR_LBL_CONDITION"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 0
            "size to text v" 0
@@ -731,7 +750,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style debugUI
-           font "gui/fonts/MetronLight16"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            items "#VSTR_LBL_PRISTINE;#VSTR_LBL_WORN;#VSTR_LBL_DAMAGED;#VSTR_LBL_BADLY_DAMAGED;#VSTR_LBL_RUIEND"
           }
           TextWidgetClass TxtOtherOptions {
@@ -745,8 +764,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_SPAWN_IN"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 0
            "size to text v" 0
@@ -762,7 +781,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            style debugUI
-           font "gui/fonts/MetronLight16"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            items "#VSTR_LBL_IN_INENTORY;#VSTR_LBL_ON_GROUND;#VSTR_LBL_AT_CROSSHAIRS"
           }
           TextWidgetClass TxtOnPlayers {
@@ -776,8 +795,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_OTHER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 0
            "size to text v" 0
@@ -793,7 +812,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_ON_SELECTED_PLAYERS"
-           font "gui/fonts/MetronLight16"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           TextWidgetClass TxtUseCESetup {
            ignorepointer 1
@@ -806,8 +825,8 @@ WindowWidgetClass rootFrame {
            vexactsize 0
            style Bold
            text "#VSTR_LBL_OTHER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 0
            "size to text v" 0
@@ -823,7 +842,7 @@ WindowWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_USE_CE"
-           font "gui/fonts/MetronLight16"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
          }
         }
@@ -832,7 +851,7 @@ WindowWidgetClass rootFrame {
      }
     }
     XComboBoxWidgetClass ComboCatagory {
-     position 0.01 0.07
+     position 0.01 0.09
      size 0.35 0.03
      halign right_ref
      hexactpos 0
@@ -840,7 +859,7 @@ WindowWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      style debugUI
-     font "gui/fonts/Metron-Bold28"
+     font "vppadmintools/gui/fonts/InterDisplay-Medium22"
     }
    }
   }
@@ -871,7 +890,7 @@ WindowWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.3
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -880,7 +899,8 @@ WindowWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_ITEM_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronLight24"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center

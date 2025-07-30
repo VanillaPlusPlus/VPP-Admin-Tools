@@ -1,4 +1,5 @@
 FrameWidgetClass diagFrame {
+ position 0 0
  size 1 1
  halign center_ref
  valign center_ref
@@ -11,7 +12,7 @@ FrameWidgetClass diagFrame {
  {
   PanelWidgetClass BorderOutline {
    ignorepointer 1
-   color 0.9765 0.9765 0.9765 0.549
+   color 1 1 1 0.549
    position 0 0
    size 0.5 0.3
    halign center_ref
@@ -21,7 +22,7 @@ FrameWidgetClass diagFrame {
    hexactsize 0
    vexactsize 0
    priority 1023
-   style DayZDefaultPanel
+   style editor_quad_dark
    {
     PanelWidgetClass PanelMain {
      visible 1
@@ -36,7 +37,7 @@ FrameWidgetClass diagFrame {
      hexactsize 0
      vexactsize 0
      scriptclass ""
-     style DayZDefaultPanel
+     style editor_quad_dark
      {
       PanelWidgetClass TitleImage {
        ignorepointer 1
@@ -51,44 +52,49 @@ FrameWidgetClass diagFrame {
        {
         TextWidgetClass TitleText {
          ignorepointer 1
-         size 1 0.8
+         size 1 1
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Normal
+         scaled 1
+         style None
          text "TITLE"
-         font "gui/fonts/sdf_MetronLight24"
+         font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
          "italic text" 0
          "bold text" 1
          "text sharpness" 3
-         "exact text" 1
+         "exact text" 0
          "exact text size" 24
-         "size to text h" 0
-         "size to text v" 0
+         "size to text h" 1
+         "size to text v" 1
          "text halign" center
          "text valign" center
         }
        }
       }
-      RichTextWidgetClass ContentText {
+      MultilineTextWidgetClass ContentText {
+       clipchildren 0
        ignorepointer 1
-       position 0 0.18
-       size 0.981 0.508
+       position 0 -0.1
+       size 0.8 0.5
        halign center_ref
+       valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       scaled 1
        scriptclass ""
-       text "This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       style DayZNormal
+       text "Are you sure you wish to delete [BandageDressing]?"
+       font "vppadmintools/gui/fonts/InterDisplay-Light"
+       "exact text" 0
        "exact text size" 24
-       "size to text h" 0
-       "size to text v" 0
+       "size to text h" 1
+       "size to text v" 1
        "text halign" center
        wrap 1
       }
@@ -135,8 +141,8 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "YES"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 22
            "text halign" center
            "text valign" center
@@ -165,8 +171,8 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "NO"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 22
            "text halign" center
            "text valign" center
@@ -196,8 +202,8 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "Paste"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 22
            "text halign" center
            "text valign" center
@@ -227,8 +233,8 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "OK"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 22
            "text halign" center
            "text valign" center
@@ -259,8 +265,8 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "CANCEL"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "exact text" 0
            "exact text size" 22
            "text halign" center
            "text valign" center
@@ -271,7 +277,6 @@ FrameWidgetClass diagFrame {
       }
       PanelWidgetClass PanelSplitter {
        ignorepointer 1
-       color 0.8392 0.2039 0.2039 1
        position 0 0.14
        size 0.993 0.018
        halign center_ref
@@ -297,7 +302,7 @@ FrameWidgetClass diagFrame {
        "limit visible" 0
        "Use default text" 1
        "exact text" 1
-       font "gui/fonts/sdf_MetronLight24"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
      }
     }

@@ -1,5 +1,5 @@
 PanelWidgetClass rootFrame {
- size 0.75 0.25
+ size 0.75 0.3
  halign center_ref
  valign center_ref
  hexactpos 0
@@ -12,14 +12,14 @@ PanelWidgetClass rootFrame {
   PanelWidgetClass PnlBg {
    ignorepointer 1
    color 0 0 0 0.9608
-   position 0 0.08
-   size 0.995 0.908
+   position 0 0.14
+   size 0.995 0.85
    halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style editor_quad_dark
   }
   PanelWidgetClass Buttons {
    ignorepointer 1
@@ -43,7 +43,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_APPLY"
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
     }
     ButtonWidgetClass btnCancel {
      position 0.01 0
@@ -55,11 +55,11 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Editor
      text "#VSTR_CANCEL"
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
     }
     CheckBoxWidgetClass PermaTick {
-     position 0 0
-     size 0.35 0.889
+     position 0.1 0
+     size 0.45 0.5
      halign center_ref
      valign bottom_ref
      hexactpos 0
@@ -68,20 +68,22 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Default
      text "#VSTR_BAN_PERMA"
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
     }
    }
   }
   GridSpacerWidgetClass Grid {
    ignorepointer 1
    position 0 0
-   size 0.7 1
+   size 0.5 1
    halign center_ref
    valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   Padding 16
+   Margin 0
    "Size To Content H" 1
    "Size To Content V" 1
    Columns 5
@@ -90,14 +92,14 @@ PanelWidgetClass rootFrame {
     TextWidgetClass year {
      ignorepointer 1
      position 0 0
-     size 0 0
+     size 0 0.2
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      text "#VSTR_YEAR"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -106,14 +108,14 @@ PanelWidgetClass rootFrame {
     TextWidgetClass month {
      ignorepointer 1
      position 0 0
-     size 0 0
+     size 0 0.2
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      text "#VSTR_MONTH"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -122,14 +124,14 @@ PanelWidgetClass rootFrame {
     TextWidgetClass day {
      ignorepointer 1
      position 0 0
-     size 0 0
+     size 0 0.2
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      text "#VSTR_DAY"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -138,14 +140,14 @@ PanelWidgetClass rootFrame {
     TextWidgetClass hour {
      ignorepointer 1
      position 0 0
-     size 0 0
+     size 0 0.2
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      text "#VSTR_HOUR"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -154,14 +156,14 @@ PanelWidgetClass rootFrame {
     TextWidgetClass minute {
      ignorepointer 1
      position 0 0
-     size 0 0
+     size 0 0.2
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
      text "#VSTR_MINUTE"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -175,10 +177,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg4 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -188,8 +192,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
      }
     }
@@ -201,10 +205,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg5 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -214,8 +220,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
      }
     }
@@ -227,10 +233,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg6 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -240,8 +248,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
      }
     }
@@ -253,10 +261,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg7 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -266,8 +276,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
      }
     }
@@ -279,10 +289,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg8 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -292,8 +304,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
      }
     }
@@ -310,7 +322,7 @@ PanelWidgetClass rootFrame {
      text "2019"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "bold text" 1
     }
     EditBoxWidgetClass InputMonth {
@@ -326,7 +338,7 @@ PanelWidgetClass rootFrame {
      text "6"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "bold text" 1
     }
     EditBoxWidgetClass InputDay {
@@ -342,7 +354,7 @@ PanelWidgetClass rootFrame {
      text "25"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "bold text" 1
     }
     EditBoxWidgetClass InputHour {
@@ -358,7 +370,7 @@ PanelWidgetClass rootFrame {
      text "12"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "bold text" 1
     }
     EditBoxWidgetClass InputMinute {
@@ -374,7 +386,7 @@ PanelWidgetClass rootFrame {
      text "30"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "bold text" 1
     }
     ButtonWidgetClass brtnYrDec {
@@ -384,10 +396,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -397,8 +411,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
        rotation 180 0 0
       }
      }
@@ -410,10 +424,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg0 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -423,8 +439,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
        rotation 180 0 0
       }
      }
@@ -436,10 +452,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg1 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -449,8 +467,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
        rotation 180 0 0
       }
      }
@@ -462,10 +480,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg2 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -475,8 +495,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
        rotation 180 0 0
       }
      }
@@ -488,10 +508,12 @@ PanelWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style Empty
+     "no focus" 1
      {
       ImageWidgetClass btnImg3 {
        ignorepointer 1
-       size 1 1
+       size 0.5 1
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -501,8 +523,8 @@ PanelWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:HudMantaHeavy"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
        rotation 180 0 0
       }
      }
@@ -511,9 +533,9 @@ PanelWidgetClass rootFrame {
   }
   ImageWidgetClass title {
    ignorepointer 1
-   color 0.6706 0.6706 0.6706 0.9608
+   color 0 0 0 0.9608
    position 0 0.01
-   size 0.997 0.073
+   size 0.997 0.132
    halign center_ref
    hexactpos 0
    vexactpos 0
@@ -522,13 +544,13 @@ PanelWidgetClass rootFrame {
    image0 "set:dayz_gui image:container_header"
    mode blend
    "src alpha" 1
-   "no wrap" 1
-   stretch 1
+   "clamp mode" clamp
+   "stretch mode" stretch_w_h
    {
     TextWidgetClass title_text {
      ignorepointer 1
      position 0 0
-     size 0.99 1.353
+     size 0.99 1.5
      valign center_ref
      hexactpos 0
      vexactpos 0
@@ -536,7 +558,7 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style Normal
      text "#VSTR_EDIT_DURATION"
-     font "gui/fonts/sdf_MetronBook72"
+     font "vppadmintools/gui/fonts/InterDisplay-Medium"
      "exact text" 0
      "exact text size" 16
      "text halign" center
@@ -548,8 +570,8 @@ PanelWidgetClass rootFrame {
    clipchildren 0
    ignorepointer 0
    color 1 0 0 1
-   position 0.01 0.1
-   size 0.08 0.15
+   position 0.00211 0.00704
+   size 0.06 0.13
    halign right_ref
    hexactpos 0
    vexactpos 0
@@ -559,8 +581,8 @@ PanelWidgetClass rootFrame {
    image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
    mode blend
    "src alpha" 1
-   "no wrap" 1
-   stretch 1
+   "clamp mode" clamp
+   "stretch mode" stretch_w_h
   }
  }
 }

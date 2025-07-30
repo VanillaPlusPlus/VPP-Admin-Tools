@@ -22,7 +22,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PanelBannedPlayers {
@@ -97,7 +97,7 @@ FrameWidgetClass rootFrame {
         TextWidgetClass title_text_players {
          ignorepointer 1
          position 0 0
-         size 0.99 1.353
+         size 0.99 1
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -105,8 +105,8 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_BAN_LIST"
-         font "gui/fonts/sdf_MetronBook24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 22
          "text halign" center
          "text valign" center
@@ -114,7 +114,7 @@ FrameWidgetClass rootFrame {
        }
       }
       CheckBoxWidgetClass ChkSelectAllPlayers {
-       position 0.035 0.01
+       position 0.035 0
        size 0.061 0.068
        hexactpos 0
        vexactpos 0
@@ -124,7 +124,7 @@ FrameWidgetClass rootFrame {
       }
       ButtonWidgetClass BtnRefreshBanList {
        position 0.01 0.005
-       size 0.22 0.06
+       size 0.05 0.06
        halign right_ref
        hexactpos 0
        vexactpos 0
@@ -132,7 +132,8 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        "no focus" 1
-       text "#VSTR_REFRESH"
+       text "↻"
+       font "vppadmintools/gui/fonts/InterDisplay-Bold"
       }
      }
     }
@@ -165,7 +166,7 @@ FrameWidgetClass rootFrame {
        ignorepointer 1
        color 0 0 0 1
        position 0 0.01
-       size 1 0.133
+       size 1 0.12
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -176,7 +177,7 @@ FrameWidgetClass rootFrame {
         TextWidgetClass title_text_info {
          ignorepointer 1
          position 0 0
-         size 0.99 1.353
+         size 0.99 1.2
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -184,8 +185,8 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_DETALIS"
-         font "gui/fonts/sdf_MetronBook24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 22
          "text halign" center
          "text valign" center
@@ -194,8 +195,8 @@ FrameWidgetClass rootFrame {
          clipchildren 0
          ignorepointer 0
          color 1 0 0 1
-         position 0.01 0
-         size 0.07 1
+         position 0 0
+         size 0.05 1
          halign right_ref
          hexactpos 0
          vexactpos 0
@@ -205,15 +206,15 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
          mode blend
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
         }
        }
       }
       GridSpacerWidgetClass ban_info_content {
        ignorepointer 1
        color 0 0 0 0
-       position 0 0
+       position 0 -0.01
        size 1 0
        halign center_ref
        valign bottom_ref
@@ -239,13 +240,14 @@ FrameWidgetClass rootFrame {
          {
           TextWidgetClass PlayerNameLabel {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_NAME"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -253,7 +255,7 @@ FrameWidgetClass rootFrame {
           }
           TextWidgetClass Name {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -261,7 +263,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -280,13 +283,14 @@ FrameWidgetClass rootFrame {
          {
           TextWidgetClass GUIDLabel {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_STEAMID"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -294,7 +298,7 @@ FrameWidgetClass rootFrame {
           }
           TextWidgetClass SteamID {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -302,7 +306,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -321,13 +325,14 @@ FrameWidgetClass rootFrame {
          {
           TextWidgetClass IDLabel {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_GUID"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -335,7 +340,7 @@ FrameWidgetClass rootFrame {
           }
           TextWidgetClass Guid {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -343,7 +348,7 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -363,19 +368,21 @@ FrameWidgetClass rootFrame {
           TextWidgetClass TxtBanReason {
            ignorepointer 1
            position 0 0
-           size 0.16 1
+           size 0.16 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_REASON"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "size to text h" 1
            "size to text v" 1
           }
           TextWidgetClass Reason {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -384,7 +391,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -414,8 +421,8 @@ FrameWidgetClass rootFrame {
              image0 "set:dayz_gui image:icon_feedback"
              mode additive
              "src alpha" 1
-             "no wrap" 1
-             stretch 1
+             "clamp mode" clamp
+             "stretch mode" stretch_w_h
             }
            }
           }
@@ -433,19 +440,20 @@ FrameWidgetClass rootFrame {
           TextWidgetClass TxtBanDuration {
            ignorepointer 1
            position 0 0
-           size 0.16 1
+           size 0.16 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_EXPERIY_DATE"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            "size to text h" 1
            "size to text v" 1
           }
           TextWidgetClass Duration {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -454,7 +462,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -484,8 +492,8 @@ FrameWidgetClass rootFrame {
              image0 "set:dayz_gui image:icon_feedback"
              mode additive
              "src alpha" 1
-             "no wrap" 1
-             stretch 1
+             "clamp mode" clamp
+             "stretch mode" stretch_w_h
             }
            }
           }
@@ -503,19 +511,20 @@ FrameWidgetClass rootFrame {
           TextWidgetClass TxtBanAuthor {
            ignorepointer 1
            position 0 0
-           size 0.16 1
+           size 0.16 1.1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_ISSUED_BY"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
            "size to text h" 1
            "size to text v" 1
           }
           TextWidgetClass BanIssuedBy {
            ignorepointer 1
-           size 1 1
+           size 1 1.1
            halign right_ref
            valign center_ref
            hexactpos 1
@@ -524,7 +533,7 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass ""
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
            "size to text h" 1
            "size to text v" 0
            "text halign" center
@@ -550,7 +559,7 @@ FrameWidgetClass rootFrame {
      style Editor
      "no focus" 1
      text "#VSTR_LBL_REMOVE_SEL_PLAYERS"
-     font "gui/fonts/MetronBook-Bold16"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
     }
     EditBoxWidgetClass SearchInputBox {
      position 0 0.04
@@ -564,7 +573,7 @@ FrameWidgetClass rootFrame {
      text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
     }
    }
   }
@@ -595,7 +604,7 @@ FrameWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.3
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -604,7 +613,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_BAN_LIST_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronBook72"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

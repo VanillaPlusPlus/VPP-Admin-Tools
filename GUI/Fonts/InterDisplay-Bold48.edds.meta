@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{963DABF635539BDB}VPPAdminTools/GUI/Fonts/InterDisplay-Bold48.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1522208002
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Bold48.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{848D703B67CF5BEA}VPPAdminTools/GUI/Fonts/InterDisplay-Regular22.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1735576834
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Regular22.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

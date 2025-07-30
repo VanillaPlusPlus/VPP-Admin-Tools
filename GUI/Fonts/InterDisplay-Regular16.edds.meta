@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{99181C2A1C945208}VPPAdminTools/GUI/Fonts/InterDisplay-Regular16.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1936903426
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Regular16.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

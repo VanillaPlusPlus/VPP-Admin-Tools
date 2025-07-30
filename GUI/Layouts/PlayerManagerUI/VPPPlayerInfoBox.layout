@@ -10,7 +10,7 @@ PanelWidgetClass PanelPlayerDetails {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style DayZDefaultPanel
+ style editor_quad_dark
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
@@ -22,7 +22,7 @@ PanelWidgetClass PanelPlayerDetails {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style editor_quad_dark
   }
   GridSpacerWidgetClass player_info_content {
    ignorepointer 1
@@ -60,8 +60,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_NAME"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -78,8 +78,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "GravityWolfNotAmused"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -106,8 +106,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_STEAMID"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -124,8 +124,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "6942069420"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -152,8 +152,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_GUID"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -162,17 +162,18 @@ PanelWidgetClass PanelPlayerDetails {
       }
       TextWidgetClass Guid {
        ignorepointer 1
-       size 1 1
-       halign right_ref
+       position 40 0
+       size 0.05 1
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "54654654654654654657897987"
-       font "gui/fonts/sdf_MetronLight24"
+       style None
+       text "ARSquuhnL-ciD_3wNR5A2WD0yrwiOgb5QiNC32RuVas="
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
        "exact text" 1
-       "exact text size" 16
+       "exact text size" 19
        "size to text h" 1
        "size to text v" 0
        "text halign" center
@@ -198,8 +199,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_USER_GROUP"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -216,8 +217,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "none"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -247,8 +248,7 @@ PanelWidgetClass PanelPlayerDetails {
        image0 "set:dayz_gui image:iconHealth0"
        mode additive
        "src alpha" 1
-       "no wrap" 1
-       stretch 0
+       "clamp mode" clamp
        filter 1
       }
       TextWidgetClass Health {
@@ -261,8 +261,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "100"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -292,8 +292,7 @@ PanelWidgetClass PanelPlayerDetails {
        image0 "set:dayz_gui image:iconBlood0"
        mode additive
        "src alpha" 1
-       "no wrap" 1
-       stretch 0
+       "clamp mode" clamp
        filter 1
       }
       TextWidgetClass Blood {
@@ -306,8 +305,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "5000"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -337,8 +336,7 @@ PanelWidgetClass PanelPlayerDetails {
        image0 "set:dayz_inventory image:electricity"
        mode additive
        "src alpha" 1
-       "no wrap" 1
-       stretch 0
+       "clamp mode" clamp
        filter 1
       }
       TextWidgetClass Shock {
@@ -351,8 +349,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "100"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -382,8 +380,7 @@ PanelWidgetClass PanelPlayerDetails {
        image0 "set:dayz_inventory image:hands"
        mode additive
        "src alpha" 1
-       "no wrap" 1
-       stretch 0
+       "clamp mode" clamp
        filter 1
       }
       TextWidgetClass Weapon {
@@ -396,8 +393,8 @@ PanelWidgetClass PanelPlayerDetails {
        hexactsize 0
        vexactsize 0
        text "AKM"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
+       "exact text" 0
        "exact text size" 16
        "size to text h" 1
        "size to text v" 0
@@ -427,7 +424,7 @@ PanelWidgetClass PanelPlayerDetails {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_COPY_INFO"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
      }
     }

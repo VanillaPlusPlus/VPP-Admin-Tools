@@ -506,6 +506,7 @@ class PlayerManager extends PluginBase
 					}
 				}
 			}
+			GetPermissionManager().NotifyPlayer(sender.GetPlainId(), "#VSTR_NOTIFY_HEAL", NotifyTypes.NOTIFY);
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PlayerManager] Healing "+ ids.Count() +" Players"));
 		}
 	}

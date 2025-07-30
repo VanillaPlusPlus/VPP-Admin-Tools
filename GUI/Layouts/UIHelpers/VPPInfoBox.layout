@@ -42,8 +42,8 @@ GridSpacerWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "Tool Tip:"
-     font "gui/fonts/sdf_MetronLight24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
+     "exact text" 0
      "exact text size" 18
      "size to text h" 1
      "size to text v" 1
@@ -66,10 +66,10 @@ GridSpacerWidgetClass rootFrame {
    text "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
    "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."\
    "Wikipedia is a multilingual online encyclopedia, based on open collaboration through a wiki-based content editing system. It is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of June 2019."
-   font "gui/fonts/sdf_MetronLight24"
+   font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
    "text offset" 15 0
    "exact text" 1
-   "exact text size" 16
+   "exact text size" 22
    "size to text h" 1
    "size to text v" 1
    wrap 1

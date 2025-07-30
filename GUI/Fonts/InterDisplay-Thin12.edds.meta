@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{405B083325E82146}VPPAdminTools/GUI/Fonts/InterDisplay-Thin12.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1634389250
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Thin12.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

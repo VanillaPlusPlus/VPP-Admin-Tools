@@ -22,14 +22,14 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanel
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PanelButtons {
      ignorepointer 1
      color 1 1 1 0.7059
-     position 0.0155 0.02
-     size 0.46844 0.39
+     position 0.023 0.021
+     size 0.47 0.3877
      halign right_ref
      valign bottom_ref
      hexactpos 0
@@ -42,31 +42,31 @@ FrameWidgetClass rootFrame {
        clipchildren 0
        ignorepointer 1
        color 0 0 0 0.549
-       position 0 0.08
-       size 0.986 0.906
+       position 0 0
+       size 1 0.985
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       PanelWidgetClass timePanel_title {
        ignorepointer 1
        color 0 0 0 1
-       position 0 0.01
-       size 399.10001 26.134
+       position 0 0
+       size 1 33
        halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
        vexactsize 1
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text {
          ignorepointer 1
-         position -0.00054 0
-         size 0.9905 1.353
+         size 0.9905 1
+         halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -74,9 +74,11 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ACTIONS"
-         font "gui/fonts/sdf_MetronLight42"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
          "text halign" center
          "text valign" center
         }
@@ -120,8 +122,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_HEAL_PLAYERS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -150,8 +152,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_KILL_PLAYERS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -179,8 +181,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_FREEZE_PLAYER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -209,8 +211,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_TP_TO_ME"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -238,8 +240,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_TP_ME_TO"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -268,8 +270,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_RETURN_PLAYERS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -298,8 +300,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_KICK_PLAYERS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -328,8 +330,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_BAN_PLAYERS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -357,8 +359,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_SPECTATE_PLAYER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -389,8 +391,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_MAKE_VOMIT"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -420,8 +422,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_GODMODE"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -449,8 +451,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_UNLIM_AMMO"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -479,8 +481,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_SEND_MESSAGE"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -508,8 +510,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_SET_INVIS"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -538,8 +540,8 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            text "Set Scale"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -552,8 +554,8 @@ FrameWidgetClass rootFrame {
     }
     PanelWidgetClass PanelPlayerInfo {
      ignorepointer 1
-     position 0.01 0.078
-     size 0.48 0.517
+     position 0.02 0.0824
+     size 0.473 0.5
      halign right_ref
      hexactpos 0
      vexactpos 0
@@ -562,33 +564,34 @@ FrameWidgetClass rootFrame {
      style blank
      {
       PanelWidgetClass PnlBgDetials {
+       visible 1
        ignorepointer 1
-       color 0 0 0 0.549
-       position 0 0.08
-       size 0.976 0.912
+       color 0.3137 0.3137 0.3137 0.5686
+       position -0.0055 0.06
+       size 1 1
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       PanelWidgetClass player_info_title {
        ignorepointer 1
        color 0 0 0 1
-       position 0 0.01
-       size 406 26
+       position 0 0
+       size 1 33
        halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
        vexactsize 1
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text_players_info {
          ignorepointer 1
          position 0 0
-         size 0.99 1.353
+         size 1 1
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -596,8 +599,8 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_PLAYERS_DETAILS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -655,13 +658,13 @@ FrameWidgetClass rootFrame {
      text "#VSTR_SEARCH"
      "Use default text" 1
      "exact text" 0
-     font "gui/fonts/MetronLight28"
+     font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
     }
     PanelWidgetClass PanelSliders {
      ignorepointer 1
      color 1 1 1 0.7059
-     position 0.02208 0.02018
-     size 0.48 0.39
+     position 0.02302 0.02102
+     size 0.47 0.3877
      valign bottom_ref
      hexactpos 0
      vexactpos 0
@@ -673,30 +676,30 @@ FrameWidgetClass rootFrame {
        ignorepointer 1
        color 0 0 0 0.549
        position 0 0.08
-       size 0.986 0.906
+       size 1 0.906
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       PanelWidgetClass timePanel_title_slider {
        ignorepointer 1
        color 0 0 0 1
-       position 0.0002 0.01
-       size 408.698 26
+       position 0 0
+       size 1 33
        halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
        vexactsize 1
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text_sliders {
          ignorepointer 1
-         position 0.00178 0
-         size 0.98822 1.353
+         size 0.9882 1
+         halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -704,9 +707,11 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_MODIFIERS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
          "text halign" center
          "text valign" center
         }
@@ -743,15 +748,14 @@ FrameWidgetClass rootFrame {
          image0 "set:dayz_gui image:iconHealth0"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 0
+         "clamp mode" clamp
          filter 1
         }
         SliderWidgetClass SliderHealth {
          inheritalpha 0
          ignorepointer 0
          keepsafezone 0
-         color 1 1 1 0.549
+         color 1 1 1 0.3922
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -776,11 +780,12 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style None
            text "Health:[50]"
-           font "gui/fonts/sdf_MetronLight24"
-           "outline size" 2
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+           "outline size" 1
            "outline color" 0 0 0 0.7843
-           "bold text" 1
-           "exact text" 1
+           "italic text" 0
+           "bold text" 0
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -801,12 +806,11 @@ FrameWidgetClass rootFrame {
          image0 "set:dayz_gui image:iconBlood0"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 0
+         "clamp mode" clamp
          filter 1
         }
         SliderWidgetClass SliderBlood {
-         color 1 1 1 0.549
+         color 1 1 1 0.3922
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -832,11 +836,11 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style None
            text "Blood:[2500]"
-           font "gui/fonts/sdf_MetronLight24"
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
            "outline size" 2
            "outline color" 0 0 0 0.7843
            "bold text" 1
-           "exact text" 1
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -857,12 +861,11 @@ FrameWidgetClass rootFrame {
          image0 "set:dayz_inventory image:electricity"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 0
+         "clamp mode" clamp
          filter 1
         }
         SliderWidgetClass SliderShock {
-         color 1 1 1 0.549
+         color 1 1 1 0.3922
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -884,11 +887,11 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style None
            text "Shock:[50]"
-           font "gui/fonts/sdf_MetronLight24"
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
            "outline size" 2
            "outline color" 0 0 0 0.7843
            "bold text" 1
-           "exact text" 1
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -909,12 +912,11 @@ FrameWidgetClass rootFrame {
          image0 "set:dayz_gui image:iconThirsty0"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 0
+         "clamp mode" clamp
          filter 1
         }
         SliderWidgetClass SliderWater {
-         color 1 1 1 0.549
+         color 1 1 1 0.3922
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -939,12 +941,12 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style None
            text "Water:[2500]"
-           font "gui/fonts/sdf_MetronLight24"
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
            "outline size" 2
            "outline color" 0 0 0 0.7843
            "italic text" 0
-           "bold text" 1
-           "exact text" 1
+           "bold text" 0
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -965,12 +967,11 @@ FrameWidgetClass rootFrame {
          image0 "set:dayz_gui image:iconHungry0"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 0
+         "clamp mode" clamp
          filter 1
         }
         SliderWidgetClass SliderEnergy {
-         color 1 1 1 0.549
+         color 1 1 1 0.3922
          position 0.026 0.037
          size 0.8 0.11
          hexactpos 0
@@ -979,9 +980,9 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          scriptclass "SliderEventHandler"
          style Default
-         maximum 20000
+         maximum 5000
          step 10
-         current 10000
+         current 800
          "fill in" 1
          {
           TextWidgetClass SliderEnergyDisplay {
@@ -995,11 +996,11 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            style None
            text "Energy:[10000]"
-           font "gui/fonts/sdf_MetronLight24"
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
            "outline size" 2
            "outline color" 0 0 0 0.7843
            "bold text" 1
-           "exact text" 1
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -1011,6 +1012,7 @@ FrameWidgetClass rootFrame {
        }
       }
       ButtonWidgetClass BtnApplyHealth {
+       disabled 0
        color 1 0 0 1
        position 0.01 0.17
        size 0.07 0.1
@@ -1033,14 +1035,15 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
        }
       }
       ButtonWidgetClass BtnApplyBlood {
+       disabled 0
        color 1 0 0 1
        position 0.01 0.32
        size 0.07 0.1
@@ -1062,8 +1065,8 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
@@ -1092,8 +1095,8 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
@@ -1122,8 +1125,8 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
@@ -1152,8 +1155,8 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
@@ -1183,8 +1186,8 @@ FrameWidgetClass rootFrame {
          image0 "set:ccgui_enforce image:MarkDone"
          mode additive
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          filter 1
          "Transition width" 1
         }
@@ -1195,12 +1198,12 @@ FrameWidgetClass rootFrame {
     WrapSpacerWidgetClass PanelPlayers {
      visible 1
      ignorepointer 1
-     position 20 60
-     size 0.48 0
-     hexactpos 1
-     vexactpos 1
+     position 0.024 0.0849
+     size 0.47 0
+     hexactpos 0
+     vexactpos 0
      hexactsize 0
-     vexactsize 1
+     vexactsize 0
      "no focus" 1
      Padding 0
      Margin 0
@@ -1211,46 +1214,53 @@ FrameWidgetClass rootFrame {
        visible 1
        ignorepointer 1
        color 0 0 0 1
-       size 1 28
+       size 1 33
        halign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass general_text {
          visible 1
+         disabled 0
+         clipchildren 1
+         inheritalpha 0
          ignorepointer 1
          position 0 0
-         size 1 22
+         size 1 1
          halign center_ref
          valign center_ref
-         hexactpos 1
-         vexactpos 1
+         hexactpos 0
+         vexactpos 0
          hexactsize 0
-         vexactsize 1
+         vexactsize 0
+         scaled 1
          style Normal
          text "#VSTR_LBL_PLAYERS_LIST"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
         }
         TextWidgetClass txtPlayerCount {
+         clipchildren 1
          ignorepointer 1
-         position 0.09 0
+         keepsafezone 0
+         position 0.08 0
          size 0.2 1
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Bold
-         text "2/155 (99 Queued)"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         scaled 1
+         style None
+         text "127/127 (+99)"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
+         "exact text" 0
          "exact text size" 12
          "size to text h" 1
          "size to text v" 1
@@ -1269,7 +1279,7 @@ FrameWidgetClass rootFrame {
         }
         ButtonWidgetClass BtnRefreshPlayerList {
          position 0.02 0.15
-         size 0.22 0.7
+         size 0.1 0.7
          halign right_ref
          hexactpos 0
          vexactpos 0
@@ -1281,18 +1291,19 @@ FrameWidgetClass rootFrame {
           TextWidgetClass txtbtnrefresh {
            ignorepointer 1
            position 0 0
-           size 1 1
+           size 1 1.33
            halign center_ref
            valign center_ref
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "#VSTR_REFRESH"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           text "↻"
+           font "vppadmintools/gui/fonts/InterDisplay-Bold"
+           "exact text" 0
            "exact text size" 16
-           "size to text h" 0
+           "size to text h" 1
+           "size to text v" 1
            "text halign" center
            "text valign" center
           }
@@ -1312,9 +1323,9 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Bold
          text "[999]"
-         font "gui/fonts/sdf_MetronLight24"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
          "text color" 0 0.0078 1 1
-         "exact text" 1
+         "exact text" 0
          "exact text size" 12
          "size to text h" 1
          "size to text v" 1
@@ -1332,7 +1343,7 @@ FrameWidgetClass rootFrame {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style Colorable
        Padding 0
        Margin 0
        "Size To Content H" 1
@@ -1344,7 +1355,7 @@ FrameWidgetClass rootFrame {
          ignorepointer 1
          color 0 0 0 0
          position 0 0
-         size 1 326
+         size 1.0025 316.24002
          hexactpos 1
          vexactpos 1
          hexactsize 0
@@ -1395,8 +1406,8 @@ FrameWidgetClass rootFrame {
            vexactsize 0
            scriptclass "ConfirmationEventHandler"
            style Editor
-           text "Add Selected Players To Group"
-           font "gui/fonts/MetronLight14"
+           text "Add to a user group"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
          }
         }
@@ -1433,16 +1444,18 @@ FrameWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.3
      halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Bold
+     scaled 1
+     style None
      text "#VSTR_PLAYER_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronLight24"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -1473,8 +1486,6 @@ FrameWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:Icon28EmptySlot"
        mode additive
        "src alpha" 1
-       "no wrap" 0
-       stretch 0
        filter 1
        nocache 1
       }

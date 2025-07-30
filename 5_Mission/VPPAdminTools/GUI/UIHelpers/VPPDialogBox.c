@@ -26,7 +26,7 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 	protected ButtonWidget   m_Cancel;
 	protected EditBoxWidget  m_InputBox;
 	protected TextWidget     m_TitleText;
-	protected RichTextWidget m_Content;
+	protected MultilineTextWidget m_Content;
 	private string 			 m_ContentText;
 	private Class        	 m_CallBackClass;
 	private string           m_CbFunc = "OnDiagResult";
@@ -46,7 +46,7 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 		editClass.SetStep(1);
 		/* All Buttons are hidden on start */
 		m_TitleText = TextWidget.Cast(m_Root.FindAnyWidget("TitleText"));
-		m_Content   = RichTextWidget.Cast(m_Root.FindAnyWidget("ContentText"));
+		m_Content   = MultilineTextWidget.Cast(m_Root.FindAnyWidget("ContentText"));
 		
 		m_Root.SetSort(1024,true);
 	}

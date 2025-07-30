@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{7017581BB7656CC5}VPPAdminTools/GUI/Fonts/InterDisplay-Light14.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1680542978
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Light14.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

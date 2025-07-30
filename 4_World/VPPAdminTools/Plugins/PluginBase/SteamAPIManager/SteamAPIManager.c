@@ -136,7 +136,7 @@ class SteamAPIManager: ConfigurablePlugin
 		string result   = string.Format("%1/%2", count, maxCount);
 		if (m_ServerDataCache && m_ServerDataCache.GetQueuedPlayers() > 0)
 		{
-			result += string.Format(" (%1 Queued)", m_ServerDataCache.GetQueuedPlayers());
+			result += string.Format(" (+%1)", m_ServerDataCache.GetQueuedPlayers());
 		}
 		return result;
 	}

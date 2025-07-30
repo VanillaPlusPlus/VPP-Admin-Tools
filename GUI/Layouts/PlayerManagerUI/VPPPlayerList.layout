@@ -11,7 +11,7 @@ PanelWidgetClass PanelPlayer {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style DayZDefaultPanel
+ style editor_quad_dark
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
@@ -24,7 +24,7 @@ PanelWidgetClass PanelPlayer {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style editor_quad_dark
   }
   GridSpacerWidgetClass player_content {
    ignorepointer 0
@@ -63,7 +63,7 @@ PanelWidgetClass PanelPlayer {
        hexactsize 0
        vexactsize 0
        text "DaOne"
-       font "gui/fonts/sdf_MetronLight24"
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
        "text outline size" 1
        "text outline color" 0 0 0 0.9961
        "text shadow color" 0 0 0 0
