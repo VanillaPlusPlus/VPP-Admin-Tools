@@ -20,7 +20,7 @@ GridSpacerWidgetClass rootFrameEsp {
    visible 1
    clipchildren 0
    ignorepointer 0
-   color 0 0 0 0.7843
+   color 0 0 0 0.7059
    position 0 0
    size 0.72047 0.97718
    valign center_ref
@@ -34,14 +34,13 @@ GridSpacerWidgetClass rootFrameEsp {
    "Size To Content H" 1
    "Size To Content V" 1
    content_halign center
-   content_valign center
    Rows 1
    {
     CheckBoxWidgetClass CheckBox {
      visible 1
      inheritalpha 0
      ignorepointer 0
-     color 1 0 0 0.5882
+     color 1 0 0 0.3922
      position 0 0
      size 15 15
      hexactpos 1
@@ -62,8 +61,8 @@ GridSpacerWidgetClass rootFrameEsp {
      scaled 1
      style Normal
      text "M4A1M4A1M4A1M4A1M4A1"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Medium"
+     "exact text" 0
      "exact text size" 11
      "size to text h" 1
      "size to text v" 1
@@ -83,8 +82,8 @@ GridSpacerWidgetClass rootFrameEsp {
      vexactsize 0
      style Bold
      text "[1250m]"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
+     font "vppadmintools/gui/fonts/InterDisplay-Medium"
+     "exact text" 0
      "exact text size" 11
      "size to text h" 1
      "size to text v" 1

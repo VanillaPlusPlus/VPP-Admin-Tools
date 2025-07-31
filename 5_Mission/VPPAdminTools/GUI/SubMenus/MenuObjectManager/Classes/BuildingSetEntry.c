@@ -19,7 +19,7 @@ class BuildingSetEntry : VPPPlayerTemplate
 		m_EditItem   = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
 		
 		m_DeleteItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
-		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2"+itemSetName+"#VSTR_ESP_DEL_CONFIRM_3");
+		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2 "+itemSetName+" #VSTR_ESP_DEL_CONFIRM_3");
 		
         m_SetNameWidget = TextWidget.Cast(m_EntryBox.FindAnyWidget("ItemName"));
         m_SetNameWidget.SetText(itemSetName);

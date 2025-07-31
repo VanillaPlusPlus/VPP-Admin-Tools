@@ -8,7 +8,7 @@ GridSpacerWidgetClass ElementGrid {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style DayZDefaultPanel
+ style Colorable
  Padding 15
  "Size To Content H" 1
  "Size To Content V" 1
@@ -26,7 +26,7 @@ GridSpacerWidgetClass ElementGrid {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style Colorable
    Padding 3
    Margin 5
    "Size To Content H" 1
@@ -42,7 +42,7 @@ GridSpacerWidgetClass ElementGrid {
      hexactsize 0
      vexactsize 0
      text "/sph akm"
-     font "gui/fonts/sdf_MetronLight24"
+     font "vppadmintools/gui/fonts/InterDisplay-Regular"
      "exact text" 1
      "exact text size" 16
      "size to text h" 1

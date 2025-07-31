@@ -11,7 +11,7 @@ PanelWidgetClass PanelData {
  hexactsize 0
  vexactsize 0
  scaled 1
- style DayZDefaultPanel
+ style editor_quad_dark
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
@@ -23,7 +23,7 @@ PanelWidgetClass PanelData {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style editor_quad_dark
   }
   GridSpacerWidgetClass content {
    ignorepointer 0
@@ -62,7 +62,7 @@ PanelWidgetClass PanelData {
        hexactsize 0
        vexactsize 0
        text "Chernogorsk"
-       font "gui/fonts/sdf_MetronLight24"
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
       }
       TextWidgetClass CoordsInput {
        ignorepointer 1
@@ -74,8 +74,8 @@ PanelWidgetClass PanelData {
        hexactsize 0
        vexactsize 0
        text "7500,300,7500"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+       "exact text" 0
        "exact text size" 12
        "size to text h" 1
        "size to text v" 0

@@ -567,15 +567,15 @@ WindowWidgetClass rootFrame {
          {
           GridSpacerWidgetClass ParentGrid {
            ignorepointer 1
-           position 0 0.01
+           position 0 0
            size 0.98 0.98
            halign center_ref
            hexactpos 0
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           Padding 1
-           Margin 1
+           Padding 5
+           Margin 0
            "Size To Content H" 1
            "Size To Content V" 1
            Columns 1

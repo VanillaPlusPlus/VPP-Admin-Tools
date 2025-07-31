@@ -9,8 +9,7 @@ ButtonWidgetClass dropdown_element {
  style Editor
  "no focus" 1
  text_proportion 0.55
- font "gui/fonts/sdf_MetronBook24"
+ font "vppadmintools/gui/fonts/InterDisplay-Medium"
  "text outline color" 0.9569 0.2235 0.2235 1
  "text shadow color" 0.9569 0.2235 0.2235 1
- "bold text" 1
 }

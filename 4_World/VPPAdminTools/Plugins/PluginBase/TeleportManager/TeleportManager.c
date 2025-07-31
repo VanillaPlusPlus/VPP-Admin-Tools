@@ -50,28 +50,28 @@ class TeleportManager : ConfigurablePlugin
 	
 	private void CreateDefaults()
 	{
-        AddLocation("Severograd", "8428.0 0.0 12767.1" );
-        AddLocation("Krasnostav", "11172.0 0.0 12314.1");
-        AddLocation("Mogilevka", "7537.8 0.0 5211.55" );
-        AddLocation("Stary", "6046.94 0.0 7733.97" );
-        AddLocation("Msta", "11322.55 0.0 5463.36" );
-        AddLocation("Vybor", "3784.16 0.0 8923.48");
-        AddLocation("Gorka", "9514.27 0.0 8863.69");
-        AddLocation("Solnichni", "13402.57 0.0 6303.35" );
-        AddLocation("NWAF", "4823.43 0.0 10457.16" );
-        AddLocation("Blota", "4467.61 0.0 2496.14" );
-        AddLocation("NEAF", "11921.43 0.0 12525.55");
-        AddLocation("Cherno", "6649.22 0.0 2710.03");
-        AddLocation("Elektro", "10553.55 0.0 2313.37");
-        AddLocation("Berez", "12319.54 0.0 9530.15");
-        AddLocation("Svetlojarsk", "13900.82 0.0 13258.12");
-        AddLocation("Zelenogorsk", "2572.80 0.0 5105.09" );
-        AddLocation("Lopatino", "2714.74 0.0 9996.33");
-        AddLocation("Tisy", "1723.10 0.0 13983.88" );
-        AddLocation("Novaya", "3395.28 0.0 13013.61");
-        AddLocation("Novy", "7085.73 0.0 7720.85");
-        AddLocation("Grishino", "5952.15 0.0 10367.71");
-        AddLocation("Kabanino", "5363.97 0.0 8594.39");
+        AddLocation("Severograd", "8428.000000 106.752388 12767.099609" );
+        AddLocation("Krasnostav", "11168.872070 198.915375 12316.125000");
+        AddLocation("Mogilevka", "7537.799805 215.232330 5211.546387" );
+        AddLocation("Stary", "6046.942383 301.413910 7733.970215" );
+        AddLocation("Msta", "11322.547852 252.808182 5463.358887" );
+        AddLocation("Vybor", "3784.159912 310.997986 8923.480469");
+        AddLocation("Gorka", "9514.269531 303.805695 8863.692383");
+        AddLocation("Solnichni", "13398.269531 5.952467 6303.471680" );
+        AddLocation("NWAF", "4823.430176 339.054474 10457.160156" );
+        AddLocation("Blota", "4467.609375 6.073610 2496.135498" );
+        AddLocation("NEAF", "11921.429688 140.000000 12525.549805");
+        AddLocation("Cherno", "6635.834961 13.351086 2745.285400");
+        AddLocation("Elektro", "10553.549805 6.000000 2313.370117");
+        AddLocation("Berez", "12319.942383 13.747149 9532.086914");
+        AddLocation("Svetlojarsk", "13900.820313 19.006157 13258.120117");
+        AddLocation("Zelenogorsk", "2572.800049 194.204575 5105.089844" );
+        AddLocation("Lopatino", "2714.739990 273.989990 9996.330078");
+        AddLocation("Tisy", "1700.161987 449.019745 13993.882813" );
+        AddLocation("Novaya", "3395.287842 193.985077 13013.609375");
+        AddLocation("Novy", "7085.729980 297.324524 7720.850098");
+        AddLocation("Grishino", "5952.155762 267.564331 10367.708984");
+        AddLocation("Kabanino", "5363.970215 331.655884 8594.389648");
 		Save();
 	}
 	
@@ -275,7 +275,6 @@ class TeleportManager : ConfigurablePlugin
 			PlayerBase pb = GetPermissionManager().GetPlayerBaseByID(sender.GetPlainId());
 			if (pb == null) return;
 			
-			//pb.m_VPlayerPosCache = data.param1;
 			m_ReturnVectors.Insert(sender.GetPlainId(), data.param1);
 
 			if ( pb.GetCommand_Vehicle() )

@@ -3,14 +3,14 @@ PanelWidgetClass PanelItem {
  keepsafezone 1
  color 1 1 1 0.549
  position 0 0
- size 1 0.07
+ size 1 0.09
  halign center_ref
  valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style DayZDefaultPanel
+ style editor_quad_dark
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
@@ -22,13 +22,12 @@ PanelWidgetClass PanelItem {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style editor_quad_dark
   }
   GridSpacerWidgetClass player_content {
    ignorepointer 0
    color 0 0 0 0
-   size 1 0
-   halign center_ref
+   size 0.91 1
    valign center_ref
    hexactpos 0
    vexactpos 0
@@ -37,84 +36,56 @@ PanelWidgetClass PanelItem {
    style DayZDefaultPanelBottom
    Padding 4
    Margin 6
+   "Size To Content H" 1
    "Size To Content V" 1
-   Columns 1
-   Rows 5
+   content_valign center
+   Columns 2
+   Rows 1
    {
-    FrameWidgetClass FFrame {
-     ignorepointer 0
+    ButtonWidgetClass BtnDelete {
+     color 0.8824 0.1059 0.1059 1
      position 0 0
-     size 48 20
+     size 0.1 1
      halign center_ref
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
      {
-      GridSpacerWidgetClass Grid {
+      ImageWidgetClass Img {
        ignorepointer 1
-       size 0.922 1
+       size 1 1
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       Padding 15
-       Margin 0
-       "Size To Content H" 1
-       "Size To Content V" 1
-       Columns 2
-       Rows 1
-       {
-        ButtonWidgetClass BtnDelete {
-         color 0.8824 0.1059 0.1059 1
-         size 0.1 1
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass Img {
-           ignorepointer 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui_vpp image:vpp_icon_trash"
-           mode additive
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-           "Transition width" 0
-          }
-         }
-        }
-        TextWidgetClass ItemName {
-         ignorepointer 0
-         size 1 1
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         text "Item Name"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 16
-         "size to text h" 0
-         "size to text v" 0
-         "text valign" center
-        }
-       }
+       image0 "set:dayz_gui_vpp image:vpp_icon_trash"
+       mode additive
+       "src alpha" 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
+       "flip u" 0
+       "Transition width" 0
       }
      }
+    }
+    TextWidgetClass ItemName {
+     ignorepointer 0
+     size 1 1
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "Item Name"
+     font "vppadmintools/gui/fonts/InterDisplay-Medium"
+     "exact text" 0
+     "exact text size" 16
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
     }
    }
   }

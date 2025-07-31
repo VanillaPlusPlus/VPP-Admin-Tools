@@ -22,7 +22,7 @@ WindowWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanel
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PanelMap {
@@ -57,7 +57,7 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style editor_quad_dark
      {
       PanelWidgetClass info_title {
        ignorepointer 1
@@ -69,12 +69,12 @@ WindowWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text {
          ignorepointer 1
          position 0.00093 0
-         size 0.98907 1.303
+         size 0.9891 1
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -82,8 +82,8 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_SAVED_POSITIONS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -98,7 +98,7 @@ WindowWidgetClass rootFrame {
         }
         ButtonWidgetClass btnRefresh {
          position 0.01 0
-         size 0.2 0.83
+         size 0.1 0.8
          halign right_ref
          valign center_ref
          hexactpos 0
@@ -106,12 +106,13 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          style Editor
-         text "#VSTR_REFRESH"
-         font "gui/fonts/MetronLight"
+         text "↻"
+         font "vppadmintools/gui/fonts/InterDisplay-Bold"
         }
        }
       }
       ScrollWidgetClass Scroller {
+       clipchildren 1
        ignorepointer 0
        position 0 0.07
        size 0.97 0.92
@@ -154,24 +155,24 @@ WindowWidgetClass rootFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style editor_quad_dark
      {
       PanelWidgetClass info_title__ {
        ignorepointer 1
        color 0 0 0 1
-       position 0 0.005
-       size 0.99 0.123
+       position 0 0
+       size 1 0.123
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text__ {
          ignorepointer 1
          position 0 0
-         size 0.99 1.303
+         size 0.99 1
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -179,8 +180,8 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_ACTIONS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -214,7 +215,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_ADD_NEW_POS"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
         ButtonWidgetClass btnEditPos {
          size 0.154 0.15
@@ -226,7 +227,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_EDIT_SEL_POS"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
         ButtonWidgetClass BtnRemove {
          color 0.9059 0.2235 0.2235 1
@@ -240,7 +241,7 @@ WindowWidgetClass rootFrame {
          scriptclass "ConfirmationEventHandler"
          style Editor
          text "#VSTR_LBL_DEL_SEL_POS"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
         CheckBoxWidgetClass ChkShowMarkers {
          ignorepointer 0
@@ -252,7 +253,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_TP_SHOW_MARKERS"
-         font "gui/fonts/MetronLight14"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
          checked 1
         }
         CheckBoxWidgetClass ChkTpSelected {
@@ -264,7 +265,7 @@ WindowWidgetClass rootFrame {
          hexactsize 0
          vexactsize 0
          text "#VSTR_LBL_TP_TO_SEL_PLAYERS"
-         font "gui/fonts/MetronLight14"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
         ButtonWidgetClass btnTeleport {
          size 0.154 0.15
@@ -276,7 +277,7 @@ WindowWidgetClass rootFrame {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_TP_TO_POS"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
        }
       }
@@ -328,7 +329,7 @@ WindowWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.3
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -337,7 +338,7 @@ WindowWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_TELEPORT_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronLight24"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
      "size to text h" 1
      "size to text v" 1
      "text halign" center

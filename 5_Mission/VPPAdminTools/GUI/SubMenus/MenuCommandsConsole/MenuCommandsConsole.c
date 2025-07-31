@@ -88,7 +88,9 @@ class MenuCommandsConsole: AdminHudSubMenu
 			ClearHistory();
 		
 		Widget historyWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.TextElement, m_GridFeed);
-		TextWidget.Cast(historyWidget.FindAnyWidget("Message")).SetText(input);
+		MultilineTextWidget txtWidget = MultilineTextWidget.Cast(historyWidget.FindAnyWidget("Message"));
+		txtWidget.SetText(input);
+
 		m_HistoryWidgets.Insert(historyWidget);
 		m_GridFeed.Update();
 		m_ScrollerFeed.VScrollToPos(m_ScrollerFeed.GetContentHeight() * 1000);

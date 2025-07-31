@@ -22,6 +22,11 @@ class SliderEventHandler extends ScriptedWidgetEventHandler
 		m_DisplayText.SetText(text);
 	}
 
+	void ChangeColor(int argb)
+	{
+		m_DisplayText.SetColor(argb);
+	}
+
 	void Update()
 	{
 		string sliderName = m_root.GetName();

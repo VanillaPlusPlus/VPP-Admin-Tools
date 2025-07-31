@@ -22,7 +22,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanel
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PanelFilter {
@@ -46,24 +46,24 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       PanelWidgetClass info_title {
        ignorepointer 1
        color 0 0 0 1
        position 0 0.005
-       size 0.98 0.123
+       size 0.98 0.11
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text {
          ignorepointer 1
          position 0 0
-         size 0.99 1.303
+         size 0.99 1.3
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -71,8 +71,8 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_FILTERS"
-         font "gui/fonts/sdf_MetronBook24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -88,9 +88,11 @@ FrameWidgetClass rootFrame {
            hexactsize 0
            vexactsize 0
            scriptclass "ConfirmationEventHandler"
+           "no focus" 1
            {
             ImageWidgetClass ImageWidget0 {
              ignorepointer 1
+             color 0.9294 1 0 1
              size 1 1
              halign center_ref
              valign center_ref
@@ -102,8 +104,10 @@ FrameWidgetClass rootFrame {
              image0 "set:rover_imageset image:PluginIconAddon"
              mode blend
              "src alpha" 1
-             "no wrap" 1
-             stretch 1
+             "clamp mode" clamp
+             "stretch mode" stretch_w_h
+             filter 0
+             pivot 0 0
              "Transition width" 0
             }
            }
@@ -120,7 +124,7 @@ FrameWidgetClass rootFrame {
            scriptclass "ConfirmationEventHandler"
            style Editor
            text "#VSTR_LBL_DEFAULTS"
-           font "gui/fonts/Metron12"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
          }
         }
@@ -191,24 +195,24 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
       }
       PanelWidgetClass info_title_Items {
        ignorepointer 1
        color 0 0 0 1
        position 0 0.005
-       size 0.99 0.07
+       size 0.99 0.11
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         TextWidgetClass title_text_Items {
          ignorepointer 1
          position 0 0
-         size 0.99 1
+         size 0.99 1.3
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -216,8 +220,8 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style Normal
          text "#VSTR_LBL_SELECTED_ITEMS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
+         font "vppadmintools/gui/fonts/InterDisplay-Medium"
+         "exact text" 0
          "exact text size" 16
          "text halign" center
          "text valign" center
@@ -226,8 +230,8 @@ FrameWidgetClass rootFrame {
       }
       ScrollWidgetClass ScrollerItems {
        ignorepointer 0
-       position 0 0.08
-       size 0.9676 0.7725
+       position 0 0.11
+       size 0.98 0.7425
        halign center_ref
        hexactpos 0
        vexactpos 0
@@ -267,7 +271,7 @@ FrameWidgetClass rootFrame {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_DELETE_ALL"
-       font "gui/fonts/Metron16"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass removeAllItems {
        position 0.124 0.03
@@ -279,7 +283,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_CLEAR_LIST"
-       font "gui/fonts/Metron16"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
      }
     }
@@ -300,30 +304,30 @@ FrameWidgetClass rootFrame {
      ignorepointer 1
      color 0 0 0 0.549
      position 0 0.1
-     size 0.98 0.683
+     size 0.98 0.862
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style editor_quad_dark
     }
     PanelWidgetClass info_title_ {
      ignorepointer 1
      color 0 0 0 1
      position 0 0.005
-     size 0.98 0.1
+     size 0.98 0.11
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style editor_quad_dark
      {
       TextWidgetClass title_text_ {
        ignorepointer 1
        position 0 0
-       size 0.99 1
+       size 0.99 1.3
        valign center_ref
        hexactpos 0
        vexactpos 0
@@ -331,8 +335,8 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Normal
        text "#VSTR_LBL_ACTIONS"
-       font "gui/fonts/sdf_MetronBook24"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-Medium"
+       "exact text" 0
        "exact text size" 16
        "text halign" center
        "text valign" center
@@ -341,14 +345,14 @@ FrameWidgetClass rootFrame {
     }
     GridSpacerWidgetClass ButtonsWraper {
      ignorepointer 1
-     position 0 0.11
-     size 0.96 1
+     position 0 0.12
+     size 0.98 1
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     Padding 10
+     Padding 15
      Margin 5
      "Size To Content V" 1
      content_halign center
@@ -357,7 +361,7 @@ FrameWidgetClass rootFrame {
      Rows 8
      {
       ButtonWidgetClass btnToggle {
-       color 0.9922 0.9922 0.9922 1
+       color 1 0 0 1
        position 0 0.04
        size 0.9 0.12
        halign center_ref
@@ -368,6 +372,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_TOGGLE"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass btnClear {
        position 0 0.2
@@ -380,7 +385,7 @@ FrameWidgetClass rootFrame {
        vexactsize 0
        style Editor
        text "#VSTR_LBL_CLEAR"
-       font "gui/fonts/Metron-Bold14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       TextWidgetClass txtUpdateInteral {
        ignorepointer 1
@@ -392,8 +397,8 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_UPDATE_INTERVAL"
-       font "gui/fonts/Metron-Bold14"
-       "exact text" 1
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+       "exact text" 0
        "text halign" center
        "text valign" center
       }
@@ -409,7 +414,7 @@ FrameWidgetClass rootFrame {
        text "1"
        "Use default text" 1
        "exact text" 0
-       font "gui/fonts/Metron"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass btnDelRadius {
        position 0 0.04
@@ -423,18 +428,18 @@ FrameWidgetClass rootFrame {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_DEL_RADIUS"
-       font "gui/fonts/MetronLight16"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       CheckBoxWidgetClass ChkShowClassName {
        ignorepointer 0
        position 0.029 0.062
-       size 0.047 0.12
+       size 0.057 0.12
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
        text "#VSTR_LBL_SHOW_CLASSNAME"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
        checked 0
       }
       TextWidgetClass txtShowDead {
@@ -446,9 +451,11 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Show Dead Players"
-       font "gui/fonts/Metron-Bold14"
-       "exact text" 1
+       text "Show Dead Players:"
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+       "exact text" 0
+       "size to text h" 1
+       "size to text v" 1
        "text halign" center
        "text valign" center
       }
@@ -461,7 +468,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        text "Show"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
        checked 0
       }
      }
@@ -469,7 +476,7 @@ FrameWidgetClass rootFrame {
     ImageWidgetClass ImgInfo {
      ignorepointer 0
      color 1 0 0 1
-     position 0.012 0.01
+     position 0.012 0.005
      size 0.0925 0.1
      halign right_ref
      hexactpos 0
@@ -480,60 +487,49 @@ FrameWidgetClass rootFrame {
      image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
      mode blend
      "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     "clamp mode" clamp
+     "stretch mode" stretch_w_h
     }
-    PanelWidgetClass OutlineSlider {
-     ignorepointer 1
-     position 0 0.16
-     size 0.97 0.25
+    SliderWidgetClass SliderRadius {
+     color 1 1 1 0.5882
+     position 0 0.13
+     size 0.94 0.09
      halign center_ref
      valign bottom_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style blank
+     scriptclass "SliderEventHandler"
+     style Default
+     maximum 1000
+     current 500
+     vertical 0
+     flipped 0
+     "fill in" 1
      {
-      SliderWidgetClass SliderRadius {
-       size 0.98 0.5
+      TextWidgetClass SliderRadiusDisplay {
+       ignorepointer 1
+       color 1 0 0 1
+       size 0.086 1
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       scriptclass "SliderEventHandler"
-       style Default
-       maximum 1000
-       current 500
-       vertical 0
-       flipped 0
-       "fill in" 1
-       {
-        TextWidgetClass SliderRadiusDisplay {
-         ignorepointer 1
-         size 0.086 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "Radius:[500]"
-         font "gui/fonts/sdf_MetronLight24"
-         "outline size" 2
-         "outline color" 0 0 0 0.7843
-         "bold text" 1
-         "exact text" 1
-         "exact text size" 16
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-       }
+       style None
+       text "Radius:[500]"
+       font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+       "outline size" 2
+       "outline color" 0 0 0 0.7843
+       "bold text" 1
+       "exact text" 0
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+       "text valign" center
       }
      }
     }
@@ -566,7 +562,7 @@ FrameWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.5
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -575,7 +571,8 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Bold
      text "#VSTR_TITLE_ESP_TOOLS"
-     font "gui/fonts/sdf_MetronBook72"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center

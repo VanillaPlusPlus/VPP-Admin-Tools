@@ -25,7 +25,7 @@ FrameWidgetClass rootMenuServerManager {
    scaled 1
    priority 10
    draggable 0
-   style DayZDefaultPanel
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass PageScroller {
@@ -50,25 +50,25 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style blank
       }
       PanelWidgetClass ActivityPanel {
        color 0 0 0 0.549
        position 0.0143 0.0191
-       size 0.6395 0.8249
+       size 0.6395 0.9149
        halign right_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         MapWidgetClass ActivityMap {
          visible 1
          keepsafezone 0
-         position -0.0022 0
-         size 0.9863 0.8949
-         halign center_ref
+         position 0 -0.01
+         size 1 0.915
+         halign right_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
@@ -76,26 +76,9 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          scriptclass ""
         }
-        TextWidgetClass ActivityLabel {
-         ignorepointer 1
-         position -0.00935 0
-         size 0.04929 0.0368
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_ACTIVVITY_MAP"
-         font "gui/fonts/sdf_MetronLight24"
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
         ButtonWidgetClass RefreshMapActivity {
-         position -0.00187 0.0078
-         size 0.9663 0.0384
+         position -0.0019 0.005
+         size 0.9663 0.0484
          halign center_ref
          valign bottom_ref
          hexactpos 0
@@ -104,11 +87,11 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          style Editor
          text "#VSTR_LBL_REFRESH_ACTIVITY"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
          {
           CheckBoxWidgetClass ChkBoxUpdateActivity {
-           position 0.1 0
-           size 0.23 0.9
+           position 0 0
+           size 0.3 0.9
            halign right_ref
            valign center_ref
            hexactpos 0
@@ -116,7 +99,38 @@ FrameWidgetClass rootMenuServerManager {
            hexactsize 0
            vexactsize 0
            text "#VSTR_LBL_AUTO_UPDATE_ACTIVITY"
-           font "gui/fonts/MetronLight"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
+          }
+         }
+        }
+        PanelWidgetClass admin_login_header1 {
+         ignorepointer 1
+         color 0 0 0 0.8784
+         position 0 0
+         size 0.9999 22
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style editor_quad_dark
+         {
+          TextWidgetClass admin_login_text1 {
+           ignorepointer 1
+           position 0 0
+           size 1 26
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style Normal
+           text "#VSTR_LBL_ACTIVVITY_MAP"
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
+           "exact text size" 16
+           "text halign" center
+           "text valign" center
           }
          }
         }
@@ -131,12 +145,12 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         WrapSpacerWidgetClass ScriptLoaderButtons {
          ignorepointer 1
          position 0.0146 0
-         size 0.9698 0.15
+         size 0.9698 0.2
          halign right_ref
          valign bottom_ref
          hexactpos 0
@@ -150,7 +164,7 @@ FrameWidgetClass rootMenuServerManager {
          {
           ButtonWidgetClass BtnReleaseScript {
            disabled 1
-           size 0.3 0.35
+           size 0.3 0.4
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -159,11 +173,11 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_RELEASE"
-           font "gui/fonts/MetronLight"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           ButtonWidgetClass BtnViewScript {
            disabled 1
-           size 0.3 0.35
+           size 0.3 0.4
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -172,10 +186,10 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_VIEW"
-           font "gui/fonts/MetronLight"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           ButtonWidgetClass BtnWriteScript {
-           size 0.3 0.35
+           size 0.3 0.4
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -184,11 +198,11 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_WRITE"
-           font "gui/fonts/MetronLight"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           ButtonWidgetClass BtnLoadScript {
            disabled 1
-           size 0.3 0.35
+           size 0.3 0.4
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -197,11 +211,11 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Editor
            text "#VSTR_LBL_LOAD"
-           font "gui/fonts/MetronLight"
+           font "vppadmintools/gui/fonts/InterDisplay-Regular"
           }
           ButtonWidgetClass BtnRefreshScriptList {
            disabled 0
-           size 0.3 0.35
+           size 0.3 0.4
            halign center_ref
            valign center_ref
            hexactpos 0
@@ -209,15 +223,15 @@ FrameWidgetClass rootMenuServerManager {
            hexactsize 0
            vexactsize 0
            style Editor
-           text "#VSTR_LBL_REFRESH_LIST"
-           font "gui/fonts/MetronLight"
+           text "↻"
+           font "vppadmintools/gui/fonts/InterDisplay-Bold"
           }
          }
         }
         PanelWidgetClass SLDropDownPanel {
          ignorepointer 1
          position 0 0.07
-         size 0.968 0.769
+         size 0.99 0.729
          halign center_ref
          hexactpos 0
          vexactpos 0
@@ -228,7 +242,7 @@ FrameWidgetClass rootMenuServerManager {
            visible 1
            clipchildren 0
            color 0 0 0 0.549
-           position 0 0.035
+           position 0 0.015
            size 1 0.1
            halign center_ref
            hexactpos 0
@@ -243,14 +257,14 @@ FrameWidgetClass rootMenuServerManager {
         PanelWidgetClass admin_login_header0 {
          ignorepointer 1
          color 0 0 0 0.8784
-         position 0 4
-         size 0.9799 22
+         position 0 0
+         size 0.9999 22
          halign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass admin_login_text0 {
            ignorepointer 1
@@ -263,8 +277,8 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 1
            style Normal
            text "#VSTR_LBL_SCRIPT_LOADER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
@@ -283,7 +297,7 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         PanelWidgetClass admin_login_header {
          ignorepointer 1
@@ -295,12 +309,12 @@ FrameWidgetClass rootMenuServerManager {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style DayZDefaultPanel
+         style editor_quad_dark
          {
           TextWidgetClass admin_login_text {
            ignorepointer 1
            position 0 0
-           size 1 26
+           size 1 20
            valign center_ref
            hexactpos 1
            vexactpos 1
@@ -339,8 +353,8 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 0
            style Normal
            text "#VSTR_LBL_PASSWORD"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 16
            "size to text h" 1
            "size to text v" 1
@@ -362,6 +376,7 @@ FrameWidgetClass rootMenuServerManager {
            text "***********"
            "Use default text" 1
            "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
           }
          }
         }
@@ -376,7 +391,7 @@ FrameWidgetClass rootMenuServerManager {
          vexactsize 0
          style Editor
          text "Login"
-         font "gui/fonts/MetronLight"
+         font "vppadmintools/gui/fonts/InterDisplay-Regular"
         }
        }
       }
@@ -390,15 +405,15 @@ FrameWidgetClass rootMenuServerManager {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style editor_quad_dark
        {
         GridSpacerWidgetClass server_stats_root {
          visible 1
          ignorepointer 1
          color 1 1 1 0
-         position 0.008 0
+         position 0 0.08
          size 1 1
-         valign bottom_ref
+         halign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
@@ -445,8 +460,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_SERVER_FPS"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -463,6 +478,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -488,8 +504,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_ONLINE_PLAYERS"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -506,6 +522,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -531,8 +548,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_SERVER_UPTIME"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -549,6 +566,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "0d 0h 0m 0s"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -574,8 +592,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_MEM_USED"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -592,6 +610,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -617,8 +636,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_NETWORK_TRAFFIC"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -635,6 +654,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -660,8 +680,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_NETWORK_TRAFFIC2"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -678,6 +698,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -703,8 +724,8 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "#VSTR_LBL_ACTIVE_AI"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
+               font "vppadmintools/gui/fonts/InterDisplay-SemiBold"
+               "exact text" 0
                "exact text size" 11
                "size to text h" 1
                "size to text v" 0
@@ -721,6 +742,7 @@ FrameWidgetClass rootMenuServerManager {
                hexactsize 0
                vexactsize 0
                text "null"
+               font "vppadmintools/gui/fonts/InterDisplay-Regular"
                "size to text h" 1
                "size to text v" 0
                "text halign" center
@@ -734,7 +756,7 @@ FrameWidgetClass rootMenuServerManager {
         }
         ImageWidgetClass server_stats_header {
          ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.7843
+         color 1 1 1 0.7843
          position 0 0
          size 1.0062 22
          halign center_ref
@@ -745,13 +767,13 @@ FrameWidgetClass rootMenuServerManager {
          image0 "set:dayz_gui image:container_header"
          mode blend
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "clamp mode" clamp
+         "stretch mode" stretch_w_h
          {
           TextWidgetClass title_servermonitor_text {
            ignorepointer 1
            position 0 0
-           size 0.98 20
+           size 0.98 25
            valign center_ref
            hexactpos 1
            vexactpos 1
@@ -759,15 +781,15 @@ FrameWidgetClass rootMenuServerManager {
            vexactsize 1
            style Normal
            text "#VSTR_LBL_SERVER_MONITOR"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
+           font "vppadmintools/gui/fonts/InterDisplay-Medium"
+           "exact text" 0
            "exact text size" 16
            "text halign" center
            "text valign" center
            {
             CheckBoxWidgetClass ToggleServerMonitor {
              position 0 0
-             size 0.077 1
+             size 0.1 1
              halign right_ref
              hexactpos 0
              vexactpos 0
@@ -784,8 +806,8 @@ FrameWidgetClass rootMenuServerManager {
     }
     WrapSpacerWidgetClass ButtonsQuickCommands {
      ignorepointer 1
-     position 0.0107 0.0134
-     size 0.6429 0.1483
+     position 0.0107 0.04
+     size 0.6429 0.06
      halign right_ref
      valign bottom_ref
      hexactpos 0
@@ -795,11 +817,12 @@ FrameWidgetClass rootMenuServerManager {
      style Empty
      Padding 10
      Margin 10
+     "Size To Content V" 1
      content_halign center
-     content_valign center
+     content_valign bottom
      {
       ButtonWidgetClass BtnRestartServer {
-       size 0.25 0.35
+       size 0.25 0.9
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -809,10 +832,10 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_RESTART_SERVER"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass BtnLockServer {
-       size 0.25 0.35
+       size 0.25 0.9
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -822,10 +845,10 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_LOCKSERVER"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass BtnKickAll {
-       size 0.25 0.35
+       size 0.25 0.9
        halign center_ref
        valign center_ref
        hexactpos 0
@@ -835,7 +858,7 @@ FrameWidgetClass rootMenuServerManager {
        scriptclass "ConfirmationEventHandler"
        style Editor
        text "#VSTR_LBL_KILL_ALL_PLAYERS"
-       font "gui/fonts/MetronLight14"
+       font "vppadmintools/gui/fonts/InterDisplay-Regular"
       }
       ButtonWidgetClass BtnViewAdmLog {
        visible 0
@@ -882,7 +905,7 @@ FrameWidgetClass rootMenuServerManager {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.3
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -891,7 +914,7 @@ FrameWidgetClass rootMenuServerManager {
      vexactsize 0
      style Bold
      text "#VSTR_SERVER_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronBook24"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
      "exact text" 0
      "exact text size" 16
      "size to text h" 1

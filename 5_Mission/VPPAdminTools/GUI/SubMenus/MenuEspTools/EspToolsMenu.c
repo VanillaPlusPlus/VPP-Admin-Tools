@@ -8,6 +8,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	private GridSpacerWidget m_SpacerParentItems; //ESP items selected list
 	private ref CustomGridSpacer m_LastGrid;
 	private SliderWidget     m_SliderRadius;
+	private SliderEventHandler m_SliderEvent;
 	private ButtonWidget     m_btnToggle;
 	private ButtonWidget     m_btnClear;
 	private ButtonWidget     m_removeAllItems;
@@ -54,6 +55,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_SpacerParentItems = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SpacerParentItems"));
 		m_SpacerParent = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SpacerParent"));
 		m_SliderRadius = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SliderRadius"));
+		m_SliderRadius.GetScript(m_SliderEvent);
 		m_btnToggle    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnToggle"));
 		m_btnClear	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnClear"));
 		m_btnRestore   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRestore"));
@@ -64,7 +66,7 @@ class EspToolsMenu extends AdminHudSubMenu
 		
 		m_removeAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "removeAllItems"));
 		m_delAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "delAllItems"));
-		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_TITLE_DELETE", "#VSTR_ESP_DEL_CONFIRM");
+		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_TITLE_DELETE", " #VSTR_ESP_DEL_CONFIRM ");
 		m_chkSelectAll = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSelectAll"));
 		m_ChkShowClassName = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowClassName"));
 		m_ChkShowDeadPlayers = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowDeadPlayers"));
@@ -378,11 +380,13 @@ class EspToolsMenu extends AdminHudSubMenu
 		if (M_SCAN_ACTIVE)
 		{
 			m_btnToggle.SetColor(ARGB(255,255,0,0));
+			m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
 			M_SCAN_ACTIVE = false;
 			ClearTrackers();
 		}else{
 			M_SCAN_ACTIVE = true;
 			m_btnToggle.SetColor(ARGB(255,0,255,0));
+			m_SliderEvent.ChangeColor(ARGB(255,0,255,0));
 			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 		}
 	}
@@ -396,11 +400,13 @@ class EspToolsMenu extends AdminHudSubMenu
 			if (M_SCAN_ACTIVE)
 			{
 				m_btnToggle.SetColor(ARGB(255,255,0,0));
+				m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
 				M_SCAN_ACTIVE = false;
 				ClearTrackers();
 			}else{
 				M_SCAN_ACTIVE = true;
 				m_btnToggle.SetColor(ARGB(255,0,255,0));
+				m_SliderEvent.ChangeColor(ARGB(255,0,255,0));
 				GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 			}
 			break;

@@ -23,7 +23,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style editor_quad_dark
    "no focus" 0
    {
     PanelWidgetClass content {
@@ -93,8 +93,8 @@ FrameWidgetClass rootFrame {
        image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
        mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       "clamp mode" clamp
+       "stretch mode" stretch_w_h
       }
       MultilineEditBoxWidgetClass CommandInput {
        position 0.01 0
@@ -105,8 +105,10 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style DayZBold
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 0
+       text ""
+       font "vppadmintools/gui/fonts/InterDisplay-Regular22"
+       "exact text" 1
+       "exact text size" 24
        "size to text h" 0
        "size to text v" 0
        "text valign" center
@@ -144,7 +146,7 @@ FrameWidgetClass rootFrame {
    {
     TextWidgetClass Title {
      ignorepointer 1
-     size 1 1
+     size 1 1.38
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -153,7 +155,8 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Normal
      text "#VSTR_LBL_CMD_TITLE"
-     font "gui/fonts/sdf_MetronLight24"
+     font "vppadmintools/gui/fonts/InterDisplay-Bold"
+     "exact text" 0
      "size to text h" 1
      "size to text v" 1
      "text halign" center

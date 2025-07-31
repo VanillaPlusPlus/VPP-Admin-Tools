@@ -233,10 +233,14 @@ class MenuTeleportManager extends AdminHudSubMenu
 		{
 			if (w == m_Map)
 			{
-				if (g_Game.IsLeftCtrlDown())
-					CreatePositionPopUp(ScreenToWorld());
-				else
+				if (g_Game.IsLeftCtrlDown()){
+					//Snap Y to surface
+					vector pos = ScreenToWorld();
+					pos[1] = GetGame().SurfaceY(pos[0], pos[2]);
+					CreatePositionPopUp(pos);
+				}else{
 					PreformTeleport(true);
+				}
 
 				return true;
 			}
