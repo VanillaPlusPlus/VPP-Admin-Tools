@@ -220,8 +220,11 @@ modded class DayZGame
         }
     }
 
-    int GetServerFPS() return m_Vtps;
-
+    int GetServerFPS() 
+	{
+		return m_Vtps;
+	}
+	
     string GetServerName()
 	{
 		return m_ServerName;
