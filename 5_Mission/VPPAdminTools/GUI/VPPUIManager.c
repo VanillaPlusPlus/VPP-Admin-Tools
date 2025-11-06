@@ -79,16 +79,19 @@ class VPPUIManager extends PluginBase
 	*/
 	void DestroyMenuInstanceByType(typename menuType)
 	{
-		for(int i = 0; i < M_SCRIPTED_UI_INSTANCES.Count(); i++)
+		for (int i = 0; i < M_SCRIPTED_UI_INSTANCES.Count(); i++)
 		{
 			VPPScriptedMenu menu = M_SCRIPTED_UI_INSTANCES[i];
+			if (!menu) continue; // guard
 			if (menu.GetType() == menuType)
 			{
-	    		M_SCRIPTED_UI_INSTANCES.Remove(i);
-				Print("[VPPUIManager]: Destroyed Scripted UI: "+ menu.GetType());
-	    	}
+				M_SCRIPTED_UI_INSTANCES.Remove(i);
+				Print("[VPPUIManager]: Destroyed Scripted UI: " + menuType);
+				return;
+			}
 		}
 	}
+
 	
 	void HookConfirmationDialog(Widget target, Widget parent, Class callBack, string funcName, int diagType, string title, string msg, bool allowchars = false)
 	{
@@ -264,12 +267,13 @@ class VPPScriptedMenu extends UIScriptedMenu
 		if (!GetGame().IsClient())
 			return;
 		
-		UnlockPlayerControl();
-		
-		if ( GetVPPUIManager() != NULL)
+		if (GetVPPUIManager()) 
+		{
+			UnlockPlayerControl();
 			GetVPPUIManager().DestroyMenuInstanceByType(GetType());
+		}
 
-		Print("Destroy Menu: "+GetType());
+		Print("Destroy Menu: "+ GetType());
 	}
 	
 	override void Update(float timeslice)
@@ -388,18 +392,43 @@ class VPPScriptedMenu extends UIScriptedMenu
 	
 	void UnlockPlayerControl()
 	{
-		if (IsFreeCamActive())
+		VPPUIManager mgr = GetVPPUIManager();
+		if (mgr) 
 		{
-			GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
-			//GetGame().GetMission().RemoveActiveInputExcludes({"VPPCamControls"});
+			mgr.SetKeybindsStatus(false);
 		}
-		GetVPPUIManager().SetKeybindsStatus(false); //unlock shortcut keys
-		GetGame().GetMission().PlayerControlEnable(true);
-		GetGame().GetInput().ResetGameFocus();
-		GetGame().GetUIManager().ShowUICursor( false );
-		GetGame().GetMission().GetHud().Show( true );
+
+		Mission mission = GetGame().GetMission();
+		if (mission) 
+		{
+			if (IsFreeCamActive()) 
+			{
+				mission.PlayerControlDisable(INPUT_EXCLUDE_ALL);
+			}
+			mission.PlayerControlEnable(true);
+
+			Hud hud = mission.GetHud();
+			if (hud) 
+			{
+				hud.Show(true);
+			}
+		}
+
+		Input inp = GetGame().GetInput();
+		if (inp) 
+		{
+			inp.ResetGameFocus();
+		}
+
+		UIManager ui = GetGame().GetUIManager();
+		if (ui) 
+		{
+			ui.ShowUICursor(false);
+		}
+
 		m_GameFocus = true;
 	}
+
 	
 	void AllowSelectBoxDraw(bool allow)
     {
