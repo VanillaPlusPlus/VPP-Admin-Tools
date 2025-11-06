@@ -139,7 +139,7 @@ class vbyte: vuint
 {
     void Clamp()
     {
-        value = value & 255; //clamps value 
+		value = value & 255; //clamps value 
     }
     static vbyte FromInt(int value)
     {
@@ -147,9 +147,8 @@ class vbyte: vuint
         as_byte.Clamp();
         return as_byte;
     }
-    string ToHex()
+    static string ToHex(int value, int fixed_length = -1)
     {
-        value.Clamp();
         int ascii = value; //Note: our math isn't working properly on our byte object, so this fixes that
         array<string> characters = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
         int first = Math.Floor(ascii / 16);
@@ -181,14 +180,15 @@ class VEncoding
     }
 
     static string FromBytesHex(notnull array<vbyte> data)
-    {
-        string hexStr = "";
-        for(int i = 0; i < data.Count(); i++)
-        {
-            hexStr += data[i].ToHex();
-        }
-        return hexStr;
-    }
+	{
+		string hexStr = "";
+		for (int i = 0; i < data.Count(); i++)
+		{
+			int b = data[i];
+			hexStr += vbyte.ToHex(b);
+		}
+		return hexStr;
+	}
 }
 
 
