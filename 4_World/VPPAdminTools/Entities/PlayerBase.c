@@ -104,7 +104,7 @@ modded class PlayerBase
 				m_AgentPool.RemoveAllAgents();
 			
 			if (m_StaminaHandler)
-				m_StaminaHandler.SetStamina(GameConstants.STAMINA_MAX);
+				m_StaminaHandler.SetStamina(CfgGameplayHandler.GetStaminaMax());
 			
 			// uncon
 			if (IsUnconscious())
@@ -245,10 +245,24 @@ modded class PlayerBase
 		SetAllowDamage(!trigger);
 	}
 
-	string VPlayerGetHashedId() return m_VPlayerHashedId;
-	string VPlayerGetSteamId() return m_VPlayerSteamId;
-	string VPlayerGetName() return m_VPlayerName;
-	int VPlayerGetSessionId() return m_VPlayerSessionId;
+	string VPlayerGetHashedId() 
+	{	
+		return m_VPlayerHashedId;
+	}
+	string VPlayerGetSteamId() 
+	{
+		return m_VPlayerSteamId;
+	}
+	
+	string VPlayerGetName() 
+	{
+		return m_VPlayerName;
+	}
+	
+	int VPlayerGetSessionId() 
+	{
+		return m_VPlayerSessionId;
+	}
 
 	void VPPFreezePlayer(bool state)
 	{
