@@ -686,6 +686,34 @@ class PermissionManager extends ConfigurablePlugin
 		CloseFile(adminUIDSFile);
 	}
 		
+	//All admin steam64 ids: superadmins + every user group member (used for ESP admin highlight)
+	array<string> GetAllAdminIds()
+	{
+		array<string> ids = new array<string>;
+		foreach(string sid : m_SuperAdmins)
+		{
+			if (ids.Find(sid) == -1)
+				ids.Insert(sid);
+		}
+
+		foreach(UserGroup adminGroup : m_UserGroups)
+		{
+			if (!adminGroup)
+				continue;
+
+			array<ref VPPUser> members = adminGroup.GetMembers();
+			if (!members)
+				continue;
+
+			foreach(VPPUser member : members)
+			{
+				if (member && ids.Find(member.GetUserId()) == -1)
+					ids.Insert(member.GetUserId());
+			}
+		}
+		return ids;
+	}
+
 	bool HasUserGroup(string id)
 	{
 		foreach(UserGroup group : m_UserGroups)

@@ -168,13 +168,61 @@ modded class MissionGameplay
         return transformed_pos;
     }
 
+    //Same as above but reuses a screen size resolved once per frame. The widget query in
+    //TransformToScreenPos ran ~40x per player per frame, which is the bulk of the mesh ESP cost.
+    protected float m_CanvasW;
+    protected float m_CanvasH;
+
+    //Bone name -> index cache. Same for every human skeleton, so resolve once.
+    protected ref array<int> m_BoneIdxCache;
+    protected int m_HeadIdx = -2; //-2 = not resolved yet, -1 = missing bone
+    protected int m_NeckIdx = -2;
+
+    protected void BuildBoneIndexCache(PlayerBase p)
+    {
+        array<int> idx = new array<int>;
+        bool anyValid = false;
+
+        foreach(ESPBonesParams bp : m_EspBones)
+        {
+            int i1 = p.GetBoneIndexByName(bp.param1);
+            int i2 = p.GetBoneIndexByName(bp.param2);
+            idx.Insert(i1);
+            idx.Insert(i2);
+            if (i1 != -1 && i2 != -1)
+                anyValid = true;
+        }
+
+        if (!anyValid)
+            return; //bad entity: keep using live lookups rather than caching junk
+
+        m_BoneIdxCache = idx;
+        m_HeadIdx = p.GetBoneIndexByName("head");
+        m_NeckIdx = p.GetBoneIndexByName("neck");
+    }
+
+    vector ToScreen(vector pWorldPos)
+    {
+        vector screen_pos = GetGame().GetScreenPosRelative( pWorldPos );
+        vector out_pos;
+        out_pos[0] = screen_pos[0] * m_CanvasW;
+        out_pos[1] = screen_pos[1] * m_CanvasH;
+        return out_pos;
+    }
+
     private vector m_LastCamPos;
     private float  m_LastCamUpdate;
 
 	override void OnUpdate(float timeslice)
     {
         super.OnUpdate(timeslice);
+
+        //One clear per frame; the mesh skeleton and the look arrows share this canvas.
+        if (m_EspCanvasWidget)
+            m_EspCanvasWidget.Clear();
+
         UpdatePlayerMeshEsp();
+        UpdateLookArrows();
 
         //Free camera position updates
         /*
@@ -213,6 +261,94 @@ modded class MissionGameplay
             adminHud.HandleGameFocus();
     }
 
+    //Look arrows, drawn in 2D on the ESP canvas: --I>
+    //Screen space, so the arrow is a constant pixel size and stays crisp at any distance.
+    //(3D debug shapes render as hollow wireframes and scale in world metres - unusable here.)
+    protected void UpdateLookArrows()
+    {
+        if (!EspToolsMenu.s_ShowLookArrow || !EspToolsMenu.s_EspActive)
+            return;
+        if (!m_EspCanvas || !m_EspCanvasWidget)
+            return;
+
+        VPPAdminHud hud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+        if (!hud)
+            return;
+
+        EspToolsMenu espMenu = EspToolsMenu.Cast(hud.GetSubMenuByType(EspToolsMenu));
+        if (!espMenu)
+            return;
+
+        m_EspCanvas.GetParent().GetScreenSize(m_CanvasW, m_CanvasH);
+
+        int color   = EspToolsMenu.s_ArrowColor;
+        float scale = EspToolsMenu.s_ArrowSize;
+
+        float rayMeters = 2.5 * scale; //how far the look ray reaches in the world
+        float width     = 2.0;
+
+        //ESP trackers are keyed by the tracked entity, so iterate the map's values
+        map<EntityAI, ref VPPESPTracker> trackers = espMenu.GetTrackers();
+        if (!trackers)
+            return;
+
+        foreach (EntityAI trackedEnt, VPPESPTracker tracker : trackers)
+        {
+            if (!tracker)
+                continue;
+
+            SurvivorBase p = tracker.GetTrackedPlayer();
+            if (!p || !p.IsAlive())
+                continue;
+
+            int headIdx = p.GetBoneIndexByName("head");
+            if (headIdx == -1)
+                continue;
+
+            vector dir = tracker.GetLookDirection();
+            if (dir.Length() < 0.01)
+                continue;
+
+            vector fromWS = p.GetBonePositionWS(headIdx) + "0 0.2 0";
+            vector toWS   = fromWS + (dir * rayMeters);
+
+            //both ends must be in front of the camera, else the projection flips
+            vector relA = GetGame().GetScreenPosRelative(fromWS);
+            vector relB = GetGame().GetScreenPosRelative(toWS);
+            if (relA[2] < 0 || relB[2] < 0)
+                continue;
+            if (relA[0] <= 0 || relA[0] >= 1 || relA[1] <= 0 || relA[1] >= 1)
+                continue; //player off screen
+
+            vector a = ToScreen(fromWS);
+            vector b = ToScreen(toWS);
+
+            //the ray itself: a real 3D line, projected - so it foreshortens correctly when the
+            //player looks toward or away from you
+            m_EspCanvasWidget.DrawLine(a[0], a[1], b[0], b[1], width, color);
+
+            //small arrowhead at the tip, sized in pixels so it stays crisp at any distance
+            float dx = b[0] - a[0];
+            float dy = b[1] - a[1];
+            float len = Math.Sqrt((dx * dx) + (dy * dy));
+            if (len < 1)
+                continue; //ray points straight at/away from us: nothing readable to cap
+
+            dx = dx / len;
+            dy = dy / len;
+            float px = -dy;
+            float py = dx;
+
+            float headLen = 9;
+            float headW   = 5;
+            float bx = b[0] - (dx * headLen);
+            float by = b[1] - (dy * headLen);
+
+            m_EspCanvasWidget.DrawLine(b[0], b[1], bx + (px * headW), by + (py * headW), width, color);
+            m_EspCanvasWidget.DrawLine(b[0], b[1], bx - (px * headW), by - (py * headW), width, color);
+        }
+    }
+
     protected void UpdatePlayerMeshEsp()
     {
         if (!m_MeshEspToggled)
@@ -223,26 +359,40 @@ modded class MissionGameplay
             return;
 
         int color = ARGBF(1, 1, 0, 0);
-        m_EspCanvasWidget.Clear();
-        if (GetVPPUIManager().GetMenuByType(VPPAdminHud))
-        {
-            EspToolsMenu espMenu = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
-            if (!espMenu)
-            VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).CreateSubMenu(EspToolsMenu);
 
-            espMenu = EspToolsMenu.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(EspToolsMenu));
-            VPPFilterEntry pFilter = espMenu.GetFilter("SurvivorBase");
-            if (pFilter)
-                color = pFilter.GetFilterColor();
+        VPPAdminHud meshHud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+        if (meshHud)
+        {
+            EspToolsMenu espMenu = EspToolsMenu.Cast(meshHud.GetSubMenuByType(EspToolsMenu));
+            if (!espMenu)
+            {
+                meshHud.CreateSubMenu(EspToolsMenu);
+                espMenu = EspToolsMenu.Cast(meshHud.GetSubMenuByType(EspToolsMenu));
+            }
+
+            if (espMenu)
+            {
+                VPPFilterEntry pFilter = espMenu.GetFilter("SurvivorBase");
+                if (pFilter)
+                    color = pFilter.GetFilterColor();
+            }
         }
 
-        array<Man> players = new array<Man>;
-        players = ClientData.m_PlayerBaseList;
+        //resolve the canvas size once per frame instead of once per bone (see ToScreen)
+        m_EspCanvas.GetParent().GetScreenSize(m_CanvasW, m_CanvasH);
+        vector camPos = GetGame().GetCurrentCameraPosition();
+
+        //ClientData.m_PlayerBaseList is already an array; the old code allocated a new one
+        //every frame and immediately threw it away.
+        array<Man> players = ClientData.m_PlayerBaseList;
+        if (!players)
+            return;
+
         foreach(Man man : players)
         {
             if (!man)
                 continue;
-            if(man == GetGame().GetPlayer())
+            if(man == GetGame().GetPlayer() && !IsFreeCamActive()) //own skeleton visible from freecam only
                 continue;
 
             PlayerBase playerPB = PlayerBase.Cast(man);
@@ -256,32 +406,63 @@ modded class MissionGameplay
             else if(ScreenPosRelative[2] < 0)
                 continue;
 
+            //corpses draw dim grey; line width thins out with distance for a cleaner look
+            int drawColor = color;
+            if (!playerPB.IsAlive())
+                drawColor = ARGB(255, 150, 150, 150);
+
+            float camDist = vector.Distance(camPos, playerPB.GetPosition());
+            float width = Math.Clamp(2.5 - (camDist * 0.004), 1.0, 2.5);
+
+            //Bone indices are identical for every human skeleton, so resolve the names once
+            //instead of ~40 string lookups per player per frame. Falls back to live lookups
+            //if the cache could not be built.
+            if (!m_BoneIdxCache)
+                BuildBoneIndexCache(playerPB);
+
+            int b = 0;
             foreach(ESPBonesParams params : m_EspBones)
             {
-                int fromIdx = playerPB.GetBoneIndexByName(params.param1);
-                int toIdx   = playerPB.GetBoneIndexByName(params.param2);
+                int fromIdx;
+                int toIdx;
+                if (m_BoneIdxCache)
+                {
+                    fromIdx = m_BoneIdxCache[b];
+                    toIdx   = m_BoneIdxCache[b + 1];
+                }
+                else
+                {
+                    fromIdx = playerPB.GetBoneIndexByName(params.param1);
+                    toIdx   = playerPB.GetBoneIndexByName(params.param2);
+                }
+                b = b + 2;
 
-                vector fromPos = TransformToScreenPos(playerPB.GetBonePositionWS(fromIdx));
-                vector toPos   = TransformToScreenPos(playerPB.GetBonePositionWS(toIdx));
-                m_EspCanvasWidget.DrawLine(toPos[0], toPos[1], fromPos[0], fromPos[1], 2, color);
+                vector fromPos = ToScreen(playerPB.GetBonePositionWS(fromIdx));
+                vector toPos   = ToScreen(playerPB.GetBonePositionWS(toIdx));
+                m_EspCanvasWidget.DrawLine(toPos[0], toPos[1], fromPos[0], fromPos[1], width, drawColor);
             }
 
-            //Draw Face
-            int headIdx = playerPB.GetBoneIndexByName("head");
-            int neckIdx = playerPB.GetBoneIndexByName("neck");
-            vector fpos = TransformToScreenPos(playerPB.GetBonePositionWS(headIdx));
-            vector npos = TransformToScreenPos(playerPB.GetBonePositionWS(neckIdx));
+            //Draw Face (12 segments instead of 360 -> same look, huge fps win)
+            int headIdx = m_HeadIdx;
+            int neckIdx = m_NeckIdx;
+            if (headIdx == -2 || neckIdx == -2) //cache not built
+            {
+                headIdx = playerPB.GetBoneIndexByName("head");
+                neckIdx = playerPB.GetBoneIndexByName("neck");
+            }
+            vector fpos = ToScreen(playerPB.GetBonePositionWS(headIdx));
+            vector npos = ToScreen(playerPB.GetBonePositionWS(neckIdx));
 
-            float size = 1 * fpos[1] - npos[1];
-            for(int j = 0; j < 360; j++)
+            float size = Math.Clamp(Math.AbsFloat(fpos[1] - npos[1]), 2, 120);
+            for(int j = 0; j < 360; j = j + 30)
             {
                 float x1 = fpos[0] + (size * Math.Cos(j * Math.DEG2RAD));
                 float y1 = fpos[1] + (size * Math.Sin(j * Math.DEG2RAD));
 
-                float x2 = fpos[0] + (size * Math.Cos((j + 1) * Math.DEG2RAD));
-                float y2 = fpos[1] + (size * Math.Sin((j + 1) * Math.DEG2RAD));
+                float x2 = fpos[0] + (size * Math.Cos((j + 30) * Math.DEG2RAD));
+                float y2 = fpos[1] + (size * Math.Sin((j + 30) * Math.DEG2RAD));
 
-                m_EspCanvasWidget.DrawLine(x1, y1, x2, y2, 2, color);
+                m_EspCanvasWidget.DrawLine(x1, y1, x2, y2, width, drawColor);
             }
         }
     }
