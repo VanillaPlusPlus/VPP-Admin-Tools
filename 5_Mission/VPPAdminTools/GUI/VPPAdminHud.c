@@ -21,6 +21,12 @@ class VPPAdminHud extends VPPScriptedMenu
 	protected float   m_StartX, m_StartY;
 	protected float   m_EndX,   m_EndY;
 
+	protected int     m_BaseRows;
+	protected int     m_MaxExtraRows      = 3;
+	protected float   m_SafeScreenMargin  = 64.0;
+	protected float   m_IconsBaseW, m_IconsBaseH;
+	protected float   m_WrapBaseW,  m_WrapBaseH;
+
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
 	
 	void VPPAdminHud()
@@ -44,6 +50,7 @@ class VPPAdminHud extends VPPScriptedMenu
 		InsertButton("MenuWebHooks", "Webhooks", "set:dayz_gui_vpp image:vpp_icon_webHooks", "#VSTR_TOOLTIP_WEBHOOKS");
 		InsertButton("MenuXMLEditor", "XML Editor", "set:dayz_gui_vpp image:vpp_icon_xml_editor", "#VSTR_TOOLTIP_XMLEDITOR");
 		InsertButton("MenuSpectateTools", "Spectate", "set:dayz_gui_vpp image:vpp_icon_esp", "#VSTR_TOOLTIP_SPECTATE");
+		m_BaseRows = m_DefinedButtons.Count();
 		DefineButtons();
 		//----
 		//Compile Permissions needed by buttons registered.
@@ -74,6 +81,9 @@ class VPPAdminHud extends VPPScriptedMenu
 			m_IconsPanel 		= layoutRoot.FindAnyWidget("IconsPanel");
 	  	  	m_WrapSpacerWidget  = WrapSpacerWidget.Cast(layoutRoot.FindAnyWidget("WrapSpacerWidget"));
 			m_Init = true;
+
+			m_IconsPanel.GetSize(m_IconsBaseW, m_IconsBaseH);
+			m_WrapSpacerWidget.GetSize(m_WrapBaseW, m_WrapBaseH);
 
 	        m_IconsPanel.GetPos(m_StartX, m_StartY);
 
@@ -127,6 +137,33 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 	}
 		
+	private void UpdateToolbarCapacity()
+	{
+		if (!layoutRoot || !m_IconsPanel || !m_WrapSpacerWidget || m_BaseRows <= 0 || m_IconsBaseH <= 0 || m_WrapBaseH <= 0)
+			return;
+
+		float screenW, screenH;
+		layoutRoot.GetScreenSize(screenW, screenH);
+		if (screenH <= 0)
+			return;
+		float rowH = (m_IconsBaseH * screenH) / m_BaseRows;
+
+		int visibleRows = 0;
+		foreach(VPPButtonProperties data : m_DefinedButtons)
+		{
+			if (HasPermission(data.param1))
+				visibleRows++;
+		}
+
+		int maxExtra  = Math.Clamp(Math.Floor((screenH - m_SafeScreenMargin) / rowH) - m_BaseRows, 0, m_MaxExtraRows);
+		int extraRows = Math.Clamp(visibleRows - m_BaseRows, 0, maxExtra);
+
+		float panelH = m_IconsBaseH + ((extraRows * rowH) / screenH);
+		m_IconsPanel.SetSize(m_IconsBaseW, panelH);
+		m_WrapSpacerWidget.SetSize(m_WrapBaseW, (m_WrapBaseH * m_IconsBaseH) / panelH);
+		m_IconsPanel.Update();
+	}
+
 	void VerifyButtonsPermission(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<ref map<string,bool>> data;
@@ -141,6 +178,7 @@ class VPPAdminHud extends VPPScriptedMenu
 				CreateButtons(); //Creates UI part of things regardless of permission(s)
 			}
 			VPPAdminHud.m_OnPermissionsChanged.Invoke(m_ButtonPerms);
+			UpdateToolbarCapacity();
 		}
 	}
 
