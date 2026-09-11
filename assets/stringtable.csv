@@ -589,3 +589,7 @@
 "VSTR_SPECTATE_ADS_TRIM_RIGHT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT","RIGHT / LEFT"
 "VSTR_SPECTATE_ADS_TRIM_UP","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN","UP / DOWN"
 "VSTR_SPECTATE_ADS_TRIM_RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET","RESET"
+"VSTR_SORT","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort","Sort"
+"VSTR_SORT_AZ","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z","Sort: A-Z"
+"VSTR_SORT_ZA","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A","Sort: Z-A"
+"VSTR_SORT_OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF","Sort: OFF"

@@ -15,6 +15,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ScrollWidget				  m_PlayerList;
 	private ScrollWidget				  m_PlayerInfoScroll;
 	private ButtonWidget	 			  m_BtnRefreshPlayerList;
+	// Define new button and text widgets for sorting player list
+	private ButtonWidget 				  m_BtnSortPlayerList;
+	private TextWidget 					  m_txtBtnSort;
+	private int 						  m_SortType;
+	// End of new button definitions
 	private CheckBoxWidget 		  		  m_SelectAllPlayers;
 	private ButtonWidget 				  m_btnFnAddPlayersToGrp;
 	private ref array<ref VPPPlayerEntry> m_PlayerEntries;
@@ -116,6 +121,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 		
 		m_SelectAllPlayers 	   = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ChkSelectAllPlayers") );
 		m_BtnRefreshPlayerList = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnRefreshPlayerList"));
+		// New player list sort functionality
+		m_BtnSortPlayerList    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "BtnSortPlayerList"));
+		m_txtBtnSort           = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "txtbtnsort"));
+		UpdateSortButtonText();
+		// End new player list functionality
 		m_btnFnAddPlayersToGrp = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnFnAddPlayersToGrp"));
 		GetVPPUIManager().HookConfirmationDialog(m_btnFnAddPlayersToGrp, M_SUB_WIDGET,this,"FinishPlayerSelect", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_TOOLTIP_WRN_ADDPLAYERTOGRP");
 		
@@ -254,6 +264,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 
 		if(m_PlayerEntries.Count() != GetPlayerListManager().GetCount())
 		{
+			ResetPages(); // Part of the new sort function
 			UpdateEntries();
 		}
 		
