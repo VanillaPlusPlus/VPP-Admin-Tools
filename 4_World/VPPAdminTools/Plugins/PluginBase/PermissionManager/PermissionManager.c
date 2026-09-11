@@ -33,7 +33,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Item Manager
 		AddPermissionType({ "MenuItemManager","MenuItemManager:SpawnItem","MenuItemManager:EditPreset","MenuItemManager:SpawnPreset","MenuItemManager:DeletePreset","MenuItemManager:AddPreset" });
 		//Server Manager
-		AddPermissionType({ "MenuServerManager","ServerManager:RestartServer","ServerManager:LockServer","ServerManager:KickAllPlayers","ServerManager:LoadScripts" });
+		AddPermissionType({ "MenuServerManager","ServerManager:RestartServer","ServerManager:LockServer","ServerManager:KickAllPlayers" });
 		//Weather Manager
 		AddPermissionType({ "MenuWeatherManager","WeatherManager:ApplyWeather","WeatherManager:ApplyTime","WeatherManager:SavePreset","WeatherManager:DeletePreset","WeatherManager:ApplyPreset","WeatherManager:ApplyTimePreset","WeatherManager:SaveTimePreset","WeatherManager:DeleteTimePreset" });
 		//Object Manager
@@ -41,9 +41,11 @@ class PermissionManager extends ConfigurablePlugin
 		//Permissions Editor
 		AddPermissionType({ "MenuPermissionsEditor","PermissionsEditor:RemoveUser","PermissionsEditor:AddUser","PermissionsEditor:CreateUserGroup","PermissionsEditor:DeleteUserGroup","PermissionsEditor:ChangePermLevel"});
 		//Player Manager
-		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo", "PlayerManager:MakePlayerVomit", "PlayerManager:FreezePlayers", "PlayerManager:ChangeScale"});
+		AddPermissionType({ "MenuPlayerManager","PlayerManager:GiveGodmode","PlayerManager:BanPlayer","PlayerManager:KickPlayer","PlayerManager:HealPlayers","PlayerManager:SetPlayerStats","PlayerManager:KillPlayers","PlayerManager:GodMode","PlayerManager:SpectatePlayer","PlayerManager:TeleportToPlayer","PlayerManager:TeleportPlayerTo","PlayerManager:SetPlayerInvisible","PlayerManager:SendMessage", "PlayerManager:GiveUnlimitedAmmo", "PlayerManager:MakePlayerVomit", "PlayerManager:FreezePlayers", "PlayerManager:ChangeScale", "PlayerManager:StopBleeding", "PlayerManager:ClearInventory", "PlayerManager:EditModifiers"});
 		//Bans Manager
 		AddPermissionType({ "MenuBansManager","BansManager:UnbanPlayer","BansManager:UpdateBanDuration","BansManager:UpdateBanReason" });
+		//Spectate Tools menu (action perm reuses PlayerManager:SpectatePlayer)
+		AddPermissionType({ "MenuSpectateTools" });
 		//WebHooks Menu
 		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
 		//Teleport Manager Menu
@@ -377,7 +379,7 @@ class PermissionManager extends ConfigurablePlugin
 				if (group.FindUser(data.param1))
 				{
 					group.RemoveMembers(data.param1);
-					NotifyPlayer(sender.GetPlainId(),"#VSTR_PERMS_REMOVE_USER"+data.param1+"#VSTR_FROM_GROUP"+group.GetGroupName(),NotifyTypes.NOTIFY);
+					NotifyPlayer(sender.GetPlainId(),"#VSTR_PERMS_REMOVE_USER "+data.param1+" #VSTR_FROM_GROUP "+group.GetGroupName(),NotifyTypes.NOTIFY);
 
 					GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[PermissionManager] Removing User: " + data.param1 + " from Group: " + group.GetGroupName()));
 					Save();
@@ -730,7 +732,7 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				if (user.GetUserName() != identity.VPlayerGetName())
 				{
-					NotifyPlayer(id, "#VSTR_ERROR_NAME_MISMATCH" + user.GetUserName(),NotifyTypes.PERMISSION_REJECT, 15.0);
+					NotifyPlayer(id, "#VSTR_ERROR_NAME_MISMATCH " + user.GetUserName(),NotifyTypes.PERMISSION_REJECT, 15.0);
 					return false;
 				}
 			}
@@ -755,7 +757,7 @@ class PermissionManager extends ConfigurablePlugin
 		if(IsSuperAdmin(targetID) && !IsSuperAdmin(id))
 		{
 			if ( sendNotify )
-				NotifyPlayer(id,"#VSTR_ERROR_CANT_TARGET" + permissionName, NotifyTypes.PERMISSION_REJECT);
+				NotifyPlayer(id,"#VSTR_ERROR_CANT_TARGET " + permissionName, NotifyTypes.PERMISSION_REJECT);
 			
 			return false;
 		}
@@ -795,7 +797,7 @@ class PermissionManager extends ConfigurablePlugin
 				if(group.GetPermissions().Find(permissionName) <= -1)
 				{
 					if ( sendNotify )
-						NotifyPlayer(id,"#VSTR_ERROR_NO_PERM" + permissionName, NotifyTypes.PERMISSION_REJECT);
+						NotifyPlayer(id,"#VSTR_ERROR_NO_PERM " + permissionName, NotifyTypes.PERMISSION_REJECT);
 					
 					return false;
 				}
@@ -807,7 +809,7 @@ class PermissionManager extends ConfigurablePlugin
 		if (!hasPermission &&  targetIdentity != null)
 		{
 			if ( sendNotify )
-				NotifyPlayer(id,"#VSTR_PERM_LVL_LOW" + permissionName + " On: "+targetIdentity.VPlayerGetName(), NotifyTypes.PERMISSION_REJECT);
+				NotifyPlayer(id,"#VSTR_PERM_LVL_LOW " + permissionName + " On: "+targetIdentity.VPlayerGetName(), NotifyTypes.PERMISSION_REJECT);
 		}
 		return hasPermission;
 	}

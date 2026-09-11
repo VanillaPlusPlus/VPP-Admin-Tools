@@ -7,7 +7,7 @@ class VPPLogManager: ConfigurablePlugin
 
 	private bool 	   SendLogsToADM;
 	private bool       LongTimeStamp;
-	   
+
     void VPPLogManager()
     {
     	JSONPATH = "$profile:VPPAdminTools/LogOptions.json";

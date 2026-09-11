@@ -2,9 +2,9 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 {
 	private ref MenuTeleportManager m_RootClass;
 	private Widget 		 			m_root;
-	private ButtonWidget 			m_Close;
 	private ButtonWidget 			m_Cancel;
 	private ButtonWidget 			m_Save;
+	private TextWidget              m_TextTitle;
 	private EditBoxWidget           m_editbox_name;
 	private EditBoxWidget           m_edit_pos;
 	private vector					m_Position;
@@ -18,9 +18,9 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 		m_root = w;
 		m_root.SetHandler(this);
 		
-		m_Close  = ButtonWidget.Cast(m_root.FindAnyWidget("button_close"));
 		m_Cancel = ButtonWidget.Cast(m_root.FindAnyWidget("button_cancel"));
 		m_Save   = ButtonWidget.Cast(m_root.FindAnyWidget("button_save"));
+		m_TextTitle      = TextWidget.Cast(m_root.FindAnyWidget("text_title"));
 		m_editbox_name   = EditBoxWidget.Cast(m_root.FindAnyWidget("editbox_name"));
 		m_edit_pos       = EditBoxWidget.Cast(m_root.FindAnyWidget("edit_pos"));
 		
@@ -42,8 +42,15 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 		
 		if (editMode){
 			m_editbox_name.SetText(oldName);
+			m_PositionName    = oldName;
 			m_OldPositionName = oldName;
 			m_OldPosition     = pos;
+			if (m_TextTitle)
+				m_TextTitle.SetText("EDIT LOCATION");
+		}
+		else if (m_TextTitle)
+		{
+			m_TextTitle.SetText("NEW LOCATION");
 		}
 	}
 	
@@ -70,16 +77,14 @@ class PopUpNewPositionEditor extends ScriptedWidgetEventHandler
 	{
 		switch(w)
 		{
-			case m_Close:
-			delete this;
-			break;
-			
 			case m_Cancel:
 			delete this;
 			break;
 			
 			case m_Save:
-			if (m_PositionName != "" && !m_RootClass.CheckDuplicate(m_PositionName))
+			//in edit mode keeping the original name is allowed (it's not a real duplicate)
+			bool nameTaken = m_RootClass.CheckDuplicate(m_PositionName) && !(m_editMode && m_PositionName == m_OldPositionName);
+			if (m_PositionName != "" && !nameTaken)
 			{
 				if (m_Position != Vector(0,0,0))
 					m_RootClass.SaveNewMarker(m_PositionName,m_Position,m_editMode,m_OldPositionName,m_OldPosition);

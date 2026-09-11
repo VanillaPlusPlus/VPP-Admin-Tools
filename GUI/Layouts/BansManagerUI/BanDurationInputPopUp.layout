@@ -1,5 +1,8 @@
 PanelWidgetClass rootFrame {
- size 0.75 0.25
+ clipchildren 1
+ inheritalpha 0
+ color 0.749 0.773 0.8 1
+ size 0.52 0.3
  halign center_ref
  valign center_ref
  hexactpos 0
@@ -7,560 +10,639 @@ PanelWidgetClass rootFrame {
  hexactsize 0
  vexactsize 0
  scriptclass "BanDurationInput"
- style editor_quad
+ style VPPPanel
  {
-  PanelWidgetClass PnlBg {
+  PanelWidgetClass title {
    ignorepointer 1
-   color 0 0 0 0.9608
-   position 0 0.08
-   size 0.995 0.908
+   color 0.031 0.035 0.039 0.95
+   position 0 0
+   size 1 0.14
    halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style editor_selection
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgTitleIcon {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 2 0
+     size 32 32
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:history"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass title_text {
+     ignorepointer 1
+     position 32 0
+     size 0.7 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_EDIT_DURATION"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    ImageWidgetClass ImgInfo {
+     ignorepointer 0
+     color 0.604 0.627 0.651 1
+     position 6 0
+     size 24 24
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "ToolTipHandler"
+     image0 "set:vpp_icons image:info"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
   }
-  PanelWidgetClass Buttons {
+  TextWidgetClass year {
    ignorepointer 1
-   position 0 0.02
-   size 1 0.2
-   halign center_ref
+   color 0.604 0.627 0.651 1
+   position 0.04 0.19
+   size 0.15 0.1
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "#VSTR_YEAR"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass brtnYrInc {
+   color 1 1 1 1
+   position 0.04 0.32
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg4 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_up"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  EditBoxWidgetClass InputYear {
+   ignorepointer 0
+   position 0.04 0.46
+   size 0.15 0.16
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   scriptclass "EditBoxEventHandler"
+   style VPPInput
+   text "2024"
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "text halign" center
+  }
+  ButtonWidgetClass brtnYrDec {
+   color 1 1 1 1
+   position 0.04 0.64
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_down"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  TextWidgetClass month {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0.236 0.19
+   size 0.15 0.1
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "#VSTR_MONTH"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass brtnMnthInc {
+   color 1 1 1 1
+   position 0.236 0.32
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg5 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_up"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  EditBoxWidgetClass InputMonth {
+   ignorepointer 0
+   position 0.236 0.46
+   size 0.15 0.16
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   scriptclass "EditBoxEventHandler"
+   style VPPInput
+   text "6"
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "text halign" center
+  }
+  ButtonWidgetClass brtnMnthDec {
+   color 1 1 1 1
+   position 0.236 0.64
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg0 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_down"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  TextWidgetClass day {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0.432 0.19
+   size 0.15 0.1
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "#VSTR_DAY"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass brtnDayInc {
+   color 1 1 1 1
+   position 0.432 0.32
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg6 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_up"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  EditBoxWidgetClass InputDay {
+   ignorepointer 0
+   position 0.432 0.46
+   size 0.15 0.16
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   scriptclass "EditBoxEventHandler"
+   style VPPInput
+   text "25"
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "text halign" center
+  }
+  ButtonWidgetClass brtnDayDec {
+   color 1 1 1 1
+   position 0.432 0.64
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg1 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_down"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  TextWidgetClass hour {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0.628 0.19
+   size 0.15 0.1
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "#VSTR_HOUR"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass brtnHrInc {
+   color 1 1 1 1
+   position 0.628 0.32
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg7 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_up"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  EditBoxWidgetClass InputHour {
+   ignorepointer 0
+   position 0.628 0.46
+   size 0.15 0.16
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   scriptclass "EditBoxEventHandler"
+   style VPPInput
+   text "12"
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "text halign" center
+  }
+  ButtonWidgetClass brtnHrDec {
+   color 1 1 1 1
+   position 0.628 0.64
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg2 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_down"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  TextWidgetClass minute {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0.824 0.19
+   size 0.15 0.1
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "#VSTR_MINUTE"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+   "text valign" center
+  }
+  ButtonWidgetClass brtnMinInc {
+   color 1 1 1 1
+   position 0.824 0.32
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg8 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_up"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  EditBoxWidgetClass InputMinute {
+   ignorepointer 0
+   position 0.824 0.46
+   size 0.15 0.16
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   scriptclass "EditBoxEventHandler"
+   style VPPInput
+   text "30"
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+   "text halign" center
+  }
+  ButtonWidgetClass brtnMinDec {
+   color 1 1 1 1
+   position 0.824 0.64
+   size 0.15 0.13
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass btnImg3 {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 18 14
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:chevron_down"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  CheckBoxWidgetClass PermaTick {
+   ignorepointer 0
+   position 0.04 0.015
+   size 0.4 0.12
    valign bottom_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   style VPPCheckBox
+   font "gui/fonts/sdf_MetronLight72"
    {
-    ButtonWidgetClass btnApply {
-     position 0.01 0
-     size 0.25 0.5
-     halign right_ref
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
+    TextWidgetClass TxtPerma {
+     ignorepointer 1
+     position 28 0
+     size 1 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
      hexactsize 0
      vexactsize 0
-     style Editor
-     text "#VSTR_APPLY"
-     font "gui/fonts/sdf_MetronBook24"
-    }
-    ButtonWidgetClass btnCancel {
-     position 0.01 0
-     size 0.25 0.5
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     text "#VSTR_CANCEL"
-     font "gui/fonts/sdf_MetronBook24"
-    }
-    CheckBoxWidgetClass PermaTick {
-     position 0 0
-     size 0.35 0.889
-     halign center_ref
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Default
+     style None
      text "#VSTR_BAN_PERMA"
-     font "gui/fonts/sdf_MetronBook24"
-    }
-   }
-  }
-  GridSpacerWidgetClass Grid {
-   ignorepointer 1
-   position 0 0
-   size 0.7 1
-   halign center_ref
-   valign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   "Size To Content H" 1
-   "Size To Content V" 1
-   Columns 5
-   Rows 4
-   {
-    TextWidgetClass year {
-     ignorepointer 1
-     position 0 0
-     size 0 0
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     text "#VSTR_YEAR"
-     font "gui/fonts/sdf_MetronBook24"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
+     "exact text size" 13
      "size to text h" 1
      "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    TextWidgetClass month {
-     ignorepointer 1
-     position 0 0
-     size 0 0
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     text "#VSTR_MONTH"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    TextWidgetClass day {
-     ignorepointer 1
-     position 0 0
-     size 0 0
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     text "#VSTR_DAY"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    TextWidgetClass hour {
-     ignorepointer 1
-     position 0 0
-     size 0 0
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     text "#VSTR_HOUR"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    TextWidgetClass minute {
-     ignorepointer 1
-     position 0 0
-     size 0 0
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     text "#VSTR_MINUTE"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 1
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    ButtonWidgetClass brtnYrInc {
-     size 0.05 0.05
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg4 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-      }
-     }
-    }
-    ButtonWidgetClass brtnMnthInc {
-     size 0.05 0.05
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg5 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-      }
-     }
-    }
-    ButtonWidgetClass brtnDayInc {
-     size 0.05 0.05
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg6 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-      }
-     }
-    }
-    ButtonWidgetClass brtnHrInc {
-     size 0.05 0.05
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg7 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-      }
-     }
-    }
-    ButtonWidgetClass brtnMinInc {
-     size 0.05 0.05
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg8 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-      }
-     }
-    }
-    EditBoxWidgetClass InputYear {
-     ignorepointer 0
-     position 0.016 0.067
-     size 0.35 0.25
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "EditBoxEventHandler"
-     style Editor
-     text "2019"
-     "Use default text" 0
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-     "bold text" 1
-    }
-    EditBoxWidgetClass InputMonth {
-     ignorepointer 0
-     position 0.016 0.067
-     size 0.25 0.25
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "EditBoxEventHandler"
-     style Editor
-     text "6"
-     "Use default text" 0
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-     "bold text" 1
-    }
-    EditBoxWidgetClass InputDay {
-     ignorepointer 0
-     position 0.016 0.067
-     size 0.25 0.25
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "EditBoxEventHandler"
-     style Editor
-     text "25"
-     "Use default text" 0
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-     "bold text" 1
-    }
-    EditBoxWidgetClass InputHour {
-     ignorepointer 0
-     position 0.016 0.067
-     size 0.25 0.25
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "EditBoxEventHandler"
-     style Editor
-     text "12"
-     "Use default text" 0
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-     "bold text" 1
-    }
-    EditBoxWidgetClass InputMinute {
-     ignorepointer 0
-     position 0.016 0.067
-     size 0.25 0.25
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "EditBoxEventHandler"
-     style Editor
-     text "30"
-     "Use default text" 0
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-     "bold text" 1
-    }
-    ButtonWidgetClass brtnYrDec {
-     position 0.007 0.052
-     size 0.05 0.05
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       rotation 180 0 0
-      }
-     }
-    }
-    ButtonWidgetClass brtnMnthDec {
-     position 0.007 0.052
-     size 0.05 0.05
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg0 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       rotation 180 0 0
-      }
-     }
-    }
-    ButtonWidgetClass brtnDayDec {
-     position 0.007 0.052
-     size 0.05 0.05
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg1 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       rotation 180 0 0
-      }
-     }
-    }
-    ButtonWidgetClass brtnHrDec {
-     position 0.007 0.052
-     size 0.05 0.05
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg2 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       rotation 180 0 0
-      }
-     }
-    }
-    ButtonWidgetClass brtnMinDec {
-     position 0.007 0.052
-     size 0.05 0.05
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     {
-      ImageWidgetClass btnImg3 {
-       ignorepointer 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:HudMantaHeavy"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
-       rotation 180 0 0
-      }
-     }
-    }
-   }
-  }
-  ImageWidgetClass title {
-   ignorepointer 1
-   color 0.6706 0.6706 0.6706 0.9608
-   position 0 0.01
-   size 0.997 0.073
-   halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   image0 "set:dayz_gui image:container_header"
-   mode blend
-   "src alpha" 1
-   "no wrap" 1
-   stretch 1
-   {
-    TextWidgetClass title_text {
-     ignorepointer 1
-     position 0 0
-     size 0.99 1.353
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Normal
-     text "#VSTR_EDIT_DURATION"
-     font "gui/fonts/sdf_MetronBook72"
-     "exact text" 0
-     "exact text size" 16
-     "text halign" center
      "text valign" center
     }
    }
   }
-  ImageWidgetClass ImgInfo {
-   clipchildren 0
-   ignorepointer 0
-   color 1 0 0 1
-   position 0.01 0.1
-   size 0.08 0.15
+  ButtonWidgetClass btnCancel {
+   color 1 1 1 1
+   position 0.04 0.01
+   size 0.22 0.12
    halign right_ref
+   valign bottom_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   scriptclass "ToolTipHandler"
-   image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
-   mode blend
-   "src alpha" 1
-   "no wrap" 1
-   stretch 1
+   style VPPButtonGhost
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   {
+    TextWidgetClass LblCancel {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "#VSTR_CANCEL"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+  ButtonWidgetClass btnApply {
+   color 1 1 1 1
+   position 0.28 0.01
+   size 0.22 0.12
+   halign right_ref
+   valign bottom_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style VPPButton
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   {
+    TextWidgetClass LblApply {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     text "#VSTR_APPLY"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+   }
   }
  }
 }

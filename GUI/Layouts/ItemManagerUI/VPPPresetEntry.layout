@@ -1,0 +1,125 @@
+FrameWidgetClass PresetEntryRoot {
+ ignorepointer 0
+ position 0 0
+ size 1 26
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ {
+  ButtonWidgetClass PresetEntrySelect {
+   disabled 0
+   ignorepointer 0
+   color 1 1 1 1
+   position 0 0
+   size 1 26
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style VPPButtonGhost
+   "no focus" 1
+   {
+    ImageWidgetClass PresetEntryDot {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 3 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:dot"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass PresetEntryName {
+     ignorepointer 1
+     position 28 0
+     size 0.55 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Preset"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  ButtonWidgetClass PresetEntrySpawn {
+   disabled 0
+   ignorepointer 0
+   color 1 1 1 1
+   position 42 0
+   size 26 26
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButton
+   {
+    ImageWidgetClass ImgPresetSpawn {
+     ignorepointer 1
+     color 0.298 0.686 0.314 1
+     size 24 24
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:play"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  ButtonWidgetClass PresetEntryDelete {
+   disabled 0
+   ignorepointer 0
+   color 1 1 1 1
+   position 8 0
+   size 26 26
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButton
+   {
+    ImageWidgetClass ImgPresetDelete {
+     ignorepointer 1
+     color 0.761 0.271 0.271 1
+     size 24 24
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:trash_2"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+ }
+}

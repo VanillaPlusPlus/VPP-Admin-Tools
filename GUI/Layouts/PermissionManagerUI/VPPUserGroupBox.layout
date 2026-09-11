@@ -1,179 +1,234 @@
 PanelWidgetClass PanelUserGroup {
  ignorepointer 1
  keepsafezone 1
- color 1 1 1 0.549
- position 0 0
- size 1 0.55
+ color 0.055 0.063 0.071 0.784
+ size 1 160
  halign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
- vexactsize 0
- style DayZDefaultPanel
+ vexactsize 1
+ style VPPCard
  {
-  PanelWidgetClass PnlBg {
-   ignorepointer 1
-   color 0 0 0 1
-   position 0 0.01
-   size 0.996 0.985
+  PanelWidgetClass info_content_grid {
+   ignorepointer 0
+   color 0.039 0.043 0.047 0.9
+   position 0 1
+   size 0.99 26
    halign center_ref
-   hexactpos 0
-   vexactpos 0
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanel
-  }
-  GridSpacerWidgetClass info_content_grid {
-   ignorepointer 1
-   color 0 0 0 0
-   size 1 0.25
-   halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanelBottom
-   Padding 3
-   Margin 8
-   content_valign bottom
-   Columns 1
-   Rows 4
+   vexactsize 1
+   style VPPFillRound
    {
-    FrameWidgetClass UserGroupNameFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 24
+    CheckBoxWidgetClass chkBoxSelectGrp {
+     ignorepointer 0
+     position 4 0
+     size 22 22
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     style VPPCheckBox
+     "no focus" 1
+    }
+    TextWidgetClass NameLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 32 0
+     size 0.3 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GROUP_NAME"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass GroupName {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 110 0
+     size 0.45 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "usergroupname"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 15
+     "size to text h" 1
+     "size to text v" 0
+     "text valign" center
+    }
+    ButtonWidgetClass btnSettings {
+     ignorepointer 0
+     color 1 1 1 1
+     position 2 0
+     size 24 24
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
      {
-      TextWidgetClass NameLabel {
+      ImageWidgetClass imgSettings {
        ignorepointer 1
-       size 1 1
+       color 0.604 0.627 0.651 1
+       position 0 0
+       size 24 24
+       halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_GROUP_NAME"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass GroupName {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "usergroupname"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:settings"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
       }
      }
     }
-    FrameWidgetClass TotalMembersFrame {
+   }
+  }
+  PanelWidgetClass info_stats_row {
+   ignorepointer 0
+   color 0 0 0 0
+   position 0.012 30
+   size 0.97 22
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style blank
+   {
+    TextWidgetClass MemberCountLabel {
      ignorepointer 1
+     color 0.604 0.627 0.651 1
      position 0 0
-     size 48 15
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      TextWidgetClass MemberCountLabel {
-       ignorepointer 1
-       size 1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_GROUP_TOTAL_MEMBERS"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass MemberCount {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "25"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
+     size 0.4 1
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GROUP_TOTAL_MEMBERS"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
     }
-    FrameWidgetClass PermLevelFrame {
+    TextWidgetClass MemberCount {
      ignorepointer 1
-     position 0 0
-     size 48 15
+     color 1 1 1 1
+     position 0.25 0
+     size 0.12 1
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "0"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 12
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass PermLevelLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0.45 0
+     size 0.3 1
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GROUP_PERMS_LVL"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass PermLevel {
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.9 0
+     size 0.12 1
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "0"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 12
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" right
+     "text valign" center
+    }
+    ButtonWidgetClass btnEditPermLevel {
+     ignorepointer 0
+     color 1 1 1 1
+     position 2 0
+     size 22 22
+     halign right_ref
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     scriptclass "ConfirmationEventHandler"
+     style VPPButtonGhost
+     "no focus" 1
      {
-      TextWidgetClass PermLevelLabel {
+      ImageWidgetClass icon {
        ignorepointer 1
-       size 1 1
+       color 0.604 0.627 0.651 1
+       position 0 0
+       size 24 24
+       halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_GROUP_PERMS_LVL"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass PermLevel {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "25"
-       font "gui/fonts/sdf_MetronBook24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:square_pen"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
       }
      }
     }
@@ -182,19 +237,19 @@ PanelWidgetClass PanelUserGroup {
   ScrollWidgetClass ScrollerMembersList {
    visible 1
    ignorepointer 0
-   position 0 0.12
-   size 0.98 0.7
+   position 0 0.345
+   size 0.98 0.63
    halign center_ref
-   valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   scaled 0
+   style VPPScroll
    "Scrollbar V" 1
    {
     GridSpacerWidgetClass SpacerMembersList {
      ignorepointer 1
+     position 0.005 0
      size 0.99 1
      halign center_ref
      hexactpos 0
@@ -202,76 +257,12 @@ PanelWidgetClass PanelUserGroup {
      hexactsize 0
      vexactsize 0
      "Ignore invisible" 0
-     Padding 5
+     Padding 1
      Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
      Columns 1
      Rows 100
-    }
-   }
-  }
-  CheckBoxWidgetClass chkBoxSelectGrp {
-   ignorepointer 0
-   position 0 0.18
-   size 0.0755 0.07
-   halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   font "gui/fonts/Metron-BoldItalic12"
-  }
-  ButtonWidgetClass btnSettings {
-   position 0.45 0.18
-   size 0.085 0.07
-   halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   {
-    ImageWidgetClass imgSettings {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     image0 "set:dayz_gui image:settings"
-     mode additive
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
-    }
-   }
-  }
-  ButtonWidgetClass btnEditPermLevel {
-   position 0.08 0.08
-   size 0.07 0.06
-   halign right_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   scriptclass "ConfirmationEventHandler"
-   {
-    ImageWidgetClass icon {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     image0 "set:dayz_gui image:icon_feedback"
-     mode additive
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
     }
    }
   }

@@ -1,120 +1,108 @@
-PanelWidgetClass PanelItem {
- ignorepointer 1
- keepsafezone 1
- color 1 1 1 0.549
+FrameWidgetClass PresetItemRoot {
+ ignorepointer 0
  position 0 0
- size 1 0.07
- halign center_ref
- valign center_ref
- hexactpos 0
- vexactpos 0
+ size 1 26
+ hexactpos 1
+ vexactpos 1
  hexactsize 0
- vexactsize 0
- style DayZDefaultPanel
+ vexactsize 1
  {
-  PanelWidgetClass PnlBg {
+  ImageWidgetClass ImgParent {
+   visible 0
    ignorepointer 1
-   color 0 0 0 1
-   size 0.996 0.915
-   halign center_ref
+   color 0.91 0.639 0.239 1
+   position 3 0
+   size 24 24
    valign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanel
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:crown"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
   }
-  GridSpacerWidgetClass player_content {
+  TextWidgetClass ItemName {
    ignorepointer 0
-   color 0 0 0 0
-   size 1 0
-   halign center_ref
+   position 30 0
+   size 0.6 1
    valign center_ref
-   hexactpos 0
-   vexactpos 0
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanelBottom
-   Padding 4
-   Margin 6
-   "Size To Content V" 1
-   Columns 1
-   Rows 5
+   style None
+   text "Item Name"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ButtonWidgetClass BtnMakeParent {
+   disabled 0
+   ignorepointer 0
+   color 1 1 1 1
+   position 42 0
+   size 26 26
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButton
    {
-    FrameWidgetClass FFrame {
-     ignorepointer 0
-     position 0 0
-     size 48 20
+    ImageWidgetClass ImgMakeParent {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 24 24
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     {
-      GridSpacerWidgetClass Grid {
-       ignorepointer 1
-       size 0.922 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       Padding 15
-       Margin 0
-       "Size To Content H" 1
-       "Size To Content V" 1
-       Columns 2
-       Rows 1
-       {
-        ButtonWidgetClass BtnDelete {
-         color 0.8824 0.1059 0.1059 1
-         size 0.1 1
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          ImageWidgetClass Img {
-           ignorepointer 1
-           size 1 1
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           image0 "set:dayz_gui_vpp image:vpp_icon_trash"
-           mode additive
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-           "flip u" 0
-           "Transition width" 0
-          }
-         }
-        }
-        TextWidgetClass ItemName {
-         ignorepointer 0
-         size 1 1
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         text "Item Name"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 16
-         "size to text h" 0
-         "size to text v" 0
-         "text valign" center
-        }
-       }
-      }
-     }
+     image0 "set:vpp_icons image:crown"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  ButtonWidgetClass BtnDelete {
+   disabled 0
+   ignorepointer 0
+   color 1 1 1 1
+   position 8 0
+   size 26 26
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButton
+   {
+    ImageWidgetClass ImgDelete {
+     ignorepointer 1
+     color 0.761 0.271 0.271 1
+     size 24 24
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:trash_2"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
     }
    }
   }

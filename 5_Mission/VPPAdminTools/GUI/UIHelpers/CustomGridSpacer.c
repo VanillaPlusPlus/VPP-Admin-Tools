@@ -14,6 +14,8 @@ class CustomGridSpacer
 	
 	void ~CustomGridSpacer()
 	{
+		ClearContent();
+		
 		if (m_Grid != null)
 			m_Grid.Unlink();
 	}

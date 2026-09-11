@@ -1,6 +1,5 @@
 modded class OptionsMenuGame 
 {
-	protected Widget 						m_CustomSetting;
 	protected Widget 						m_VPPATSection;
 
 	protected Widget 						m_widgetCamSpeed;
@@ -9,6 +8,7 @@ modded class OptionsMenuGame
 	protected Widget 						m_widgetCamMouseSense;
 	protected Widget 						m_widgetCamSmoothness;
 	protected Widget 						m_widgetCamFOV;
+	protected Widget 						m_widgetStatsHud;
 
 	protected ref OptionSelectorSlider		m_CamSpeed;
 	protected ref OptionSelectorSlider		m_CamBoost;
@@ -16,6 +16,7 @@ modded class OptionsMenuGame
 	protected ref OptionSelectorSlider		m_CamMouseSense;
 	protected ref OptionSelectorSlider		m_CamSmoothness;
 	protected ref OptionSelectorSlider		m_CamFOV;
+	protected ref OptionSelectorMultistate	m_StatsHudToggle;
 
 	void OptionsMenuGame( Widget parent, Widget details_root, GameOptions options, OptionsMenu menu )
 	{
@@ -58,6 +59,13 @@ modded class OptionsMenuGame
 		TextWidget.Cast(m_widgetCamFOV.FindAnyWidget("setting_label")).SetText("FIELD OF VIEW");
 		m_CamFOV = new OptionSelectorSlider(m_widgetCamFOV.FindAnyWidget("setting_option"), g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV), this, false, VPPATProfileConstants.MIN_CAM_FOV, VPPATProfileConstants.MAX_CAM_FOV);
 		m_CamFOV.m_OptionChanged.Insert(OnCamSettingChanged);
+
+		//Stats HUD global enable/disable (vanilla-style two-state toggle)
+		array<string> statsHudOpts = { "#options_controls_disabled", "#options_controls_enabled" };
+		m_widgetStatsHud = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.SettingsMenuElement, m_Root.FindAnyWidget("vppat_settings_root"));
+		TextWidget.Cast(m_widgetStatsHud.FindAnyWidget("setting_label")).SetText("ADMIN STATS HUD");
+		m_StatsHudToggle = new OptionSelectorMultistate(m_widgetStatsHud.FindAnyWidget("setting_option"), StatsHudSavedIndex(), this, false, statsHudOpts);
+		m_StatsHudToggle.m_OptionChanged.Insert(OnStatsHudToggleChanged);
 	}
 	
 	override void Apply()
@@ -69,50 +77,73 @@ modded class OptionsMenuGame
 		g_Game.SetVPPATProfileVal(EVPPATProfileOptions.CAM_MOUSE_SENSE, m_CamMouseSense.GetValue());
 		g_Game.SetVPPATProfileVal(EVPPATProfileOptions.CAM_SMOOTHNESS, m_CamSmoothness.GetValue());
 		g_Game.SetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV, m_CamFOV.GetValue());
-		if (m_CamSpeed)
-			m_CamSpeed.SetHasChanged(false);
+		if (m_StatsHudToggle)
+			g_Game.SetStatsHudEnabled(m_StatsHudToggle.GetValue() == 1);
 	}
 
 	override bool IsChanged()
   	{
-  		if (m_CamSpeed && m_CamSpeed.HasChanged())
+  		float currentVal;
+  		float savedVal;
+
+  		if (m_CamSpeed)
   		{
-  			return true;
+  			currentVal = m_CamSpeed.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SPEED);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
   		}
 
   		if (m_CamBoost)
   		{
-  			if (m_CamBoost.GetValue() != g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_BOOST)){
-  				return true;
-  			}
+  			currentVal = m_CamBoost.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_BOOST);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
   		}
   		
   		if (m_CamMoveDrag)
   		{
-  			if (m_CamMoveDrag.GetValue() != g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_MOVE_DRAG)){
-  				return true;
-  			}
+  			currentVal = m_CamMoveDrag.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_MOVE_DRAG);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
   		}
   		
   		if (m_CamMouseSense)
   		{
-  			if (m_CamMouseSense.GetValue() != g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_MOUSE_SENSE)){
-  				return true;
-  			}
+  			currentVal = m_CamMouseSense.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_MOUSE_SENSE);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
   		}
   		
   		if (m_CamSmoothness)
   		{
-  			if (m_CamSmoothness.GetValue() != g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SMOOTHNESS)){
-  				return true;
-  			}
+  			currentVal = m_CamSmoothness.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SMOOTHNESS);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
   		}
   		
   		if (m_CamFOV)
   		{
-  			if (m_CamFOV.GetValue() != g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV)){
+  			currentVal = m_CamFOV.GetValue();
+			savedVal   = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV);
+
+			if (Math.AbsFloat(currentVal - savedVal) > 0.0005)
+			    return true;
+  		}
+
+  		if (m_StatsHudToggle)
+  		{
+  			if (m_StatsHudToggle.GetValue() != StatsHudSavedIndex())
   				return true;
-  			}
   		}
   		return super.IsChanged();
   	}
@@ -122,10 +153,7 @@ modded class OptionsMenuGame
 		super.Revert();
 
 		float oldVal = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_SPEED);
-		if (m_CamSpeed){
-			m_CamSpeed.SetValue(oldVal, false);
-			m_CamSpeed.SetHasChanged(false);
-		}
+		m_CamSpeed.SetValue(oldVal, false);
 
 		oldVal = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_BOOST);
 		m_CamBoost.SetValue(oldVal, false);
@@ -141,6 +169,9 @@ modded class OptionsMenuGame
 
 		oldVal = g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV);
 		m_CamFOV.SetValue(oldVal, false);
+
+		if (m_StatsHudToggle)
+			m_StatsHudToggle.SetValue(StatsHudSavedIndex(), false);
 	}
 	
 	override void SetOptions( GameOptions options )
@@ -164,10 +195,26 @@ modded class OptionsMenuGame
 
 		if (m_CamFOV)
 			m_CamFOV.SetValue(g_Game.GetVPPATProfileVal(EVPPATProfileOptions.CAM_FOV), false);
+
+		if (m_StatsHudToggle)
+			m_StatsHudToggle.SetValue(StatsHudSavedIndex(), false);
 	}
-	
+
 	void OnCamSettingChanged(float new_value)
 	{
 		m_Menu.OnChanged();
+	}
+
+	void OnStatsHudToggleChanged(int new_value)
+	{
+		m_Menu.OnChanged();
+	}
+
+	//saved toggle state as a multistate index (1 = enabled, 0 = disabled). No ternary — Enforce lacks it.
+	int StatsHudSavedIndex()
+	{
+		if (g_Game.IsStatsHudEnabled())
+			return 1;
+		return 0;
 	}
 };

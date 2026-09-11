@@ -8,7 +8,9 @@ class EspToolsMenu extends AdminHudSubMenu
 	private GridSpacerWidget m_SpacerParentItems; //ESP items selected list
 	private ref CustomGridSpacer m_LastGrid;
 	private SliderWidget     m_SliderRadius;
+	private SliderEventHandler m_SliderEvent;
 	private ButtonWidget     m_btnToggle;
+	private ImageWidget      m_ImgToggle;
 	private ButtonWidget     m_btnClear;
 	private ButtonWidget     m_removeAllItems;
 	private ButtonWidget     m_delAllItems;
@@ -18,10 +20,20 @@ class EspToolsMenu extends AdminHudSubMenu
 	private CheckBoxWidget   m_chkSelectAll; //Filter checkbox
 	CheckBoxWidget   		  m_ChkShowClassName;
 	CheckBoxWidget 			 m_ChkShowDeadPlayers;
-	private EditBoxWidget    m_InputUpdateInterval;
+	private int                 m_UpdateIntervalSeconds = 1;
+	private ref VPPDropDownMenu  m_IntervalDropDown;
+	private ref array<int>       m_IntervalPresets;
+	private ref array<string>    m_IntervalLabels;
 	private ImageWidget      m_ImgInfo;
 	private ScrollWidget     m_ScrollerItems;
 	private ScrollWidget     m_Scroller;
+
+	//shared color picker (hosted on Main, draws above the filter scroll list)
+	private Widget            m_Main;
+	private Widget            m_ColorPickerPopup;
+	private ButtonWidget      m_BtnClosePicker;
+	private ref array<Widget> m_ColorSwatches;
+	private VPPFilterEntry    m_ActiveColorFilter;
 	
 	ref array<ref VPPFilterEntry>   m_FilterEntry;
 	ref array<ref VPPESPItemEntry>  m_EspItemsEntry;
@@ -36,10 +48,19 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_DataGrids     = new array<ref CustomGridSpacer>;
 		m_EspTrackers	= new map<EntityAI, ref VPPESPTracker>;
 		m_FilterProps   = new array<ref EspFilterProperties>;
+		m_ColorSwatches = new array<Widget>;
+
+		m_IntervalPresets = {1, 2, 3, 5, 10, 30};
+		m_IntervalLabels  = {"1s", "2s", "3s", "5s", "10s", "30s"};
 	}
 
 	void ~EspToolsMenu()
 	{
+		if (m_ColorSwatches)
+		{
+			for (int i = 0; i < m_ColorSwatches.Count(); ++i)
+				m_ColorSwatches[i].Unlink();
+		}
 	}
 
 	override void OnCreate(Widget RootW)
@@ -54,7 +75,15 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_SpacerParentItems = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SpacerParentItems"));
 		m_SpacerParent = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SpacerParent"));
 		m_SliderRadius = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "SliderRadius"));
+		m_SliderRadius.GetScript(m_SliderEvent);
 		m_btnToggle    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnToggle"));
+		m_ImgToggle    = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ImgToggle"));
+		if (m_ImgToggle)
+		{
+			m_ImgToggle.LoadImageFile(0, "set:vpp_icons image:eye");
+			m_ImgToggle.LoadImageFile(1, "set:vpp_icons image:eye_off");
+		}
+		UpdateToggleVisual(); //initial off-state look
 		m_btnClear	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnClear"));
 		m_btnRestore   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnRestore"));
 		GetVPPUIManager().HookConfirmationDialog(m_btnRestore, M_SUB_WIDGET,this,"RestoreFilters", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_FILTER_RESTORE_TITLE", "#VSTR_ESP_FILTER_RESTORE");
@@ -64,11 +93,15 @@ class EspToolsMenu extends AdminHudSubMenu
 		
 		m_removeAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "removeAllItems"));
 		m_delAllItems = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "delAllItems"));
-		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_TITLE_DELETE", "#VSTR_ESP_DEL_CONFIRM");
+		GetVPPUIManager().HookConfirmationDialog(m_delAllItems, M_SUB_WIDGET,this,"ConfirmDeleteAll", DIAGTYPE.DIAG_YESNO, "#VSTR_ESP_TITLE_DELETE", " #VSTR_ESP_DEL_CONFIRM ");
 		m_chkSelectAll = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSelectAll"));
 		m_ChkShowClassName = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowClassName"));
 		m_ChkShowDeadPlayers = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowDeadPlayers"));
-		m_InputUpdateInterval = EditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("InputUpdateInterval"));
+		//update-interval preset dropdown (replaces the old edit box)
+		m_IntervalDropDown = new VPPDropDownMenu(M_SUB_WIDGET.FindAnyWidget("IntervalDropDownPanel"), m_IntervalLabels[0]);
+		foreach (string ivLabel : m_IntervalLabels)
+			m_IntervalDropDown.AddElement(ivLabel);
+		m_IntervalDropDown.m_OnSelectItem.Insert(OnIntervalSelected);
 		m_ImgInfo = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ImgInfo"));
 		
 		m_btnDelRadius = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnDelRadius"));
@@ -76,6 +109,14 @@ class EspToolsMenu extends AdminHudSubMenu
 
 		m_ScrollerItems = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ScrollerItems"));
 		m_Scroller = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("Scroller"));
+
+		//shared color picker popup (last child of Main so it draws on top, unclipped by the scroller)
+		m_Main             = M_SUB_WIDGET.FindAnyWidget("Main");
+		m_ColorPickerPopup = M_SUB_WIDGET.FindAnyWidget("ColorPickerPopup");
+		m_BtnClosePicker   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnClosePicker"));
+		for (int ci = 0; ci < 8; ci++)
+			m_ColorSwatches.Insert(M_SUB_WIDGET.FindAnyWidget("ColorSwatch" + ci.ToString()));
+		CloseColorPicker();
 		
 		ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
@@ -100,12 +141,71 @@ class EspToolsMenu extends AdminHudSubMenu
 	{
 		super.OnMenuHide();
 		GetToolbarMenu().AllowSelectBoxDraw(false);
+		CloseColorPicker();
 	}
 
-	override void HideBrokenWidgets(bool state)
+	//---- shared color picker (renders on top of the filter scroll list) ----
+	void ToggleColorPicker(VPPFilterEntry entry, Widget anchorBtn)
 	{
-		m_ScrollerItems.Show(!state);
-		m_Scroller.Show(!state);
+		if (m_ColorPickerPopup && m_ColorPickerPopup.IsVisible() && m_ActiveColorFilter == entry)
+		{
+			CloseColorPicker();
+			return;
+		}
+		OpenColorPicker(entry, anchorBtn);
+	}
+
+	void OpenColorPicker(VPPFilterEntry entry, Widget anchorBtn)
+	{
+		if (!m_ColorPickerPopup || !anchorBtn || !m_Main)
+			return;
+
+		m_ActiveColorFilter = entry;
+		m_ColorPickerPopup.Show(true);
+		m_ColorPickerPopup.Update();
+
+		float bx, by, bw, bh, mx, my, pw, ph;
+		anchorBtn.GetScreenPos(bx, by);
+		anchorBtn.GetScreenSize(bw, bh);
+		m_Main.GetScreenPos(mx, my);
+		m_ColorPickerPopup.GetScreenSize(pw, ph);
+
+		//right-align popup to the button and open upward; flip below if no room above
+		float px = (bx - mx) + bw - pw;
+		if (px < 4)
+			px = 4;
+		float py = (by - my) - ph - 4;
+		if (py < 4)
+			py = (by - my) + bh + 4;
+		m_ColorPickerPopup.SetPos(px, py);
+	}
+
+	void OnColorPicked(int index)
+	{
+		if (m_ActiveColorFilter)
+		{
+			m_ActiveColorFilter.ApplyColorIndex(index);
+			SaveFilters();
+		}
+		CloseColorPicker();
+	}
+
+	void CloseColorPicker()
+	{
+		if (m_ColorPickerPopup)
+			m_ColorPickerPopup.Show(false);
+		m_ActiveColorFilter = null;
+	}
+
+	//update-interval preset dropdown selection
+	void OnIntervalSelected(int index)
+	{
+		if (index >= 0 && index < m_IntervalPresets.Count())
+		{
+			m_UpdateIntervalSeconds = m_IntervalPresets[index];
+			m_IntervalDropDown.SetText(m_IntervalLabels[index]);
+			m_IntervalDropDown.SetIndex(index);
+		}
 	}
 	
 	void UpdateEsp()
@@ -128,7 +228,10 @@ class EspToolsMenu extends AdminHudSubMenu
 				int totalTime = 0;
 				array<EntityAI> entities = new array<EntityAI>;
 				
-				M_UPDATE_INTERVAL = m_InputUpdateInterval.GetText().ToInt();
+				if (!m_SliderRadius || m_FilterEntry == NULL) //break out of thread when UI was destroyed
+					break;
+
+				M_UPDATE_INTERVAL = m_UpdateIntervalSeconds;
 				if (M_UPDATE_INTERVAL <= 0)
 					M_UPDATE_INTERVAL = 1;
 				
@@ -323,6 +426,9 @@ class EspToolsMenu extends AdminHudSubMenu
 				if (m_EspTrackers.Get(man) != NULL)
 					continue;
 
+				if (!man.GetIdentity()) //?????????????
+					continue;
+
 				if (!man.IsAlive() && !ShowDeadPlayers())
 					continue;
 
@@ -375,11 +481,13 @@ class EspToolsMenu extends AdminHudSubMenu
 		if (M_SCAN_ACTIVE)
 		{
 			m_btnToggle.SetColor(ARGB(255,255,0,0));
+			m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
 			M_SCAN_ACTIVE = false;
 			ClearTrackers();
 		}else{
 			M_SCAN_ACTIVE = true;
 			m_btnToggle.SetColor(ARGB(255,0,255,0));
+			m_SliderEvent.ChangeColor(ARGB(255,0,255,0));
 			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 		}
 	}
@@ -387,19 +495,32 @@ class EspToolsMenu extends AdminHudSubMenu
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
 		super.OnClick(w, x, y, button);
+
+		//shared color picker swatch clicked?
+		int swatchIdx = m_ColorSwatches.Find(w);
+		if (swatchIdx > -1)
+		{
+			OnColorPicked(swatchIdx);
+			return true;
+		}
+		if (w == m_BtnClosePicker)
+		{
+			CloseColorPicker();
+			return true;
+		}
+
 		switch(w)
 		{
 			case m_btnToggle:
 			if (M_SCAN_ACTIVE)
 			{
-				m_btnToggle.SetColor(ARGB(255,255,0,0));
 				M_SCAN_ACTIVE = false;
 				ClearTrackers();
 			}else{
 				M_SCAN_ACTIVE = true;
-				m_btnToggle.SetColor(ARGB(255,0,255,0));
 				GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 			}
+			UpdateToggleVisual();
 			break;
 			
 			case m_btnClear:
@@ -415,16 +536,6 @@ class EspToolsMenu extends AdminHudSubMenu
 			foreach(VPPFilterEntry filter : m_FilterEntry)
 				filter.SetSelected(m_chkSelectAll.IsChecked());
 			break;
-		}
-		return false;
-	}
-	
-	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
-	{
-		if (w == m_InputUpdateInterval)
-		{
-			SetFocus(null);
-			return true;
 		}
 		return false;
 	}
@@ -577,7 +688,8 @@ class EspToolsMenu extends AdminHudSubMenu
 		int index = m_EspItemsEntry.Find(entry);
 		if (index > -1)
 		{
-			VPPESPTracker tracker = m_EspTrackers.Get(entry.GetTargetObject());
+			EntityAI targetEnt = EntityAI.Cast(entry.GetTargetObject());
+			VPPESPTracker tracker = VPPESPTracker.Cast(m_EspTrackers.Get(targetEnt));
 			if (tracker)
 			{
 				tracker.SetChecked(false);
@@ -607,6 +719,35 @@ class EspToolsMenu extends AdminHudSubMenu
 		}
 	}
 	
+	//reflect scan on/off state in the toggle button (eye icon + colors)
+	void UpdateToggleVisual()
+	{
+		if (M_SCAN_ACTIVE)
+		{
+			if (m_ImgToggle)
+			{
+				m_ImgToggle.SetImage(0); //eye (open) = scanning
+				m_ImgToggle.SetColor(ARGB(255,76,175,80)); //positive-green
+			}
+			if (m_btnToggle)
+				m_btnToggle.SetColor(ARGB(255,0,255,0));
+			if (m_SliderEvent)
+				m_SliderEvent.ChangeColor(ARGB(255,0,255,0));
+		}
+		else
+		{
+			if (m_ImgToggle)
+			{
+				m_ImgToggle.SetImage(1); //eye_off (closed) = not scanning
+				m_ImgToggle.SetColor(ARGB(255,154,160,166)); //text-secondary
+			}
+			if (m_btnToggle)
+				m_btnToggle.SetColor(ARGB(255,255,0,0));
+			if (m_SliderEvent)
+				m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
+		}
+	}
+
 	void ClearTrackers()
 	{
 		m_EspTrackers.Clear();
@@ -675,6 +816,7 @@ class EspToolsMenu extends AdminHudSubMenu
 	
 	void LoadSavedFilters()
 	{
+		CloseColorPicker(); //filter rows are about to be rebuilt; drop any active reference
 		m_FilterEntry   = new array<ref VPPFilterEntry>;
 		m_FilterProps   = new array<ref EspFilterProperties>;
 		

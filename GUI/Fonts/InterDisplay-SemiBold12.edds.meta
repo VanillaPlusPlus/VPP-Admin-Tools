@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{702100BE04F8B9DC}VPPAdminTools/GUI/Fonts/InterDisplay-SemiBold12.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -158321908
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-SemiBold12.tga"
+   FormatCompress Copy
+   CompressTreshold 0
+   ConversionQuality 1
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

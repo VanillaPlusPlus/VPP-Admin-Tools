@@ -59,6 +59,11 @@ class VPPATUIConstants
 	const static string VPPAdminHud 				 = "VPPAdminTools/GUI/Layouts/AdminToolBar/VPPAdminHud.layout";
 	const static string VPPButton 					 = "VPPAdminTools/GUI/Layouts/AdminToolBar/VPPButton.layout";
 
+	//Design System prefabs
+	const static string DSSectionHeader 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/DesignSystem/SectionHeader.layout";
+	const static string DSActionButton 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/DesignSystem/ActionButton.layout";
+	const static string DSVitalCell 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/DesignSystem/VitalCell.layout";
+
 	//UI Helpers
 	const static string VPPDialogBox 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/VPPDialogBox.layout";
 	const static string CustomGridSpacer 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/CustomGridSpacer.layout";
@@ -88,11 +93,16 @@ class VPPATUIConstants
 
 	//Server Manager
 	const static string MenuServerManager 			 = "VPPAdminTools/GUI/Layouts/ServerManagerUI/MenuServerManager.layout";
+	const static string ServerMonitorPin 			 = "VPPAdminTools/GUI/Layouts/ServerManagerUI/ServerMonitorPin.layout";
+
+	//Stats HUD
+	const static string StatsHud 					 = "VPPAdminTools/GUI/Layouts/StatsHudUI/StatsHud.layout";
 
 	//Players Manager
 	const static string MenuPlayerManager 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/MenuPlayerManager.layout";
 	const static string VPPPlayerList 				 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerList.layout";
 	const static string VPPPlayerInfoBox 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPPlayerInfoBox.layout";
+	const static string VPPModifierEntry 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/VPPModifierEntry.layout";
 
 	//Permissions Manager
 	const static string MenuPermissionsEditor 		 = "VPPAdminTools/GUI/Layouts/PermissionManagerUI/MenuPermissionsEditor.layout";
@@ -113,6 +123,7 @@ class VPPATUIConstants
 	const static string MenuItemManager 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/MenuItemManager.layout";
 	const static string PopUpCreatePreset 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/PopUpCreatePreset.layout";
 	const static string EntryPresetItem 			 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/EntryPresetItem.layout";
+	const static string VPPPresetEntry 				 = "VPPAdminTools/GUI/Layouts/ItemManagerUI/VPPPresetEntry.layout";
 
 	//ESP Tools
 	const static string EspToolsMenu 				 = "VPPAdminTools/GUI/Layouts/EspToolsUI/EspToolsMenu.layout";
@@ -136,4 +147,6 @@ class VPPATUIConstants
 
 	//Spectate Tools
 	const static string MenuSpectateTools 			 = "VPPAdminTools/GUI/Layouts/SpectateUI/MenuSpectateTools.layout";
+	const static string SpectatePlayerEntry 		 = "VPPAdminTools/GUI/Layouts/SpectateUI/SpectatePlayerEntry.layout";
+	const static string SpectateOverlay 			 = "VPPAdminTools/GUI/Layouts/SpectateUI/SpectateOverlay.layout";
 };

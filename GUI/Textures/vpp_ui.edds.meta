@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{B2514993B379420D}VPPAdminTools/GUI/Textures/vpp_ui.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -2006420276
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "vpp_ui.tga"
+   GenerateMips 0
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

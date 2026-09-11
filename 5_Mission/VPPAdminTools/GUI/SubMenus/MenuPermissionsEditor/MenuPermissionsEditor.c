@@ -9,6 +9,7 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 	private ButtonWidget      m_SavePermissions;
 	private ButtonWidget      m_btnDeleteGroup;
 	private ButtonWidget      m_btnAddMembers;
+	private ImageWidget       m_ImgInfo;
 	private ref CustomGridSpacer m_LastGrid;
 	private ref array<ref CustomGridSpacer> m_DataGrids;
 	
@@ -48,13 +49,17 @@ class MenuPermissionsEditor extends AdminHudSubMenu
 		
 		m_SavePermissions	 = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges"));
 		GetVPPUIManager().HookConfirmationDialog(m_SavePermissions, M_SUB_WIDGET,this,"ApplyNewPermissions", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_UPDATE_PERMSGRP", "#VSTR_TOOLTIP_UPDATE_PERMSGRP");
+
+		m_ImgInfo = ImageWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ImgInfo"));
+		ToolTipHandler toolTip;
+		m_ImgInfo.GetScript(toolTip);
+		if (toolTip)
+		{
+			toolTip.SetTitle("#VSTR_TOOLTIP_TITLE_PERMS");
+			toolTip.SetContentText("#VSTR_TOOLTIP_PERMS");
+		}
+
 		M_SUB_WIDGET.SetHandler(this);
-	}
-	
-	override void HideBrokenWidgets(bool state)
-	{
-		m_ScrollerPermissions.Show(!state);
-		m_ScrollerUserGroups.Show(!state);
 	}
 	
 	override void OnUpdate(float timeslice)

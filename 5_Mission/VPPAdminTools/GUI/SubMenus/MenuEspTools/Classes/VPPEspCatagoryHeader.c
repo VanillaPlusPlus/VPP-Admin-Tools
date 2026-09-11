@@ -26,6 +26,11 @@ class VPPEspCatagoryHeader: ScriptedWidgetEventHandler
 		m_root = w;
 		m_root.SetHandler(this);
 		m_IconCollapse  = ImageWidget.Cast(w.FindAnyWidget("IconCollapse"));
+		if (m_IconCollapse)
+		{
+			m_IconCollapse.LoadImageFile(0, "set:vpp_icons image:chevron_down"); //collapsed
+			m_IconCollapse.LoadImageFile(1, "set:vpp_icons image:chevron_up");   //expanded
+		}
 		m_CatagoryTitle = RichTextWidget.Cast(w.FindAnyWidget("CatagoryTitle"));
 		m_BtnCollapse   = ButtonWidget.Cast(w.FindAnyWidget("BtnCollapse"));
 		m_BtnClose   = ButtonWidget.Cast(w.FindAnyWidget("BtnClose"));
@@ -41,7 +46,7 @@ class VPPEspCatagoryHeader: ScriptedWidgetEventHandler
 		m_SpacerGrid = GridSpacerWidget.Cast(GetGame().GetWorkspace().CreateWidgets(layoutPath, container));
 		m_SpacerGrid.Show(!hideDefault);
 		if (!hideDefault)
-			m_IconCollapse.LoadImageFile(0, "set:dayz_gui image:icon_collapse");
+			m_IconCollapse.SetImage(1); //expanded -> chevron_up
 	}
 
 	void SetRootCatagory(bool state, VPPESPTracker root)
@@ -55,11 +60,31 @@ class VPPEspCatagoryHeader: ScriptedWidgetEventHandler
 	{
 		m_Collapsed = !m_Collapsed;
 		if (m_Collapsed){
-			m_IconCollapse.LoadImageFile(0, "set:dayz_gui image:icon_collapse");
+			m_IconCollapse.SetImage(1); //expanded -> chevron_up
 		}else{
-			m_IconCollapse.LoadImageFile(0, "set:dayz_gui image:icon_expand");
+			m_IconCollapse.SetImage(0); //collapsed -> chevron_down
 		}
 		m_SpacerGrid.Show(m_Collapsed);
+	}
+
+	bool IsExpanded()
+	{
+		return m_Collapsed; //m_Collapsed == true means the section is shown/expanded
+	}
+
+	//set a specific expanded state directly (used by distance auto-collapse)
+	void SetExpanded(bool state)
+	{
+		m_Collapsed = state;
+		if (m_IconCollapse)
+		{
+			if (state)
+				m_IconCollapse.SetImage(1); //chevron_up
+			else
+				m_IconCollapse.SetImage(0); //chevron_down
+		}
+		if (m_SpacerGrid)
+			m_SpacerGrid.Show(state);
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)

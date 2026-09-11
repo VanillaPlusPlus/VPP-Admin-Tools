@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{2A1E55BF9BCBA247}VPPAdminTools/GUI/Textures/vpp_icons.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -525994791
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "vpp_icons.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

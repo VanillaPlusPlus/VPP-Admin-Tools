@@ -3,7 +3,7 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 	protected Widget				m_Root;
 	protected ScrollWidget			m_Scroller;
 	protected Widget				m_ContentContainer;
-	protected ref array<Widget>		m_Content	= new array<Widget>>;
+	protected ref array<Widget>		m_Content	= new array<Widget>;
 	
 	protected Widget				m_Button;
 	protected string                   m_TextCache;
@@ -38,31 +38,22 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 		Widget child = m_ContentContainer.GetChildren();
 		while( child )
 		{
-			if( m_Content.Find( child ) > -1 )
+			if( m_Content.Find( child ) == -1 )
 			{
 				m_Content.Insert( child );
 			}
+			child = child.GetSibling();
 		}
 		
 		m_ContentContainer.Update();
 		m_Root.Update();
-		
-		float x, y;
-		m_ContentContainer.GetScreenSize( x, y );
-		if( y > m_Scroller.GetContentHeight() )
-		{
-			m_Scroller.SetAlpha( 1 );
-		}
-		else
-		{
-			m_Scroller.SetAlpha( 0 );
-		}
 	}
 	
 	int AddElement( string text, Widget content = null )
 	{
 		ButtonWidget element = ButtonWidget.Cast( GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.dropdown_element, m_ContentContainer ) );
-		element.SetText( text );
+		TextWidget displayText = TextWidget.Cast(element.FindAnyWidget("displayText"));
+		displayText.SetText(text);
 		
 		if( content )
 		{
@@ -93,16 +84,17 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 			m_ContentContainer.Update();
 			m_Root.Update();
 	    }
-	    m_Content	= new array<Widget>>;
+	    m_Content	= new array<Widget>;
 	}
 	
 	void Close()
 	{
 		if( m_IsExpanded )
 		{
+			m_IsExpanded = false;
 			m_Scroller.Show( false );
-			m_ImageExpand.Show( false );
-			m_ImageCollapse.Show( true );
+			m_ImageExpand.Show( true );
+			m_ImageCollapse.Show( false );
 		}
 	}
 	
@@ -125,6 +117,12 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 	
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
+		if( w == m_Button && button == MouseState.LEFT )
+		{
+			Toggle();
+			return true;
+		}
+		
 		int index = m_Content.Find( w );
 		if( index > -1 )
 		{
@@ -138,16 +136,22 @@ class VPPDropDownMenu extends ScriptedWidgetEventHandler
 		return false;
 	}
 	
+	void Toggle()
+	{
+		m_IsExpanded = !m_IsExpanded;
+		m_Scroller.Show( m_IsExpanded );
+		m_ImageExpand.Show( !m_IsExpanded );
+		m_ImageCollapse.Show( m_IsExpanded );
+		
+		m_Root.Update();
+	}
+	
+	//fallback: clicks that land on the selector panel itself
 	override bool OnMouseButtonUp( Widget w, int x, int y, int button )
 	{
 		if( w == m_Root && button == MouseState.LEFT )
 		{
-			m_IsExpanded = !m_IsExpanded;
-			m_Scroller.Show( m_IsExpanded );
-			m_ImageExpand.Show( !m_IsExpanded );
-			m_ImageCollapse.Show( m_IsExpanded );
-			
-			m_Root.Update();
+			Toggle();
 			return true;
 		}
 		return false;

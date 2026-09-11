@@ -9,71 +9,91 @@ GridSpacerWidgetClass SpacerGrid {
  hexactsize 0
  vexactsize 0
  style Colorable
- Padding 0
- Margin 1
+ Padding 3
+ Margin 0
  "Size To Content H" 1
  "Size To Content V" 1
  content_valign center
  Columns 2
- Rows 2
+ Rows 1
  {
   ImageWidgetClass IconHealth {
-   position 4.32 85.64
-   size 32 32
+   position 0 0
+   size 24 24
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   image0 "set:dayz_gui image:iconHealth0"
+   image0 "set:vpp_icons image:heart_pulse"
    mode blend
    "src alpha" 1
-   "no wrap" 0
-   stretch 0
-   "flip v" 0
-   filter 0
+   "stretch mode" stretch_w_h
+   filter 1
   }
-  SliderWidgetClass HealthInput {
+  PanelWidgetClass HealthTrack {
    ignorepointer 1
-   color 0.9373 0.9373 0.9373 1
+   color 1 1 1 1
    position 0 0
-   size 100 10
+   size 150 10
+   halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Default
-   vertical 0
-   flipped 0
-   "fill in" 1
+   style VPPCard
+   {
+    PanelWidgetClass HealthInput {
+     ignorepointer 1
+     color 0.298 0.686 0.314 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPFill
+    }
+   }
   }
   ImageWidgetClass IconBlood {
-   position 0.52 116.537
-   size 32 32
+   position 0 0
+   size 24 24
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   image0 "set:dayz_gui image:iconBlood0"
+   image0 "set:vpp_icons image:droplets"
    mode blend
    "src alpha" 1
-   "no wrap" 0
-   stretch 0
-   "flip u" 0
-   "flip v" 0
+   "stretch mode" stretch_w_h
+   filter 1
   }
-  SliderWidgetClass BloodInput {
+  PanelWidgetClass BloodTrack {
    ignorepointer 1
-   color 0.9373 0.9373 0.9373 1
-   position 0 0
-   size 100 10
+   color 1 1 1 1
+   position 4 0
+   size 150 10
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Default
-   maximum 5000
-   current 2500
-   "fill in" 1
+   style VPPCard
+   {
+    PanelWidgetClass BloodInput {
+     ignorepointer 1
+     color 0.298 0.686 0.314 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPFill
+    }
+   }
   }
  }
 }

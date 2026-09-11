@@ -30,6 +30,9 @@ modded class MissionServer
     override void OnMissionFinish()
     {
         super.OnMissionFinish();
+        //graceful shutdown: restore any spectating admins' bodies before positions persist
+        if (GetSpectateManager())
+            GetSpectateManager().RestoreAllSessions();
         Print("[MissionServer] OnMissionFinish - Server");
     }
 
@@ -244,8 +247,23 @@ modded class MissionServer
     */
     override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
     {
+        //restore a spectating admin's body BEFORE logout persists its position.
+        //NOTE: vanilla's uid is the HASHED id (identity.GetId()) — sessions are keyed
+        //by the plain steam64, so resolve it explicitly.
+        if (GetSpectateManager())
+        {
+            string plainId = "";
+            if (identity)
+                plainId = identity.GetPlainId();
+            else if (player)
+                plainId = player.VPlayerGetSteamId();
+
+            if (plainId != "")
+                GetSpectateManager().OnAdminDisconnect(plainId);
+        }
+
         super.PlayerDisconnected(player, identity, uid);
-        
+
         if (identity)
         {
             GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "left the server!"));
@@ -448,6 +466,11 @@ modded class MissionServer
 
         if(identity && player)
         {
+            //spectate crash recovery: if the server/client died mid-spectate,
+            //put the admin back at their pre-spectate position
+            if (GetSpectateManager())
+                GetSpectateManager().OnPlayerConnectRecovery(player, identity);
+
             if(GetPermissionManager().HasUserGroup(identity.GetPlainId()))
             {
                 GetRPCManager().SendRPC("RPC_MissionGameplay", "AuthCheck", new Param1<bool>(true), true, identity);

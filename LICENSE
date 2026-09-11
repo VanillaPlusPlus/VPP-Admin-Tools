@@ -1,0 +1,53 @@
+DayZ Vanilla++ VPPAdminTools
+Source-Available Reference License (SARL) v1.0
+
+Copyright (c) 2025 DayZ Vanilla++ VPPAdminTools
+All rights reserved.
+
+1) Definitions
+“Software” means all files in this repository, including but not limited to source code, scripts, configuration, documentation, assets, data, and any associated workshop-ready content.
+“Assets” means any non-code content including models, textures, sounds, UI resources, and other media.
+“Repack” means copying, bundling, mirroring, re-uploading, or otherwise distributing the Software (or any portion of it) in whole or in part, including via Steam Workshop or any similar distribution platform.
+“Derivative Work” means any work that is based on, includes, modifies, adapts, translates, or incorporates any portion of the Software.
+“Reference Use” means viewing and studying the Software to understand behavior, interfaces, configuration, structure, and concepts, without copying any portion of the Software.
+
+2) Grant of Permission (Reference-Only)
+Subject to full compliance with this License, you are granted a limited, non-exclusive, non-transferable, revocable permission to:
+(a) View and study the Software for Reference Use; and
+(b) Create Independent Addons that interface with or depend on the Software at runtime (for example: through configuration, APIs, class extension, events, RPCs, file formats, documented interfaces, or expected behaviors),
+    provided that your Independent Addon does NOT copy or include any portion of the Software.
+
+3) Independent Addons (Allowed)
+You may publish your own addon that depends on this project, provided:
+(a) You do not copy/paste, include, or redistribute any portion of the Software (including scripts or assets) in your addon;
+(b) Your addon must function only as an independent work that references the original mod as a dependency and requires users to obtain the original mod from its official distribution location(s);
+(c) You do not misrepresent your addon as the original project or as an official reupload.
+
+4) Restrictions (Not Allowed)
+Except for the permissions in Section 2, you may NOT, under any circumstances:
+(a) Repack, redistribute, mirror, re-upload (including to Steam Workshop), publish, share, or sublicense the Software or any portion of it;
+(b) Create, publish, or distribute Derivative Works of the Software;
+(c) Copy any portion of the Software into another project, addon, mod, repository, or product (including “small snippets”);
+(d) Sell, rent, monetize access to, or otherwise commercially exploit the Software or any portion of it;
+(e) Remove or alter copyright notices, authorship credits, or this License.
+
+5) No Trademark / No Endorsement
+This License does not grant any rights to use the project name, branding, or identifiers except to describe compatibility (e.g., “addon for DayZ Vanilla++ VPPAdminTools”). You must not imply endorsement by the copyright holder.
+
+6) Contributions
+Unless the copyright holder explicitly states otherwise in writing, any contribution (pull request, patch, suggestion, or code) submitted to this repository may be accepted or rejected at the sole discretion of the copyright holder.
+If accepted, you agree it becomes part of the Software and is governed by this License.
+
+7) Termination
+Any violation of this License immediately terminates all permissions granted to you. Upon termination, you must stop using the Software and delete any copies you possess.
+
+8) Disclaimer of Warranty
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+9) Limitation of Liability
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+10) Contact / Exceptions
+If you want permission outside of this License (e.g., to reuse code, redistribute, or collaborate under different terms), you must obtain prior written permission from the copyright holder.
+
+End of terms.

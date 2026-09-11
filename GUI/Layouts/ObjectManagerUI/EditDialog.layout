@@ -1,118 +1,163 @@
 PanelWidgetClass rootFrame {
- color 1 1 1 0.549
- size 0.35 0.35
+ color 1 1 1 1
+ size 0.45 0.45
  halign center_ref
  valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style DayZDefaultPanel
+ style VPPPanel
  {
   PanelWidgetClass PnlBg {
    ignorepointer 1
-   color 0 0 0 1
-   position 0 0.01
-   size 0.991 0.983
+   color 0.055 0.063 0.071 0.6
+   position 0 0.13
+   size 0.96 0.74
    halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style VPPCard
   }
-  ButtonWidgetClass panel_close {
-   ignorepointer 0
-   position 0 0
-   size 0.064 0.11
-   halign right_ref
+  ImageWidgetClass IconDlg {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 0.01 5
+   size 24 24
    hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   {
-    ImageWidgetClass button_close {
-     ignorepointer 1
-     color 1 0 0 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     imageTexture "{0824EF46ED4B1CCD}gui/textures/dz_inv_x_ca.edds"
-     mode blend
-     "src alpha" 1
-     "no wrap" 1
-     stretch 1
-    }
-   }
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:settings"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
   }
   TextWidgetClass text_title {
    ignorepointer 1
-   position 0.05 0
-   size 0.9 0.12
+   position 0.12 0
+   size 0.8 0.12
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   style None
    text "#VSTR_LBL_BUILDING_SET_ATTS"
-   font "gui/fonts/sdf_MetronLight24"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
    "exact text" 1
    "exact text size" 16
    "size to text h" 0
    "text valign" center
   }
+  ButtonWidgetClass panel_close {
+   ignorepointer 0
+   size 32 32
+   halign right_ref
+   hexactpos 0
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButtonGhost
+   {
+    ImageWidgetClass button_close {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     size 24 24
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:x"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
   PanelWidgetClass panel_redline {
    ignorepointer 1
-   color 1 0 0 1
+   color 0.91 0.639 0.239 1
    position 0 0.12
-   size 0.98 0.007
+   size 1 0.004
    halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style rover_sim_colorable
+   style VPPFill
   }
   GridSpacerWidgetClass panel_content {
    ignorepointer 0
-   position 0.05 0.18
-   size 0.9 0.5
+   position 0 0
+   size 0.86 0.8
+   halign center_ref
+   valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   Padding 6
    "Size To Content H" 1
+   "Size To Content V" 1
    Columns 1
    {
     EditBoxWidgetClass InputSetName {
-     size 1 0.198
+     size 1 0.2
      halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     style VPPInput
      text "#VSTR_LBL_BUILDING_SET_NAME"
      "Use default text" 0
      "exact text" 1
-     font "gui/fonts/MetronLight"
+     font "gui/fonts/sdf_MetronLight24"
+     "text halign" center
+     "text valign" center
     }
     CheckBoxWidgetClass checkbox_active {
-     size 0.102 0.288
+     size 0.5 0.2
      halign center_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     text "#VSTR_LBL_BLD_SET_ACTIVE"
-     font "gui/fonts/MetronLight"
+     style VPPCheckBox
+     font "gui/fonts/sdf_MetronLight72"
+     {
+      TextWidgetClass txtSetActive {
+       ignorepointer 1
+       color 0.882 0.894 0.906 1
+       position 28 0
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_BLD_SET_ACTIVE"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
     }
     ButtonWidgetClass button_export {
-     size 0.5 0.57
+     size 0.6 0.2
      halign center_ref
      valign center_ref
      hexactpos 0
@@ -121,15 +166,53 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      scaled 1
      scriptclass "ConfirmationEventHandler"
-     style Editor
-     text "#VSTR_LBL_EXPORT_RAW"
-     font "gui/fonts/MetronLight"
+     style VPPButton
+     "no focus" 1
+     font "gui/fonts/sdf_MetronLight72"
+     {
+      ImageWidgetClass iconExport {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.25 0
+       size 24 24
+       valign center_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:copy"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass txtExport {
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_EXPORT_RAW"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 13
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
     }
    }
   }
   PanelWidgetClass panel_buttons {
    ignorepointer 0
-   position 0 0.01
+   position 0 0.005
    size 0.98 0.12
    halign center_ref
    valign bottom_ref
@@ -137,6 +220,7 @@ PanelWidgetClass rootFrame {
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   style blank
    {
     ButtonWidgetClass button_ok {
      size 0.5 0.8
@@ -147,9 +231,47 @@ PanelWidgetClass rootFrame {
      hexactsize 0
      vexactsize 0
      scaled 1
-     style Editor
-     text "#VSTR_LBL_OK"
-     font "gui/fonts/MetronLight"
+     style VPPButton
+     "no focus" 1
+     font "gui/fonts/sdf_MetronLight72"
+     {
+      ImageWidgetClass iconOk {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 0.3 0
+       size 24 24
+       valign center_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:check"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass txtOk {
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_OK"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 15
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
     }
    }
   }

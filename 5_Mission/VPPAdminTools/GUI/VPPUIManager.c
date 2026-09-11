@@ -180,7 +180,7 @@ class VPPUIManager extends PluginBase
 	private void DrawSelectionBox(int mouse_x, int mouse_y)
     {
         int current_x, current_y;
-        while ((GetGame().GetMouseState(MouseState.RIGHT) & MB_PRESSED_MASK) && !IsDraggingWindow() && !g_Game.IsLeftCtrlDown())
+        while ((GetMouseState(MouseState.RIGHT) & MB_PRESSED_MASK) && !IsDraggingWindow() && !g_Game.IsLeftCtrlDown())
         {
             m_IsSelectBoxDrawing = true;
             GetMousePos(current_x, current_y);
@@ -443,7 +443,7 @@ class VPPScriptedMenu extends UIScriptedMenu
 		return super.OnChange( w, x, y, finished);
 	}
 	
-     override bool OnMouseEnter( Widget w, int x, int y )
+    override bool OnMouseEnter( Widget w, int x, int y )
 	{
 		return super.OnMouseEnter( w, x, y );
 	}

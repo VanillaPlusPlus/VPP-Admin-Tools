@@ -7,6 +7,7 @@ class AdminTools extends PluginBase
 		GetRPCManager().AddRPC( "RPC_AdminTools", "DeleteObject", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "ToggleFreeCam", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_AdminTools", "RepairVehicles", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_AdminTools", "HealRepairTarget", this, SingeplayerExecutionType.Server );
 		//-------------
 	}
 
@@ -57,33 +58,20 @@ class AdminTools extends PluginBase
 			if (pb == null)
 				return;
 
-			DayZPlayerImplement dpi = DayZPlayerImplement.Cast(pb);
-
 			if (!data.param1)
 			{
-				//pb.m_VPlayerPosCache = pb.GetPosition();
-				//toggle on
-				//if (!pb.InvisibilityStatus())
-					//pb.VPPSetInvisibility(true, InvisToggleType.SCRIPT);
-
 				//command handler to freeze player
-				if (!dpi.GetCommand_Vehicle())
+				if (!pb.GetCommand_Vehicle())
 				{
-					dpi.InitTablesCmd();
-                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(dpi, dpi.m_VPPCamHmnCmd);
-                	dpi.StartCommand_Script(cmdFS);
+					pb.InitTablesCmd();
+                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(pb, pb.m_VPPCamHmnCmd);
+                	pb.StartCommand_Script(cmdFS);
 				}
 			}
 			else
 			{
-				//toggle off
-				//pb.SetPosition(pb.m_VPlayerPosCache);
-
-				//if (pb.InvisibilityStatus() && pb.InvisibilityToggleType() == InvisToggleType.SCRIPT)
-					//pb.VPPSetInvisibility(false, InvisToggleType.SCRIPT);
-
 				//command handler to unfreeze player
-                HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(dpi.GetCommand_Script());
+                HumanCommandScript_VPPCam hcs = HumanCommandScript_VPPCam.Cast(pb.GetCommand_Script());
                 if (hcs)
                 {
                     hcs.SetFlagFinished(true);
@@ -97,10 +85,47 @@ class AdminTools extends PluginBase
 		}
 	}
 
+	//Player heal / repair-clothing keybind. false = heal only (J), true = repair worn clothing (Ctrl+J). Mirrors RepairVehicles.
+	void HealRepairTarget(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type == CallType.Server && sender != null)
+		{
+			Param1<bool> data; //true = repair worn clothing, false = heal only
+			if (!ctx.Read(data))
+				return;
+
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "Chat:HealPlayer"))
+				return;
+
+			PlayerBase targetPlayer = PlayerBase.Cast(target);
+			if (targetPlayer == null)
+				return;
+
+			string action;
+			if (data.param1)
+			{
+				targetPlayer.VPPHealPlayer(true, true);
+				action = "repaired clothing & healed of";
+			}
+			else
+			{
+				targetPlayer.VPPHealPlayer(true, false);
+				action = "healed";
+			}
+
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) %3 player \"%4\" @ crosshair", sender.GetName(), sender.GetPlainId(), action, targetPlayer.VPlayerGetName()));
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[AdminTools] " + action + " player: " + targetPlayer.VPlayerGetName()));
+		}
+	}
+
 	void RepairVehicles(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if (type == CallType.Server && sender != null)
         {
+        	Param1<bool> data; //if true, spawns all attachments
+        	if (!ctx.Read(data))
+        		return;
+
         	if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "RepairVehiclesAtCrosshair"))
         		return;
 
@@ -158,7 +183,7 @@ class AdminTools extends PluginBase
 				}
 			}
 
-			//Repair existing attachments or create if missing
+			//Repair existing attachments
 			TStringArray SlotNames = new TStringArray;
 			string cfg_path = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
 			GetGame().ConfigGetTextArray(cfg_path, SlotNames);	
@@ -168,7 +193,30 @@ class AdminTools extends PluginBase
 				carSlot.ToLower();
 				int slotId = InventorySlots.GetSlotIdFromString(carSlot);
 				EntityAI attachment = vehicle.GetInventory().FindAttachment(slotId);
-				if (!attachment)
+				if (attachment) 
+				{
+					string partType = attachment.GetType();
+					partType.ToLower();
+					
+					if (attachment.IsInherited(CarDoor))
+					{
+						GetGame().ObjectDelete(attachment);
+						
+						vehicle.GetInventory().CreateInInventory(partType); 
+					}
+					else if (partType.Contains("_ruined"))
+					{
+						partType.Replace("_ruined", "");
+						GetGame().ObjectDelete(attachment);
+						vehicle.GetInventory().CreateInInventory(partType); 
+					}
+					else
+					{
+						attachment.SetHealthMax("", "Health"); 
+						attachment.SetSynchDirty(); 
+					}
+				}
+				else if (data.param1) //Allow for spawn of attachments
 				{
 					string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
 					typeName.ToLower();
@@ -176,22 +224,6 @@ class AdminTools extends PluginBase
 						typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
 
 					vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
-				}
-				else
-				{
-					string partType = attachment.GetType();
-					partType.ToLower();
-					if (partType.Contains("_ruined"))
-					{
-						partType.Replace("_ruined", "");
-						GetGame().ObjectDelete(attachment);
-						vehicle.GetInventory().CreateInInventory(partType);
-					}
-					else
-					{
-						attachment.SetHealthMax("", "Health");
-						attachment.SetSynchDirty();
-					}
 				}
 			}
 			carEntity.SetSynchDirty();

@@ -168,7 +168,7 @@ class MenuBansManager extends AdminHudSubMenu
 		{
 			array<ref BannedPlayerEntry> selected = GetSelected();
 			if (selected.Count() < 1){
-				GetVPPUIManager().DisplayNotification("Error:No Entries Selected!");
+				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFIY_ERR_BAN_NOSELECT");
 				return;
 			}
 			

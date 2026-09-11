@@ -9,8 +9,8 @@ GridSpacerWidgetClass SpacerGrid {
  hexactsize 0
  vexactsize 0
  style Colorable
- Padding 5
- Margin 1
+ Padding 4
+ Margin 2
  "Size To Content H" 1
  "Size To Content V" 1
  content_valign center
@@ -18,15 +18,16 @@ GridSpacerWidgetClass SpacerGrid {
  Rows 11
  {
   TextWidgetClass Pos {
+   color 0.604 0.627 0.651 1
    position 0 0
    size 0 13
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Bold
-   text "Position:"
-   font "gui/fonts/sdf_MetronLight24"
+   style None
+   text "#VSTR_LBL_POS"
+   font "gui/fonts/sdf_MetronLight72"
    "exact text" 1
    "exact text size" 11
    "size to text h" 1
@@ -34,28 +35,29 @@ GridSpacerWidgetClass SpacerGrid {
    "text valign" center
   }
   ButtonWidgetClass PosCopy {
+   color 1 1 1 1
    position 0 0
-   size 77 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/sdf_MetronBook24"
+   style VPPButton
    {
     TextWidgetClass Pos0 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "Copy"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_COPY"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -63,15 +65,16 @@ GridSpacerWidgetClass SpacerGrid {
    }
   }
   TextWidgetClass LblSelect {
+   color 0.604 0.627 0.651 1
    position 0 0
    size 0 13
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Bold
-   text "Select In PlayerManager"
-   font "gui/fonts/sdf_MetronLight24"
+   style None
+   text "#VSTR_LBL_SELECT_IN_PM"
+   font "gui/fonts/sdf_MetronLight72"
    "exact text" 1
    "exact text size" 11
    "size to text h" 1
@@ -80,22 +83,25 @@ GridSpacerWidgetClass SpacerGrid {
   }
   CheckBoxWidgetClass ChkSelectPlayer {
    position 0 0
-   size 50 24
-   hexactpos 0
-   vexactpos 0
+   size 22 22
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
    hexactsize 1
    vexactsize 1
+   style VPPCheckBox
   }
   TextWidgetClass LblTpTo {
+   color 0.604 0.627 0.651 1
    position 0 0
    size 0 13
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Bold
-   text "Teleport:"
-   font "gui/fonts/sdf_MetronLight24"
+   style None
+   text "#VSTR_LBL_BRING_TO_ME"
+   font "gui/fonts/sdf_MetronLight72"
    "exact text" 1
    "exact text size" 11
    "size to text h" 1
@@ -103,28 +109,29 @@ GridSpacerWidgetClass SpacerGrid {
    "text valign" center
   }
   ButtonWidgetClass BtnTpToMe {
+   color 1 1 1 1
    position 0 0
-   size 64 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/MetronLight16"
+   style VPPButton
    {
     TextWidgetClass Pos1 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "To me"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_TO_ME"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -132,15 +139,16 @@ GridSpacerWidgetClass SpacerGrid {
    }
   }
   TextWidgetClass LblTpMe {
+   color 0.604 0.627 0.651 1
    position 0 0
    size 0 13
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Bold
-   text "Teleport:"
-   font "gui/fonts/sdf_MetronLight24"
+   style None
+   text "#VSTR_LBL_TELEPORT_TO"
+   font "gui/fonts/sdf_MetronLight72"
    "exact text" 1
    "exact text size" 11
    "size to text h" 1
@@ -148,28 +156,29 @@ GridSpacerWidgetClass SpacerGrid {
    "text valign" center
   }
   ButtonWidgetClass BtnTpMeTo {
+   color 1 1 1 1
    position 0 0
-   size 64 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/MetronLight16"
+   style VPPButton
    {
     TextWidgetClass Pos2 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "To"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GO_TO"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -177,15 +186,16 @@ GridSpacerWidgetClass SpacerGrid {
    }
   }
   TextWidgetClass LblTpBack {
+   color 0.604 0.627 0.651 1
    position 0 0
    size 0 13
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Bold
-   text "Teleport:"
-   font "gui/fonts/sdf_MetronLight24"
+   style None
+   text "#VSTR_LBL_RETURN_TO"
+   font "gui/fonts/sdf_MetronLight72"
    "exact text" 1
    "exact text size" 11
    "size to text h" 1
@@ -193,28 +203,29 @@ GridSpacerWidgetClass SpacerGrid {
    "text valign" center
   }
   ButtonWidgetClass BtnTpReturn {
+   color 1 1 1 1
    position 0 0
-   size 64 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/MetronLight16"
+   style VPPButton
    {
     TextWidgetClass Pos3 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "Return"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_RETURN_PLAYERS"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -222,29 +233,30 @@ GridSpacerWidgetClass SpacerGrid {
    }
   }
   ButtonWidgetClass BtnKill {
-   color 0.949 0.0392 0.0392 1
+   color 1 1 1 1
    position 0 0
-   size 64 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/MetronLight16"
+   style VPPButtonDanger
    {
     TextWidgetClass Pos5 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "Kill"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_TOOLTIP_TITLE_KILL_PLAYERS"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center
@@ -252,28 +264,30 @@ GridSpacerWidgetClass SpacerGrid {
    }
   }
   ButtonWidgetClass BtnHeal {
+   color 1 1 1 1
    position 0 0
-   size 64 14
+   size 72 20
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Editor
-   font "gui/fonts/MetronLight16"
+   style VPPButton
    {
     TextWidgetClass Pos4 {
-     size 0 13
+     ignorepointer 1
+     size 1 1
      halign center_ref
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style Bold
-     text "Heal"
-     font "gui/fonts/sdf_MetronBook24"
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_HEAL_PLAYERS"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
      "exact text" 1
-     "exact text size" 11
+     "exact text size" 12
      "size to text h" 1
      "size to text v" 1
      "text valign" center

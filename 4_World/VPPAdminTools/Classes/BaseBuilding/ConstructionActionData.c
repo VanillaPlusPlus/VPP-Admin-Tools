@@ -5,7 +5,7 @@ modded class ConstructionActionData
 
 	void ConstructionActionData()
 	{
-		m_AdminBuildParts = new ref array<ConstructionPart>;
+		m_AdminBuildParts = new array<ConstructionPart>;
 
 		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{

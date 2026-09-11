@@ -1,63 +1,259 @@
 FrameWidgetClass rootFrame {
  clipchildren 1
- color 1 0 0 1
- size 0.25 0.6
+ color 0 0 0 0
+ size 0.25 0.45
  halign center_ref
  valign center_ref
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
- draggable 0
+ draggable 1
  {
   PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.549
-   position 0 0
-   size 1 0.76
+   color 0.749 0.773 0.8 1
+   size 1 1
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style VPPPanel
    "no focus" 0
    {
-    PanelWidgetClass content {
-     visible 1
-     ignorepointer 1
-     position 0 0.06
-     size 0.98 0.81
+    PanelWidgetClass HeaderTitle {
+     ignorepointer 0
+     color 0.031 0.035 0.039 0.85
+     position 0 0
+     size 1 0.07
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style blank
+     style VPPFillRound
      {
+      ImageWidgetClass ImgWindowIcon {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 28 28
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:message_square"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Title {
+       ignorepointer 1
+       position 40 1
+       size 0.5 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_CMD_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 20
+       "size to text h" 1
+       "size to text v" 1
+      }
+      TextWidgetClass SubTitle {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 40 19
+       size 0.6 13
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_CMD_SUBTITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 13
+       "size to text h" 1
+       "size to text v" 1
+      }
+      ImageWidgetClass ImgInfo {
+       ignorepointer 0
+       color 0.604 0.627 0.651 1
+       position 34 0
+       size 24 24
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ToolTipHandler"
+       image0 "set:vpp_icons image:info"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 1 1 1 1
+       position 4 0
+       size 26 26
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0 0
+         size 24 24
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:x"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+         nocache 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelFeed {
+     visible 1
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.008 0.07
+     size 0.984 0.82
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass PanelFeed_header {
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgFeedHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:history"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_feed {
+         ignorepointer 1
+         position 28 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_CMD_HISTORY"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        ButtonWidgetClass BtnClearHistory {
+         ignorepointer 0
+         color 1 1 1 1
+         position 2 0
+         size 26 26
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         {
+          ImageWidgetClass ImgClearHistory {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 0 0
+           size 24 24
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:trash_2"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+         }
+        }
+       }
+      }
       ScrollWidgetClass ScrollerFeed {
        ignorepointer 0
-       size 0.98 0.97
+       position 0 0.052
+       size 0.99 0.93
        halign center_ref
-       valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       style VPPScroll
        "Scrollbar V" 1
        {
         GridSpacerWidgetClass GridFeed {
          ignorepointer 1
-         position 0.01 0
+         position 0.005 0
          size 0.99 0.99
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         Padding 10
+         Padding 6
          Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
@@ -69,44 +265,49 @@ FrameWidgetClass rootFrame {
      }
     }
     PanelWidgetClass inputPanel {
-     ignorepointer 1
-     position 0.01 0.01
-     size 0.981 0.111
+     ignorepointer 0
+     color 0.118 0.129 0.149 1
+     position 0.008 0.014
+     size 0.984 0.072
      valign bottom_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Outline
+     style VPPFillRound
      {
-      ImageWidgetClass ImgInfo {
-       ignorepointer 0
-       color 1 0 0 1
-       position 0.01 0.04
-       size 0.06 0.45
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
+      TextWidgetClass PromptArrow {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 10 0
+       size 16 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
        vexactsize 0
-       scriptclass "ToolTipHandler"
-       image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 1
+       style None
+       text ">"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 20
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
       }
       MultilineEditBoxWidgetClass CommandInput {
-       position 0.01 0
-       size 0.92 0.8
+       position 30 0
+       size 0.93 0.82
        valign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
        vexactsize 0
        style DayZBold
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 0
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 20
        "size to text h" 0
        "size to text v" 0
        "text valign" center
@@ -115,113 +316,50 @@ FrameWidgetClass rootFrame {
       }
      }
     }
+    ScrollWidgetClass ScrollerSuggest {
+     visible 1
+     ignorepointer 0
+     color 0.078 0.086 0.094 0.97
+     position 0.008 0.094
+     size 0.72 0.34
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style Colorable
+     "Scrollbar V" 1
+     {
+      GridSpacerWidgetClass GridSuggest {
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       halign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       Padding 3
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       Columns 1
+       Rows 100
+      }
+     }
+    }
    }
   }
   PanelWidgetClass Header {
    ignorepointer 0
-   size 0.993 0.038
-   halign center_ref
+   size 0.87 0.06
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
    draggable 1
    style blank
-  }
-  PanelWidgetClass HeaderTitle {
-   ignorepointer 1
-   color 0 0 0 1
-   position 0 0
-   size 1 0.04
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 0
-   scaled 0
-   draggable 0
-   style DayZDefaultPanelBottom
-   {
-    TextWidgetClass Title {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Normal
-     text "#VSTR_LBL_CMD_TITLE"
-     font "gui/fonts/sdf_MetronLight24"
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    ButtonWidgetClass BtnClose {
-     clipchildren 1
-     color 0 0 0 1
-     position 0 -0.05
-     size 0.05 1
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     {
-      ImageWidgetClass ImageClose {
-       ignorepointer 1
-       color 1 0 0 1
-       size 1 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:Icon28EmptySlot"
-       mode additive
-       "src alpha" 1
-      }
-     }
-    }
-   }
-  }
-  ScrollWidgetClass ScrollerSuggest {
-   visible 1
-   ignorepointer 0
-   color 0 0 0 0.549
-   position 0 0.035
-   size 0.98 0.2005
-   halign center_ref
-   valign bottom_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style Colorable
-   "Scrollbar V" 1
-   {
-    GridSpacerWidgetClass GridSuggest {
-     ignorepointer 1
-     position 0 0
-     size 1 1
-     halign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     Padding 3
-     Margin 0
-     "Size To Content H" 1
-     "Size To Content V" 1
-     content_halign center
-     Columns 1
-     Rows 100
-    }
-   }
   }
  }
 }

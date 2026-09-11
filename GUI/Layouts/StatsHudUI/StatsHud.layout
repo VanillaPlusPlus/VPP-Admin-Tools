@@ -1,0 +1,408 @@
+PanelWidgetClass StatsHudRoot {
+ visible 1
+ clipchildren 1
+ ignorepointer 0
+ color 0.031 0.035 0.039 0.82
+ position 800 600
+ size 700 40
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style VPPFillRound
+ "no focus" 1
+ {
+  PanelWidgetClass CellControls {
+   ignorepointer 0
+   color 0 0 0 0
+   position 6 6
+   size 86 28
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style blank
+   {
+    ButtonWidgetClass BtnPin {
+     ignorepointer 0
+     color 1 1 1 1
+     position 0 0
+     size 26 26
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
+     {
+      ImageWidgetClass ImgPin {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       size 24 24
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:pin"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+    ButtonWidgetClass BtnCorner {
+     ignorepointer 0
+     color 1 1 1 1
+     position 30 0
+     size 26 26
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
+     {
+      ImageWidgetClass ImgCorner {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       size 24 24
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:move"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+    ButtonWidgetClass BtnOrient {
+     ignorepointer 0
+     color 1 1 1 1
+     position 60 0
+     size 26 26
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
+     {
+      ImageWidgetClass ImgOrient {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       size 24 24
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:rotate_ccw"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass CellPlayers {
+   ignorepointer 1
+   color 0.078 0.086 0.094 0.6
+   position 98 6
+   size 70 28
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgPlayers {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 2 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:users"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass TxtPlayers {
+     ignorepointer 1
+     color 0.953 0.961 0.969 1
+     position 28 0
+     size 40 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "0"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  PanelWidgetClass CellFlags {
+   ignorepointer 1
+   color 0 0 0 0
+   position 174 6
+   size 104 28
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style blank
+   {
+    ImageWidgetClass ImgGod {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 2 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:shield"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    ImageWidgetClass ImgInvis {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 28 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:eye_off"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    ImageWidgetClass ImgFrozen {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 54 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:snowflake"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    ImageWidgetClass ImgAmmo {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 80 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:infinity"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  PanelWidgetClass CellPosition {
+   ignorepointer 1
+   color 0.078 0.086 0.094 0.6
+   position 284 6
+   size 196 28
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgPos {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 2 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:map_pin"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass TxtPos {
+     ignorepointer 1
+     color 0.953 0.961 0.969 1
+     position 28 0
+     size 0.66 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "0 0 0"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 0
+     "size to text v" 1
+     "text valign" center
+    }
+    ButtonWidgetClass BtnCopyPos {
+     ignorepointer 0
+     color 1 1 1 1
+     position 2 0
+     size 24 24
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
+     {
+      ImageWidgetClass ImgCopyPos {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       size 24 24
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:copy"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass CellCrosshair {
+   ignorepointer 1
+   color 0.078 0.086 0.094 0.6
+   position 486 6
+   size 210 28
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgCross {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 2 0
+     size 24 24
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:crosshair"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass TxtCross {
+     ignorepointer 1
+     color 0.953 0.961 0.969 1
+     position 28 0
+     size 0.7 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "-"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 11
+     "size to text h" 0
+     "size to text v" 1
+     "text valign" center
+    }
+    ButtonWidgetClass BtnCopyCross {
+     ignorepointer 0
+     color 1 1 1 1
+     position 2 0
+     size 24 24
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonGhost
+     "no focus" 1
+     {
+      ImageWidgetClass ImgCopyCross {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       size 24 24
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:copy"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

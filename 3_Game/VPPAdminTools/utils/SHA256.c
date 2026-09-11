@@ -147,7 +147,7 @@ class vbyte: vuint
         as_byte.Clamp();
         return as_byte;
     }
-    string ToHex()
+    string VPPAT_ToHex()
     {
         value.Clamp();
         int ascii = value; //Note: our math isn't working properly on our byte object, so this fixes that
@@ -185,7 +185,7 @@ class VEncoding
         string hexStr = "";
         for(int i = 0; i < data.Count(); i++)
         {
-            hexStr += data[i].ToHex();
+            hexStr += data[i].VPPAT_ToHex();
         }
         return hexStr;
     }

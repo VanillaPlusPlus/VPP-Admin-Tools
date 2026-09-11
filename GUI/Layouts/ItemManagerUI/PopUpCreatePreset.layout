@@ -1,131 +1,190 @@
 PanelWidgetClass rootFrame {
- color 1 1 1 0.549
- position 0.04 0
- size 0.261 0.16245
+ color 1 1 1 1
+ position 0 0
+ size 340 150
+ halign center_ref
  valign center_ref
- hexactpos 0
- vexactpos 0
- hexactsize 0
- vexactsize 0
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
  scriptclass "PopUpCreatePreset"
- style DayZDefaultPanel
+ style VPPPanel
  {
-  PanelWidgetClass PnlBg {
+  PanelWidgetClass PopUpTitleStrip {
    ignorepointer 1
-   color 0 0 0 1
-   position 0 0.01
-   size 0.988 0.974
+   color 0.039 0.043 0.047 0.85
+   position 0 1
+   size 0.99 28
    halign center_ref
-   hexactpos 0
-   vexactpos 0
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   style editor_selection
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgPopUpTitle {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 0 0
+     size 28 28
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:package_plus"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass text_title {
+     ignorepointer 1
+     position 30 0
+     size 0.8 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_NEW_PRESET"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
   }
-  TextWidgetClass text_title {
+  TextWidgetClass text_name {
    ignorepointer 1
-   position 0.01 0.01
-   size 0.9 0.12
-   hexactpos 0
-   vexactpos 0
+   color 0.604 0.627 0.651 1
+   position 10 42
+   size 0.25 26
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   text "#VSTR_LBL_NEW_PRESET_ATTS_ITEMMANAGER"
-   font "gui/fonts/sdf_MetronLight24"
+   vexactsize 1
+   style None
+   text "#VSTR_LBL_NAME"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.604 0.627 0.651 1
    "exact text" 1
-   "exact text size" 12
-   "size to text h" 0
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
    "text valign" center
   }
-  GridSpacerWidgetClass panel_content {
+  EditBoxWidgetClass editbox_name {
    ignorepointer 0
-   position 0.01 0.25
-   size 0.9 0.75
-   hexactpos 0
-   vexactpos 0
+   position 80 42
+   size 248 26
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPInput
+   text ""
+   "Use default text" 0
+   "exact text" 1
+   font "gui/fonts/sdf_MetronLight24"
+  }
+  FrameWidgetClass panel_buttons {
+   ignorepointer 0
+   position 0 8
+   size 0.94 30
+   halign center_ref
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   Padding 25
-   "Size To Content H" 1
-   "Size To Content V" 1
-   Columns 2
+   vexactsize 1
    {
-    TextWidgetClass text_name {
+    ButtonWidgetClass button_cancel {
+     disabled 0
      ignorepointer 0
+     color 1 1 1 1
      position 0 0
-     size 0.27 0.212
+     size 0.47 28
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
-     vexactsize 0
-     text "#VSTR_LBL_NAME"
-     font "gui/fonts/sdf_MetronLight24"
-     "exact text" 1
-     "exact text size" 11
-     "size to text h" 0
-     "size to text v" 0
-     "text valign" center
-    }
-    PanelWidgetClass PanelWidget0 {
-     ignorepointer 1
-     position 0 0
-     size 0.82 0.65
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
+     vexactsize 1
+     style VPPButton
+     font "gui/fonts/sdf_MetronLight72"
      {
-      EditBoxWidgetClass editbox_name {
-       size 0.99 0.7
-       halign right_ref
+      TextWidgetClass lbl_cancel {
+       ignorepointer 1
+       halign center_ref
        valign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "#VSTR_LBL_PRESET_NAME"
+       style None
+       text "#VSTR_CANCEL"
+       font "gui/fonts/sdf_MetronLight72"
        "exact text" 1
-       font "gui/fonts/MetronLight16"
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
       }
      }
     }
-   }
-  }
-  PanelWidgetClass panel_buttons {
-   ignorepointer 0
-   position 0 0.01
-   size 0.98 0.2
-   halign center_ref
-   valign bottom_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   {
-    ButtonWidgetClass button_cancel {
-     position 0 0.1
-     size 0.35 0.8
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     text "#VSTR_CANCEL"
-     font "gui/fonts/MetronLight16"
-    }
     ButtonWidgetClass button_save {
-     position 0 0.1
-     size 0.35 0.8
-     halign right_ref
+     disabled 0
+     ignorepointer 0
+     color 1 1 1 1
+     position 0.53 0
+     size 0.47 28
+     valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
-     vexactsize 0
-     scaled 1
-     style Editor
-     text "#VSTR_LBL_SAVE"
-     font "gui/fonts/MetronLight16"
+     vexactsize 1
+     style VPPButton
+     font "gui/fonts/sdf_MetronLight72"
+     {
+      ImageWidgetClass ImgSavePreset {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 6 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:check"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass lbl_save {
+       ignorepointer 1
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_SAVE"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
     }
    }
   }

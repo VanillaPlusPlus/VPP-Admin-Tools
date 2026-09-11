@@ -17,6 +17,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 	private CheckBoxWidget    m_chkEnablePreview;
 	private ImageWidget 	  m_ImgInfoXMLToolTip;
 	private CheckBoxWidget 	  m_filterFromXml;
+	private EditBoxWidget 	  m_InputRadius;
 
 	private Widget 				  m_FilesDropDownWidget;
 	protected ref VPPDropDownMenu m_FilesDropDown;
@@ -72,6 +73,9 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_SearchBoxXML = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "SearchBoxXML") );
 		m_chkEnablePreview = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "chkEnablePreview") );
 		
+		m_InputRadius = EditBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "InputRadius") );
+		m_InputRadius.SetText(GetGame().GetWorld().GetWorldSize().ToString());
+		
 		m_ImgInfoXMLToolTip = ImageWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ImgInfoXMLToolTip") );
 
 		m_BtnXMLEditorApply = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "BtnXMLEditorApply") );
@@ -97,7 +101,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		ToolTipHandler toolTipMenu;
 		m_ImgInfoXMLToolTip.GetScript(toolTipMenu);
 		toolTipMenu.SetTitle("#VSTR_TOOLTIP_TITLE");
-		toolTipMenu.SetContentText("Edit your types.xml file directly from here. Changes (to the CLE) after saving won't occur until next server restart."); //#VSTR_XML_MENU_TOOLTIP
+		toolTipMenu.SetContentText("#VSTR_XML_MENU_TOOLTIP");
 
 		ToolTipHandler toolTip;
 		
@@ -129,6 +133,11 @@ class MenuXMLEditor extends AdminHudSubMenu
 		toolTip.SetTitle("#VSTR_XML_TITLE_COST");
 		toolTip.SetContentText("#VSTR_XML_COST");
 		//--
+		m_InputRadius.GetScript(toolTip);
+		toolTip.SetTitle("#VSTR_XML_TITLE_RADIUS");
+		toolTip.SetContentText("#VSTR_XML_RADIUS");
+		//--
+
 		m_Loaded = true;
 		UpdateFilter();
 		GetRPCManager().VSendRPC("RPC_XMLEditor", "GetTypesFiles", NULL, true, NULL);
@@ -201,7 +210,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 
 		if (w == m_BtnGetStats)
 		{
-			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(),0,typeName);
+			m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(), 0, typeName);
 			if (typeName == "")
 			{
 				GetVPPUIManager().DisplayError("#VSTR_XML_ERR_SELECTFIRST");
@@ -213,12 +222,9 @@ class MenuXMLEditor extends AdminHudSubMenu
 			if (t && (t.IsInherited(CrashBase) || t.IsInherited(House) || t.IsInherited(BuildingSuper)))
 			{
 				VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
-				dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Warning!", "The type you have selected will use a slower search method. This will cause a brief server performance lag spike!\nProceed?", this, "OnDiagResultConfirmScan");
-			}
-			else
-			{
-				m_MapScreen = new ItemScanResultScreen();
-				GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);	
+				dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_NOTICE", "#VSTR_XML_SCAN_WARNING", this, "OnDiagResultConfirmScan");
+			}else{
+				OnDiagResultConfirmScan(DIAGRESULT.YES);
 			}
 			return true;
 		}
@@ -240,8 +246,12 @@ class MenuXMLEditor extends AdminHudSubMenu
         {
         	string typeName;
         	m_ItemListBoxXML.GetItemText(m_ItemListBoxXML.GetSelectedRow(), 0, typeName);
+        	float radius = m_InputRadius.GetText().ToFloat();
+        	if (radius <= 0)
+        		radius = 20000; //default 
+
         	m_MapScreen = new ItemScanResultScreen();
-        	GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param1<string>(typeName), true, null);
+        	GetRPCManager().VSendRPC("RPC_XMLEditor", "GetScanInfo", new Param2<string,float>(typeName, radius), true, null);
         }
     }
 
@@ -261,7 +271,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		if (w == m_ItemPreviewXML)
 		{
 			GetGame().GetDragQueue().Call(this, "UpdateItemRotation");
-			g_Game.GetMousePos(m_RotationX, m_RotationY);
+			GetMousePos(m_RotationX, m_RotationY);
 			return true;
 		}
 		return false;
@@ -287,21 +297,21 @@ class MenuXMLEditor extends AdminHudSubMenu
 	
 	void HandleStats(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
-		Param1<ref map<string,vector>> data;
+		Param1<ref map<string, ref Param3<vector, int, int>>> data;
 		if (!ctx.Read(data)) return;
 		
 		if (type == CallType.Client)
 		{
-			map<string,vector> result = data.param1;
+			map<string, ref Param3<vector, int, int>> result = data.param1;
 			if (m_MapScreen != null)
 				delete m_MapScreen;
 			
 			m_MapScreen = new ItemScanResultScreen();
-			foreach(string name, vector pos: result)
+			foreach(string name, Param3<vector, int, int> dta: result)
 			{
-				m_MapScreen.DrawMarker(name,pos);
+				m_MapScreen.StoreItemData(name, dta.param1, dta.param2, dta.param3);
 			}
-			m_MapScreen.SetResultText("#VSTR_NOTIFY_TOTALSCANNED"+ " ["+ result.Count() +"]");
+			m_MapScreen.SetResultText("#VSTR_NOTIFY_TOTALSCANNED" + " ["+ result.Count() +"]");
 		}
 	}
 	
@@ -321,8 +331,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 				switch(param.param1)
 				{
 					case "nominal":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputNominal.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputNominal.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputNominal.Enable(false);
 					}else{
 						m_InputNominal.SetText(param.param2);
@@ -330,8 +340,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "lifetime":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputLifetime.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputLifetime.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputLifetime.Enable(false);
 					}else{
 						m_InputLifetime.SetText(param.param2);
@@ -339,8 +349,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "restock":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputRestock.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputRestock.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputRestock.Enable(false);
 					}else{
 						m_InputRestock.SetText(param.param2);
@@ -348,8 +358,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "min":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputMin.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputMin.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputMin.Enable(false);
 					}else{
 						m_InputMin.SetText(param.param2);
@@ -357,8 +367,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "quantmin":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputQuantmin.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputQuantmin.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputQuantmin.Enable(false);
 					}else{
 						m_InputQuantmin.SetText(param.param2);
@@ -366,8 +376,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "quantmax":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputQuantmax.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputQuantmax.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputQuantmax.Enable(false);
 					}else{
 						m_InputQuantmax.SetText(param.param2);
@@ -375,8 +385,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 					break;
 					
 					case "cost":
-					if (param.param2 == "NOT DEFINED" && param.param3 == -1){
-						m_InputCost.SetText("#VSTR_XML_ERR_NOT_DEF");
+					if (param.param2 == "#VSTR_NOT_DEFINED" && param.param3 == -1){
+						m_InputCost.SetText(Widget.TranslateString("#VSTR_XML_ERR_NOT_DEF"));
 						m_InputCost.Enable(false);
 					}else{
 						m_InputCost.SetText(param.param2);
@@ -428,37 +438,37 @@ class MenuXMLEditor extends AdminHudSubMenu
 			switch(param.param1)
 			{
 				case "nominal":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputNominal.GetText();
 				break;
 				
 				case "lifetime":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputLifetime.GetText();
 				break;
 				
 				case "restock":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputRestock.GetText();
 				break;
 				
 				case "min":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputMin.GetText();
 				break;
 				
 				case "quantmin":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputQuantmin.GetText();
 				break;
 				
 				case "quantmax":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputQuantmax.GetText();
 				break;
 				
 				case "cost":
-				if (param.param2 != "NOT DEFINED" && param.param3 != -1)
+				if (param.param2 != "#VSTR_NOT_DEFINED" && param.param3 != -1)
 					param.param2 = m_InputCost.GetText();
 				break;
 			}

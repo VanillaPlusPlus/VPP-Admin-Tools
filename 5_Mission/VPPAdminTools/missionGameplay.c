@@ -17,6 +17,8 @@ modded class MissionGameplay
     Widget m_EspCanvas;
     CanvasWidget m_EspCanvasWidget;
 
+    ref VPPSpectateClientHandler m_SpectateHandler; //spectate engine client glue (registers RPC_SpectateClient)
+
 	void MissionGameplay()
 	{
 	}
@@ -59,6 +61,13 @@ modded class MissionGameplay
         GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingleplayerExecutionType.Client);
 
+        //spectate engine client glue (registers RPC_SpectateClient handlers)
+        m_SpectateHandler = VPPSpectateClientHandler.GetInstance();
+
+        //the spectate flag lives game-scope (3_Game) and survives disconnect-while-spectating;
+        //a fresh mission is never spectating — clear any stale state
+        g_Game.SetSpectateMode(false);
+
         VPPKeybindsManager.RegisterBind("UAToggleAdminTools", VPPBinds.Press, "ToggleAdminTools", this);
         VPPKeybindsManager.RegisterBind("UAOpenAdminTools", VPPBinds.Press, "OpenAdminTools", this);
         VPPKeybindsManager.RegisterBind("UAToggleCmdConsole", VPPBinds.Press, "ToggleCmdConsole", this);
@@ -70,6 +79,9 @@ modded class MissionGameplay
         VPPKeybindsManager.RegisterBind("UACopyPositionClipboard", VPPBinds.Press, "CopyPositionClipboard", this);
         VPPKeybindsManager.RegisterBind("UARepairVehicleAtCrosshairs", VPPBinds.Press, "RepairVehicleAtCrosshairs", this);
         VPPKeybindsManager.RegisterBind("UAExitSpectate", VPPBinds.Press, "ExitSpectate", this);
+        VPPKeybindsManager.RegisterBind("UAToggleSpectatePerspective", VPPBinds.Press, "ToggleSpectatePerspective", this);
+        VPPKeybindsManager.RegisterBind("UASpectateNextTarget", VPPBinds.Press, "SpectateNextTarget", this);
+        VPPKeybindsManager.RegisterBind("UASpectatePrevTarget", VPPBinds.Press, "SpectatePrevTarget", this);
         VPPKeybindsManager.RegisterBind("UACollapseESPDropDwn", VPPBinds.DoubleClick, "PlayerEspDropdowns", this);
         VPPKeybindsManager.RegisterBind("UATogglePlayerDetailEsp", VPPBinds.DoubleClick, "PlayerEspHealth", this);
         VPPKeybindsManager.RegisterBind("UAToggleMeshEsp", VPPBinds.Press, "ToggleMeshESP", this);
@@ -537,7 +549,7 @@ modded class MissionGameplay
                 
                 //Show confirmation of delete
                 VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(null,true);
-                dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_NOTIFY_DEL_OBJ", "#VSTR_NOTIFY_Q_DEL" + "["+targetObj.GetType()+"]?", this);
+                dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_NOTIFY_DEL_OBJ", "#VSTR_NOTIFY_Q_DEL " + "["+targetObj.GetType()+"]?", this);
             }
         }
     }
@@ -556,6 +568,10 @@ modded class MissionGameplay
     void ToggleFreeCam()
     {
         if ((!m_Toggles) || (!m_ToolsToggled))
+            return;
+
+        //mutual exclusion: freecam and spectate share the body-freeze scripted command
+        if (g_Game.IsSpectateMode())
             return;
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
@@ -594,7 +610,7 @@ modded class MissionGameplay
             string notificationMsg;
             if ( target == NULL )
             {
-                notificationMsg = "#VSTR_NOTIFY_COPY_CLIPBOARD" + "\n\nPosition: " + PosToString(GetGame().GetPlayer().GetPosition());
+                notificationMsg = "#VSTR_NOTIFY_COPY_CLIPBOARD " + "\n\nPosition: " + PosToString(GetGame().GetPlayer().GetPosition());
                 toCopy = "Position: " + GetGame().GetPlayer().GetPosition().ToString();
                 toCopy += "\nOrientation: " + GetGame().GetPlayer().GetOrientation().ToString();
                 toCopy += "\nConfig-Type: " + GetGame().GetPlayer().GetType();
@@ -603,7 +619,7 @@ modded class MissionGameplay
             else
             {
                 if (targetType == "" || targetType == string.Empty)
-                    notificationMsg = string.Format("#VSTR_NOTIFY_COPY_POS" + "\n\nPosition:%1", PosToString(target.GetPosition()));
+                    notificationMsg = string.Format("#VSTR_NOTIFY_COPY_POS " + "\n\nPosition:%1", PosToString(target.GetPosition()));
                 else
                     notificationMsg = string.Format("Copied position of object: %1 to clipboard\n\nPosition: %2", target.GetType(), PosToString(target.GetPosition()));
                 
@@ -623,15 +639,30 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
+            //J = heal only, Ctrl+J = repair worn clothing (mirrors the K / Ctrl+K vehicle bind)
+            bool repairMode = g_Game.IsLeftCtrlDown();
             SurvivorBase target = SurvivorBase.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
-            if (target)
-            {
-                GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + target.GetIdentity().GetName()), true);
-                GetVPPUIManager().DisplayNotification("Healed player at crosshairs!", "V++ Admin Tools:", 5.0);
-            }else{
-                GetRPCManager().VSendRPC("RPC_MissionServer", "HandleChatCommand", new Param1<string>("/heal " + GetGame().GetPlayer().GetIdentity().GetName()), true);
-                GetVPPUIManager().DisplayNotification("Player healed!", "V++ Admin Tools:", 5.0);
-            }
+            bool atCrosshair = (target != NULL);
+
+            Object healTarget = target;
+            if (!atCrosshair)
+                healTarget = GetGame().GetPlayer();
+
+            //no body to act on (dead / spectating): bail without a misleading success toast
+            if (healTarget == null)
+                return;
+
+            GetRPCManager().VSendRPC("RPC_AdminTools", "HealRepairTarget", new Param1<bool>(repairMode), true, NULL, healTarget);
+
+            string msg = "Player healed!";
+            if (repairMode && atCrosshair)
+                msg = "Healed & Repaired items of player at crosshairs!";
+            else if (repairMode && !atCrosshair)
+                msg = "Repaired your inventory items!";
+            else if (!repairMode && atCrosshair)
+                msg = "Healed player at crosshairs!";
+
+            GetVPPUIManager().DisplayNotification(msg, "V++ Admin Tools:", 5.0);
         }
     }
 
@@ -645,18 +676,103 @@ modded class MissionGameplay
             Car targetVehicle = Car.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
             if (targetVehicle)
             {
-                GetRPCManager().VSendRPC("RPC_AdminTools", "RepairVehicles", NULL, true, NULL, targetVehicle);
+                GetRPCManager().VSendRPC("RPC_AdminTools", "RepairVehicles", new Param1<bool>(g_Game.IsLeftCtrlDown()), true, NULL, targetVehicle);
             }
         }
     }
 
     void ExitSpectate()
     {
+        //instant exit through the spectate engine — the old ReconnectToCurrentSession
+        //path is retired (the admin's body is alive and restored server-side).
         if (g_Game.IsSpectateMode())
         {
-            g_Game.ReconnectToCurrentSession();
-            g_Game.SetSpectateMode(false);
+            GetSpectateClient().RequestExit();
         }
+    }
+
+    void ToggleSpectatePerspective()
+    {
+        if (GetVPPUIManager().GetKeybindsStatus() || GetVPPUIManager().IsTyping())
+            return;
+
+        if (g_Game.IsSpectateMode())
+        {
+            GetSpectateClient().TogglePerspective();
+        }
+    }
+
+    void SpectateNextTarget()
+    {
+        SpectateCycleTarget(true);
+    }
+
+    void SpectatePrevTarget()
+    {
+        SpectateCycleTarget(false);
+    }
+
+    void SpectateCycleTarget(bool forward)
+    {
+        //don't cycle targets while the admin is typing (e.g. the menu's search box —
+        //N/B keystrokes would fire target switches otherwise)
+        if (GetVPPUIManager().GetKeybindsStatus() || GetVPPUIManager().IsTyping())
+            return;
+
+        if (!g_Game.IsSpectateMode())
+            return;
+
+        string selfId = "";
+        if (GetGame().GetPlayer() && GetGame().GetPlayer().GetIdentity())
+            selfId = GetGame().GetPlayer().GetIdentity().GetPlainId();
+
+        //name-sorted cycle list (skip self)
+        array<string> keys = new array<string>;
+        map<string, string> keyToId = new map<string, string>;
+        array<ref VPPUser> users = GetPlayerListManager().GetUsers();
+        foreach (VPPUser user : users)
+        {
+            if (user.GetUserId() == selfId)
+                continue;
+
+            string key = user.GetUserName() + "|" + user.GetUserId();
+            keys.Insert(key);
+            keyToId.Set(key, user.GetUserId());
+        }
+
+        if (keys.Count() == 0)
+            return;
+
+        keys.Sort();
+
+        //locate the current target in the sorted ring
+        int currentIdx = -1;
+        string currentId = GetSpectateClient().GetTargetId();
+        for (int i = 0; i < keys.Count(); i++)
+        {
+            if (keyToId.Get(keys[i]) == currentId)
+            {
+                currentIdx = i;
+                break;
+            }
+        }
+
+        int nextIdx;
+        if (currentIdx == -1)
+        {
+            nextIdx = 0;
+        }
+        else
+        {
+            if (forward)
+                nextIdx = (currentIdx + 1) % keys.Count();
+            else
+                nextIdx = ((currentIdx - 1) + keys.Count()) % keys.Count();
+        }
+
+        string nextId = keyToId.Get(keys[nextIdx]);
+        if (nextId != currentId)
+            GetSpectateClient().RequestSpectate(nextId);
     }
 
     void PlayerEspHealth()
@@ -779,6 +895,11 @@ modded class MissionGameplay
         {
             if (data.param1)
             {
+                //RPC race guard: a freecam toggle sent just before entering spectate
+                //must not re-enable the freecam under an active spectate session
+                if (g_Game.IsSpectateMode())
+                    return;
+
                 DayZPlayerImplement player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
                 if (!player)
                     return;

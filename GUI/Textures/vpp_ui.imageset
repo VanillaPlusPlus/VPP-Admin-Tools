@@ -1,0 +1,632 @@
+ImageSetClass {
+ Name "vpp_ui"
+ RefSize 256 128
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{B2514993B379420D}VPPAdminTools/GUI/Textures/vpp_ui.edds"
+  }
+ }
+ Images {
+ ImageSetDefClass vpp_btn_tl {
+   Name "vpp_btn_tl"
+   Pos 0 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_t {
+   Name "vpp_btn_t"
+   Pos 6 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_tr {
+   Name "vpp_btn_tr"
+   Pos 10 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_l {
+   Name "vpp_btn_l"
+   Pos 0 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_c {
+   Name "vpp_btn_c"
+   Pos 6 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_r {
+   Name "vpp_btn_r"
+   Pos 10 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_bl {
+   Name "vpp_btn_bl"
+   Pos 0 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_b {
+   Name "vpp_btn_b"
+   Pos 6 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_br {
+   Name "vpp_btn_br"
+   Pos 10 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_tl {
+   Name "vpp_btn_hover_tl"
+   Pos 20 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_t {
+   Name "vpp_btn_hover_t"
+   Pos 26 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_tr {
+   Name "vpp_btn_hover_tr"
+   Pos 30 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_l {
+   Name "vpp_btn_hover_l"
+   Pos 20 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_c {
+   Name "vpp_btn_hover_c"
+   Pos 26 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_r {
+   Name "vpp_btn_hover_r"
+   Pos 30 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_bl {
+   Name "vpp_btn_hover_bl"
+   Pos 20 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_b {
+   Name "vpp_btn_hover_b"
+   Pos 26 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_hover_br {
+   Name "vpp_btn_hover_br"
+   Pos 30 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_tl {
+   Name "vpp_btn_push_tl"
+   Pos 40 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_t {
+   Name "vpp_btn_push_t"
+   Pos 46 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_tr {
+   Name "vpp_btn_push_tr"
+   Pos 50 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_l {
+   Name "vpp_btn_push_l"
+   Pos 40 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_c {
+   Name "vpp_btn_push_c"
+   Pos 46 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_r {
+   Name "vpp_btn_push_r"
+   Pos 50 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_bl {
+   Name "vpp_btn_push_bl"
+   Pos 40 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_b {
+   Name "vpp_btn_push_b"
+   Pos 46 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_push_br {
+   Name "vpp_btn_push_br"
+   Pos 50 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_tl {
+   Name "vpp_btn_danger_tl"
+   Pos 60 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_t {
+   Name "vpp_btn_danger_t"
+   Pos 66 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_tr {
+   Name "vpp_btn_danger_tr"
+   Pos 70 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_l {
+   Name "vpp_btn_danger_l"
+   Pos 60 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_c {
+   Name "vpp_btn_danger_c"
+   Pos 66 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_r {
+   Name "vpp_btn_danger_r"
+   Pos 70 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_bl {
+   Name "vpp_btn_danger_bl"
+   Pos 60 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_b {
+   Name "vpp_btn_danger_b"
+   Pos 66 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_br {
+   Name "vpp_btn_danger_br"
+   Pos 70 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_tl {
+   Name "vpp_btn_danger_hover_tl"
+   Pos 80 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_t {
+   Name "vpp_btn_danger_hover_t"
+   Pos 86 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_tr {
+   Name "vpp_btn_danger_hover_tr"
+   Pos 90 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_l {
+   Name "vpp_btn_danger_hover_l"
+   Pos 80 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_c {
+   Name "vpp_btn_danger_hover_c"
+   Pos 86 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_r {
+   Name "vpp_btn_danger_hover_r"
+   Pos 90 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_bl {
+   Name "vpp_btn_danger_hover_bl"
+   Pos 80 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_b {
+   Name "vpp_btn_danger_hover_b"
+   Pos 86 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_btn_danger_hover_br {
+   Name "vpp_btn_danger_hover_br"
+   Pos 90 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_tl {
+   Name "vpp_input_tl"
+   Pos 100 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_t {
+   Name "vpp_input_t"
+   Pos 106 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_tr {
+   Name "vpp_input_tr"
+   Pos 110 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_l {
+   Name "vpp_input_l"
+   Pos 100 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_c {
+   Name "vpp_input_c"
+   Pos 106 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_r {
+   Name "vpp_input_r"
+   Pos 110 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_bl {
+   Name "vpp_input_bl"
+   Pos 100 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_b {
+   Name "vpp_input_b"
+   Pos 106 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_br {
+   Name "vpp_input_br"
+   Pos 110 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_tl {
+   Name "vpp_input_focus_tl"
+   Pos 120 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_t {
+   Name "vpp_input_focus_t"
+   Pos 126 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_tr {
+   Name "vpp_input_focus_tr"
+   Pos 130 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_l {
+   Name "vpp_input_focus_l"
+   Pos 120 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_c {
+   Name "vpp_input_focus_c"
+   Pos 126 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_r {
+   Name "vpp_input_focus_r"
+   Pos 130 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_bl {
+   Name "vpp_input_focus_bl"
+   Pos 120 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_b {
+   Name "vpp_input_focus_b"
+   Pos 126 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_input_focus_br {
+   Name "vpp_input_focus_br"
+   Pos 130 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_tl {
+   Name "vpp_panel_tl"
+   Pos 140 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_t {
+   Name "vpp_panel_t"
+   Pos 146 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_tr {
+   Name "vpp_panel_tr"
+   Pos 150 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_l {
+   Name "vpp_panel_l"
+   Pos 140 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_c {
+   Name "vpp_panel_c"
+   Pos 146 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_r {
+   Name "vpp_panel_r"
+   Pos 150 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_bl {
+   Name "vpp_panel_bl"
+   Pos 140 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_b {
+   Name "vpp_panel_b"
+   Pos 146 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_panel_br {
+   Name "vpp_panel_br"
+   Pos 150 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_tl {
+   Name "vpp_round_tl"
+   Pos 160 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_t {
+   Name "vpp_round_t"
+   Pos 166 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_tr {
+   Name "vpp_round_tr"
+   Pos 170 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_l {
+   Name "vpp_round_l"
+   Pos 160 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_c {
+   Name "vpp_round_c"
+   Pos 166 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_r {
+   Name "vpp_round_r"
+   Pos 170 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_bl {
+   Name "vpp_round_bl"
+   Pos 160 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_b {
+   Name "vpp_round_b"
+   Pos 166 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_round_br {
+   Name "vpp_round_br"
+   Pos 170 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_tl {
+   Name "vpp_accent_tl"
+   Pos 180 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_t {
+   Name "vpp_accent_t"
+   Pos 186 0
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_tr {
+   Name "vpp_accent_tr"
+   Pos 190 0
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_l {
+   Name "vpp_accent_l"
+   Pos 180 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_c {
+   Name "vpp_accent_c"
+   Pos 186 6
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_r {
+   Name "vpp_accent_r"
+   Pos 190 6
+   Size 6 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_bl {
+   Name "vpp_accent_bl"
+   Pos 180 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_b {
+   Name "vpp_accent_b"
+   Pos 186 10
+   Size 4 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_accent_br {
+   Name "vpp_accent_br"
+   Pos 190 10
+   Size 6 6
+   Flags 0
+  }
+ ImageSetDefClass vpp_fill_header {
+   Name "vpp_fill_header"
+   Pos 2 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_fill_track {
+   Name "vpp_fill_track"
+   Pos 10 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_fill_accent {
+   Name "vpp_fill_accent"
+   Pos 18 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_fill_white {
+   Name "vpp_fill_white"
+   Pos 26 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_fill_transparent {
+   Name "vpp_fill_transparent"
+   Pos 34 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_select {
+   Name "vpp_select"
+   Pos 42 26
+   Size 4 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_check_off {
+   Name "vpp_check_off"
+   Pos 0 40
+   Size 26 26
+   Flags 0
+  }
+ ImageSetDefClass vpp_check_off_hover {
+   Name "vpp_check_off_hover"
+   Pos 32 40
+   Size 26 26
+   Flags 0
+  }
+ ImageSetDefClass vpp_check_on {
+   Name "vpp_check_on"
+   Pos 64 40
+   Size 26 26
+   Flags 0
+  }
+ ImageSetDefClass vpp_check_disabled {
+   Name "vpp_check_disabled"
+   Pos 96 40
+   Size 26 26
+   Flags 0
+  }
+ ImageSetDefClass vpp_scroll_top {
+   Name "vpp_scroll_top"
+   Pos 0 72
+   Size 8 4
+   Flags 0
+  }
+ ImageSetDefClass vpp_scroll_c {
+   Name "vpp_scroll_c"
+   Pos 0 76
+   Size 8 8
+   Flags 0
+  }
+ ImageSetDefClass vpp_scroll_b {
+   Name "vpp_scroll_b"
+   Pos 0 84
+   Size 8 4
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}

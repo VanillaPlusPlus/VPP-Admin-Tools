@@ -1,6 +1,13 @@
+/*
+	Single row in the CONTENTS list of the Item Manager PRESETS tab.
+	Parent item carries a crown badge; explicit Make-parent / Remove buttons
+	replace the legacy right-click / Ctrl+right-click gestures.
+*/
 class PresetItemEntry: VPPPlayerTemplate
 {
 	protected ButtonWidget 	       m_RemoveItem;
+	protected ButtonWidget 	       m_BtnMakeParent;
+	protected ImageWidget 	       m_ImgParent;
 	protected TextWidget           m_ItemName;
 	protected bool 				   m_IsVisible;
 	protected bool                 m_IsParent;
@@ -16,15 +23,18 @@ class PresetItemEntry: VPPPlayerTemplate
 		m_LayoutPath  = VPPATUIConstants.EntryPresetItem;
 		m_EntryBox    = GetGame().GetWorkspace().CreateWidgets( m_LayoutPath, grid);
 		m_EntryBox.SetHandler(this);
-		m_RemoveItem  = ButtonWidget.Cast( m_EntryBox.FindAnyWidget("BtnDelete") );
-		m_ItemName    = TextWidget.Cast( m_EntryBox.FindAnyWidget("ItemName") );
+		m_RemoveItem    = ButtonWidget.Cast( m_EntryBox.FindAnyWidget("BtnDelete") );
+		m_BtnMakeParent = ButtonWidget.Cast( m_EntryBox.FindAnyWidget("BtnMakeParent") );
+		m_ImgParent     = ImageWidget.Cast( m_EntryBox.FindAnyWidget("ImgParent") );
+		m_ItemName      = TextWidget.Cast( m_EntryBox.FindAnyWidget("ItemName") );
 
-		if (isParent){
-			m_ItemName.SetText(typeName + "#VSTR_DISPLAY_PARENT");
-			m_EntryBox.SetColor(ARGB(255,0,255,25));
-		}else{
-			m_ItemName.SetText(typeName);
-		}
+		m_ItemName.SetText(typeName);
+		m_ImgParent.Show(isParent);
+		if (isParent)
+			m_ItemName.SetColor(ARGB(255, 232, 163, 61));  //accent-orange
+		else
+			m_ItemName.SetColor(ARGB(255, 232, 234, 237)); //text-primary
+
 		grid.Update();
 		m_IsVisible = true;
 	}
@@ -42,40 +52,37 @@ class PresetItemEntry: VPPPlayerTemplate
 	
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
-		if (w == m_RemoveItem && button == MouseState.LEFT)
+		if (button != MouseState.LEFT) return false;
+		
+		if (w == m_RemoveItem)
 		{
 			//Remove Item from preset
 			GetPresetData().RemoveItem(m_typeName);
 			SetEdited(true);
-			MenuItemManager iManager = MenuItemManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuItemManager));
-			if (iManager != null)
-				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(iManager.ReloadPresetData, 100, false);
+			NotifyOwnerReload();
+			return true;
+		}
+		
+		if (w == m_BtnMakeParent)
+		{
+			//Toggle parent flag: crowning the current parent clears it
+			if (m_IsParent)
+				m_PresetItemData.SetParentType("null");
+			else
+				m_PresetItemData.SetParentType(m_typeName);
 			
+			SetEdited(true);
+			NotifyOwnerReload();
 			return true;
 		}
 		return false;
 	}
 	
-	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
+	private void NotifyOwnerReload()
 	{
-		if (button == MouseState.RIGHT && w == m_ItemName)
-		{
-			string parentType;
-			if (g_Game.IsLeftCtrlDown())
-				parentType = "null";
-			else
-				parentType = m_typeName;
-			
-			
-			m_PresetItemData.SetParentType(parentType);
-			SetEdited(true);
-			MenuItemManager iManager = MenuItemManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuItemManager));
-			if (iManager != null)
-				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(iManager.ReloadPresetData, 100, false);
-			
-			return true;
-		}
-		return false;
+		MenuItemManager iManager = MenuItemManager.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuItemManager));
+		if (iManager != null)
+			GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(iManager.ReloadPresetData, 100, false);
 	}
 	
 	void SetVisible(bool state)

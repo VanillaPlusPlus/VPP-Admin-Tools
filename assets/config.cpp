@@ -39,14 +39,17 @@ class CfgMods
 			{
 				files[]=
 				{
-					"VPPAdminTools/GUI/Styles/testStyle.styles"
+					"VPPAdminTools/GUI/Styles/testStyle.styles",
+					"VPPAdminTools/GUI/Styles/vpp_widgets.styles"
 				};
 			};
 			class imageSets
 			{
 				files[]=
 				{
-					"VPPAdminTools/GUI/Textures/dayz_gui_vpp.imageset"
+					"VPPAdminTools/GUI/Textures/dayz_gui_vpp.imageset",
+					"VPPAdminTools/GUI/Textures/vpp_icons.imageset",
+					"VPPAdminTools/GUI/Textures/vpp_ui.imageset"
 				};
 			};
 			class engineScriptModule

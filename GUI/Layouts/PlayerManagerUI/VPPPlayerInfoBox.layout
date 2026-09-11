@@ -1,435 +1,1169 @@
 PanelWidgetClass PanelPlayerDetails {
  ignorepointer 1
  keepsafezone 1
- color 1 1 1 0.549
+ color 1 1 1 1
  position 0 0
- size 1 1
+ size 1 358
  halign center_ref
- valign center_ref
- hexactpos 0
- vexactpos 0
+ hexactpos 1
+ vexactpos 1
  hexactsize 0
- vexactsize 0
- style DayZDefaultPanel
+ vexactsize 1
+ style VPPPanel
  {
-  PanelWidgetClass PnlBg {
+  PanelWidgetClass CardTitleStrip {
    ignorepointer 1
-   color 0 0 0 1
-   size 0.995 0.994
+   color 0.039 0.043 0.047 0.85
+   position 0 1
+   size 0.995 28
    halign center_ref
-   valign center_ref
-   hexactpos 0
-   vexactpos 0
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanel
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass ImgCardTitle {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 0 0
+     size 32 32
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:user"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass CardTitleName {
+     ignorepointer 1
+     position 32 0
+     size 0.5 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Player"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass CardTitleGroup {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 10 0
+     size 0.3 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.91 0.639 0.239 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
   }
-  GridSpacerWidgetClass player_info_content {
+  ImageWidgetClass ImgIdentity {
    ignorepointer 1
-   color 0 0 0 0
-   size 1 0
-   halign center_ref
-   valign center_ref
-   hexactpos 0
-   vexactpos 0
+   color 0.91 0.639 0.239 1
+   position 0 30
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:user"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass IdentityHeader {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 26 36
+   size 0.5 16
+   hexactpos 1
+   vexactpos 1
    hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanelBottom
+   vexactsize 1
+   style None
+   text "#VSTR_LBL_IDENTITY"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.91 0.639 0.239 1
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+  }
+  FrameWidgetClass PlayerNameFrame {
+   ignorepointer 1
+   position 8 56
+   size 0.97 22
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass PlayerNameLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 0.4 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_NAME"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass Name {
+     ignorepointer 1
+     position 8 0
+     size 0.6 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Survivor"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass PlayerGUIDFrame {
+   ignorepointer 1
+   position 8 78
+   size 0.97 22
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass GUIDLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 0.4 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_STEAMID"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass SteamID {
+     ignorepointer 1
+     position 8 0
+     size 0.6 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "76561198000000000"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass PlayerIDFrame {
+   ignorepointer 1
+   position 8 100
+   size 0.97 22
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass IDLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 0.4 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GUID"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass Guid {
+     ignorepointer 1
+     position 8 0
+     size 0.6 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass PlayerUserGroupFrame {
+   ignorepointer 1
+   position 8 122
+   size 0.97 22
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass UGLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 0.4 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_USER_GROUP"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass UserGroup {
+     ignorepointer 1
+     color 0.91 0.639 0.239 1
+     position 8 0
+     size 0.6 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "none"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.91 0.639 0.239 1
+     "exact text" 1
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  ImageWidgetClass ImgVitals {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 0 146
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:heart_pulse"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass VitalsHeader {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 26 150
+   size 0.5 16
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style None
+   text "#VSTR_LBL_VITALS"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.91 0.639 0.239 1
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+  }
+  GridSpacerWidgetClass VitalsGrid {
+   ignorepointer 1
+   position 0 168
+   size 1 56
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
    Padding 4
-   Margin 6
+   Margin 0
+   "Size To Content H" 1
    "Size To Content V" 1
    content_halign center
-   Columns 1
-   Rows 9
+   Columns 5
+   Rows 1
    {
-    FrameWidgetClass PlayerNameFrame {
+    FrameWidgetClass VitalCellHealth {
      ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      TextWidgetClass PlayerNameLabel {
-       ignorepointer 1
-       size 1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_NAME"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass Name {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "GravityWolfNotAmused"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass PlayerGUIDFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      TextWidgetClass GUIDLabel {
-       ignorepointer 1
-       size 1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_STEAMID"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass SteamID {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "6942069420"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass PlayerIDFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      TextWidgetClass IDLabel {
-       ignorepointer 1
-       size 1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_GUID"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass Guid {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "54654654654654654657897987"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass PlayerUserGroupFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      TextWidgetClass UGLabel {
-       ignorepointer 1
-       size 1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#VSTR_LBL_USER_GROUP"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass UserGroup {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "none"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass PlayerHealthFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
+     size 72 60
+     hexactpos 0
+     vexactpos 0
      hexactsize 1
      vexactsize 1
      {
       ImageWidgetClass ImgHealth {
        ignorepointer 1
+       color 0.298 0.686 0.314 1
        position 0 0
-       size 0.1 1
-       valign center_ref
+       size 26 26
+       halign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:iconHealth0"
-       mode additive
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:heart_pulse"
+       mode blend
        "src alpha" 1
-       "no wrap" 1
-       stretch 0
+       "stretch mode" stretch_w_h
        filter 1
       }
       TextWidgetClass Health {
        ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
+       position 0 23
+       size 1 18
+       halign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
+       style None
        text "100"
-       font "gui/fonts/sdf_MetronLight24"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
        "exact text" 1
        "exact text size" 16
        "size to text h" 1
-       "size to text v" 0
+       "size to text v" 1
        "text halign" center
-       "text valign" center
       }
-     }
-    }
-    FrameWidgetClass PlayerBloodFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      ImageWidgetClass ImgBlood {
+      TextWidgetClass HealthLabel {
        ignorepointer 1
-       position 0 0
-       size 0.1 1
-       valign center_ref
+       color 0.604 0.627 0.651 1
+       position 0 41
+       size 1 14
+       halign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:iconBlood0"
-       mode additive
-       "src alpha" 1
-       "no wrap" 1
-       stretch 0
-       filter 1
-      }
-      TextWidgetClass Blood {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "5000"
-       font "gui/fonts/sdf_MetronLight24"
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_HEALTH"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
        "exact text" 1
-       "exact text size" 16
+       "exact text size" 12
        "size to text h" 1
-       "size to text v" 0
+       "size to text v" 1
        "text halign" center
-       "text valign" center
       }
-     }
-    }
-    FrameWidgetClass PlayerShockFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      ImageWidgetClass ImgShock {
+      FrameWidgetClass BarTrackHealth {
        ignorepointer 1
-       position 0 0
-       size 0.1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_inventory image:electricity"
-       mode additive
-       "src alpha" 1
-       "no wrap" 1
-       stretch 0
-       filter 1
-      }
-      TextWidgetClass Shock {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "100"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass PlayerHandsFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      ImageWidgetClass ImgInHands {
-       ignorepointer 1
-       position 0 0
-       size 0.1 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_inventory image:hands"
-       mode additive
-       "src alpha" 1
-       "no wrap" 1
-       stretch 0
-       filter 1
-      }
-      TextWidgetClass Weapon {
-       ignorepointer 1
-       size 1 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "AKM"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    FrameWidgetClass CopyInfoFrame {
-     ignorepointer 1
-     position 0 0
-     size 48 30
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      ButtonWidgetClass btnCopyInfo {
-       ignorepointer 0
-       size 0.5 0.7
+       position 0 1
+       size 0.85 3
        halign center_ref
        valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
-       scriptclass "ConfirmationEventHandler"
-       style Editor
-       text "#VSTR_LBL_COPY_INFO"
-       font "gui/fonts/MetronLight14"
+       vexactsize 1
+       {
+        PanelWidgetClass BarHealth {
+         ignorepointer 1
+         color 0.239 0.49 0.839 1
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style VPPFill
+        }
+       }
       }
      }
+    }
+    FrameWidgetClass VitalCellBlood {
+     ignorepointer 1
+     size 72 60
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgBlood {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 0 0
+       size 26 26
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:droplets"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Blood {
+       ignorepointer 1
+       position 0 23
+       size 1 18
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "5000"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      TextWidgetClass BloodLabel {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0 41
+       size 1 14
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_BLOOD"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 12
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      FrameWidgetClass BarTrackBlood {
+       ignorepointer 1
+       position 0 1
+       size 0.85 3
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass BarBlood {
+         ignorepointer 1
+         color 0.239 0.49 0.839 1
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style VPPFill
+        }
+       }
+      }
+     }
+    }
+    FrameWidgetClass VitalCellShock {
+     ignorepointer 1
+     size 72 60
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgShock {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 0 0
+       size 26 26
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:zap"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Shock {
+       ignorepointer 1
+       position 0 23
+       size 1 18
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "100"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      TextWidgetClass ShockLabel {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0 41
+       size 1 14
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_SHOCK"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 12
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      FrameWidgetClass BarTrackShock {
+       ignorepointer 1
+       position 0 1
+       size 0.85 3
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass BarShock {
+         ignorepointer 1
+         color 0.239 0.49 0.839 1
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style VPPFill
+        }
+       }
+      }
+     }
+    }
+    FrameWidgetClass VitalCellWater {
+     ignorepointer 1
+     size 72 60
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgWater {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 0 0
+       size 26 26
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:glass_water"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Water {
+       ignorepointer 1
+       position 0 23
+       size 1 18
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "1000"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      TextWidgetClass WaterLabel {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0 41
+       size 1 14
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_WATER"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 12
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      FrameWidgetClass BarTrackWater {
+       ignorepointer 1
+       position 0 1
+       size 0.85 3
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass BarWater {
+         ignorepointer 1
+         color 0.239 0.49 0.839 1
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style VPPFill
+        }
+       }
+      }
+     }
+    }
+    FrameWidgetClass VitalCellEnergy {
+     ignorepointer 1
+     size 72 60
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass ImgEnergy {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 0 0
+       size 26 26
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:flame"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Energy {
+       ignorepointer 1
+       position 0 23
+       size 1 18
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "1000"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      TextWidgetClass EnergyLabel {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0 41
+       size 1 14
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_ENERGY"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 12
+       "size to text h" 1
+       "size to text v" 1
+       "text halign" center
+      }
+      FrameWidgetClass BarTrackEnergy {
+       ignorepointer 1
+       position 0 1
+       size 0.85 3
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass BarEnergy {
+         ignorepointer 1
+         color 0.239 0.49 0.839 1
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style VPPFill
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  ImageWidgetClass ImgFlags {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 0 227
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:shield"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass FlagsHeader {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 26 232
+   size 0.5 16
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style None
+   text "#VSTR_LBL_ADMIN_FLAGS"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.91 0.639 0.239 1
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+  }
+  FrameWidgetClass FlagFrameGodMode {
+   ignorepointer 1
+   position 0.02 252
+   size 0.46 18
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass FlagLabelGodMode {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 8 0
+     size 0.5 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GOD_MODE"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass FlagGodMode {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 8 0
+     size 0.4 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Disabled"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass FlagFrameInvisible {
+   ignorepointer 1
+   position 0.52 252
+   size 0.46 18
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass FlagLabelInvisible {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 8 0
+     size 0.5 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_INVISIBLE"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass FlagInvisible {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 8 0
+     size 0.4 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Disabled"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass FlagFrameUnlimitedAmmo {
+   ignorepointer 1
+   position 0.02 272
+   size 0.46 18
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass FlagLabelUnlimitedAmmo {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 8 0
+     size 0.5 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_UNLIM_AMMO"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass FlagUnlimitedAmmo {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 8 0
+     size 0.4 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Disabled"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass FlagFrameFrozen {
+   ignorepointer 1
+   position 0.52 272
+   size 0.46 18
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass FlagLabelFrozen {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 8 0
+     size 0.5 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_FROZEN"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass FlagFrozen {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 8 0
+     size 0.4 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "Disabled"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass PlayerHandsFrame {
+   ignorepointer 1
+   position 8 296
+   size 0.97 22
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    TextWidgetClass HandsLabel {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 28 0
+     size 0.4 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_ITEM_IN_HANDS"
+     font "gui/fonts/sdf_MetronLight72"
+     "text color" 0.604 0.627 0.651 1
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass Weapon {
+     ignorepointer 1
+     position 8 0
+     size 0.5 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "None"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    ImageWidgetClass ImgInHands {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 26 26
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:sword"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+   }
+  }
+  ButtonWidgetClass btnCopyInfo {
+   ignorepointer 0
+   color 1 1 1 1
+   position 8 324
+   size 152 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButton
+   font "gui/fonts/sdf_MetronLight72"
+   {
+    ImageWidgetClass ImgCopy {
+     ignorepointer 1
+     color 1 1 1 1
+     position 8 0
+     size 12 12
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:copy"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass txtCopyInfo {
+     ignorepointer 1
+     position 28 0
+     size 1 1
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_COPY_INFO"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
     }
    }
   }

@@ -4,11 +4,11 @@ class JoinLeaveMessage: WebHookMessageBase
 	private string guid;
 	private string details;
 
-	void JoinLeaveMessage(string pname, string guid, string details)
+	void JoinLeaveMessage(string pname, string lguid, string ldetails)
 	{
 		this.playerName   = pname;
-		this.details 	  = details;
-		this.guid    	  = guid;
+		this.details 	  = ldetails;
+		this.guid    	  = lguid;
 		AddEmbed();
 		SetContent();
 	}

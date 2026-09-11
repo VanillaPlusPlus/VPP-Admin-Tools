@@ -1,0 +1,91 @@
+FrameWidgetClass VitalCellRoot {
+ ignorepointer 1
+ position 0 0
+ size 72 60
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ {
+  ImageWidgetClass VitalCellIcon {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0 0
+   size 26 26
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:heart_pulse"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass VitalCellValue {
+   ignorepointer 1
+   position 0 23
+   size 1 18
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style None
+   text "100"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 16
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+  }
+  TextWidgetClass VitalCellLabel {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 0 41
+   size 1 14
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style None
+   text "HEALTH"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.604 0.627 0.651 1
+   "exact text" 1
+   "exact text size" 12
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" center
+  }
+  FrameWidgetClass VitalCellBarTrack {
+   ignorepointer 1
+   color 0.165 0.180 0.200 1
+   position 0 0
+   size 0.85 3
+   halign center_ref
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    PanelWidgetClass VitalCellBar {
+     ignorepointer 1
+     color 0.239 0.490 0.839 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPFill
+    }
+   }
+  }
+ }
+}

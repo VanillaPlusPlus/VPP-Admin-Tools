@@ -19,7 +19,7 @@ class ChatCommandManager : PluginBase
 		AddChatCommand(new ReturnPlayerChatModule("/return",1,"Chat:ReturnPlayer", true));
 		AddChatCommand(new GotoPlayerChatModule("/goto", 1, "Chat:GotoPlayer", true));
 		
-		if (VPPAT_IsModLoadded("NamalskSurvival"))
+		if (VPPAT_IsModLoadded("NAMALSK_SURVIVAL"))
 		{
 			AddChatCommand(new NamalskEvents("/runevent", 1, "Chat:NamalskRunEvent"));
 		}

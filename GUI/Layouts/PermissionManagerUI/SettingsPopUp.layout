@@ -1,78 +1,111 @@
 FrameWidgetClass rootFrame {
- size 0.9 0.9
+ clipchildren 1
+ size 1 1
  halign center_ref
- valign bottom_ref
+ valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
  {
   PanelWidgetClass mainPnl {
-   ignorepointer 1
-   color 1 1 1 0.549
+   inheritalpha 0
+   color 0 0 0 1
    size 1 1
    halign center_ref
-   valign bottom_ref
+   valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   style DayZDefaultPanel
+   style VPPFillRound
    {
-    PanelWidgetClass PnlBg {
-     ignorepointer 1
-     color 0 0 0 1
-     position 0 0.1
-     size 0.995 0.895
-     halign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style DayZDefaultPanel
-    }
     PanelWidgetClass titleBG {
      ignorepointer 1
-     color 0 0 0 1
-     position 0.002 0.002
-     size 0.995 0.11
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style DayZDefaultPanel
-    }
-    TextWidgetClass text_title {
-     ignorepointer 1
-     position 0.01 0
-     size 0.9 0.12
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Bold
-     text "#VSTR_LBL_UPDATE_GROUP_ATTS"
-     font "gui/fonts/MetronLight22"
-     "exact text" 1
-     "size to text h" 0
-     "text valign" center
-    }
-    PanelWidgetClass panel_redline {
-     ignorepointer 1
-     color 1 0 0 1
-     position 0 0.12
-     size 0.99 0.007
+     color 0.031 0.035 0.039 0.95
+     position 0 0
+     size 1 0.2
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgTitleIcon {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 6 0
+       size 24 24
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:settings"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass text_title {
+       ignorepointer 1
+       position 32 0
+       size 0.85 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_UPDATE_GROUP_ATTS"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 15
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
+    }
+    MultilineTextWidgetClass info {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0.06 0.26
+     size 0.88 0.3
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_GROUP_NAME_FORCE"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "size to text h" 0
+     "size to text v" 1
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+    }
+    CheckBoxWidgetClass chkForceAdminName {
+     ignorepointer 0
+     position 0.06 0.59
+     size 0.5 0.13
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPCheckBox
+     text "#VSTR_LBL_ENABLED"
+     font "gui/fonts/sdf_MetronLight72"
     }
     PanelWidgetClass panel_buttons {
      ignorepointer 0
-     position 0 0.01
-     size 0.98 0.12
+     color 0 0 0 0
+     position 0.01 0.02
+     size 0.96 0.16
      halign center_ref
      valign bottom_ref
      hexactpos 0
@@ -82,74 +115,72 @@ FrameWidgetClass rootFrame {
      style blank
      {
       ButtonWidgetClass button_cancel {
-       position 0 0.1
-       size 0.35 0.8
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       text "#VSTR_CANCEL"
-       font "gui/fonts/MetronLight"
-      }
-      ButtonWidgetClass button_save {
-       position 0 0.1
-       size 0.35 0.8
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scaled 1
-       style Editor
-       text "#VSTR_LBL_SAVE"
-       font "gui/fonts/MetronLight"
-      }
-     }
-    }
-    GridSpacerWidgetClass panel_content {
-     ignorepointer 0
-     size 0.9 0.71
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     Padding 0
-     Margin 0
-     "Size To Content H" 1
-     "Size To Content V" 1
-     content_halign center
-     Columns 2
-     Rows 1
-     {
-      CheckBoxWidgetClass chkForceAdminName {
+       color 1 1 1 1
        position 0 0
-       size 0.4 1
-       halign center_ref
+       size 0.46 0.9
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style Default
+       style VPPButtonGhost
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       {
+        TextWidgetClass LblCancel {
+         ignorepointer 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_CANCEL"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
-      MultilineTextWidgetClass info {
-       ignorepointer 1
-       position 0.012 0.028
-       size 0.632 1
+      ButtonWidgetClass button_save {
+       color 1 1 1 1
+       position 0.01 0
+       size 0.46 0.9
+       halign right_ref
+       valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "#VSTR_LBL_GROUP_NAME_FORCE"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 16
-       "size to text h" 1
-       "size to text v" 1
-       wrap 1
+       style VPPButton
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       {
+        TextWidgetClass LblSave {
+         ignorepointer 1
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_SAVE"
+         font "gui/fonts/sdf_MetronLight24"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
      }
     }

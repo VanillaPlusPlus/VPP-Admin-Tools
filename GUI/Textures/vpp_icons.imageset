@@ -1,0 +1,464 @@
+ImageSetClass {
+ Name "vpp_icons"
+ RefSize 512 1024
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{2A1E55BF9BCBA247}VPPAdminTools/GUI/Textures/vpp_icons.edds"
+  }
+ }
+ Images {
+ ImageSetDefClass users {
+   Name "users"
+   Pos 0 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass user {
+   Name "user"
+   Pos 64 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass search {
+   Name "search"
+   Pos 128 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass refresh_cw {
+   Name "refresh_cw"
+   Pos 192 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass x {
+   Name "x"
+   Pos 256 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass copy {
+   Name "copy"
+   Pos 320 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass check {
+   Name "check"
+   Pos 384 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass chevron_down {
+   Name "chevron_down"
+   Pos 448 0
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass chevron_up {
+   Name "chevron_up"
+   Pos 0 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass pin {
+   Name "pin"
+   Pos 64 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass move {
+   Name "move"
+   Pos 128 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass heart_pulse {
+   Name "heart_pulse"
+   Pos 192 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass droplets {
+   Name "droplets"
+   Pos 256 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass zap {
+   Name "zap"
+   Pos 320 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass glass_water {
+   Name "glass_water"
+   Pos 384 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass flame {
+   Name "flame"
+   Pos 448 64
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass thermometer {
+   Name "thermometer"
+   Pos 0 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass heater {
+   Name "heater"
+   Pos 64 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass biohazard {
+   Name "biohazard"
+   Pos 128 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass heart {
+   Name "heart"
+   Pos 192 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass skull {
+   Name "skull"
+   Pos 256 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass message_square {
+   Name "message_square"
+   Pos 320 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass eye {
+   Name "eye"
+   Pos 384 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass eye_off {
+   Name "eye_off"
+   Pos 448 128
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass arrow_up_from_line {
+   Name "arrow_up_from_line"
+   Pos 0 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass arrow_down_to_line {
+   Name "arrow_down_to_line"
+   Pos 64 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass rotate_ccw {
+   Name "rotate_ccw"
+   Pos 128 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass snowflake {
+   Name "snowflake"
+   Pos 192 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass sun {
+   Name "sun"
+   Pos 256 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass bandage {
+   Name "bandage"
+   Pos 320 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass package_x {
+   Name "package_x"
+   Pos 384 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass map_pin_plus {
+   Name "map_pin_plus"
+   Pos 448 192
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass activity {
+   Name "activity"
+   Pos 0 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass shield {
+   Name "shield"
+   Pos 64 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass infinity {
+   Name "infinity"
+   Pos 128 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass scaling {
+   Name "scaling"
+   Pos 192 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass log_out {
+   Name "log_out"
+   Pos 256 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass ban {
+   Name "ban"
+   Pos 320 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass gavel {
+   Name "gavel"
+   Pos 384 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass sword {
+   Name "sword"
+   Pos 448 256
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass package {
+   Name "package"
+   Pos 0 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass package_plus {
+   Name "package_plus"
+   Pos 64 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass star {
+   Name "star"
+   Pos 128 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass history {
+   Name "history"
+   Pos 192 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass trash_2 {
+   Name "trash_2"
+   Pos 256 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass save {
+   Name "save"
+   Pos 320 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass crown {
+   Name "crown"
+   Pos 384 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass play {
+   Name "play"
+   Pos 448 320
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass plus {
+   Name "plus"
+   Pos 0 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass minus {
+   Name "minus"
+   Pos 64 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass shirt {
+   Name "shirt"
+   Pos 128 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass car {
+   Name "car"
+   Pos 192 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass apple {
+   Name "apple"
+   Pos 256 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass house {
+   Name "house"
+   Pos 320 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass paw_print {
+   Name "paw_print"
+   Pos 384 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass map {
+   Name "map"
+   Pos 448 384
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass map_pin {
+   Name "map_pin"
+   Pos 0 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass locate_fixed {
+   Name "locate_fixed"
+   Pos 64 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass crosshair {
+   Name "crosshair"
+   Pos 128 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass square_pen {
+   Name "square_pen"
+   Pos 192 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass info {
+   Name "info"
+   Pos 256 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass shield_check {
+   Name "shield_check"
+   Pos 320 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass key_round {
+   Name "key_round"
+   Pos 384 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass users_round {
+   Name "users_round"
+   Pos 448 448
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass folder_plus {
+   Name "folder_plus"
+   Pos 0 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass user_plus {
+   Name "user_plus"
+   Pos 64 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass user_minus {
+   Name "user_minus"
+   Pos 128 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass settings {
+   Name "settings"
+   Pos 192 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass file_code {
+   Name "file_code"
+   Pos 256 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass file_text {
+   Name "file_text"
+   Pos 320 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass list {
+   Name "list"
+   Pos 384 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass hammer {
+   Name "hammer"
+   Pos 448 512
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass boxes {
+   Name "boxes"
+   Pos 0 576
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass circle_help {
+   Name "circle_help"
+   Pos 64 576
+   Size 64 64
+   Flags 0
+  }
+ ImageSetDefClass dot {
+   Name "dot"
+   Pos 128 576
+   Size 64 64
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}

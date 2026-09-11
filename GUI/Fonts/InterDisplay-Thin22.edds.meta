@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{4AFE587E93F8D2C1}VPPAdminTools/GUI/Fonts/InterDisplay-Thin22.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -627559668
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Thin22.tga"
+   FormatCompress Copy
+   CompressTreshold 0
+   ConversionQuality 1
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

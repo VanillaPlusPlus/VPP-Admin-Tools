@@ -1,0 +1,51 @@
+ButtonWidgetClass SectionHeaderRoot {
+ ignorepointer 0
+ color 1 1 1 1
+ position 0 0
+ size 1 26
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ style VPPButtonGhost
+ {
+  TextWidgetClass SectionHeaderLabel {
+   ignorepointer 1
+   color 0.910 0.639 0.239 1
+   position 4 0
+   size 0.8 1
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "SECTION"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "text color" 0.910 0.639 0.239 1
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  ImageWidgetClass SectionHeaderChevron {
+   ignorepointer 1
+   color 0.910 0.639 0.239 1
+   position 6 0
+   size 28 28
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:chevron_up"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+ }
+}

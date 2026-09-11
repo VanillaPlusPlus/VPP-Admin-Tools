@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{07F71D0F71B56E64}VPPAdminTools/GUI/Fonts/InterDisplay-Bold22.edds"
+ Author "desktop-scqak3t"
+ ChangeDate -1434438900
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "InterDisplay-Bold22.tga"
+   FormatCompress Copy
+   CompressTreshold 0
+   ConversionQuality 1
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

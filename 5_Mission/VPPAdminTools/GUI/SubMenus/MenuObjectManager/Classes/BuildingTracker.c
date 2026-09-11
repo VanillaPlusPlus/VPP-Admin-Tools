@@ -249,14 +249,13 @@ class BuildingTracker: ScriptedWidgetEventHandler
 			return;
 		}
 		
-		vector position    = Vector(m_EditX.GetText().ToFloat(),m_EditZ.GetText().ToFloat(),m_EditY.GetText().ToFloat());
-		vector orientation = Vector(m_EditYaw.GetText().ToFloat(),m_EditPitch.GetText().ToFloat(),m_EditRoll.GetText().ToFloat());
+		vector position    = Vector(m_EditX.GetText().ToFloat(), m_EditZ.GetText().ToFloat(), m_EditY.GetText().ToFloat());
+		vector orientation = Vector(m_EditYaw.GetText().ToFloat(), m_EditPitch.GetText().ToFloat(), m_EditRoll.GetText().ToFloat());
 		if (position != m_Position)
 		{
 			//Update by Boxes
 			m_TrackerEntity.SetPosition(position);
 			m_Position = m_TrackerEntity.GetPosition();
-			UpdateDataBoxes();
 		}
 		else if (m_TrackerEntity.GetPosition() != m_Position)
 		{
@@ -271,7 +270,6 @@ class BuildingTracker: ScriptedWidgetEventHandler
 			//Update yaw pitch roll
 			m_TrackerEntity.SetYawPitchRoll(Vector(orientation[0],orientation[1],orientation[2]));
 			m_Orientation = m_TrackerEntity.GetOrientation();
-			UpdateDataBoxes();
 		}
 		
 		if (IsCursorOnEditorBoxs()) return; //Dont update widget pos since its being used

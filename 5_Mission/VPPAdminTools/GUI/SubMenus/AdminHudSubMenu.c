@@ -52,6 +52,9 @@ class AdminHudSubMenu: ScriptedWidgetEventHandler
 
 	VPPAdminHud GetToolbarMenu()
 	{
+		if (!GetVPPUIManager())
+			return NULL;
+		
 		return VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
 	}
 	

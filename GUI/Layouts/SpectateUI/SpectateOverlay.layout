@@ -1,0 +1,169 @@
+PanelWidgetClass SpectateOverlayRoot {
+ visible 1
+ clipchildren 1
+ ignorepointer 1
+ color 0.031 0.035 0.039 0.82
+ position 700 14
+ size 460 54
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style VPPFillRound
+ "no focus" 1
+ {
+  ImageWidgetClass ImgOverlayIcon {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 10 0
+   size 24 24
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:eye"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass TxtOverlayLabel {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 42 7
+   size 90 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text "#VSTR_SPECTATE_OVERLAY_LABEL"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 1
+  }
+  TextWidgetClass TxtOverlayName {
+   ignorepointer 1
+   color 0.953 0.961 0.969 1
+   position 42 21
+   size 180 18
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text "-"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 15
+   "size to text h" 1
+   "size to text v" 1
+  }
+  TextWidgetClass TxtOverlayMode {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 236 21
+   size 40 16
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text "3PP"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 1
+  }
+  ImageWidgetClass ImgVitalsHP {
+   ignorepointer 1
+   color 0.298 0.686 0.314 1
+   position 287 6
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:heart_pulse"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass TxtVitalsHP {
+   ignorepointer 1
+   color 0.953 0.961 0.969 1
+   position 312 7
+   size 60 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text "-"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 12
+   "size to text h" 1
+   "size to text v" 1
+  }
+  ImageWidgetClass ImgVitalsBlood {
+   ignorepointer 1
+   color 0.761 0.271 0.271 1
+   position 287 30
+   size 24 24
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:droplets"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass TxtVitalsBlood {
+   ignorepointer 1
+   color 0.953 0.961 0.969 1
+   position 312 31
+   size 60 14
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text "-"
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 12
+   "size to text h" 1
+   "size to text v" 1
+  }
+  TextWidgetClass TxtOverlayHints {
+   ignorepointer 1
+   color 0.361 0.38 0.4 1
+   position 5 0
+   size 0.98 12
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style None
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 10
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" right
+  }
+ }
+}

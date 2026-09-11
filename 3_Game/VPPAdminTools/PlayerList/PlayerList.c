@@ -250,6 +250,12 @@ class PlayerListManager
        		GetGame().GetWorld().GetPlayerList(players);
        		for (int i = 0; i < players.Count(); ++i)
        		{
+       			if (!players[i])
+       				continue;
+
+       			if (!players[i].GetIdentity())
+       				continue;
+
        			PLAYERS.Insert(players[i].GetIdentity().GetId(), players[i].GetIdentity());
        		}
 		}

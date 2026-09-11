@@ -50,7 +50,7 @@ class VPPMouseEventBase: ScriptedWidgetEventHandler
 	//default is mouse left-click hold
 	bool GetTriggerCondition()
 	{
-		return (GetGame().GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK);
+		return (GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK);
 	}
 
 	//Called once after left condition no longer matches

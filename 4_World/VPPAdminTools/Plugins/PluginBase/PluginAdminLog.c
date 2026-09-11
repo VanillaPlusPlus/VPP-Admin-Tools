@@ -48,6 +48,7 @@ modded class PluginAdminLog
 			HitDamageMessage rpt = new HitDamageMessage();
 			int srcId = -1;
 			int low, high;
+			bool shouldSendLog = true;
 
 			if (player.GetIdentity() == null) return;
 
@@ -105,12 +106,15 @@ modded class PluginAdminLog
 					{
 						m_ItemInHands = source.GetDisplayName();				
 						m_Source = PlayerBase.Cast(source.GetHierarchyRootPlayer());
-						m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
-						m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
+						if (m_Source)
+						{
+							m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
+							m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
 						
-						rpt.sourceName = m_Source.VPlayerGetName();
-						rpt.sourceId   = m_Source.VPlayerGetSteamId();
-
+							rpt.sourceName = m_Source.VPlayerGetName();
+							rpt.sourceId   = m_Source.VPlayerGetSteamId();
+						}
+						
 						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with ("+ m_ItemInHands +") from (" + m_Distance + ") meters ";
 					}
 					else 
@@ -140,11 +144,10 @@ modded class PluginAdminLog
 					break;
 						
 				case DT_CUSTOM:		// Others (Vehicle hit, fall, fireplace, barbed wire ...)
-					if ( ammo == "FallDamage" )			// Fall
+					if ( ammo == "FallDamage" || ammo == "FallDamageShock" || ammo == "FallDamageHealth")
 					{
-						rpt.details = PlayerPrefix + " hit by (" + ammo + ")";
-						rpt.sourceName = player.VPlayerGetName();
-						rpt.sourceId   = player.VPlayerGetSteamId();
+						//FallDamage ignored, it's too spammy
+						shouldSendLog = false;
 					}
 					else if ( source.GetType() == "AreaDamageBase" )  
 					{
@@ -160,7 +163,7 @@ modded class PluginAdminLog
 					{
 						rpt.sourceName = source.GetType();
 						rpt.sourceId   = "_obj";
-						rpt.details = PlayerPrefix + " hit by (" + source.GetType() + ") with (" + ammo + ") ";
+						rpt.details = PlayerPrefix + " by (" + source.GetType() + ") with (" + ammo + ") ";
 					}
 					break;
 											
@@ -169,9 +172,12 @@ modded class PluginAdminLog
 					break;
 			}
 			//Wrap up and send
-			rpt.SetContent();
-			rpt.AddEmbed();
-			GetWebHooksManager().PostData(HitDamageMessage, rpt);
+			if (shouldSendLog)
+			{
+				rpt.SetContent();
+				rpt.AddEmbed();
+				GetWebHooksManager().PostData(HitDamageMessage, rpt);
+			}
 		}
 		else
 		{

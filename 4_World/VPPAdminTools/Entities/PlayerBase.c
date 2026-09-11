@@ -27,6 +27,9 @@ modded class PlayerBase
 		RegisterNetSyncVariableBool("m_isInvisible");
 		RegisterNetSyncVariableBool("m_VfreezePlayer");
 		RegisterNetSyncVariableBool("m_VScalePlayer");
+		RegisterNetSyncVariableBool("hasGodmode");
+		RegisterNetSyncVariableBool("hasUnlimitedAmmo");
+		RegisterNetSyncVariableBool("m_VPPATStreamLook");
 		RegisterNetSyncVariableFloat("m_VPlayerScale", 0.01, 100.0, 3);
 		GetRPCManager().AddRPC( "RPC_PlayerBase", "InvokeReload", this, SingleplayerExecutionType.Client );
 	}
@@ -78,6 +81,59 @@ modded class PlayerBase
 		SetName("");
 	}
 
+	void VPPHealPlayer(bool set_max = true, bool repair_items = true)
+	{
+		if (GetGame().IsServer() || !GetGame().IsMultiplayer())
+		{
+			GetStomach().ClearContents();
+
+			DamageSystem.ResetAllZones(this);
+			GetModifiersManager().ResetAll();
+			
+			// bleeding sources
+			if (m_BleedingManagerServer)
+				m_BleedingManagerServer.RemoveAllSources();
+			
+			// Stats
+			if (GetPlayerStats())
+			{
+				int bloodType = GetStatBloodType().Get();
+				GetPlayerStats().ResetAllStats();
+				GetStatBloodType().Set(bloodType);
+			}
+
+			// Agents
+			if (m_AgentPool)
+				m_AgentPool.RemoveAllAgents();
+			
+			if (m_StaminaHandler)
+				m_StaminaHandler.SetStamina(CfgGameplayHandler.GetStaminaMax());
+			
+			// uncon
+			if (IsUnconscious())
+				DayZPlayerSyncJunctures.SendPlayerUnconsciousness(this, false);
+			
+			// set max
+			if (set_max)
+			{
+				GetStatWater().Set(GetStatWater().GetMax());
+				GetStatEnergy().Set(GetStatEnergy().GetMax());
+			}
+			
+			// fix up inventory (skippable: the heal keybind heals without repairing gear)
+			if (repair_items)
+				FixAllInventoryItems();
+			
+			//remove bloody hands
+			PluginLifespan moduleLifespan = PluginLifespan.Cast(GetPlugin(PluginLifespan));
+			moduleLifespan.UpdateBloodyHandsVisibilityEx(this, eBloodyHandsTypes.CLEAN);
+			ClearBloodyHandsPenaltyChancePerAgent(eAgents.SALMONELLA);
+			
+			if (GetArrowManager())
+				GetArrowManager().ClearArrows();
+		}
+	}
+
 	void HealBrokenLegs()
 	{
 		float add_health_coef = 1.0;
@@ -120,23 +176,33 @@ modded class PlayerBase
 		VPPFreezePlayer(m_VfreezePlayer);
 	}
 
-	/*
+	//look-stream ingest (SERVER): receives the spectated player's true camera
+	//angles via the vanilla entity RPC and hands them to the SpectateManager relay
 	override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 	{
 		super.OnRPC(sender, rpc_type, ctx);
-		if (GetGame().IsDedicatedServer() && sender && rpc_type == VPPATRPCs.RPC_SYNC_FREECAM_POS)
+
+		if (GetGame().IsDedicatedServer() && sender != null && rpc_type == VPPATRPCs.RPC_SPECTATE_LOOK)
 		{
-			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "FreeCamera"))
+			//only the flagged player may stream, and only about THEMSELVES
+			if (!m_VPPATStreamLook)
+				return;
+			if (GetIdentity() == null)
+				return;
+			if (sender.GetPlainId() != GetIdentity().GetPlainId())
 				return;
 
-			vector camPos;
-			if (ctx.Read(camPos))
-			{
-				SetPosition(camPos);
-			}
+			float lookYaw;
+			float lookPitch;
+			if (!ctx.Read(lookYaw))
+				return;
+			if (!ctx.Read(lookPitch))
+				return;
+
+			if (GetSpectateManager())
+				GetSpectateManager().RelayLookData(sender.GetPlainId(), lookYaw, lookPitch);
 		}
 	}
-	*/
 
 	void VPPSetScaleValue(float scale)
 	{
@@ -156,18 +222,7 @@ modded class PlayerBase
 		if (GetGame().IsServer())
 		{
 			m_invisType = toggleType;
-			/*
-			if (!state)
-			{
-				//trigger update network bubble for clients
-				SetAllowDamage(false);
-				dBodyEnableGravity(this, false);
-				vector realPos = GetPosition();
-				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.PosRelocation, 1000, false, realPos);
-				SetPosition("0 1200 0");
-			}
-			*/
-
+			
 			m_isInvisible = state;
 			SetSynchDirty();
 			ScriptRPC rpc = new ScriptRPC();
@@ -191,12 +246,14 @@ modded class PlayerBase
 	{
 		hasGodmode = trigger;
 		SetAllowDamage(!trigger);
+		if (GetGame().IsServer())
+			SetSynchDirty();
 	}
 
-	string VPlayerGetHashedId() return m_VPlayerHashedId;
-	string VPlayerGetSteamId() return m_VPlayerSteamId;
-	string VPlayerGetName() return m_VPlayerName;
-	int VPlayerGetSessionId() return m_VPlayerSessionId;
+	string VPlayerGetHashedId() { return m_VPlayerHashedId; }
+	string VPlayerGetSteamId() { return m_VPlayerSteamId; }
+	string VPlayerGetName() { return m_VPlayerName; }
+	int VPlayerGetSessionId() { return m_VPlayerSessionId; }
 
 	void VPPFreezePlayer(bool state)
 	{
@@ -215,6 +272,18 @@ modded class PlayerBase
 	bool VPPIsFreezeControls()
 	{
 		return m_VfreezePlayer;
+	}
+	
+	/*
+		Removes all active bleeding sources (server side), without the full heal
+	*/
+	void VPPStopBleeding()
+	{
+		if (!GetGame().IsServer() && GetGame().IsMultiplayer())
+			return;
+		
+		if (m_BleedingManagerServer)
+			m_BleedingManagerServer.RemoveAllSources();
 	}
 	
 	bool GodModeStatus()
@@ -240,6 +309,8 @@ modded class PlayerBase
 	void VPPSetUnlimitedAmmo(bool state)
 	{
 		hasUnlimitedAmmo = state;
+		if (GetGame().IsServer())
+			SetSynchDirty();
 	}
 	
 	bool VPPIsUnlimitedAmmo()
@@ -308,5 +379,144 @@ modded class PlayerBase
 		if (hcw != null)
 			return hcw.GetBaseAimingAngleUD();
 		return 0.0;
+	}
+
+	private int  m_VPPATOrigPhysLayer;      //captured pre-link interaction mask
+	private bool m_VPPATPhysLayerCaptured;
+
+	private bool  m_VPPATStreamLook;
+	private float m_VPPATLookAcc;
+	private float m_VPPATLookDbgAcc;
+	private bool  m_VPPATLookDbgActive;
+
+	void VPPATSetLookStream(bool state)
+	{
+		if (GetGame().IsServer())
+		{
+			m_VPPATStreamLook = state;
+			SetSynchDirty();
+		}
+	}
+
+	override void CommandHandler(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		super.CommandHandler(pDt, pCurrentCommandID, pCurrentCommandFinished);
+
+		if (m_VPPATStreamLook && !GetGame().IsDedicatedServer() && IsControlledPlayer() && IsAlive())
+		{
+			if (VPPSpectateConstants.ADS_DEBUG && !m_VPPATLookDbgActive)
+			{
+				m_VPPATLookDbgActive = true;
+				Print("[VPPADS] look stream: ACTIVE on this client (flag synced)");
+			}
+
+			m_VPPATLookAcc = m_VPPATLookAcc + pDt;
+			if (m_VPPATLookAcc >= VPPSpectateConstants.LOOK_STREAM_SEC)
+			{
+				m_VPPATLookAcc = 0.0;
+				vector lookAngles = GetGame().GetCurrentCameraDirection().VectorToAngles();
+
+				ScriptRPC lookRpc = new ScriptRPC();
+				lookRpc.Write(lookAngles[0]);
+				lookRpc.Write(lookAngles[1]);
+				lookRpc.Send(this, VPPATRPCs.RPC_SPECTATE_LOOK, true, NULL);
+
+				if (VPPSpectateConstants.ADS_DEBUG)
+				{
+					m_VPPATLookDbgAcc = m_VPPATLookDbgAcc + VPPSpectateConstants.LOOK_STREAM_SEC;
+					if (m_VPPATLookDbgAcc >= 5.0)
+					{
+						m_VPPATLookDbgAcc = 0.0;
+						Print("[VPPADS] look stream: sending yaw=" + lookAngles[0].ToString() + " pitch=" + lookAngles[1].ToString());
+					}
+				}
+			}
+		}
+		else
+		{
+			m_VPPATLookDbgActive = false;
+		}
+	}
+
+	void VPPATAttachToSpectateTarget(PlayerBase target)
+	{
+		if (target == null)
+			return;
+
+		SetPosition(target.GetPosition());
+		SetOrientation(target.GetOrientation());
+
+		vector localTM[4] = {"1 0 0", "0 1 0", "0 0 1", "0 0 0"};
+		LinkToLocalSpaceOf(target, localTM);
+		//DEBUG: ADS_DEBUG_SHOW_BODY keeps the body renderable to inspect the link
+		if (VPPSpectateConstants.ADS_DEBUG_SHOW_BODY)
+			ClearFlags(EntityFlags.SOLID, true);
+		else
+			ClearFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true);
+
+		if (!m_VPPATPhysLayerCaptured)
+		{
+			m_VPPATOrigPhysLayer = dBodyGetInteractionLayer(this);
+			m_VPPATPhysLayerCaptured = true;
+		}
+		dBodySetInteractionLayer(this, PhxInteractionLayers.NOCOLLISION|PhxInteractionLayers.RAGDOLL);
+		PhysicsSetSolid(false);
+		target.AddChild(this, -1, false);
+	}
+
+	void VPPATReassertSpectateLink(PlayerBase target)
+	{
+		if (target == null)
+			return;
+
+		vector localTM[4] = {"1 0 0", "0 1 0", "0 0 1", "0 0 0"};
+		LinkToLocalSpaceOf(target, localTM);
+	}
+
+	void VPPATDetachFromSpectateTarget()
+	{
+		UnlinkFromLocalSpace();
+		Object linkParent = Object.Cast(GetParent());
+		if (linkParent)
+			linkParent.RemoveChild(this);
+
+		//restore local render state; if server-synced invisibility is still active,
+		//its RPC handler + per-postframe SetInvisible keep the body hidden anyway
+		SetFlags(EntityFlags.VISIBLE|EntityFlags.SOLID, true);
+
+		//restore the EXACT captured interaction mask (never a hardcoded layer)
+		if (m_VPPATPhysLayerCaptured)
+		{
+			dBodySetInteractionLayer(this, m_VPPATOrigPhysLayer);
+			m_VPPATPhysLayerCaptured = false;
+		}
+
+		PhysicsSetSolid(true);
+		PhysicsEnableGravity(true);
+		DisableSimulation(false);
+		dBodyActive(this, ActiveState.ACTIVE);
+	}
+
+	protected override array<InventoryItem> OnDrawOptics2D()
+	{
+		if (!GetGame().IsDedicatedServer())
+			VPPDayZPlayerCameraSpectate.DbgOverlayHeartbeat(IsControlledPlayer());
+
+		if (!GetGame().IsDedicatedServer() && IsControlledPlayer() && g_Game.IsSpectateMode())
+		{
+			VPPDayZPlayerCameraSpectate.DbgMarkOverlayPoll();
+			ItemOptics spectateOptic = VPPDayZPlayerCameraSpectate.GetActive2DOverlayOptic();
+			if (spectateOptic)
+			{
+				VPPDayZPlayerCameraSpectate.DbgMarkOverlayServe(spectateOptic);
+				array<InventoryItem> optics = new array<InventoryItem>;
+				optics.Insert(spectateOptic);
+				return optics;
+			}
+			//spectating with no spectate optic to draw: NEVER fall through to super —
+			//it would serve the admin's own latched optic/NVGs over the spectate view
+			return null;
+		}
+		return super.OnDrawOptics2D();
 	}
 };

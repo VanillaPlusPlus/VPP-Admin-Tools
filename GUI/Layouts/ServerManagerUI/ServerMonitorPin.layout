@@ -1,0 +1,482 @@
+FrameWidgetClass rootServerMonitorPin {
+ clipchildren 1
+ ignorepointer 1
+ color 0 0 0 0
+ position 0.006 0
+ size 0.16 0.225
+ halign left_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass PinMain {
+   ignorepointer 1
+   color 1 1 1 0.97
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    PanelWidgetClass PinHeader {
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.95
+     position 0 1
+     size 0.99 26
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgPinHeader {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 6 0
+       size 24 24
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:activity"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass PinTitle {
+       ignorepointer 1
+       position 30 0
+       size 0.7 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_SERVER_MONITOR"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+      ImageWidgetClass ImgPinMarker {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 24 24
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:pin"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+    GridSpacerWidgetClass PinStack {
+     ignorepointer 1
+     position 0.012 30
+     size 0.976 0.84
+     hexactpos 0
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     Padding 2
+     Margin 0
+     "Size To Content H" 0
+     "Size To Content V" 0
+     Columns 1
+     Rows 7
+     {
+      PanelWidgetClass PinRowFPS {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinFPSLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_SERVER_FPS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinFPSInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "null"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowPlayers {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinPlayersLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_ONLINE_PLAYERS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinPlayersInput {
+         ignorepointer 1
+         color 0.298 0.686 0.314 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "0"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowUptime {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinUpTimeLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.5 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_SERVER_UPTIME"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinUpTimeInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.6 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "0d 0h 0m 0s"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowMemory {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinMemoryLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_MEM_USED"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinMemoryInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "null"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowNetOut {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinNetOutLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_NETWORK_TRAFFIC"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinNetOutInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "null"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowNetIn {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinNetInLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_NETWORK_TRAFFIC2"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinNetInInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "null"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PinRowAI {
+       ignorepointer 1
+       color 0.078 0.086 0.094 0.85
+       size 1 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        TextWidgetClass PinAILabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 8 0
+         size 0.6 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_ACTIVE_AI"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        TextWidgetClass PinAIInput {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 0.5 1
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "null"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
+         "text halign" right
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

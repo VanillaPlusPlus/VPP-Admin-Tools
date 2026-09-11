@@ -14,7 +14,7 @@ class BuildingSetEditor: ScriptedWidgetEventHandler
 		m_Apply   		= ButtonWidget.Cast(m_root.FindAnyWidget("button_ok"));
 		m_button_close  = ButtonWidget.Cast(m_root.FindAnyWidget("panel_close"));
 		m_button_export  = ButtonWidget.Cast(m_root.FindAnyWidget("button_export"));
-		GetVPPUIManager().HookConfirmationDialog(m_button_export, parent,this,"ExportRaw", DIAGTYPE.DIAG_YESNO, "Export", "#VSTR_TOOLTIP_EXPORT_SET");
+		GetVPPUIManager().HookConfirmationDialog(m_button_export, parent,this,"ExportRaw", DIAGTYPE.DIAG_YESNO, "#VSTR_OB_EXPORT_TITLE", "#VSTR_TOOLTIP_EXPORT_SET");
 		
 		m_SetName 		= EditBoxWidget.Cast(m_root.FindAnyWidget("InputSetName"));
 		m_Active        = CheckBoxWidget.Cast(m_root.FindAnyWidget("checkbox_active"));

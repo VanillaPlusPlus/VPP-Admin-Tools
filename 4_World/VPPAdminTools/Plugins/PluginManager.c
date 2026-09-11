@@ -1,33 +1,22 @@
+#ifdef SERVER
+// - SERVER -
 modded class PluginManager
 {
 	void PluginManager()
 	{
-		Print("Vanilla++ AdminTools Plugins Registering..");
+		Print("[SERVER :: Vanilla++ AdminTools Plugins Registering]");
 	}
 
 	override void Init()
 	{
 		super.Init();
-		//----------------------------------------------------------------------
-		// 						   Register modules
-		//----------------------------------------------------------------------
-		//		        Module Class Name 				Client	Server
-		//----------------------------------------------------------------------
-
-		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
-		{
-			RegisterPlugin("VPPKeybindsManager",		 true,      false); //Client only
-			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
-		}
-
-#ifndef SERVER
 	#ifdef DIAG_DEVELOPER //offline client Diag only
 		if ((GetGame().IsMultiplayer() && GetGame().IsDedicatedServer()) || (!GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer()))
+	#else
+		if (GetGame().IsDedicatedServer())
 	#endif
-#else
-		if (GetGame().IsDedicatedServer()) //Otherwise server only
-#endif
 		{
+			//			  Module Class Name 				 Client	    Server
 			RegisterPlugin("XMLEditor", 			 		 false, 	true);
 			RegisterPlugin("PluginFileHandler", 			 false, 	true);
 			RegisterPlugin("VPPLogManager",					 false,		true);
@@ -45,6 +34,7 @@ modded class PluginManager
 			RegisterPlugin("VPPESPTools",		             false,		true);
 			RegisterPlugin("BuildingSetManager", 			 false, 	true);
 			RegisterPlugin("SteamAPIManager", 			 	 false, 	true);
+			RegisterPlugin("SpectateManager", 			 	 false, 	true);
 
 			MakeDirectory("$profile:VPPAdminTools");
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins");
@@ -52,4 +42,24 @@ modded class PluginManager
 			MakeDirectory("$profile:VPPAdminTools/Backups");
 		}
 	}
-};
+}
+#else
+// - CLIENT -
+modded class PluginManager
+{
+	void PluginManager()
+	{
+		Print("[CLIENT :: Vanilla++ AdminTools Plugins Registering]");
+	}
+
+	override void Init()
+	{
+		super.Init();
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
+		{
+			RegisterPlugin("VPPKeybindsManager",		 true,      false); //Client only
+			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
+		}
+	}
+}
+#endif

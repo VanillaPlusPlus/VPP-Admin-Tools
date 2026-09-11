@@ -1,14 +1,17 @@
-FrameWidgetClass rootFrame {
+PanelWidgetClass rootFrame {
+ ignorepointer 0
+ color 0.749 0.773 0.8 1
  position 0 0
  size 1 0.1
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
+ style VPPPanel
  {
   ButtonWidgetClass Button {
    clipchildren 1
-   color 1 0 0 1
+   ignorepointer 0
    position 0 0
    size 1 1
    halign center_ref
@@ -18,11 +21,12 @@ FrameWidgetClass rootFrame {
    hexactsize 0
    vexactsize 0
    scriptclass "ToolTipHandler"
-   style OldStyle
+   style VPPButton
    "no focus" 1
    {
     ImageWidgetClass Image {
      ignorepointer 1
+     color 1 1 1 0.784
      position 0.01 0
      size 0.25 0.9
      valign center_ref
@@ -33,8 +37,8 @@ FrameWidgetClass rootFrame {
      image0 ""
      mode blend
      "src alpha" 1
-     "no wrap" 1
-     stretch 1
+     "clamp mode" clamp
+     "stretch mode" stretch_w_h
      "flip u" 0
      "flip v" 0
      filter 1
@@ -42,7 +46,7 @@ FrameWidgetClass rootFrame {
     }
     TextWidgetClass ButtonName {
      ignorepointer 1
-     size 0.74 0.74
+     size 0.74 0.5
      halign right_ref
      valign center_ref
      hexactpos 0
@@ -51,14 +55,14 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      style Normal
      text "button name"
-     font "gui/fonts/sdf_MetronLight24"
-     "outline size" 2
+     font "gui/fonts/sdf_MetronLight72"
+     "outline size" 1
      "outline color" 0 0 0 1
      "bold text" 1
      "exact text" 1
      "exact text size" 22
      "size to text h" 0
-     "size to text v" 0
+     "size to text v" 1
      "text halign" center
      "text valign" center
     }

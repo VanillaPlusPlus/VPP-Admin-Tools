@@ -29,7 +29,7 @@ class SpawnOnGroundChatModule : ChatCommand
             if ( itemEntity.IsInherited( ItemBase ) && !isAi )
             {
                 itemBase = ItemBase.Cast( itemEntity );
-                itemBase.SetupSpawnedItem( itemBase, itemBase.GetMaxHealth("",""), itemBase.GetQuantityMax() );
+                SetupSpawnedItem( itemBase, itemBase.GetMaxHealth("",""), itemBase.GetQuantityMax() );
             }
 
             itemEntity.PlaceOnSurface();

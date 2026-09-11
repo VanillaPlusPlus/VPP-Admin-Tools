@@ -31,6 +31,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private SliderWidget m_SliderWater;
 	private SliderWidget m_SliderEnergy;
 	private SliderWidget m_SliderTemperature;
+	private SliderWidget m_SliderHeatBuffer;
 	
 	private ButtonWidget m_BtnApplyHealth;
 	private ButtonWidget m_BtnApplyBlood;
@@ -38,6 +39,20 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_BtnApplyWater;
 	private ButtonWidget m_BtnApplyEnergy;
 	private ButtonWidget m_BtnApplyTemperature;
+	private ButtonWidget m_BtnApplyHeatBuffer;
+	//-------------
+	
+	//Vitals panel tabs (EDIT VITALS | MODIFIERS)--
+	private ButtonWidget 			   m_BtnTabVitals;
+	private ButtonWidget 			   m_BtnTabModifiers;
+	private TextWidget 				   m_TabVitalsLbl;
+	private TextWidget 				   m_TabModifiersLbl;
+	private Widget 					   m_SlidersStack;
+	private ScrollWidget 			   m_ModifiersScroll;
+	private GridSpacerWidget 		   m_ModifiersGrid;
+	private bool 					   m_ModifiersTabActive;
+	private string 					   m_ModifiersTargetId;
+	private ref array<ref VPPModifierEntry> m_ModifierEntries;
 	//-------------
 		
 	//Action Buttons--
@@ -54,21 +69,32 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ButtonWidget m_ActionUnlimitedAmmo;
 	private ButtonWidget m_ActionInvisible;
 	private ButtonWidget m_ActionFreezePlayer;
+	private ButtonWidget m_ActionUnfreezePlayer;
+	private ButtonWidget m_ActionStopBleeding;
+	private ButtonWidget m_ActionSetPosition;
+	private ButtonWidget m_ActionClearInventory;
 	private ButtonWidget m_ActionScalePlayer;
 	private ButtonWidget m_ActionReturnPlayer;
+	//----------------
+	
+	//Collapsible action sections--
+	private ref VPPCollapsibleSection m_SectionMgmt;
+	private ref VPPCollapsibleSection m_SectionMove;
+	private ref VPPCollapsibleSection m_SectionState;
+	private ref VPPCollapsibleSection m_SectionGear;
+	private ref VPPCollapsibleSection m_SectionTools;
 	//----------------
 	
 	void MenuPlayerManager()
 	{
 		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerStats", this, SingleplayerExecutionType.Client);
-		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "InitSpectate", this, SingleplayerExecutionType.Client);
 		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "SetPlayerCount", this, SingleplayerExecutionType.Client);
+		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerModifiers", this, SingleplayerExecutionType.Client);
 		
-		m_DataGrids     = new array<ref CustomGridSpacer>;
-		m_PlayerEntries = new array<ref VPPPlayerEntry>;
-		m_PlayerStats   = new array<ref VPPPlayerStats>;
-
-		VPPAdminHud.m_OnUpdate.Insert(this.OnUpdate);
+		m_DataGrids       = new array<ref CustomGridSpacer>;
+		m_PlayerEntries   = new array<ref VPPPlayerEntry>;
+		m_PlayerStats     = new array<ref VPPPlayerStats>;
+		m_ModifierEntries = new array<ref VPPModifierEntry>;
 	}
 	
 	override void OnCreate(Widget RootW)
@@ -100,6 +126,7 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_SliderWater	= SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SliderWater"));
 		m_SliderEnergy	= SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SliderEnergy"));
 		m_SliderTemperature = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SliderTemperature"));
+		m_SliderHeatBuffer  = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SliderHeatBuffer"));
 		
 		m_BtnApplyHealth  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyHealth"));
 		m_BtnApplyBlood   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyBlood"));
@@ -107,6 +134,24 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_BtnApplyWater   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyWater"));
 		m_BtnApplyEnergy  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyEnergy"));
 		m_BtnApplyTemperature  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyTemperature"));
+		m_BtnApplyHeatBuffer   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnApplyHeatBuffer"));
+		
+		//value readouts: comfort shown as -100..100 (%), heat buffer as -30..30
+		VPPSliderRowHandler rowHandler;
+		m_SliderTemperature.GetScript(rowHandler);
+		if (rowHandler) rowHandler.SetDisplayTransform(2.0, -100.0);
+		m_SliderHeatBuffer.GetScript(rowHandler);
+		if (rowHandler) rowHandler.SetDisplayTransform(1.0, -30.0);
+		//-------------
+		
+		//Vitals panel tabs + modifiers list
+		m_BtnTabVitals    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnTabVitals"));
+		m_BtnTabModifiers = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnTabModifiers"));
+		m_TabVitalsLbl    = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget("TabVitalsLbl"));
+		m_TabModifiersLbl = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget("TabModifiersLbl"));
+		m_SlidersStack    = M_SUB_WIDGET.FindAnyWidget("SlidersStack");
+		m_ModifiersScroll = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ModifiersScroll"));
+		m_ModifiersGrid   = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ModifiersGrid"));
 		//-------------
 		
 		//Action Buttons
@@ -137,21 +182,31 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionUnlimitedAmmo  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionUnlimitedAmmo"));
 		m_ActionInvisible  	   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionInvisible"));
 		m_ActionFreezePlayer   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionFreezePlayer"));
+		m_ActionUnfreezePlayer = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionUnfreezePlayer"));
+		m_ActionStopBleeding   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionStopBleeding"));
+		
+		m_ActionSetPosition    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionSetPosition"));
+		GetVPPUIManager().HookConfirmationDialog(m_ActionSetPosition, M_SUB_WIDGET, this, "SetPositionDiag", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Set Position", "Enter coordinates as \"X Y Z\" (or \"X Z\" to snap to ground)", true);
+		
+		m_ActionClearInventory = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionClearInventory"));
+		GetVPPUIManager().HookConfirmationDialog(m_ActionClearInventory, M_SUB_WIDGET, this, "ClearInventoryDiag", DIAGTYPE.DIAG_YESNO, "Clear Inventory", "Remove ALL items from the selected player(s)? This cannot be undone.");
 
 		m_ActionScalePlayer   = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget( "ActionScalePlayer"));
 		GetVPPUIManager().HookConfirmationDialog(m_ActionScalePlayer, M_SUB_WIDGET, this, "PlayerScaleDiag", DIAGTYPE.DIAG_OK_CANCEL_INPUT, "Set Scale", "Insert value to change to, between 0.01 and 100.0 (Some specific values will result in the player to be frozen and uncontrollable. To avoid, use rounded numbers)");
+		//--------------
+		
+		//Collapsible action sections
+		m_SectionMgmt  = new VPPCollapsibleSection(M_SUB_WIDGET, "SectionHeader_Mgmt",  "SectionContent_Mgmt",  "SectionChevron_Mgmt");
+		m_SectionMove  = new VPPCollapsibleSection(M_SUB_WIDGET, "SectionHeader_Move",  "SectionContent_Move",  "SectionChevron_Move");
+		m_SectionState = new VPPCollapsibleSection(M_SUB_WIDGET, "SectionHeader_State", "SectionContent_State", "SectionChevron_State");
+		m_SectionGear  = new VPPCollapsibleSection(M_SUB_WIDGET, "SectionHeader_Gear",  "SectionContent_Gear",  "SectionChevron_Gear");
+		m_SectionTools = new VPPCollapsibleSection(M_SUB_WIDGET, "SectionHeader_Tools", "SectionContent_Tools", "SectionChevron_Tools");
 		//--------------
 		
 		//init first "page"
 		ResetPages();
 		UpdateEntries();
 		m_Init = true;
-	}
-	
-	override void HideBrokenWidgets(bool state)
-	{
-		m_PlayerList.Show(!state);
-		m_PlayerInfoScroll.Show(!state);
 	}
 	
 	void ResetPages()
@@ -224,7 +279,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_ActionUnlimitedAmmo.Enable(pCount == 1);
 		m_ActionInvisible.Enable(pCount >= 1);
 		m_ActionFreezePlayer.Enable(pCount >= 1);
-		m_ActionSpectate.Enable(pCount == 1 & !g_Game.IsSpectateMode());
+		m_ActionUnfreezePlayer.Enable(pCount >= 1);
+		m_ActionStopBleeding.Enable(pCount >= 1);
+		m_ActionSetPosition.Enable(pCount >= 1);
+		m_ActionClearInventory.Enable(pCount >= 1);
+		m_ActionSpectate.Enable(pCount == 1 && !g_Game.IsSpectateMode());
 		
 		//Sliders apply btns
 		m_BtnApplyHealth.Enable(pCount >= 1);
@@ -233,6 +292,21 @@ class MenuPlayerManager extends AdminHudSubMenu
 		m_BtnApplyWater.Enable(pCount >= 1);
 		m_BtnApplyEnergy.Enable(pCount >= 1);
 		m_BtnApplyTemperature.Enable(pCount >= 1);
+		m_BtnApplyHeatBuffer.Enable(pCount >= 1);
+		
+		//Modifiers tab needs exactly one target
+		m_BtnTabModifiers.Enable(pCount == 1);
+		if (m_ModifiersTabActive)
+		{
+			if (pCount != 1)
+			{
+				SetPanelTab(false);
+			}
+			else if (selectedPlayers.Get(0).GetID() != m_ModifiersTargetId)
+			{
+				RequestModifiers(selectedPlayers.Get(0).GetID());
+			}
+		}
 	}
 	
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -293,7 +367,16 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 
 			case m_ActionFreezePlayer:
-			GetRPCManager().VSendRPC( "RPC_PlayerManager", "FreezePlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "FreezePlayers", new Param2<ref array<string>,int>(GetSelectedPlayersIDs(), 1), true);
+			break;
+
+			case m_ActionUnfreezePlayer:
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "FreezePlayers", new Param2<ref array<string>,int>(GetSelectedPlayersIDs(), 0), true);
+			break;
+
+			case m_ActionStopBleeding:
+			GetRPCManager().VSendRPC( "RPC_PlayerManager", "StopBleedingPlayers", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+			GetVPPUIManager().DisplayNotification(string.Format("Stopped bleeding on (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			break;
 			
 			case m_ActionSpectate:
@@ -333,8 +416,166 @@ class MenuPlayerManager extends AdminHudSubMenu
 			GetVPPUIManager().DisplayNotification(string.Format("#VSTR_NOTIFY_APPLY_ENERGY" + " (%1) player(s)",GetSelectedPlayers().Count().ToString()));
 			UpdateStat("Energy");
 			break;
+			
+			case m_BtnApplyTemperature:
+			GetVPPUIManager().DisplayNotification(string.Format("Applied heat comfort to (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			UpdateStat("Temperature");
+			break;
+			
+			case m_BtnApplyHeatBuffer:
+			GetVPPUIManager().DisplayNotification(string.Format("Applied heat buffer to (%1) player(s)",GetSelectedPlayers().Count().ToString()));
+			UpdateStat("HeatBuffer");
+			break;
+			
+			case m_BtnTabVitals:
+			SetPanelTab(false);
+			break;
+			
+			case m_BtnTabModifiers:
+			SetPanelTab(true);
+			break;
 		}
 		return false;
+	}
+	
+	/*
+		Switches the vitals panel between the slider editor and the
+		dynamic modifiers list (requires exactly one selected player)
+	*/
+	void SetPanelTab(bool showModifiers)
+	{
+		array<ref VPPPlayerEntry> selectedPlayers = GetSelectedPlayers();
+		if (showModifiers && selectedPlayers.Count() != 1)
+			showModifiers = false;
+		
+		m_ModifiersTabActive = showModifiers;
+		m_SlidersStack.Show(!showModifiers);
+		m_ModifiersScroll.Show(showModifiers);
+		
+		if (showModifiers)
+		{
+			m_TabVitalsLbl.SetColor(ARGB(255, 154, 160, 166));    //text-secondary
+			m_TabModifiersLbl.SetColor(ARGB(255, 232, 234, 237)); //text-primary
+			RequestModifiers(selectedPlayers.Get(0).GetID());
+		}
+		else
+		{
+			m_TabVitalsLbl.SetColor(ARGB(255, 232, 234, 237));
+			m_TabModifiersLbl.SetColor(ARGB(255, 154, 160, 166));
+			m_ModifiersTargetId = "";
+		}
+	}
+	
+	void RequestModifiers(string playerId)
+	{
+		m_ModifiersTargetId = playerId;
+		GetRPCManager().VSendRPC("RPC_PlayerManager", "GetPlayerModifiers", new Param1<string>(playerId), true);
+	}
+	
+	void RefreshModifiers()
+	{
+		if (m_ModifiersTabActive && m_ModifiersTargetId != "")
+			RequestModifiers(m_ModifiersTargetId);
+	}
+	
+	/*
+		Called by VPPModifierEntry toggle buttons.
+		Modifier (de)activation settles on the next server modifier tick,
+		so re-fetch the list shortly after to confirm the real state.
+	*/
+	void RequestModifierToggle(int modifierId, bool state)
+	{
+		if (m_ModifiersTargetId == "") return;
+		
+		GetRPCManager().VSendRPC("RPC_PlayerManager", "SetPlayerModifier", new Param3<string,int,bool>(m_ModifiersTargetId, modifierId, state), true);
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.RefreshModifiers, 1500, false);
+	}
+	
+	void HandlePlayerModifiers(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		Param4<string, ref array<int>, ref array<string>, ref array<bool>> data;
+		if (!ctx.Read(data)) return;
+		
+		if (type != CallType.Client) return;
+		if (data.param1 != m_ModifiersTargetId) return; //stale response
+		
+		m_ModifierEntries.Clear();
+		
+		array<int>    ids     = data.param2;
+		array<string> names   = data.param3;
+		array<bool>   actives = data.param4;
+		
+		for (int i = 0; i < ids.Count(); ++i)
+		{
+			m_ModifierEntries.Insert(new VPPModifierEntry(m_ModifiersGrid, this, ids[i], PrettifyModifierName(names[i]), actives[i]));
+		}
+		
+		m_ModifiersGrid.Update();
+		m_ModifiersScroll.Update();
+	}
+	
+	//"WoundInfectStage1" -> "Wound Infect Stage 1"
+	private string PrettifyModifierName(string rawName)
+	{
+		string output = "";
+		for (int i = 0; i < rawName.Length(); ++i)
+		{
+			string c = rawName.Get(i);
+			string upper = c;
+			upper.ToUpper();
+			
+			bool isUpperOrDigit = (c == upper);
+			if (i > 0 && isUpperOrDigit)
+				output += " ";
+			
+			output += c;
+		}
+		return output;
+	}
+	
+	/*
+		CallBack method used from confirmation box
+		Accepts "X Y Z" or "X Z" (Y resolved to surface level server-side)
+	*/
+	void SetPositionDiag(int result, string inputText)
+	{
+		if (result != DIAGRESULT.OK || inputText == "") return;
+		
+		inputText.Replace(","," ");
+		array<string> tokens = new array<string>;
+		inputText.Split(" ", tokens);
+		
+		//drop empties left by double spaces
+		for (int i = tokens.Count() - 1; i >= 0; --i)
+		{
+			tokens[i] = tokens[i].Trim();
+			if (tokens[i] == "")
+				tokens.Remove(i);
+		}
+		
+		vector pos;
+		if (tokens.Count() == 3)
+			pos = Vector(tokens[0].ToFloat(), tokens[1].ToFloat(), tokens[2].ToFloat());
+		else if (tokens.Count() == 2)
+			pos = Vector(tokens[0].ToFloat(), 0, tokens[1].ToFloat()); //y<=0 snaps to surface
+		else
+		{
+			GetVPPUIManager().DisplayNotification("Set Position: invalid coordinates! Use \"X Y Z\" or \"X Z\"");
+			return;
+		}
+		
+		GetRPCManager().VSendRPC("RPC_TeleportManager", "RemoteTeleportPlayers", new Param3<ref array<string>,string,vector>(GetSelectedPlayersIDs(), "", pos), true);
+	}
+	
+	/*
+		CallBack method used from confirmation box
+	*/
+	void ClearInventoryDiag(int result)
+	{
+		if (result == DIAGRESULT.YES)
+		{
+			GetRPCManager().VSendRPC("RPC_PlayerManager", "ClearInventory", new Param1<ref array<string>>(GetSelectedPlayersIDs()), true);
+		}
 	}
 
 	void PlayerScaleDiag(int result, string inputText)
@@ -441,33 +682,12 @@ class MenuPlayerManager extends AdminHudSubMenu
         }
 	}
 	
-	void InitSpectate(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
-	{
-		Param1<Object> data;
-		if (!ctx.Read(data)) return;
-		
-		if( type == CallType.Client )
-		{
-			if (data.param1 != null)
-			{
-				if (GetGame().GetPlayer() != null)
-				{
-					GetGame().ObjectDelete(GetGame().GetPlayer());
-					GetGame().SelectPlayer(null, null);
-				}
-				
-				VPPSpectateCam cam = VPPSpectateCam.Cast(GetGame().CreateObject( "VPPSpectateCam", data.param1.GetPosition(),true ));
-				cam.SetTargetObj(PlayerBase.Cast(data.param1));
-				cam.SetActive(true);
-				g_Game.SetSpectateMode(true);
-			}
-		}
-	}
-
 	void SpectateTarget()
 	{
 		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_SPECTATE_REQ");
-		GetRPCManager().VSendRPC("RPC_PlayerManager", "SpectatePlayer", new Param1<string>(GetSelectedPlayersIDs()[0]), true);
+		//route through the spectate client handler (NOT the legacy RPC_PlayerManager
+		//path) so the death-grace preference is synced to the server before entering
+		GetSpectateClient().RequestSpectate(GetSelectedPlayersIDs()[0]);
 	}
 	
 	void KillSelectedPlayers(int result)
@@ -527,6 +747,12 @@ class MenuPlayerManager extends AdminHudSubMenu
 						m_SliderShock.SetCurrent(stats.GetStatValue("Shock").ToFloat());
 						m_SliderWater.SetCurrent(stats.GetStatValue("Water").ToFloat());
 						m_SliderEnergy.SetCurrent(stats.GetStatValue("Energy").ToFloat());
+						
+						if (stats.HasStat("Temperature"))
+							m_SliderTemperature.SetCurrent((stats.GetStatValue("Temperature").ToFloat() + 1.0) * 50.0); //-1..+1 -> 0..100
+						
+						if (stats.HasStat("HeatBuffer"))
+							m_SliderHeatBuffer.SetCurrent(stats.GetStatValue("HeatBuffer").ToFloat() + 30.0); //-30..+30 -> 0..60
 					}
 				}
 			}
@@ -588,9 +814,22 @@ class MenuPlayerManager extends AdminHudSubMenu
 				case "Energy":
 				stateNewValue = m_SliderEnergy.GetCurrent();
 				break;
+				
+				case "Temperature":
+				//slider 0..100 -> heat comfort -1..+1
+				stateNewValue = (m_SliderTemperature.GetCurrent() / 50.0) - 1.0;
+				break;
+				
+				case "HeatBuffer":
+				//slider 0..60 -> heat buffer -30..+30
+				stateNewValue = m_SliderHeatBuffer.GetCurrent() - 30.0;
+				break;
 			}
 			GetRPCManager().VSendRPC("RPC_PlayerManager", "SetPlayerStats", new Param3<float,string,string>(stateNewValue,entry.GetID(),statType), true); //stat level, player id, stat type
 		}
+		
+		//re-fetch stats so the info cards reflect the newly applied values
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.SendForPlayerStats, 350, false);
 	}
 
 	private void FinishPlayerSelect(int result)

@@ -401,19 +401,19 @@ class MenuWeatherManager extends AdminHudSubMenu
 	{
 		if(m_OvercastRate.GetText() == string.Empty || m_OvercastDur.GetText() == string.Empty || m_RainRate.GetText() == string.Empty || m_RainDur.GetText() == string.Empty || m_FogDur.GetText() == string.Empty || m_FogRate.GetText() == string.Empty)
 		{
-			GetVPPUIManager().DisplayError("Invalid Weather Data");
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_ERR_INVALID_WEATHERDATA");
 			return;
 		}
-		
+
 		array<float> overcast;
 		array<float> fog;
 		array<float> rain;
 		float wind;
-		
+
 		GetWeatherValues(overcast, fog, rain, wind);
 
 		GetRPCManager().VSendRPC( "RPC_WeatherManager", "ApplyWeather", new Param4<array<float>, array<float>, array<float>, float>(overcast, fog, rain, wind), true );
-		GetVPPUIManager().DisplayNotification("Applying Weather...");
+		GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_APPLY_WEATHER");
 	}
 	
 	private void ApplyWeatherPreset()

@@ -1,20 +1,19 @@
 FrameWidgetClass rootFrame {
  clipchildren 1
- color 1 0 0 1
+ color 0 0 0 0
  position 0 0
- size 0.3 0.65
+ size 0.4 0.56
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
- draggable 0
+ draggable 1
  {
   PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.549
-   position 0 0
+   color 0.749 0.773 0.8 1
    size 1 1
    hexactpos 1
    vexactpos 1
@@ -22,50 +21,242 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanelBottom
+   style VPPPanel
    "no focus" 0
    {
-    PanelWidgetClass PanelBannedPlayers {
+    PanelWidgetClass HeaderTitle {
      ignorepointer 1
-     position 0 0.1
-     size 0.9 0.58
+     color 0.031 0.035 0.039 0.85
+     position 0 0
+     size 1 0.06
      halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style blank
+     style VPPFillRound
      {
-      PanelWidgetClass PnlBg {
+      ImageWidgetClass ImgWindowIcon {
        ignorepointer 1
-       color 0 0 0 0.549
-       position 0 0
-       size 0.99 0.988
-       halign center_ref
+       color 0.91 0.639 0.239 1
+       position 2 0
+       size 32 32
        valign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:ban"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass Title {
+       ignorepointer 1
+       position 40 1
+       size 0.5 20
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style editor_selection
+       vexactsize 1
+       style None
+       text "#VSTR_BAN_LIST_MANAGER_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 20
+       "size to text h" 1
+       "size to text v" 1
+      }
+      TextWidgetClass SubTitle {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 40 19
+       size 0.6 13
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_BANS_SUBTITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 13
+       "size to text h" 1
+       "size to text v" 1
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 1 1 1 1
+       position 4 0
+       size 26 26
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       {
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0 0
+         size 32 32
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:x"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+         nocache 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelBannedPlayers {
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.008 0.068
+     size 0.49 0.925
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass player_list_title {
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgPlayersHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:users"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_text_players {
+         ignorepointer 1
+         position 28 0
+         size 0.55 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_BAN_LIST"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        ButtonWidgetClass BtnRefreshBanList {
+         ignorepointer 0
+         color 1 1 1 1
+         position 2 0
+         size 26 26
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         {
+          ImageWidgetClass ImgRefreshBans {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 0 0
+           size 24 24
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:refresh_cw"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+         }
+        }
+        CheckBoxWidgetClass ChkSelectAllPlayers {
+         ignorepointer 0
+         position 32 0
+         size 24 24
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCheckBox
+        }
+       }
+      }
+      EditBoxWidgetClass SearchInputBox {
+       ignorepointer 0
+       position 0.012 34
+       size 0.976 24
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPInput
+       text "#VSTR_SEARCH"
+       "Use default text" 1
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
       }
       ScrollWidgetClass PlayerList {
        ignorepointer 0
-       position 0 0.03
-       size 0.95 0.9
+       position 0 0.11
+       size 0.97 0.8
        halign center_ref
-       valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style blank
+       style VPPScroll
+       "Scrollbar V" 1
        {
         GridSpacerWidgetClass ParentGrid {
          visible 1
          ignorepointer 1
          keepsafezone 1
-         size 1 1
+         position 0.005 0
+         size 0.99 1
          halign center_ref
          hexactpos 0
          vexactpos 0
@@ -76,458 +267,535 @@ FrameWidgetClass rootFrame {
          "Size To Content H" 1
          "Size To Content V" 1
          content_halign center
-         content_valign center
          Columns 1
          Rows 100
         }
        }
       }
-      PanelWidgetClass player_list_title {
-       ignorepointer 1
-       color 0 0 0 1
-       position 0 0
-       size 0.99 0.073
+      ButtonWidgetClass btnRemoveSelected {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0 5
+       size 0.976 30
        halign center_ref
+       valign bottom_ref
        hexactpos 0
-       vexactpos 0
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
+       vexactsize 1
+       scriptclass "ConfirmationEventHandler"
+       style VPPButtonDanger
+       font "gui/fonts/sdf_MetronLight72"
        {
-        TextWidgetClass title_text_players {
+        ImageWidgetClass ImgRemoveSel {
          ignorepointer 1
-         position 0 0
-         size 0.99 1.353
+         color 1 1 1 1
+         position 0.24 0
+         size 24 24
          valign center_ref
          hexactpos 0
-         vexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:trash_2"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass LblRemoveSel {
+         ignorepointer 1
+         position 8 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Normal
-         text "#VSTR_BAN_LIST"
-         font "gui/fonts/sdf_MetronBook24"
+         style None
+         text "#VSTR_LBL_REMOVE_SEL_PLAYERS"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
          "exact text" 1
-         "exact text size" 22
-         "text halign" center
+         "exact text size" 13
+         "size to text h" 1
+         "size to text v" 1
          "text valign" center
         }
        }
-      }
-      CheckBoxWidgetClass ChkSelectAllPlayers {
-       position 0.035 0.01
-       size 0.061 0.068
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       font "gui/fonts/Metron-BoldItalic58"
-      }
-      ButtonWidgetClass BtnRefreshBanList {
-       position 0.01 0.005
-       size 0.22 0.06
-       halign right_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       "no focus" 1
-       text "#VSTR_REFRESH"
       }
      }
     }
     PanelWidgetClass PanelBannedPlayerInfo {
      ignorepointer 1
-     position 0.00017 0.3
-     size 0.89062 0.249
-     halign center_ref
-     valign center_ref
+     color 1 1 1 1
+     position 0.502 0.068
+     size 0.49 0.925
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style blank
+     style VPPPanel
      {
-      PanelWidgetClass PnlBgDetials {
-       visible 1
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0 0.13
-       size 1 0.855
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style editor_selection
-      }
       PanelWidgetClass player_info_title {
-       ignorepointer 1
-       color 0 0 0 1
-       position 0 0.01
-       size 1 0.133
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
        halign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
+       vexactsize 1
+       style VPPFillRound
        {
+        ImageWidgetClass ImgInfoHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:shield"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
         TextWidgetClass title_text_info {
          ignorepointer 1
-         position 0 0
-         size 0.99 1.353
+         position 28 0
+         size 0.55 1
          valign center_ref
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Normal
+         style None
          text "#VSTR_DETALIS"
-         font "gui/fonts/sdf_MetronBook24"
+         font "gui/fonts/sdf_MetronLight72"
          "exact text" 1
-         "exact text size" 22
-         "text halign" center
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
          "text valign" center
         }
         ImageWidgetClass ImgInfo {
-         clipchildren 0
          ignorepointer 0
-         color 1 0 0 1
-         position 0.01 0
-         size 0.07 1
+         color 0.604 0.627 0.651 1
+         position 4 0
+         size 24 24
          halign right_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
          scriptclass "ToolTipHandler"
-         image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
+         image0 "set:vpp_icons image:info"
          mode blend
          "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         "stretch mode" stretch_w_h
+         filter 1
         }
        }
       }
       GridSpacerWidgetClass ban_info_content {
        ignorepointer 1
        color 0 0 0 0
-       position 0 0
-       size 1 0
-       halign center_ref
-       valign bottom_ref
+       position 0.015 34
+       size 0.97 0.86
        hexactpos 0
-       vexactpos 0
+       vexactpos 1
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanelBottom
-       Padding 1
-       Margin 8
-       "Size To Content V" 1
+       "Ignore invisible" 1
+       Padding 3
+       Margin 0
+       "Size To Content H" 0
+       "Size To Content V" 0
        Columns 1
        Rows 6
        {
-        FrameWidgetClass BanNameFrame {
+        PanelWidgetClass BanNameFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass PlayerNameLabel {
            ignorepointer 1
-           size 1 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.4 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_NAME"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
            "text valign" center
           }
           TextWidgetClass Name {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 8 0
+           size 0.58 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
          }
         }
-        FrameWidgetClass BanGUIDFrame {
+        PanelWidgetClass BanGUIDFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass GUIDLabel {
            ignorepointer 1
-           size 1 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.35 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_STEAMID"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
            "text valign" center
           }
           TextWidgetClass SteamID {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 8 0
+           size 0.62 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
          }
         }
-        FrameWidgetClass BanIDFrame {
+        PanelWidgetClass BanIDFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass IDLabel {
            ignorepointer 1
-           size 1 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.3 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_GUID"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
            "text valign" center
           }
           TextWidgetClass Guid {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 8 0
+           size 0.67 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 11
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
          }
         }
-        FrameWidgetClass BanReasonFrame {
+        PanelWidgetClass BanReasonFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass TxtBanReason {
            ignorepointer 1
-           position 0 0
-           size 0.16 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.3 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_REASON"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
            "size to text v" 1
+           "text valign" center
           }
           TextWidgetClass Reason {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 34 0
+           size 0.55 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           scriptclass ""
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
           ButtonWidgetClass btnEditReason {
-           position 0.37 0
-           size 0.05 1.1
+           ignorepointer 0
+           color 1 1 1 1
+           position 2 0
+           size 24 24
+           halign right_ref
            valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
            scriptclass "ConfirmationEventHandler"
+           style VPPButtonGhost
            {
             ImageWidgetClass icon {
              ignorepointer 1
+             color 0.604 0.627 0.651 1
              position 0 0
-             size 1 1
+             size 24 24
              halign center_ref
              valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             scriptclass ""
-             image0 "set:dayz_gui image:icon_feedback"
-             mode additive
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             image0 "set:vpp_icons image:square_pen"
+             mode blend
              "src alpha" 1
-             "no wrap" 1
-             stretch 1
+             "stretch mode" stretch_w_h
+             filter 1
             }
            }
           }
          }
         }
-        FrameWidgetClass BanDurationFrame {
+        PanelWidgetClass BanDurationFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass TxtBanDuration {
            ignorepointer 1
-           position 0 0
-           size 0.16 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.4 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_EXPERIY_DATE"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
            "size to text v" 1
+           "text valign" center
           }
           TextWidgetClass Duration {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 34 0
+           size 0.45 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           scriptclass ""
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
           ButtonWidgetClass btnEditDuration {
-           position 0.37 0
-           size 0.05 1.1
+           ignorepointer 0
+           color 1 1 1 1
+           position 2 0
+           size 24 24
+           halign right_ref
            valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass ""
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPButtonGhost
            {
             ImageWidgetClass icon0 {
              ignorepointer 1
+             color 0.604 0.627 0.651 1
              position 0 0
-             size 1 1
+             size 24 24
              halign center_ref
              valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             scriptclass ""
-             image0 "set:dayz_gui image:icon_feedback"
-             mode additive
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             image0 "set:vpp_icons image:square_pen"
+             mode blend
              "src alpha" 1
-             "no wrap" 1
-             stretch 1
+             "stretch mode" stretch_w_h
+             filter 1
             }
            }
           }
          }
         }
-        FrameWidgetClass BanAuthorFrame {
+        PanelWidgetClass BanAuthorFrame {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
+         color 0.078 0.086 0.094 0.85
+         size 1 30
+         hexactpos 0
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
+         style VPPFillRound
          {
           TextWidgetClass TxtBanAuthor {
            ignorepointer 1
-           position 0 0
-           size 0.16 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.4 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
+           style None
            text "#VSTR_LBL_ISSUED_BY"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
            "size to text v" 1
+           "text valign" center
           }
           TextWidgetClass BanIssuedBy {
            ignorepointer 1
-           size 1 1
+           color 1 1 1 1
+           position 8 0
+           size 0.58 1
            halign right_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           scriptclass ""
+           style None
            text "null"
-           font "gui/fonts/sdf_MetronBook24"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
            "size to text h" 1
-           "size to text v" 0
-           "text halign" center
+           "size to text v" 1
+           "text halign" right
            "text valign" center
           }
          }
@@ -536,41 +804,11 @@ FrameWidgetClass rootFrame {
       }
      }
     }
-    ButtonWidgetClass btnRemoveSelected {
-     disabled 0
-     position 0 0.01
-     size 0.9 0.05
-     halign center_ref
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     scriptclass "ConfirmationEventHandler"
-     style Editor
-     "no focus" 1
-     text "#VSTR_LBL_REMOVE_SEL_PLAYERS"
-     font "gui/fonts/MetronBook-Bold16"
-    }
-    EditBoxWidgetClass SearchInputBox {
-     position 0 0.04
-     size 0.9 0.05
-     halign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style DefaultBorder
-     text "#VSTR_SEARCH"
-     "Use default text" 1
-     "exact text" 1
-     font "gui/fonts/sdf_MetronBook24"
-    }
    }
   }
   PanelWidgetClass Header {
    ignorepointer 0
-   size 0.993 0.028
+   size 0.82 0.06
    halign center_ref
    hexactpos 0
    vexactpos 0
@@ -578,66 +816,6 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    draggable 1
    style blank
-  }
-  PanelWidgetClass HeaderTitle {
-   ignorepointer 1
-   color 0 0 0 1
-   position 0 0
-   size 1 0.03
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 0
-   scaled 0
-   draggable 0
-   style DayZDefaultPanel
-   {
-    TextWidgetClass Title {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Bold
-     text "#VSTR_BAN_LIST_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronBook72"
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    ButtonWidgetClass BtnClose {
-     clipchildren 1
-     color 0 0 0 1
-     size 0.04 1
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     {
-      ImageWidgetClass ImageClose {
-       ignorepointer 1
-       color 1 0 0 1
-       size 1.07 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:Icon28EmptySlot"
-       mode additive
-       "src alpha" 1
-      }
-     }
-    }
-   }
   }
  }
 }

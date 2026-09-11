@@ -164,7 +164,7 @@ class VPPItemManager: ConfigurablePlugin
 	{
 		EntityAI itemEntity;
 		ItemBase itemBase;
-		bool isAi = GetGame().IsKindOf( type, "DZ_LightAI" ) || GetGame().IsKindOf(type, "SurvivorBase");
+		bool isAi = GetGame().IsKindOf(type, "DZ_LightAI") || GetGame().IsKindOf(type, "SurvivorBase");
 		int iFlags = ECE_SETUP|ECE_KEEPHEIGHT|ECE_PLACE_ON_SURFACE;
 		if (useCEDef)
 			iFlags |= ECE_EQUIP|ECE_EQUIP_CONTAINER;
@@ -189,40 +189,43 @@ class VPPItemManager: ConfigurablePlugin
 				itemEntity.OnDebugSpawn();
 		}
 
-		switch(health)
+		if (!itemEntity.IsBuilding()) //Ignore health value for Building/structure types
 		{
-			case ConditionTypes.PRISTINE:
-			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_PRISTINE_VALUE);
-			break;
-			
-			case ConditionTypes.WORN:
-			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_WORN_VALUE);
-			break;
-			
-			case ConditionTypes.DAMAGED:
-			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_DAMAGED_VALUE);
-			break;
-			
-			case ConditionTypes.BADLY_DAMAGED:
-			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_BADLY_DAMAGED_VALUE);
-			break;
-			
-			case ConditionTypes.RUINED:
-			health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_RUINED_VALUE);
-			break;
-		}
+			switch(health)
+			{
+				case ConditionTypes.PRISTINE:
+				health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_PRISTINE_VALUE);
+				break;
+				
+				case ConditionTypes.WORN:
+				health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_WORN_VALUE);
+				break;
+				
+				case ConditionTypes.DAMAGED:
+				health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_DAMAGED_VALUE);
+				break;
+				
+				case ConditionTypes.BADLY_DAMAGED:
+				health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_BADLY_DAMAGED_VALUE);
+				break;
+				
+				case ConditionTypes.RUINED:
+				health = (itemEntity.GetMaxHealth() * GameConstants.DAMAGE_RUINED_VALUE);
+				break;
+			}
 
-		if (health <= -1)
-		{
-			itemEntity.SetHealth(itemEntity.GetMaxHealth());
-		}else{
-			itemEntity.SetHealth(health);
+			if (health <= -1)
+			{
+				itemEntity.SetHealth(itemEntity.GetMaxHealth());
+			}else{
+				itemEntity.SetHealth(health);
+			}
 		}
 		
 		if (itemEntity.IsInherited(ItemBase) && !isAi)
 		{
 			itemBase = ItemBase.Cast(itemEntity);
-			itemBase.SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
+			SetupSpawnedItem(itemBase, itemEntity.GetHealth("",""), quantity);
 		}
 
 		itemEntity.PlaceOnSurface();

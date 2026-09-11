@@ -10,7 +10,7 @@ class VPPHoldLeftClickEvent: VPPMouseEventBase
 
 	override bool GetTriggerCondition()
 	{
-		return (GetGame().GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK) && g_Game.IsLeftCtrlDown();
+		return (GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK) && g_Game.IsLeftCtrlDown();
 	}
 
 	override void OnCondition()

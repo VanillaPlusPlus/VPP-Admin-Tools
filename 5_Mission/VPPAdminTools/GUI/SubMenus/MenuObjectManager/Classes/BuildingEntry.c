@@ -28,7 +28,7 @@ class BuildingEntry : VPPPlayerTemplate
 		m_DeleteItem  = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnDeleteItem"));
 		m_btnEditItem = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnEditItem"));
 		m_btnPhysicsDrop = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnPhysicsDrop"));
-		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget,this,"DeleteItem", DIAGTYPE.DIAG_YESNO, "Delete Item", "#VSTR_ESP_DEL_CONFIRM_2"+displayName+"#VSTR_ESP_DEL_CONFIRM_3");
+		GetVPPUIManager().HookConfirmationDialog(m_DeleteItem, rootWidget, this, "DeleteItem", DIAGTYPE.DIAG_YESNO, "#VSTR_OB_DELETE_ITEM_TITLE", "#VSTR_ESP_DEL_CONFIRM_2 "+ displayName + " #VSTR_ESP_DEL_CONFIRM_3");
 		GetVPPUIManager().HookConfirmationDialog(m_btnPhysicsDrop, rootWidget,this,"PhysicsDrop", DIAGTYPE.DIAG_YESNO, "#VSTR_ALERT_ENABLE_PHYSICS", "#VSTR_TOOLTIP_PHYSICS");
 
         m_BuildingDisplayNameWidget = TextWidget.Cast(m_EntryBox.FindAnyWidget("ItemName"));
@@ -55,7 +55,9 @@ class BuildingEntry : VPPPlayerTemplate
 				m_SpawnedBuilding.SetRef(trackerObj);
 			}
 		}
-		m_TrackerWidget.OnTrackerSelected.Insert(this.OnTrackerSelecet);
+		
+		if (m_TrackerWidget && m_TrackerWidget.OnTrackerSelected != NULL)
+			m_TrackerWidget.OnTrackerSelected.Insert(this.OnTrackerSelecet);
 		
 		//Set to show tracker by defualt 
 		m_StatusCheckBox.SetColor(ARGB(255,0,255,0));

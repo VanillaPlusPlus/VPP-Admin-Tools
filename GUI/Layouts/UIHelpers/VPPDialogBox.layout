@@ -1,4 +1,5 @@
 FrameWidgetClass diagFrame {
+ position 0 0
  size 1 1
  halign center_ref
  valign center_ref
@@ -10,8 +11,9 @@ FrameWidgetClass diagFrame {
  scriptclass "VPPDialogBox"
  {
   PanelWidgetClass BorderOutline {
+   visible 1
    ignorepointer 1
-   color 0.9765 0.9765 0.9765 0.549
+   color 1 1 1 1
    position 0 0
    size 0.5 0.3
    halign center_ref
@@ -21,13 +23,25 @@ FrameWidgetClass diagFrame {
    hexactsize 0
    vexactsize 0
    priority 1023
-   style DayZDefaultPanel
+   style VPPPanel
    {
+    PanelWidgetClass PanelWidget0 {
+     ignorepointer 1
+     color 0 0 0 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPInputPanel
+    }
     PanelWidgetClass PanelMain {
      visible 1
      inheritalpha 0
      ignorepointer 1
-     color 0 0 0 1
+     color 0 0 0 0
      size 0.99 0.97
      halign center_ref
      valign center_ref
@@ -36,59 +50,64 @@ FrameWidgetClass diagFrame {
      hexactsize 0
      vexactsize 0
      scriptclass ""
-     style DayZDefaultPanel
      {
       PanelWidgetClass TitleImage {
        ignorepointer 1
-       color 0 0 0 1
+       color 0.031 0.035 0.039 1
        size 0.993 0.143
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style VPPFillRound
        {
         TextWidgetClass TitleText {
          ignorepointer 1
-         size 1 0.8
+         size 1 1
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Normal
+         scaled 1
+         style None
          text "TITLE"
-         font "gui/fonts/sdf_MetronLight24"
+         font "gui/fonts/sdf_MetronLight72"
+         "text color" 1 1 1 1
          "italic text" 0
          "bold text" 1
          "text sharpness" 3
          "exact text" 1
-         "exact text size" 24
-         "size to text h" 0
-         "size to text v" 0
+         "exact text size" 18
+         "size to text h" 1
+         "size to text v" 1
          "text halign" center
          "text valign" center
         }
        }
       }
-      RichTextWidgetClass ContentText {
+      MultilineTextWidgetClass ContentText {
+       clipchildren 0
        ignorepointer 1
-       position 0 0.18
-       size 0.981 0.508
+       position 0 0.2
+       size 0.8 0.5
        halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
+       scaled 1
        scriptclass ""
-       text "This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,This is a test string,"
-       font "gui/fonts/sdf_MetronLight24"
+       style None
+       text "Are you sure you wish to delete [BandageDressing]?"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 1 1 1 1
        "exact text" 1
-       "exact text size" 24
-       "size to text h" 0
-       "size to text v" 0
+       "exact text size" 16
+       "size to text h" 1
+       "size to text v" 1
        "text halign" center
        wrap 1
       }
@@ -114,6 +133,7 @@ FrameWidgetClass diagFrame {
        {
         ButtonWidgetClass ButtonYES {
          visible 0
+         color 1 1 1 1
          size 0.25 0.7
          halign center_ref
          valign center_ref
@@ -122,8 +142,8 @@ FrameWidgetClass diagFrame {
          hexactsize 0
          vexactsize 0
          scriptclass ""
-         style Editor
-         font "gui/fonts/MetronLight"
+         style VPPButton
+         font "gui/fonts/sdf_MetronLight72"
          {
           TextWidgetClass txtbuttonyes {
            ignorepointer 1
@@ -135,9 +155,11 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "YES"
-           font "gui/fonts/sdf_MetronLight24"
+           font "gui/fonts/sdf_MetronLight72"
+           "text color" 1 1 1 1
+           "bold text" 1
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -145,6 +167,7 @@ FrameWidgetClass diagFrame {
         }
         ButtonWidgetClass ButtonNO {
          visible 0
+         color 1 1 1 1
          size 0.25 0.7
          halign center_ref
          valign center_ref
@@ -152,8 +175,8 @@ FrameWidgetClass diagFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Editor
-         font "gui/fonts/MetronLight"
+         style VPPButtonGhost
+         font "gui/fonts/sdf_MetronLight72"
          {
           TextWidgetClass txtbuttonno {
            ignorepointer 1
@@ -165,9 +188,11 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "NO"
-           font "gui/fonts/sdf_MetronLight24"
+           font "gui/fonts/sdf_MetronLight72"
+           "text color" 1 1 1 1
+           "bold text" 1
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -176,6 +201,7 @@ FrameWidgetClass diagFrame {
         ButtonWidgetClass ButtonPaste {
          visible 0
          disabled 0
+         color 1 1 1 1
          size 0.25 0.7
          halign center_ref
          valign center_ref
@@ -183,8 +209,8 @@ FrameWidgetClass diagFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Editor
-         font "gui/fonts/MetronLight"
+         style VPPButtonGhost
+         font "gui/fonts/sdf_MetronLight72"
          {
           TextWidgetClass txtbuttonPaste {
            ignorepointer 1
@@ -196,9 +222,11 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "Paste"
-           font "gui/fonts/sdf_MetronLight24"
+           font "gui/fonts/sdf_MetronLight72"
+           "text color" 1 1 1 1
+           "bold text" 1
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -207,6 +235,7 @@ FrameWidgetClass diagFrame {
         ButtonWidgetClass ButtonOK {
          visible 0
          disabled 0
+         color 1 1 1 1
          size 0.25 0.7
          halign center_ref
          valign center_ref
@@ -214,8 +243,8 @@ FrameWidgetClass diagFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Editor
-         font "gui/fonts/MetronLight"
+         style VPPButton
+         font "gui/fonts/sdf_MetronLight72"
          {
           TextWidgetClass txtbuttonOK {
            ignorepointer 1
@@ -227,9 +256,11 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "OK"
-           font "gui/fonts/sdf_MetronLight24"
+           font "gui/fonts/sdf_MetronLight72"
+           "text color" 1 1 1 1
+           "bold text" 1
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -238,7 +269,7 @@ FrameWidgetClass diagFrame {
         ButtonWidgetClass ButtonCANCEL {
          visible 0
          disabled 0
-         color 0.7804 0.1725 0.1725 1
+         color 1 1 1 1
          size 0.25 0.7
          halign center_ref
          valign center_ref
@@ -246,8 +277,8 @@ FrameWidgetClass diagFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Editor
-         font "gui/fonts/MetronLight"
+         style VPPButtonGhost
+         font "gui/fonts/sdf_MetronLight72"
          {
           TextWidgetClass txtbuttoncancel {
            ignorepointer 1
@@ -259,9 +290,11 @@ FrameWidgetClass diagFrame {
            hexactsize 0
            vexactsize 0
            text "CANCEL"
-           font "gui/fonts/sdf_MetronLight24"
+           font "gui/fonts/sdf_MetronLight72"
+           "text color" 1 1 1 1
+           "bold text" 1
            "exact text" 1
-           "exact text size" 22
+           "exact text size" 16
            "text halign" center
            "text valign" center
           }
@@ -271,7 +304,7 @@ FrameWidgetClass diagFrame {
       }
       PanelWidgetClass PanelSplitter {
        ignorepointer 1
-       color 0.8392 0.2039 0.2039 1
+       color 0.165 0.18 0.2 1
        position 0 0.14
        size 0.993 0.018
        halign center_ref
@@ -279,10 +312,11 @@ FrameWidgetClass diagFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style EditorPanel
+       style VPPFill
       }
       EditBoxWidgetClass InputBox {
        visible 0
+       color 1 1 1 1
        position 0 0.27
        size 0.9 0.147
        halign center_ref
@@ -292,12 +326,12 @@ FrameWidgetClass diagFrame {
        hexactsize 0
        vexactsize 0
        scriptclass "EditBoxEventHandler"
-       style Editor
+       style VPPInput
        text "Enter Value"
        "limit visible" 0
        "Use default text" 1
        "exact text" 1
-       font "gui/fonts/sdf_MetronLight24"
+       font "gui/fonts/MetronLight"
       }
      }
     }

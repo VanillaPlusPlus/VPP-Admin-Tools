@@ -1,15 +1,12 @@
 class VPPPlayerStats : VPPPlayerTemplate
 {
     private ref map<string, TextWidget> m_Stats;
-    private ImageWidget  m_IconHealth;
-    private ImageWidget  m_IconBlood;
 	private ButtonWidget m_btnCopyInfo;
     private string ownerId;
 	private string m_CopyText;
 	private ref map<string, string> m_stats;
-    const ref array<string> m_StatName = {"Name", "SteamID", "Guid", "Health", "Blood", "Shock", "Weapon","UserGroup"};
+    const ref array<string> m_StatName = {"Name", "SteamID", "Guid", "Health", "Blood", "Shock", "Water", "Energy", "Weapon", "UserGroup"};
 
-    
     void VPPPlayerStats(GridSpacerWidget grid, map<string, string> stats)
     {
         m_Stats = new map<string, TextWidget>;
@@ -17,8 +14,6 @@ class VPPPlayerStats : VPPPlayerTemplate
         m_LayoutPath  = VPPATUIConstants.VPPPlayerInfoBox;
 		m_stats 	  = stats;
         m_EntryBox	  = GetGame().GetWorkspace().CreateWidgets(m_LayoutPath, grid);
-	    m_IconHealth  = ImageWidget.Cast(m_EntryBox.FindAnyWidget("ImgHealth"));
-		m_IconBlood   = ImageWidget.Cast(m_EntryBox.FindAnyWidget("ImgBlood"));
 		m_btnCopyInfo = ButtonWidget.Cast(m_EntryBox.FindAnyWidget("btnCopyInfo"));
         WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_btnCopyInfo, this, "ButtonClick" );
 		CreateStatsWidgets();
@@ -31,6 +26,7 @@ class VPPPlayerStats : VPPPlayerTemplate
 			{
 				case "Name":
 				m_CopyText += "Name: "+statValue;
+				SetCardTitle(statValue);
 				break;
 				
 				case "SteamID":
@@ -44,46 +40,70 @@ class VPPPlayerStats : VPPPlayerTemplate
 				break;
 			}
 			
-			if (stat == "Health"){
-				int value = statValue.ToInt();
-				if (value == 100 && value >= 75)
-				{
-					m_IconHealth.LoadImageFile(0,"set:dayz_gui image:iconHealth0");
-				}else if (value < 75 && value >= 50){
-					m_IconHealth.LoadImageFile(0,"set:dayz_gui image:iconHealth1");
-				}else if (value < 50 && value >= 25){
-					m_IconHealth.LoadImageFile(0,"set:dayz_gui image:iconHealth2");
-				}else if (value < 25 && value >= 1){
-					m_IconHealth.LoadImageFile(0,"set:dayz_gui image:iconHealth3");
-				}else if (value == 0){
-					m_IconHealth.LoadImageFile(0,"set:dayz_gui image:iconHealth4");
-				}
-			}
-			
-			if (stat == "Blood"){
-				if (value == 5000 && value >= 4000)
-				{
-					m_IconBlood.LoadImageFile(0,"set:dayz_gui image:iconBlood0");
-				}else if (value < 4000 && value >= 3000){
-					m_IconBlood.LoadImageFile(0,"set:dayz_gui image:iconBlood1");
-				}else if (value < 3000 && value >= 2000){
-					m_IconBlood.LoadImageFile(0,"set:dayz_gui image:iconBlood2");
-				}else if (value < 2000 && value >= 1000){
-					m_IconBlood.LoadImageFile(0,"set:dayz_gui image:iconBlood3");
-				}else if (value == 0){
-					m_IconBlood.LoadImageFile(0,"set:dayz_gui image:iconBlood4");
-				}
-			}
-            
             if (stat == "Weapon" && statValue == ""){
                 statText.SetText("None");
                 continue;
             }
 
             if(statText)
-                statText.SetText(statValue);
+            {
+                //vitals come in as raw floats (e.g. "559.906") - display rounded
+                if (stat == "Health" || stat == "Blood" || stat == "Shock" || stat == "Water" || stat == "Energy")
+                {
+                    int rounded = Math.Round(statValue.ToFloat());
+                    statText.SetText(rounded.ToString());
+                }
+                else
+                    statText.SetText(statValue);
+            }
         }
+        
+        UpdateVital("Health", 100.0);
+        UpdateVital("Blood",  5000.0);
+        UpdateVital("Shock",  100.0);
+        UpdateVital("Water",  5000.0);
+        UpdateVital("Energy", 5000.0);
+        
+        if (m_stats.Contains("UserGroup"))
+        {
+            TextWidget groupTitle = TextWidget.Cast(m_EntryBox.FindAnyWidget("CardTitleGroup"));
+            if (groupTitle)
+                groupTitle.SetText(m_stats["UserGroup"]);
+        }
+        
+        UpdateFlag("GodMode");
+        UpdateFlag("UnlimitedAmmo");
+        UpdateFlag("Invisible");
+        UpdateFlag("Frozen");
     }
+	
+	private void SetCardTitle(string playerName)
+	{
+		TextWidget title = TextWidget.Cast(m_EntryBox.FindAnyWidget("CardTitleName"));
+		if (title)
+			title.SetText(playerName);
+	}
+	
+	/*
+		Renders an admin flag ("1"/"0" from server) as Enabled/Disabled
+		using design tokens positive-green / text-muted
+	*/
+	private void UpdateFlag(string flagName)
+	{
+		TextWidget flagText = TextWidget.Cast(m_EntryBox.FindAnyWidget("Flag" + flagName));
+		if (!flagText) return;
+		
+		if (m_stats.Contains(flagName) && m_stats[flagName] == "1")
+		{
+			flagText.SetText("Enabled");
+			flagText.SetColor(ARGB(255, 76, 175, 80));
+		}
+		else
+		{
+			flagText.SetText("Disabled");
+			flagText.SetColor(ARGB(255, 92, 97, 102));
+		}
+	}
 	
 	void ButtonClick( Widget w, int x, int y, int button )
 	{
@@ -105,6 +125,44 @@ class VPPPlayerStats : VPPPlayerTemplate
 	string GetStatValue(string name)
 	{
 		return m_stats[name];
+	}
+	
+	bool HasStat(string name)
+	{
+		return m_stats.Contains(name);
+	}
+	
+	/*
+		Tints the vital icon by threshold and fills the underline bar
+		proportionally (design tokens: GUI/Styles/DesignSystem.md)
+	*/
+	private void UpdateVital(string stat, float maxValue)
+	{
+		if (!m_stats.Contains(stat)) return;
+		
+		float value = m_stats[stat].ToFloat();
+		float frac  = Math.Clamp(value / maxValue, 0.0, 1.0);
+		
+		int tint;
+		if (frac >= 0.75)
+			tint = ARGB(255, 76, 175, 80);   //positive-green
+		else if (frac >= 0.5)
+			tint = ARGB(255, 217, 178, 61);  //warning-yellow
+		else if (frac >= 0.25)
+			tint = ARGB(255, 232, 163, 61);  //accent-orange
+		else
+			tint = ARGB(255, 194, 69, 69);   //danger-red
+		
+		ImageWidget icon = ImageWidget.Cast(m_EntryBox.FindAnyWidget("Img" + stat));
+		if (icon)
+			icon.SetColor(tint);
+		
+		Widget bar = m_EntryBox.FindAnyWidget("Bar" + stat);
+		if (bar)
+		{
+			bar.SetColor(tint);
+			bar.SetSize(frac, 1.0);
+		}
 	}
     
     private void CreateStatsWidgets()

@@ -1,780 +1,893 @@
 FrameWidgetClass rootMenuServerManager {
  clipchildren 1
- color 1 0 0 1
+ ignorepointer 0
+ color 0 0 0 0
  position 0 0
- size 0.45 0.6
+ size 0.64 0.68
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
- draggable 0
+ draggable 1
  {
   PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.549
-   position 0 0
-   size 1 0.9725
-   halign center_ref
-   valign bottom_ref
+   color 0.749 0.773 0.8 1
+   size 0.99 1
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 0
    scaled 1
-   priority 10
    draggable 0
-   style DayZDefaultPanel
+   style VPPPanel
    "no focus" 0
    {
-    PanelWidgetClass PageScroller {
-     ignorepointer 0
+    PanelWidgetClass HeaderTitle {
+     ignorepointer 1
+     color 0.031 0.035 0.039 0.85
      position 0 0
-     size 0.98 0.977
+     size 1 0.05
      halign center_ref
-     valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style blank
+     style VPPFillRound
      {
-      PanelWidgetClass PnlMainBg {
+      ImageWidgetClass ImgWindowIcon {
        ignorepointer 1
-       color 0 0 0 0.549
-       size 0.993 0.986
-       halign center_ref
+       color 0.91 0.639 0.239 1
+       position 2 0
+       size 32 32
        valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:shield"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
       }
-      PanelWidgetClass ActivityPanel {
-       color 0 0 0 0.549
-       position 0.0143 0.0191
-       size 0.6395 0.8249
+      TextWidgetClass Title {
+       ignorepointer 1
+       position 38 1
+       size 0.4 22
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_SERVER_MANAGER_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 22
+       "size to text h" 1
+       "size to text v" 1
+      }
+      TextWidgetClass SubTitle {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 38 20
+       size 0.5 14
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_SERVER_MANAGER_SUBTITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 1 1 1 1
+       position 0.003 0.003
+       size 0.03 0.926
        halign right_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style VPPButtonGhost
        {
-        MapWidgetClass ActivityMap {
-         visible 1
-         keepsafezone 0
-         position -0.0022 0
-         size 0.9863 0.8949
+        ImageWidgetClass ImageClose {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0 0
+         size 1 1
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         scriptclass ""
+         image0 "set:vpp_icons image:x"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+         nocache 1
         }
-        TextWidgetClass ActivityLabel {
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelActivity {
+     visible 1
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.008 0.062
+     size 0.66 0.93
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass PanelActivity_header {
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgActivityHeader {
          ignorepointer 1
-         position -0.00935 0
-         size 0.04929 0.0368
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 28 28
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:map"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_activitymap {
+         ignorepointer 1
+         position 30 0
+         size 0.45 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Bold
+         style None
          text "#VSTR_LBL_ACTIVVITY_MAP"
-         font "gui/fonts/sdf_MetronLight24"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 18
          "size to text h" 1
          "size to text v" 1
-         "text halign" center
          "text valign" center
         }
         ButtonWidgetClass RefreshMapActivity {
-         position -0.00187 0.0078
-         size 0.9663 0.0384
-         halign center_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "#VSTR_LBL_REFRESH_ACTIVITY"
-         font "gui/fonts/MetronLight"
-         {
-          CheckBoxWidgetClass ChkBoxUpdateActivity {
-           position 0.1 0
-           size 0.23 0.9
-           halign right_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_AUTO_UPDATE_ACTIVITY"
-           font "gui/fonts/MetronLight"
-          }
-         }
-        }
-       }
-      }
-      PanelWidgetClass ScriptLoader {
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0.0143 0.0191
-       size 0.328 0.46
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-       {
-        WrapSpacerWidgetClass ScriptLoaderButtons {
-         ignorepointer 1
-         position 0.0146 0
-         size 0.9698 0.15
+         ignorepointer 0
+         color 1 1 1 1
+         position 2 0
+         size 26 26
          halign right_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Empty
-         Padding 5
-         Margin 5
-         content_valign bottom
-         {
-          ButtonWidgetClass BtnReleaseScript {
-           disabled 1
-           size 0.3 0.35
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_RELEASE"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnViewScript {
-           disabled 1
-           size 0.3 0.35
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_VIEW"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnWriteScript {
-           size 0.3 0.35
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_WRITE"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnLoadScript {
-           disabled 1
-           size 0.3 0.35
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_LOAD"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnRefreshScriptList {
-           disabled 0
-           size 0.3 0.35
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_REFRESH_LIST"
-           font "gui/fonts/MetronLight"
-          }
-         }
-        }
-        PanelWidgetClass SLDropDownPanel {
-         ignorepointer 1
-         position 0 0.07
-         size 0.968 0.769
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         {
-          WrapSpacerWidgetClass ScriptsDropDown {
-           visible 1
-           clipchildren 0
-           color 0 0 0 0.549
-           position 0 0.035
-           size 1 0.1
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Colorable
-           "no focus" 0
-          }
-         }
-        }
-        PanelWidgetClass admin_login_header0 {
-         ignorepointer 1
-         color 0 0 0 0.8784
-         position 0 4
-         size 0.9799 22
-         halign center_ref
+         valign center_ref
          hexactpos 1
          vexactpos 1
-         hexactsize 0
+         hexactsize 1
          vexactsize 1
-         style DayZDefaultPanel
+         style VPPButtonGhost
          {
-          TextWidgetClass admin_login_text0 {
+          ImageWidgetClass ImgRefreshActivity {
            ignorepointer 1
+           color 0.604 0.627 0.651 1
            position 0 0
-           size 1 26
+           size 24 24
+           halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
-           hexactsize 0
+           hexactsize 1
            vexactsize 1
-           style Normal
-           text "#VSTR_LBL_SCRIPT_LOADER"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 16
-           "text halign" center
-           "text valign" center
+           image0 "set:vpp_icons image:refresh_cw"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
           }
          }
         }
        }
       }
-      PanelWidgetClass AdminloginPanel {
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0.0145 0.09
-       size 0.328 0.215
-       valign center_ref
+      MapWidgetClass ActivityMap {
+       visible 1
+       position 0 0.052
+       size 0.99 0.89
+       halign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       priority 100
+      }
+      CheckBoxWidgetClass ChkBoxUpdateActivity {
+       ignorepointer 0
+       position 0.012 6
+       size 0.9 22
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPCheckBox
+       font "gui/fonts/sdf_MetronLight72"
        {
-        PanelWidgetClass admin_login_header {
+        TextWidgetClass TxtAutoUpdate {
          ignorepointer 1
-         color 0 0 0 0.8824
-         position 0 0
-         size 1 21
-         halign center_ref
+         position 30 0
+         size 1 1
+         valign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 0
-         vexactsize 1
-         style DayZDefaultPanel
-         {
-          TextWidgetClass admin_login_text {
-           ignorepointer 1
-           position 0 0
-           size 1 26
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 1
-           style Normal
-           text "#VSTR_LBL_ADMIN_LOGIN"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 20
-           "text halign" center
-           "text valign" center
-          }
-         }
+         vexactsize 0
+         text "#VSTR_LBL_AUTO_UPDATE_ACTIVITY"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
         }
-        WrapSpacerWidgetClass WraperLoginAdmin {
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelLogin {
+     visible 1
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.681 0.062
+     size 0.311 0.2
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass PanelLogin_header {
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgLoginHeader {
          ignorepointer 1
-         size 1 0.541
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 28 28
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:user"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass admin_login_text {
+         ignorepointer 1
+         position 30 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_ADMIN_LOGIN"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 18
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        ImageWidgetClass ImgLoginInfo {
+         ignorepointer 0
+         color 0.604 0.627 0.651 1
+         position 4 0
+         size 32 32
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ToolTipHandler"
+         image0 "set:vpp_icons image:info"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      TextWidgetClass LablePassword {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.02 36
+       size 0.9 16
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style None
+       text "#VSTR_LBL_PASSWORD"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass InputAdminPassword {
+       ignorepointer 0
+       position 0.015 56
+       size 0.97 24
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPInput
+       "no focus" 0
+       font "gui/fonts/sdf_MetronLight72"
+      }
+      ButtonWidgetClass BtnAdminLogin {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.015 109
+       size 0.97 28
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPButton
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblLogin {
+         ignorepointer 1
+         size 1 1
          halign center_ref
          valign center_ref
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
-         Margin 10
-         content_valign center
+         style None
+         text "#VSTR_LBL_LOGIN"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelMonitor {
+     visible 1
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.681 0.272
+     size 0.311 0.45
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass PanelMonitor_header {
+       ignorepointer 0
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgMonitorHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 28 28
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:activity"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_servermonitor_text {
+         ignorepointer 1
+         position 30 0
+         size 0.55 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_SERVER_MONITOR"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 18
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        CheckBoxWidgetClass ToggleServerMonitor {
+         ignorepointer 0
+         position 4 0
+         size 24 24
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCheckBox
+        }
+        ButtonWidgetClass BtnPinMonitor {
+         ignorepointer 0
+         color 1 1 1 1
+         position 34 0
+         size 26 26
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
          {
-          TextWidgetClass LablePassword {
+          ImageWidgetClass ImgPinMonitor {
            ignorepointer 1
-           size 0.178 0.352
+           color 0.604 0.627 0.651 1
+           position 0 0
+           size 24 24
            halign center_ref
            valign center_ref
-           hexactpos 0
-           vexactpos 0
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:pin"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+         }
+        }
+       }
+      }
+      GridSpacerWidgetClass MonitorStack {
+       ignorepointer 0
+       position 0.015 36
+       size 0.97 0.86
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       "Ignore invisible" 1
+       Padding 3
+       Margin 0
+       "Size To Content H" 0
+       "Size To Content V" 0
+       Columns 1
+       Rows 7
+       {
+        PanelWidgetClass RowFPS {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass ServerFPSLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
            hexactsize 0
            vexactsize 0
-           style Normal
-           text "#VSTR_LBL_PASSWORD"
-           font "gui/fonts/sdf_MetronLight24"
+           style None
+           text "#VSTR_LBL_SERVER_FPS"
+           font "gui/fonts/sdf_MetronLight72"
            "exact text" 1
-           "exact text size" 16
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass ServerFPSInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
            "size to text h" 1
            "size to text v" 1
            "text halign" right
            "text valign" center
           }
-          EditBoxWidgetClass InputAdminPassword {
-           color 1 0 0 1
-           position 0 0
-           size 0.91 0.352
-           halign right_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style DefaultBorder
-           "no focus" 0
-           text "***********"
-           "Use default text" 1
-           "exact text" 1
-          }
          }
         }
-        ButtonWidgetClass BtnAdminLogin {
-         position -0.015 0.07
-         size 0.9 0.15
-         halign center_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "Login"
-         font "gui/fonts/MetronLight"
-        }
-       }
-      }
-      PanelWidgetClass BorderMonitor {
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0.015 0.01
-       size 0.327 0.283
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-       {
-        GridSpacerWidgetClass server_stats_root {
-         visible 1
+        PanelWidgetClass RowPlayers {
          ignorepointer 1
-         color 1 1 1 0
-         position 0.008 0
-         size 1 1
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         priority 3
-         style outline
-         Padding 0
-         Margin 0
-         "Size To Content V" 1
-         Columns 1
-         Rows 2
-         {
-          GridSpacerWidgetClass server_stats_content {
-           ignorepointer 1
-           color 0 0 0 0
-           position 0 36
-           size 1 0
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 1
-           style DayZDefaultPanelBottom
-           Padding 1
-           Margin 6
-           "Size To Content V" 1
-           Columns 1
-           Rows 5
-           {
-            FrameWidgetClass ServerFPS {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass ServerFPSLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_SERVER_FPS"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass ServerFPSInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass PlayerCount {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass PlayerCountLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_ONLINE_PLAYERS"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass PlayerCountInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass UpTime {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass UpTimeLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_SERVER_UPTIME"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass UpTimeInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "0d 0h 0m 0s"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass MemoryUsed {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass MemoryUsedLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_MEM_USED"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass MemoryUsedInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass NetworkOut {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass NetworkOutLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_NETWORK_TRAFFIC"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass NetworkOutInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass NetworkIn {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass NetworkInLabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_NETWORK_TRAFFIC2"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass NetworkInInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-            FrameWidgetClass ActiveAI {
-             ignorepointer 1
-             position 0 0
-             size 48 20
-             hexactpos 1
-             vexactpos 1
-             hexactsize 1
-             vexactsize 1
-             {
-              TextWidgetClass ActiveAILabel {
-               ignorepointer 1
-               size 1 1
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "#VSTR_LBL_ACTIVE_AI"
-               font "gui/fonts/sdf_MetronLight24"
-               "exact text" 1
-               "exact text size" 11
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-              TextWidgetClass ActiveAIInput {
-               ignorepointer 1
-               size 1 1
-               halign right_ref
-               valign center_ref
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               text "null"
-               "size to text h" 1
-               "size to text v" 0
-               "text halign" center
-               "text valign" center
-              }
-             }
-            }
-           }
-          }
-         }
-        }
-        ImageWidgetClass server_stats_header {
-         ignorepointer 1
-         color 0.6706 0.6706 0.6706 0.7843
-         position 0 0
-         size 1.0062 22
-         halign center_ref
+         color 0.078 0.086 0.094 0.85
+         size 1 26
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         image0 "set:dayz_gui image:container_header"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
+         style VPPFillRound
          {
-          TextWidgetClass title_servermonitor_text {
+          TextWidgetClass PlayerCountLabel {
            ignorepointer 1
-           position 0 0
-           size 0.98 20
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
-           vexactsize 1
-           style Normal
-           text "#VSTR_LBL_SERVER_MONITOR"
-           font "gui/fonts/sdf_MetronLight24"
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_ONLINE_PLAYERS"
+           font "gui/fonts/sdf_MetronLight72"
            "exact text" 1
-           "exact text size" 16
-           "text halign" center
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
            "text valign" center
-           {
-            CheckBoxWidgetClass ToggleServerMonitor {
-             position 0 0
-             size 0.077 1
-             halign right_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-            }
-           }
+          }
+          TextWidgetClass PlayerCountInput {
+           ignorepointer 1
+           color 0.298 0.686 0.314 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "0"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RowUptime {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass UpTimeLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.5 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_SERVER_UPTIME"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass UpTimeInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.6 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "0d 0h 0m 0s"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RowMemory {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass MemoryUsedLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_MEM_USED"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass MemoryUsedInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RowNetOut {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass NetworkOutLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_NETWORK_TRAFFIC"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass NetworkOutInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RowNetIn {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass NetworkInLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_NETWORK_TRAFFIC2"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass NetworkInInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RowAI {
+         ignorepointer 1
+         color 0.078 0.086 0.094 0.85
+         size 1 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass ActiveAILabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 8 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_ACTIVE_AI"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass ActiveAIInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
           }
          }
         }
@@ -782,151 +895,229 @@ FrameWidgetClass rootMenuServerManager {
       }
      }
     }
-    WrapSpacerWidgetClass ButtonsQuickCommands {
+    PanelWidgetClass PanelCommands {
+     visible 1
      ignorepointer 1
-     position 0.0107 0.0134
-     size 0.6429 0.1483
-     halign right_ref
-     valign bottom_ref
+     color 1 1 1 1
+     position 0.681 0.732
+     size 0.311 0.256
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Empty
-     Padding 10
-     Margin 10
-     content_halign center
-     content_valign center
+     style VPPPanel
      {
-      ButtonWidgetClass BtnRestartServer {
-       size 0.25 0.35
+      PanelWidgetClass PanelCommands_header {
+       ignorepointer 1
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
        halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgCommandsHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 28 28
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:gavel"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_commands {
+         ignorepointer 1
+         position 30 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_QUICK_COMMANDS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 18
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnRestartServer {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.015 36
+       size 0.97 28
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
        scriptclass "ConfirmationEventHandler"
-       style Editor
-       text "#VSTR_LBL_RESTART_SERVER"
-       font "gui/fonts/MetronLight14"
+       style VPPButton
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        ImageWidgetClass ImgRestart {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.1 0
+         size 24 24
+         valign center_ref
+         hexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:rotate_ccw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass LblRestart {
+         ignorepointer 1
+         position 8 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_RESTART_SERVER"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass BtnLockServer {
-       size 0.25 0.35
-       halign center_ref
-       valign center_ref
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.015 68
+       size 0.97 28
        hexactpos 0
-       vexactpos 0
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
        scriptclass "ConfirmationEventHandler"
-       style Editor
-       text "#VSTR_LBL_LOCKSERVER"
-       font "gui/fonts/MetronLight14"
+       style VPPButton
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        ImageWidgetClass ImgLock {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.1 0
+         size 24 24
+         valign center_ref
+         hexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:ban"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass LblLock {
+         ignorepointer 1
+         position 8 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_LOCKSERVER"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass BtnKickAll {
-       size 0.25 0.35
-       halign center_ref
-       valign center_ref
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.015 100
+       size 0.97 28
        hexactpos 0
-       vexactpos 0
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
        scriptclass "ConfirmationEventHandler"
-       style Editor
-       text "#VSTR_LBL_KILL_ALL_PLAYERS"
-       font "gui/fonts/MetronLight14"
-      }
-      ButtonWidgetClass BtnViewAdmLog {
-       visible 0
-       color 1 0 0 1
-       size 0.25 0.35
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       text "View Logs"
+       style VPPButtonDanger
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        ImageWidgetClass ImgKickAll {
+         ignorepointer 1
+         color 1 1 1 1
+         position 0.1 0
+         size 24 24
+         valign center_ref
+         hexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:log_out"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass LblKickAll {
+         ignorepointer 1
+         position 8 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_KILL_ALL_PLAYERS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
       }
      }
     }
    }
   }
   PanelWidgetClass Header {
-   visible 1
    ignorepointer 0
-   size 0.993 0.028
-   halign center_ref
+   size 0.92 0.05
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
    draggable 1
    style blank
-  }
-  PanelWidgetClass HeaderTitle {
-   ignorepointer 1
-   color 0 0 0 1
-   position 0 0
-   size 1 0.03
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 0
-   scaled 0
-   draggable 0
-   style DayZDefaultPanel
-   {
-    TextWidgetClass Title {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Bold
-     text "#VSTR_SERVER_MANAGER_TITLE"
-     font "gui/fonts/sdf_MetronBook24"
-     "exact text" 0
-     "exact text size" 16
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    ButtonWidgetClass BtnClose {
-     clipchildren 1
-     color 0 0 0 1
-     size 0.03 1
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     {
-      ImageWidgetClass ImageClose {
-       ignorepointer 1
-       color 1 0 0 1
-       size 0.97 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:Icon28EmptySlot"
-       mode additive
-       "src alpha" 1
-      }
-     }
-    }
-   }
   }
  }
 }

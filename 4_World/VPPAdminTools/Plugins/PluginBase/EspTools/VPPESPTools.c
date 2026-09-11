@@ -7,8 +7,46 @@ class VPPESPTools extends PluginBase
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "RestPasscodeFence", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "RetriveCodeFromObj", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "ToggleMeshESP", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_VPPESPTools", "BringReturnObj", this, SingeplayerExecutionType.Server );
 	}
 	
+	void BringReturnObj(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if(type == CallType.Server && sender != null)
+		{
+			Param2<Object,vector> data;
+			if(!ctx.Read(data))
+				return;
+			
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu"))
+				return;
+
+			if (!data.param1)
+				return;
+			
+			string logMessage = "Teleport object " + data.param1.GetDisplayName() + " to position: " + data.param2;
+			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), logMessage));
+			
+			Transport veh;
+			if (Class.CastTo(veh, data.param1))
+			{
+				vector mat[4];
+				veh.GetTransform(mat);
+				mat[3] = data.param2;
+				veh.SetTransform(mat);
+				veh.SetPosition(data.param2);
+				dBodyApplyImpulse(veh, vector.Up);
+			}
+			else
+			{
+				data.param1.SetPosition(data.param2);
+			}
+
+			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"Object was moved!", NotifyTypes.NOTIFY);
+			GetSimpleLogger().Log(string.Format("\"%1\" (steamid=%2) moved an object using ESP", sender.GetName(), sender.GetPlainId()));
+		}
+	}
+
 	void DeleteItems(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		if( type == CallType.Server && sender != null)

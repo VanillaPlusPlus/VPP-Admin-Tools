@@ -1,0 +1,602 @@
+<WidgetStyles>
+    <Widget Name="ButtonWidget">
+        <Style Name="VPPButton" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_btn_tl" />
+                <Item Name="Top" Image="vpp_btn_t" />
+                <Item Name="RightTop" Image="vpp_btn_tr" />
+                <Item Name="Left" Image="vpp_btn_l" />
+                <Item Name="Center" Image="vpp_btn_c" />
+                <Item Name="Right" Image="vpp_btn_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_bl" />
+                <Item Name="Bottom" Image="vpp_btn_b" />
+                <Item Name="RightBottom" Image="vpp_btn_br" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="LeftTop" Image="vpp_btn_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_hover_l" />
+                <Item Name="Center" Image="vpp_btn_hover_c" />
+                <Item Name="Right" Image="vpp_btn_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_hover_br" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="LeftTop" Image="vpp_btn_push_tl" />
+                <Item Name="Top" Image="vpp_btn_push_t" />
+                <Item Name="RightTop" Image="vpp_btn_push_tr" />
+                <Item Name="Left" Image="vpp_btn_push_l" />
+                <Item Name="Center" Image="vpp_btn_push_c" />
+                <Item Name="Right" Image="vpp_btn_push_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_push_bl" />
+                <Item Name="Bottom" Image="vpp_btn_push_b" />
+                <Item Name="RightBottom" Image="vpp_btn_push_br" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="vpp_btn_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_hover_l" />
+                <Item Name="Center" Image="vpp_btn_hover_c" />
+                <Item Name="Right" Image="vpp_btn_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_hover_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+            </State>
+        </Style>
+        <Style Name="VPPButtonDanger" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_btn_danger_tl" />
+                <Item Name="Top" Image="vpp_btn_danger_t" />
+                <Item Name="RightTop" Image="vpp_btn_danger_tr" />
+                <Item Name="Left" Image="vpp_btn_danger_l" />
+                <Item Name="Center" Image="vpp_btn_danger_c" />
+                <Item Name="Right" Image="vpp_btn_danger_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_danger_bl" />
+                <Item Name="Bottom" Image="vpp_btn_danger_b" />
+                <Item Name="RightBottom" Image="vpp_btn_danger_br" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="LeftTop" Image="vpp_btn_danger_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_danger_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_danger_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_danger_hover_l" />
+                <Item Name="Center" Image="vpp_btn_danger_hover_c" />
+                <Item Name="Right" Image="vpp_btn_danger_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_danger_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_danger_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_danger_hover_br" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="LeftTop" Image="vpp_btn_danger_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_danger_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_danger_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_danger_hover_l" />
+                <Item Name="Center" Image="vpp_btn_danger_hover_c" />
+                <Item Name="Right" Image="vpp_btn_danger_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_danger_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_danger_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_danger_hover_br" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="vpp_btn_danger_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_danger_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_danger_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_danger_hover_l" />
+                <Item Name="Center" Image="vpp_btn_danger_hover_c" />
+                <Item Name="Right" Image="vpp_btn_danger_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_danger_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_danger_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_danger_hover_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+            </State>
+        </Style>
+        <Style Name="VPPButtonGhost" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="LeftTop" Image="vpp_btn_hover_tl" />
+                <Item Name="Top" Image="vpp_btn_hover_t" />
+                <Item Name="RightTop" Image="vpp_btn_hover_tr" />
+                <Item Name="Left" Image="vpp_btn_hover_l" />
+                <Item Name="Center" Image="vpp_btn_hover_c" />
+                <Item Name="Right" Image="vpp_btn_hover_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_hover_bl" />
+                <Item Name="Bottom" Image="vpp_btn_hover_b" />
+                <Item Name="RightBottom" Image="vpp_btn_hover_br" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="LeftTop" Image="vpp_btn_push_tl" />
+                <Item Name="Top" Image="vpp_btn_push_t" />
+                <Item Name="RightTop" Image="vpp_btn_push_tr" />
+                <Item Name="Left" Image="vpp_btn_push_l" />
+                <Item Name="Center" Image="vpp_btn_push_c" />
+                <Item Name="Right" Image="vpp_btn_push_r" />
+                <Item Name="LeftBottom" Image="vpp_btn_push_bl" />
+                <Item Name="Bottom" Image="vpp_btn_push_b" />
+                <Item Name="RightBottom" Image="vpp_btn_push_br" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="EditBoxWidget">
+        <Style Name="VPPInputBare" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+        <Style Name="VPPInput" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="Top" Image="vpp_input_t" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="Left" Image="vpp_input_l" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="Right" Image="vpp_input_r" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="Bottom" Image="vpp_input_b" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="vpp_input_focus_tl" />
+                <Item Name="Top" Image="vpp_input_focus_t" />
+                <Item Name="RightTop" Image="vpp_input_focus_tr" />
+                <Item Name="Left" Image="vpp_input_focus_l" />
+                <Item Name="Center" Image="vpp_input_focus_c" />
+                <Item Name="Right" Image="vpp_input_focus_r" />
+                <Item Name="LeftBottom" Image="vpp_input_focus_bl" />
+                <Item Name="Bottom" Image="vpp_input_focus_b" />
+                <Item Name="RightBottom" Image="vpp_input_focus_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="CheckBoxWidget">
+        <Style Name="VPPCheckBox" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="CheckBox" Image="vpp_check_off" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="CheckBox" Image="vpp_check_off_hover" />
+            </State>
+            <State Name="Mark">
+                <Item Name="CheckBox" Image="vpp_check_on" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="CheckBox" Image="vpp_check_disabled" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="SliderWidget">
+        <Style Name="VPPSlider" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="Top" Image="vpp_input_t" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="Left" Image="vpp_input_l" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="Right" Image="vpp_input_r" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="Bottom" Image="vpp_input_b" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+                <Item Name="BarLeftTop" Image="vpp_accent_tl" />
+                <Item Name="BarTop" Image="vpp_accent_t" />
+                <Item Name="BarRightTop" Image="vpp_accent_tr" />
+                <Item Name="BarLeft" Image="vpp_accent_l" />
+                <Item Name="BarCenter" Image="vpp_accent_c" />
+                <Item Name="BarRight" Image="vpp_accent_r" />
+                <Item Name="BarLeftBottom" Image="vpp_accent_bl" />
+                <Item Name="BarBottom" Image="vpp_accent_b" />
+                <Item Name="BarRightBottom" Image="vpp_accent_br" />
+            </State>
+            <State Name="Focus">
+                <Item Name="LeftTop" Image="vpp_input_focus_tl" />
+                <Item Name="Top" Image="vpp_input_focus_t" />
+                <Item Name="RightTop" Image="vpp_input_focus_tr" />
+                <Item Name="Left" Image="vpp_input_focus_l" />
+                <Item Name="Center" Image="vpp_input_focus_c" />
+                <Item Name="Right" Image="vpp_input_focus_r" />
+                <Item Name="LeftBottom" Image="vpp_input_focus_bl" />
+                <Item Name="Bottom" Image="vpp_input_focus_b" />
+                <Item Name="RightBottom" Image="vpp_input_focus_br" />
+                <Item Name="BarLeftTop" Image="vpp_accent_tl" />
+                <Item Name="BarTop" Image="vpp_accent_t" />
+                <Item Name="BarRightTop" Image="vpp_accent_tr" />
+                <Item Name="BarLeft" Image="vpp_accent_l" />
+                <Item Name="BarCenter" Image="vpp_accent_c" />
+                <Item Name="BarRight" Image="vpp_accent_r" />
+                <Item Name="BarLeftBottom" Image="vpp_accent_bl" />
+                <Item Name="BarBottom" Image="vpp_accent_b" />
+                <Item Name="BarRightBottom" Image="vpp_accent_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+                <Item Name="BarLeftTop" Image="" />
+                <Item Name="BarTop" Image="" />
+                <Item Name="BarRightTop" Image="" />
+                <Item Name="BarLeft" Image="" />
+                <Item Name="BarCenter" Image="vpp_fill_track" />
+                <Item Name="BarRight" Image="" />
+                <Item Name="BarLeftBottom" Image="" />
+                <Item Name="BarBottom" Image="" />
+                <Item Name="BarRightBottom" Image="" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="PanelWidget">
+        <Style Name="VPPPanel" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="Top" Image="vpp_panel_t" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="Left" Image="vpp_panel_l" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="Right" Image="vpp_panel_r" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="Bottom" Image="vpp_panel_b" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+            </State>
+        </Style>
+        <Style Name="VPPInputPanel" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="Top" Image="vpp_input_t" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="Left" Image="vpp_input_l" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="Right" Image="vpp_input_r" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="Bottom" Image="vpp_input_b" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="Top" Image="vpp_input_t" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="Left" Image="vpp_input_l" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="Right" Image="vpp_input_r" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="Bottom" Image="vpp_input_b" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+            </State>
+        </Style>
+        <Style Name="VPPHeader" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_header" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_header" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+        <Style Name="VPPFillRound" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="vpp_round_tl" />
+                <Item Name="Top" Image="vpp_round_t" />
+                <Item Name="RightTop" Image="vpp_round_tr" />
+                <Item Name="Left" Image="vpp_round_l" />
+                <Item Name="Center" Image="vpp_round_c" />
+                <Item Name="Right" Image="vpp_round_r" />
+                <Item Name="LeftBottom" Image="vpp_round_bl" />
+                <Item Name="Bottom" Image="vpp_round_b" />
+                <Item Name="RightBottom" Image="vpp_round_br" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="vpp_round_tl" />
+                <Item Name="Top" Image="vpp_round_t" />
+                <Item Name="RightTop" Image="vpp_round_tr" />
+                <Item Name="Left" Image="vpp_round_l" />
+                <Item Name="Center" Image="vpp_round_c" />
+                <Item Name="Right" Image="vpp_round_r" />
+                <Item Name="LeftBottom" Image="vpp_round_bl" />
+                <Item Name="Bottom" Image="vpp_round_b" />
+                <Item Name="RightBottom" Image="vpp_round_br" />
+            </State>
+        </Style>
+        <Style Name="VPPFill" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_white" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_white" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+        <Style Name="VPPCard" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_track" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="vpp_fill_track" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="ScrollWidget">
+        <Style Name="VPPScroll" Font="gui/fonts/sdf_MetronLight72" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Top" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="RightBottom" Image="" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="TextListboxWidget">
+        <Style Name="VPPListbox" Font="gui/fonts/MetronLight16" ImageSet="vpp_ui" Color="4294967295">
+            <State Name="Normal">
+                <Item Name="BottomCenter" Image="vpp_input_b" />
+                <Item Name="BottomSeparator" Image="" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="HeaderBottomCenter" Image="" />
+                <Item Name="HeaderCenter" Image="" />
+                <Item Name="HeaderLeftBottom" Image="" />
+                <Item Name="HeaderLeftCenter" Image="" />
+                <Item Name="HeaderLeftTop" Image="" />
+                <Item Name="HeaderRightBottom" Image="" />
+                <Item Name="HeaderRightCenter" Image="" />
+                <Item Name="HeaderRightTop" Image="" />
+                <Item Name="HeaderTopCenter" Image="" />
+                <Item Name="Highlight" Image="vpp_select" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="LeftCenter" Image="vpp_input_l" />
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="LeftTopWithTitle" Image="vpp_input_tl" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+                <Item Name="RightCenter" Image="vpp_input_r" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="RightTopWithTitle" Image="vpp_input_tr" />
+                <Item Name="ScrollBarBottom" Image="vpp_scroll_b" />
+                <Item Name="ScrollBarCenter" Image="vpp_scroll_c" />
+                <Item Name="ScrollBarTop" Image="vpp_scroll_top" />
+                <Item Name="Separator" Image="" />
+                <Item Name="TitleCenter" Image="" />
+                <Item Name="TitleCenterSeparator" Image="" />
+                <Item Name="TitleLeftCenter" Image="" />
+                <Item Name="TitleRightCenter" Image="" />
+                <Item Name="TopCenter" Image="vpp_input_t" />
+                <Item Name="TopSeparator" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="BottomCenter" Image="vpp_input_b" />
+                <Item Name="BottomSeparator" Image="" />
+                <Item Name="Center" Image="vpp_input_c" />
+                <Item Name="HeaderBottomCenter" Image="" />
+                <Item Name="HeaderCenter" Image="" />
+                <Item Name="HeaderLeftBottom" Image="" />
+                <Item Name="HeaderLeftCenter" Image="" />
+                <Item Name="HeaderLeftTop" Image="" />
+                <Item Name="HeaderRightBottom" Image="" />
+                <Item Name="HeaderRightCenter" Image="" />
+                <Item Name="HeaderRightTop" Image="" />
+                <Item Name="HeaderTopCenter" Image="" />
+                <Item Name="Highlight" Image="vpp_select" />
+                <Item Name="LeftBottom" Image="vpp_input_bl" />
+                <Item Name="LeftCenter" Image="vpp_input_l" />
+                <Item Name="LeftTop" Image="vpp_input_tl" />
+                <Item Name="LeftTopWithTitle" Image="vpp_input_tl" />
+                <Item Name="RightBottom" Image="vpp_input_br" />
+                <Item Name="RightCenter" Image="vpp_input_r" />
+                <Item Name="RightTop" Image="vpp_input_tr" />
+                <Item Name="RightTopWithTitle" Image="vpp_input_tr" />
+                <Item Name="ScrollBarBottom" Image="vpp_scroll_b" />
+                <Item Name="ScrollBarCenter" Image="vpp_scroll_c" />
+                <Item Name="ScrollBarTop" Image="vpp_scroll_top" />
+                <Item Name="Separator" Image="" />
+                <Item Name="TitleCenter" Image="" />
+                <Item Name="TitleCenterSeparator" Image="" />
+                <Item Name="TitleLeftCenter" Image="" />
+                <Item Name="TitleRightCenter" Image="" />
+                <Item Name="TopCenter" Image="vpp_input_t" />
+                <Item Name="TopSeparator" Image="" />
+            </State>
+            <State Name="Disabled">
+                <Item Name="BottomCenter" Image="vpp_panel_b" />
+                <Item Name="BottomSeparator" Image="" />
+                <Item Name="Center" Image="vpp_panel_c" />
+                <Item Name="HeaderBottomCenter" Image="" />
+                <Item Name="HeaderCenter" Image="" />
+                <Item Name="HeaderLeftBottom" Image="" />
+                <Item Name="HeaderLeftCenter" Image="" />
+                <Item Name="HeaderLeftTop" Image="" />
+                <Item Name="HeaderRightBottom" Image="" />
+                <Item Name="HeaderRightCenter" Image="" />
+                <Item Name="HeaderRightTop" Image="" />
+                <Item Name="HeaderTopCenter" Image="" />
+                <Item Name="Highlight" Image="vpp_select" />
+                <Item Name="LeftBottom" Image="vpp_panel_bl" />
+                <Item Name="LeftCenter" Image="vpp_panel_l" />
+                <Item Name="LeftTop" Image="vpp_panel_tl" />
+                <Item Name="LeftTopWithTitle" Image="vpp_panel_tl" />
+                <Item Name="RightBottom" Image="vpp_panel_br" />
+                <Item Name="RightCenter" Image="vpp_panel_r" />
+                <Item Name="RightTop" Image="vpp_panel_tr" />
+                <Item Name="RightTopWithTitle" Image="vpp_panel_tr" />
+                <Item Name="ScrollBarBottom" Image="vpp_scroll_b" />
+                <Item Name="ScrollBarCenter" Image="vpp_scroll_c" />
+                <Item Name="ScrollBarTop" Image="vpp_scroll_top" />
+                <Item Name="Separator" Image="" />
+                <Item Name="TitleCenter" Image="" />
+                <Item Name="TitleCenterSeparator" Image="" />
+                <Item Name="TitleLeftCenter" Image="" />
+                <Item Name="TitleRightCenter" Image="" />
+                <Item Name="TopCenter" Image="vpp_panel_t" />
+                <Item Name="TopSeparator" Image="" />
+            </State>
+        </Style>
+    </Widget>
+</WidgetStyles>

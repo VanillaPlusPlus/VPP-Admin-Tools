@@ -167,7 +167,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				}
 				outPut += "\t</group>";
 				GetGame().CopyToClipboard(outPut);
-				GetVPPUIManager().DisplayNotification("Successfully copied XML (eventgroups) formatting of objects to clipboard!", "Success", 3.0);
+				GetVPPUIManager().DisplayNotification("#VSTR_OB_COPIED_XML", "#VSTR_TITLE_SUCCESS", 3.0);
 			}
 		}
 
@@ -190,7 +190,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				return;
 
 			VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
-			dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "Delete Selected", "Are you sure you want to delete selected object(s)?", this, "OnDiagResultDeleteSlected");
+			dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_OB_DEL_SEL_TITLE", "#VSTR_OB_DEL_SEL_BODY", this, "OnDiagResultDeleteSlected");
 		}
 
 		//Movement part
@@ -641,7 +641,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				delete m_SelectedSetData;
 			
 			m_SelectedSetData = data.param1;
-			m_title_txt_curr_set.SetText("Building Set: "+m_SelectedSetData.GetName());
+			m_title_txt_curr_set.SetText(Widget.TranslateString("#VSTR_OB_SET_PREFIX")+m_SelectedSetData.GetName());
 			ClearBuildingEntries();
 			array<ref SpawnedBuilding> buildings = new array<ref SpawnedBuilding>;
 			m_SelectedSetData.GetSpawnedBuildings(buildings);
@@ -859,7 +859,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		if (w == m_ItemPreview && button == MouseState.LEFT)
 		{
 			GetGame().GetDragQueue().Call(this, "UpdateItemRotation");
-			g_Game.GetMousePos(m_RotationX, m_RotationY);
+			GetMousePos(m_RotationX, m_RotationY);
 			return true;
 		}
 		return false;
@@ -878,15 +878,15 @@ class MenuObjectManager extends AdminHudSubMenu
 					
 					if (data.param1)
 					{
-						img.SetColor(ARGB(255,0,255,0));
-						img.LoadImageFile(0,"set:dayz_gui image:icon_collapse");
+						img.SetColor(ARGB(255,154,160,166));
+						img.LoadImageFile(0,"set:vpp_icons image:chevron_up");
 						data.param1 = false;
 						ShowPanel(data.param2.GetName(),false);
 					}
 					else
 					{
-						img.SetColor(ARGB(255,255,0,0));
-						img.LoadImageFile(0,"set:dayz_gui image:icon_expand");
+						img.SetColor(ARGB(255,154,160,166));
+						img.LoadImageFile(0,"set:vpp_icons image:chevron_down");
 						data.param1 = true;
 						ShowPanel(data.param2.GetName(),true);
 					}
@@ -926,7 +926,7 @@ class MenuObjectManager extends AdminHudSubMenu
 			case m_btnHelp:
 			string objhelp = "#VSTR_TOOLTIP_HELP_OBJMANAGER";
 			
-			GetVPPUIManager().DisplayNotification(objhelp,"Object Builder",15.0);
+			GetVPPUIManager().DisplayNotification(objhelp,"#VSTR_OB_HELP_TITLE",15.0);
 			break;
 
 			case m_chkShowHideCards:

@@ -7,6 +7,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 	private ScrollWidget 	 	   m_ScrollerSuggest;
 	private MultilineEditBoxWidget m_CommandInput;
 	private ImageWidget      	   m_ImgInfo;
+	private ButtonWidget     	   m_BtnClearHistory;
 	private bool   				   inputFocused;
 	private ref array<string> 	   m_PrevCommands;
 	private int index = 0;
@@ -37,7 +38,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 		m_CmdTooltips.Insert("/kill", new Param2<string,string>("#VSTR_TOOLTIP_KILL", "<PlayerName> OR self"));
 		m_CmdTooltips.Insert("/strip", new Param2<string,string>("#VSTR_TOOLTIP_STRIP", "<PlayerName> OR self"));
 		m_CmdTooltips.Insert("/clear", new Param2<string,string>("#VSTR_TOOLTIP_CLEAR", ""));
-		if (VPPAT_IsModLoadded("NamalskSurvival")){
+		if (VPPAT_IsModLoadded("NAMALSK_SURVIVAL")){
 			m_CmdTooltips.Insert("/runevent", new Param2<string,string>("Force start a Namalsk global event, types of events from init.c", "/runevent EVRStorm"));
 		}
 	}
@@ -56,7 +57,8 @@ class MenuCommandsConsole: AdminHudSubMenu
 		m_GridSuggest  = GridSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget("GridSuggest"));
 		m_ScrollerSuggest = ScrollWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ScrollerSuggest"));
 		m_CommandInput    = MultilineEditBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("CommandInput"));
-		
+		m_BtnClearHistory = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnClearHistory"));
+
 		//tooltip
 		ToolTipHandler toolTip;
 		m_ImgInfo.GetScript(toolTip);
@@ -67,7 +69,7 @@ class MenuCommandsConsole: AdminHudSubMenu
 		foreach(string command, Param2<string,string> params: m_CmdTooltips)
 		{
 			Widget sgElement = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.TextElement, m_GridSuggest);
-			MultilineTextWidget.Cast(sgElement.FindAnyWidget("Message")).SetText("Command: " + command + "\n" + "Action: " + params.param1 + "\nExample: " + params.param2);
+			MultilineTextWidget.Cast(sgElement.FindAnyWidget("Message")).SetText(Widget.TranslateString("#VSTR_LBL_CMD_COMMAND") + " " + command + "\n" + Widget.TranslateString("#VSTR_LBL_CMD_ACTION") + " " + Widget.TranslateString(params.param1) + "\n" + Widget.TranslateString("#VSTR_LBL_CMD_EXAMPLE") + " " + params.param2);
 			sgElement.Show(false);
 			
 			m_ScrollerSuggest.Update();
@@ -88,7 +90,9 @@ class MenuCommandsConsole: AdminHudSubMenu
 			ClearHistory();
 		
 		Widget historyWidget = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.TextElement, m_GridFeed);
-		TextWidget.Cast(historyWidget.FindAnyWidget("Message")).SetText(input);
+		MultilineTextWidget txtWidget = MultilineTextWidget.Cast(historyWidget.FindAnyWidget("Message"));
+		txtWidget.SetText(input);
+
 		m_HistoryWidgets.Insert(historyWidget);
 		m_GridFeed.Update();
 		m_ScrollerFeed.VScrollToPos(m_ScrollerFeed.GetContentHeight() * 1000);
@@ -99,8 +103,18 @@ class MenuCommandsConsole: AdminHudSubMenu
 	{
 		foreach(Widget w: m_HistoryWidgets)
 			w.Unlink();
-		
+
 		m_HistoryWidgets = new array<ref Widget>;
+	}
+
+	override bool OnClick(Widget w, int x, int y, int button)
+	{
+		if (w == m_BtnClearHistory)
+		{
+			ClearHistory();
+			return true;
+		}
+		return super.OnClick(w, x, y, button);
 	}
 
 	override void OnUpdate(float timeslice)

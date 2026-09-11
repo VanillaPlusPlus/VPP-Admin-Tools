@@ -11,7 +11,9 @@ class MenuWebHooks extends AdminHudSubMenu
 	private CheckBoxWidget 			  m_simplifiedLogs;
 	private ButtonWidget 			  m_btnSaveChanges;
 	private ButtonWidget 			  m_btnCreateWebhook;
-	private XComboBoxWidget 		  m_ComboTimer;
+	private Widget                    m_ComboTimerHost;
+	protected ref VPPDropDownMenu     m_ComboTimer;
+	private ref array<string>         m_TimerLabels;
 	private bool 				   	  m_loaded = false;
 	private bool 					  createMode;
 
@@ -46,7 +48,17 @@ class MenuWebHooks extends AdminHudSubMenu
 		m_btnSaveChanges = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnSaveChanges") );
 		m_serverStatusLog = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "serverStatusLog") );
 		m_simplifiedLogs  = CheckBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "simplifiedLogs") );
-		m_ComboTimer       = XComboBoxWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboTimer") );
+		m_TimerLabels = new array<string>;
+		m_TimerLabels.Insert(Widget.TranslateString("#VSTR_LBL_INTERVAL_60S"));
+		m_TimerLabels.Insert(Widget.TranslateString("#VSTR_LBL_INTERVAL_5M"));
+		m_TimerLabels.Insert(Widget.TranslateString("#VSTR_LBL_INTERVAL_10M"));
+		m_TimerLabels.Insert(Widget.TranslateString("#VSTR_LBL_INTERVAL_15M"));
+		m_ComboTimerHost   = Widget.Cast( M_SUB_WIDGET.FindAnyWidget( "ComboTimer") );
+		m_ComboTimer = new VPPDropDownMenu( m_ComboTimerHost, m_TimerLabels.Get(2) );
+		foreach (string tlbl : m_TimerLabels)
+			m_ComboTimer.AddElement(tlbl);
+		m_ComboTimer.SetIndex(2); //default: 10 minutes (matches the legacy -1 fallback)
+		m_ComboTimer.m_OnSelectItem.Insert(OnSelectTimer);
 		GetVPPUIManager().HookConfirmationDialog(m_btnSaveChanges, M_SUB_WIDGET, this, "SaveEdits", DIAGTYPE.DIAG_YESNO, "#VSTR_TOOLTIP_TITLE_SAVE_CHANGE", "#VSTR_TOOLTIP_SAVE_CHANGE");
 		
 		m_btnCreateWebhook = ButtonWidget.Cast( M_SUB_WIDGET.FindAnyWidget( "btnCreateWebhook") );
@@ -88,7 +100,7 @@ class MenuWebHooks extends AdminHudSubMenu
 
 	VPPWebHookServerStatsTime GetSelectedThreshold()
 	{
-		int index = m_ComboTimer.GetCurrentItem();
+		int index = m_ComboTimer.GetIndex();
 		if ( index == -1 )
 			return VPPWebHookServerStatsTime.TEN_MINUTES;
 
@@ -112,7 +124,18 @@ class MenuWebHooks extends AdminHudSubMenu
 		}
 		return VPPWebHookServerStatsTime.TEN_MINUTES;
 	}
-	
+
+	//Drives the stats-interval VPPDropDownMenu (replaces the legacy XComboBox SetCurrentItem):
+	//updates the cached index + displayed text. Invoked by m_OnSelectItem on a user pick and
+	//called directly from SetSelected when loading a webhook's saved interval.
+	void OnSelectTimer(int index)
+	{
+		if (m_ComboTimer == null || index < 0 || index >= m_TimerLabels.Count()) return;
+		m_ComboTimer.SetIndex(index);
+		m_ComboTimer.SetText(m_TimerLabels.Get(index));
+		m_ComboTimer.Close();
+	}
+
 	void SaveEdits(int result)
 	{
 		if (result == DIAGRESULT.YES)
@@ -198,13 +221,13 @@ class MenuWebHooks extends AdminHudSubMenu
 			m_simplifiedLogs.SetChecked(dataClass.m_simplifiedMessages);
 
 			if ( dataClass.m_serverStatsInterval == VPPWebHookServerStatsTime.ONE_MINUTE)
-				m_ComboTimer.SetCurrentItem(0);
+				OnSelectTimer(0);
 			if ( dataClass.m_serverStatsInterval == VPPWebHookServerStatsTime.FIVE_MINUTES)
-				m_ComboTimer.SetCurrentItem(1);
+				OnSelectTimer(1);
 			if ( dataClass.m_serverStatsInterval == VPPWebHookServerStatsTime.TEN_MINUTES)
-				m_ComboTimer.SetCurrentItem(2);
+				OnSelectTimer(2);
 			if ( dataClass.m_serverStatsInterval == VPPWebHookServerStatsTime.FIFTEEN_MINUTES)
-				m_ComboTimer.SetCurrentItem(3);
+				OnSelectTimer(3);
 
 			m_urlText.SetText( dataClass.GetURL() );
 			m_webHookName.SetText( dataClass.GetName() );

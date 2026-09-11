@@ -8,9 +8,26 @@ class VPPAdminHud extends VPPScriptedMenu
 	private ref array<ref AdminHudSubMenu> M_SUB_MENUS;
 	private WrapSpacerWidget m_WrapSpacerWidget;
 	private ref array<ref VPPButton> m_Buttons;
+	private Widget m_IconsPanel;
+	private ref VPPStatsHud m_StatsHud;
+	private ref VPPSpectateOverlay m_SpectateOverlay;
+	
+	protected float   m_HoverProgress;
+	protected bool    m_IsHovered;
+	protected float   m_AnimSpeed = 5.0;  //progress units per second
+	protected float   m_PosOffset = 0.110; //multiplier on pos offset
+	
+	//pixel positions for hover effect
+	protected float   m_StartX, m_StartY;
+	protected float   m_EndX,   m_EndY;
+
+	protected int     m_BaseRows;
+	protected int     m_MaxExtraRows      = 3;
+	protected float   m_SafeScreenMargin  = 64.0;
+	protected float   m_IconsBaseW, m_IconsBaseH;
+	protected float   m_WrapBaseW,  m_WrapBaseH;
 
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
-	static ref ScriptInvoker m_OnUpdate = new ScriptInvoker(); //update queue
 	
 	void VPPAdminHud()
 	{
@@ -32,6 +49,8 @@ class VPPAdminHud extends VPPScriptedMenu
 		InsertButton("MenuPermissionsEditor", "Permission Editor", "set:dayz_gui_vpp image:vpp_icon_perms_editor", "#VSTR_TOOLTIP_PERMSEDITOR");
 		InsertButton("MenuWebHooks", "Webhooks", "set:dayz_gui_vpp image:vpp_icon_webHooks", "#VSTR_TOOLTIP_WEBHOOKS");
 		InsertButton("MenuXMLEditor", "XML Editor", "set:dayz_gui_vpp image:vpp_icon_xml_editor", "#VSTR_TOOLTIP_XMLEDITOR");
+		InsertButton("MenuSpectateTools", "Spectate", "set:dayz_gui_vpp image:vpp_icon_esp", "#VSTR_TOOLTIP_SPECTATE");
+		m_BaseRows = m_DefinedButtons.Count();
 		DefineButtons();
 		//----
 		//Compile Permissions needed by buttons registered.
@@ -45,8 +64,10 @@ class VPPAdminHud extends VPPScriptedMenu
 
 	void ~VPPAdminHud()
 	{
-		if (VPPAdminHud.m_OnUpdate)
-			VPPAdminHud.m_OnUpdate.Clear();
+		if (m_StatsHud)
+			delete m_StatsHud;
+		if (m_SpectateOverlay)
+			delete m_SpectateOverlay;
 	}
 	
 	/*
@@ -57,8 +78,32 @@ class VPPAdminHud extends VPPScriptedMenu
 		if (!m_Init)
 		{
 			layoutRoot   	    = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPAdminHud);
+			m_IconsPanel 		= layoutRoot.FindAnyWidget("IconsPanel");
 	  	  	m_WrapSpacerWidget  = WrapSpacerWidget.Cast(layoutRoot.FindAnyWidget("WrapSpacerWidget"));
 			m_Init = true;
+
+			m_IconsPanel.GetSize(m_IconsBaseW, m_IconsBaseH);
+			m_WrapSpacerWidget.GetSize(m_WrapBaseW, m_WrapBaseH);
+
+	        m_IconsPanel.GetPos(m_StartX, m_StartY);
+
+	        float parentW, parentH;
+	        Widget parent = m_IconsPanel.GetParent();
+	        parent.GetSize(parentW, parentH);
+
+	        float offsetX = parentW * m_PosOffset;
+	        m_EndX   = m_StartX + offsetX;
+	        m_EndY   = m_StartY;
+
+	        m_HoverProgress = 0.0;
+	        m_IsHovered     = false;
+
+			//Persistent admin Stats HUD (workspace-parented; survives toolbar close, self-gates visibility).
+			m_StatsHud = new VPPStatsHud();
+
+			//Spectate overlay (same persistence pattern; self-gates on IsSpectating).
+			m_SpectateOverlay = new VPPSpectateOverlay();
+
 			return layoutRoot;
 		}
 		//Call init within children
@@ -92,6 +137,33 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 	}
 		
+	private void UpdateToolbarCapacity()
+	{
+		if (!layoutRoot || !m_IconsPanel || !m_WrapSpacerWidget || m_BaseRows <= 0 || m_IconsBaseH <= 0 || m_WrapBaseH <= 0)
+			return;
+
+		float screenW, screenH;
+		layoutRoot.GetScreenSize(screenW, screenH);
+		if (screenH <= 0)
+			return;
+		float rowH = (m_IconsBaseH * screenH) / m_BaseRows;
+
+		int visibleRows = 0;
+		foreach(VPPButtonProperties data : m_DefinedButtons)
+		{
+			if (HasPermission(data.param1))
+				visibleRows++;
+		}
+
+		int maxExtra  = Math.Clamp(Math.Floor((screenH - m_SafeScreenMargin) / rowH) - m_BaseRows, 0, m_MaxExtraRows);
+		int extraRows = Math.Clamp(visibleRows - m_BaseRows, 0, maxExtra);
+
+		float panelH = m_IconsBaseH + ((extraRows * rowH) / screenH);
+		m_IconsPanel.SetSize(m_IconsBaseW, panelH);
+		m_WrapSpacerWidget.SetSize(m_WrapBaseW, (m_WrapBaseH * m_IconsBaseH) / panelH);
+		m_IconsPanel.Update();
+	}
+
 	void VerifyButtonsPermission(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
 	{
 		Param1<ref map<string,bool>> data;
@@ -106,6 +178,7 @@ class VPPAdminHud extends VPPScriptedMenu
 				CreateButtons(); //Creates UI part of things regardless of permission(s)
 			}
 			VPPAdminHud.m_OnPermissionsChanged.Invoke(m_ButtonPerms);
+			UpdateToolbarCapacity();
 		}
 	}
 
@@ -123,7 +196,7 @@ class VPPAdminHud extends VPPScriptedMenu
 
 	override void HideMenu()
 	{
-		MenuObjectManager objEditor = GetSubMenuByType(MenuObjectManager);
+		MenuObjectManager objEditor = MenuObjectManager.Cast(GetSubMenuByType(MenuObjectManager));
 		if (objEditor && objEditor.IsSubMenuVisible())
 		{
 			objEditor.HideSubMenu();
@@ -131,12 +204,39 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 		super.HideMenu();
 	}
-	
+
 	override void Update(float timeslice)
 	{
 		super.Update(timeslice);
-		foreach(AdminHudSubMenu m : M_SUB_MENUS)
-		{
+
+		//advance or rewind the hover progress
+        float delta = timeslice * m_AnimSpeed;
+        if (m_IsHovered && m_HoverProgress < 1.0)
+        {
+            m_HoverProgress = Math.Min(1.0, m_HoverProgress + delta);
+        }
+   		else if (!m_IsHovered && m_HoverProgress > 0.0)
+   		{
+            m_HoverProgress = Math.Max(0.0, m_HoverProgress - delta);
+        }
+
+        //interpolate pos
+        float curX = m_StartX + (m_EndX - m_StartX) * m_HoverProgress;
+        float curY = m_StartY + (m_EndY - m_StartY) * m_HoverProgress;
+        m_IconsPanel.SetPos(curX, curY);
+
+        Widget w = GetWidgetUnderCursor();
+        if (w == layoutRoot)
+        {
+        	m_IsHovered = false;
+        }
+        else
+        {
+        	if (w && (w.GetName() == "Button" || w == m_IconsPanel || w.GetName() == "ScrollWidget"))
+        		m_IsHovered = true;
+        }
+
+		foreach(AdminHudSubMenu m : M_SUB_MENUS){
 			m.OnUpdate(timeslice);
 		}
 	}
@@ -154,7 +254,7 @@ class VPPAdminHud extends VPPScriptedMenu
 				
 				for(int x = 0; x < M_SUB_MENUS.Count(); x++)
 				{
-					//Call to hide any broken widgets TODO: remove once DayZ fixes
+					//Call to hide any map widgets, they are stubborn on screen priority
 					if (M_SUB_MENUS[x] != subMenu)
 					{
 						M_SUB_MENUS[x].HideBrokenWidgets(true);
@@ -193,6 +293,6 @@ class VPPAdminHud extends VPPScriptedMenu
 	//toggle hide/show
 	void HideIconsPanel(bool hide)
 	{
-		layoutRoot.FindAnyWidget("IconsPanel").Show(!hide);
+		m_IconsPanel.Show(!hide);
 	}
 };

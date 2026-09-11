@@ -58,7 +58,7 @@ class InfoBoxInstance extends UIScriptedMenu
 		{
 			int m_x;
 			int m_y;
-			g_Game.GetMousePos(m_x, m_y);
+			GetMousePos(m_x, m_y);
 	    	m_Root.SetPos(m_x,m_y);
 
 			m_InfoPanelRoot.Show(true);

@@ -1,20 +1,19 @@
 FrameWidgetClass rootFrame {
  clipchildren 1
- color 1 0 0 1
+ color 0 0 0 0
  position 0 0
- size 0.45 0.65
+ size 0.46 0.56
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 0
- draggable 0
+ draggable 1
  {
   PanelWidgetClass Main {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0 0 0 0.549
-   position 0 0
+   color 0.749 0.773 0.8 1
    size 1 1
    hexactpos 1
    vexactpos 1
@@ -22,919 +21,573 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    draggable 0
-   style DayZDefaultPanel
+   style VPPPanel
    "no focus" 0
    {
-    PanelWidgetClass PanelTime {
+    PanelWidgetClass HeaderTitle {
      ignorepointer 1
-     color 0 0 0 0.549
-     position 0.01 0.23
-     size 0.4 0.332
+     color 0.031 0.035 0.039 0.85
+     position 0 0
+     size 1 0.055
+     halign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style VPPFillRound
      {
-      PanelWidgetClass PanelWidget0 {
-       visible 0
+      ImageWidgetClass ImgWindowIcon {
        ignorepointer 1
-       color 0 0 0 0.549
-       position 0 0.07
-       size 0.979 0.916
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-      }
-      PanelWidgetClass timePanel_title {
-       ignorepointer 1
-       color 0 0 0 0.8784
-       position 0 0
-       size 1 0.073
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-       {
-        TextWidgetClass title_timepanel_text {
-         ignorepointer 1
-         position 0 0
-         size 0.99 1.353
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Normal
-         text "#VSTR_LBL_WORLD_TIME"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 16
-         "text halign" center
-         "text valign" center
-        }
-       }
-      }
-      GridSpacerWidgetClass EditBoxesWrapper {
-       ignorepointer 1
-       size 2 0.912
-       halign center_ref
+       color 0.91 0.639 0.239 1
+       position 2 0
+       size 32 32
        valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       Padding 10
-       Margin 10
-       "Size To Content H" 1
-       "Size To Content V" 1
-       Columns 2
-       Rows 4
-       {
-        TextWidgetClass txtHour {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_HOUR"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 12
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-        EditBoxWidgetClass EditHour {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "0"
-         font "gui/fonts/sdf_MetronLight24"
-        }
-        TextWidgetClass txtMinute {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_MINUTE"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 12
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-        EditBoxWidgetClass EditMinute {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "0"
-         font "gui/fonts/sdf_MetronLight24"
-        }
-        TextWidgetClass txtDay {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_DAY"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 12
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-        EditBoxWidgetClass EditDay {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "0"
-         font "gui/fonts/sdf_MetronLight24"
-        }
-        TextWidgetClass txtMonth {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_MONTH"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 12
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-        EditBoxWidgetClass EditMonth {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "0"
-         font "gui/fonts/sdf_MetronLight24"
-        }
-        TextWidgetClass txtYear {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Bold
-         text "#VSTR_LBL_YEAR"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 11
-         "size to text h" 1
-         "size to text v" 1
-         "text halign" center
-         "text valign" center
-        }
-        EditBoxWidgetClass EditYear {
-         size 0.3 0.1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Editor
-         text "0"
-         font "gui/fonts/sdf_MetronLight24"
-        }
-       }
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:sun"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
       }
-      ButtonWidgetClass BtnSetDate {
-       position 0 0.02
-       size 0.83 0.1
-       halign center_ref
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style Editor
-       text "#VSTR_APPLY"
-       font "gui/fonts/MetronLight"
-      }
-     }
-    }
-    PanelWidgetClass PanelPresets {
-     ignorepointer 1
-     color 0 0 0 0.549
-     position 0.01 0.0402
-     size 0.57 0.522
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style DayZDefaultPanel
-     {
-      PanelWidgetClass PanelPresets_Title {
+      TextWidgetClass Title {
        ignorepointer 1
-       color 0 0 0 1
-       position 0 0
-       size 1 0.043
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
+       position 40 1
+       size 0.5 20
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-       {
-        TextWidgetClass title_presets_text {
-         ignorepointer 1
-         position 0 0
-         size 0.99 0.892
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Normal
-         text "#VSTR_LBL_PRESETS"
-         font "gui/fonts/sdf_MetronLight24"
-         "exact text" 1
-         "exact text size" 16
-         "text halign" center
-         "text valign" center
-        }
-       }
+       vexactsize 1
+       style None
+       text "#VSTR_WEATHER_MANAGER"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 20
+       "size to text h" 1
+       "size to text v" 1
       }
-      PanelWidgetClass PresetsDropDownPanel {
+      TextWidgetClass SubTitle {
        ignorepointer 1
-       position 0.00017 0.05
-       size 0.96834 0.698
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
+       color 0.604 0.627 0.651 1
+       position 40 19
+       size 0.6 13
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style blank
-       {
-        PanelWidgetClass PnlBgOptions {
-         ignorepointer 1
-         color 0 0 0 0.549
-         position 0 0.01
-         size 0.981 0.978
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style editor_selection
-        }
-        WrapSpacerWidgetClass TimePresetsDropDown {
-         visible 1
-         clipchildren 0
-         color 0.0157 0.0157 0.0157 0.549
-         position 0.00541 0.00751
-         size 0.49 0.1
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Colorable
-         "no focus" 0
-        }
-        WrapSpacerWidgetClass WeatherPresetsDropDown {
-         visible 1
-         clipchildren 0
-         color 0.0157 0.0157 0.0157 0.549
-         position 0.00648 0.00736
-         size 0.49 0.1
-         halign right_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Colorable
-         "no focus" 0
-        }
-       }
+       vexactsize 1
+       style None
+       text "#VSTR_WEATHER_SUBTITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "text color" 0.604 0.627 0.651 1
+       "exact text" 1
+       "exact text size" 13
+       "size to text h" 1
+       "size to text v" 1
       }
-      PanelWidgetClass PanelBg0 {
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0.016 0.01
-       size 0.48 0.231
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scaled 1
-       style DayZDefaultPanel
-       {
-        PanelWidgetClass PnlBgApplyPreset {
-         ignorepointer 1
-         color 0 0 0 0
-         size 0.963 0.917
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style DayZDefaultPanel
-        }
-        WrapSpacerWidgetClass SpacerButtonsTimePresets {
-         ignorepointer 1
-         color 0 0 0 0
-         position 0 0
-         size 1 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style Empty
-         Padding 5
-         Margin 16
-         "Size To Content H" 1
-         "Size To Content V" 1
-         {
-          ButtonWidgetClass BtnApplyTimePreset {
-           position 0.11491 0.14146
-           size 0.4413 0.2037
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_APPLY_PRESET"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnSaveTimePreset {
-           position 0 0.02
-           size 0.4413 0.2037
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_SAVE"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass BtnDeleteWeatherPreset {
-           color 0.8235 0.0941 0.0941 1
-           position 0 0.02
-           size 0.4413 0.2037
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_DELETE_W_PRESET"
-           font "gui/fonts/MetronLight"
-          }
-          ImageWidgetClass ImgInfoTimePreset {
-           ignorepointer 0
-           color 1 0 0 1
-           position 0 0.01
-           size 0.11 0.28
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "ToolTipHandler"
-           image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-          }
-         }
-        }
-        CheckBoxWidgetClass ChkBoxWorldOrCustom {
-         position 0.26 0
-         size 0.463 0.141
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         "no focus" 1
-         text "#VSTR_LBL_USE_CURRENT_TIME"
-         font "gui/fonts/MetronLight"
-        }
-       }
-      }
-      PanelWidgetClass PanelBg1 {
-       ignorepointer 1
-       color 0 0 0 0.549
-       position 0.016 0.01
-       size 0.48 0.231
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       color 1 1 1 1
+       position 4 0
+       size 26 26
        halign right_ref
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
        {
-        PanelWidgetClass PanelWidget1 {
+        ImageWidgetClass ImageClose {
          ignorepointer 1
-         color 0 0 0 0
-         position 0 0.03
-         size 0.973 0.937
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style editor_selection
-        }
-        WrapSpacerWidgetClass SpacerButtonsWeatherPresets {
-         ignorepointer 1
-         color 0 0 0 0
-         size 1 1
+         color 0.604 0.627 0.651 1
+         position 0 0
+         size 32 32
          halign center_ref
          valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style DayZDefaultPanel
-         Padding 5
-         Margin 16
-         {
-          ButtonWidgetClass BtnApplyWeatherPreset {
-           position -0.06091 0.1449
-           size 0.4413 0.2037
-           halign right_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_APPLY_PRESET"
-           font "gui/fonts/MetronLight"
-          }
-          ButtonWidgetClass spacerbutton {
-           visible 1
-           disabled 1
-           inheritalpha 0
-           ignorepointer 1
-           position -0.0496 0
-           size 0.3408 0.2
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           "no focus" 0
-          }
-          ButtonWidgetClass BtnSaveWeatherPreset {
-           position -0.13332 0
-           size 0.17336 0.2
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_SAVE"
-           font "gui/fonts/MetronLight"
-          }
-          EditBoxWidgetClass EditPresetName {
-           position 0.08685 0
-           size 0.6137 0.2
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_ENTER_NAME"
-           "Use default text" 1
-           "exact text" 1
-           font "gui/fonts/MetronLight14"
-          }
-          ButtonWidgetClass BtnDeleteTimePreset {
-           color 0.8235 0.0941 0.0941 1
-           position 0 0.02
-           size 0.4413 0.2037
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           style Editor
-           text "#VSTR_LBL_DELETE_W_PRESET"
-           font "gui/fonts/MetronLight"
-          }
-          ImageWidgetClass ImgInfoWeatherPreset {
-           ignorepointer 0
-           color 1 0 0 1
-           size 0.13 0.28
-           halign center_ref
-           valign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "ToolTipHandler"
-           image0 "set:ccgui_enforce image:FilterCurrentObjectivesFocus"
-           mode blend
-           "src alpha" 1
-           "no wrap" 1
-           stretch 1
-          }
-         }
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:x"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+         nocache 1
         }
        }
       }
      }
     }
-    PanelWidgetClass PanelInfo {
+    PanelWidgetClass PanelWeatherConfig {
      ignorepointer 1
-     color 0 0 0 0.549
-     position 0.01 0.04
-     size 0.4 0.182
+     color 1 1 1 1
+     position 0.008 0.065
+     size 0.485 0.57
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style DayZDefaultPanel
+     style VPPPanel
      {
-      PanelWidgetClass PnlBg {
-       visible 0
+      PanelWidgetClass weathercfg_title_img {
        ignorepointer 1
-       color 0 0 0 0.549
-       position 0 0.16
-       size 0.989 0.816
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
        halign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
-      }
-      PanelWidgetClass Info_Panel {
-       ignorepointer 1
-       color 0 0 0 1
-       position 0 0
-       size 1 0.143
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style DayZDefaultPanel
+       vexactsize 1
+       style VPPFillRound
        {
-        TextWidgetClass title_info_txt {
+        ImageWidgetClass ImgWeatherHeader {
          ignorepointer 1
-         position 0 0
-         size 0.99 1.353
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:droplets"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_sliders_text0 {
+         ignorepointer 1
+         position 28 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_WEATHER_CONFG"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+      PanelWidgetClass PanelRain {
+       ignorepointer 0
+       color 0.078 0.086 0.094 0.85
+       position 0.012 0.105
+       size 0.976 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPFillRound
+       {
+        SliderWidgetClass SliderRain {
+         color 1 1 1 1
+         position 0 0.08
+         size 0.96 0.4
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style VPPSlider
+         vertical 0
+         flipped 0
+         "fill in" 1
+         {
+          TextWidgetClass LabelRain {
+           ignorepointer 1
+           color 1 1 1 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 0
+           vexactpos 0
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "Rain:[0]"
+           font "gui/fonts/sdf_MetronLight72"
+           "outline size" 2
+           "outline color" 0 0 0 0.784
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        TextWidgetClass RateOfChangeLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.03 0.25
+         size 0.27 0.4
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style Normal
-         text "#VSTR_LBL_INFORMATION"
-         font "gui/fonts/sdf_MetronLight24"
+         style None
+         text "#VSTR_LBL_RATE_OF_CHANGE"
+         font "gui/fonts/sdf_MetronLight72"
          "exact text" 1
-         "exact text size" 16
-         "text halign" center
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
          "text valign" center
+        }
+        EditBoxWidgetClass EditRainRate {
+         position 0.31 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        TextWidgetClass DurationLabel {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.51 0.25
+         size 0.2 0.4
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_DURATION"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        EditBoxWidgetClass EditRainDur {
+         position 0.82 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
         }
        }
       }
-      GridSpacerWidgetClass info_stats_content {
-       inheritalpha 0
-       ignorepointer 1
-       color 0 0 0 0
-       position 0 0
-       size 0.985 0.0693
-       halign center_ref
-       valign bottom_ref
+      PanelWidgetClass PanelOvercast {
+       ignorepointer 0
+       color 0.078 0.086 0.094 0.85
+       position 0.012 0.325
+       size 0.976 0.2
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
-       Padding 12
-       Margin 6
-       "Size To Content V" 1
-       Columns 2
-       Rows 5
+       style VPPFillRound
        {
-        FrameWidgetClass WeatherTime {
-         ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
+        SliderWidgetClass SliderOvercast {
+         color 1 1 1 1
+         position 0 0.08
+         size 0.96 0.4
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style VPPSlider
+         vertical 0
+         flipped 0
+         "fill in" 1
          {
-          TextWidgetClass WeatherTimeLabel {
+          TextWidgetClass LabelOvercast {
            ignorepointer 1
+           color 1 1 1 1
            size 1 1
+           halign center_ref
            valign center_ref
-           hexactpos 1
-           vexactpos 1
+           hexactpos 0
+           vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "#VSTR_LBL_TIME"
-           font "gui/fonts/sdf_MetronLight24"
+           style None
+           text "Overcast:[0]"
+           font "gui/fonts/sdf_MetronLight72"
+           "outline size" 2
+           "outline color" 0 0 0 0.784
+           "bold text" 1
            "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass WeatherTimeInput {
-           ignorepointer 1
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
+           "exact text size" 13
            "text halign" center
            "text valign" center
           }
          }
         }
-        FrameWidgetClass WorldDate {
+        TextWidgetClass RateOfChangeLabel0 {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
+         color 0.604 0.627 0.651 1
+         position 0.03 0.25
+         size 0.27 0.4
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_RATE_OF_CHANGE"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        EditBoxWidgetClass EditOvercastRate {
+         position 0.31 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        TextWidgetClass DurationLabel0 {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.51 0.25
+         size 0.2 0.4
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_DURATION"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+        EditBoxWidgetClass EditOvercastDur {
+         position 0.82 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+       }
+      }
+      PanelWidgetClass PanelFog {
+       ignorepointer 0
+       color 0.078 0.086 0.094 0.85
+       position 0.012 0.545
+       size 0.976 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPFillRound
+       {
+        SliderWidgetClass SliderFog {
+         color 1 1 1 1
+         position 0 0.08
+         size 0.96 0.4
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style VPPSlider
+         vertical 0
+         flipped 0
+         "fill in" 1
          {
-          TextWidgetClass WorldDateLabel {
+          TextWidgetClass LabelFog {
            ignorepointer 1
+           color 1 1 1 1
            size 1 1
+           halign center_ref
            valign center_ref
-           hexactpos 1
-           vexactpos 1
+           hexactpos 0
+           vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "#VSTR_LBL_DATE"
-           font "gui/fonts/sdf_MetronLight24"
+           style None
+           text "Fog:[0]"
+           font "gui/fonts/sdf_MetronLight72"
+           "outline size" 2
+           "outline color" 0 0 0 0.784
+           "bold text" 1
            "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass WorldDateInput {
-           ignorepointer 1
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
+           "exact text size" 13
            "text halign" center
            "text valign" center
           }
          }
         }
-        FrameWidgetClass RainValue {
+        TextWidgetClass RateOfChangeLabel2 {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         {
-          TextWidgetClass RainValueLabel {
-           ignorepointer 1
-           size 1 1
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           style Normal
-           text "#VSTR_LBL_RAIN"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass RainValueInput {
-           ignorepointer 1
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-         }
+         color 0.604 0.627 0.651 1
+         position 0.03 0.25
+         size 0.27 0.4
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_RATE_OF_CHANGE"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
         }
-        FrameWidgetClass OverCast {
-         ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         {
-          TextWidgetClass OverCastLabel {
-           ignorepointer 1
-           size 1 1
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_OVERCAST"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass OverCastInput {
-           ignorepointer 1
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-         }
+        EditBoxWidgetClass EditFogRate {
+         position 0.31 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
         }
-        FrameWidgetClass FogValue {
+        TextWidgetClass DurationLabel2 {
          ignorepointer 1
-         position 0 0
-         size 48 24
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         {
-          TextWidgetClass FogLabel {
-           ignorepointer 1
-           size 1 1
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_FOG"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass FogInput {
-           ignorepointer 1
-           position 0 0
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-         }
+         color 0.604 0.627 0.651 1
+         position 0.51 0.25
+         size 0.2 0.4
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_DURATION"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 10
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
         }
-        FrameWidgetClass WindForce {
-         ignorepointer 1
-         position 0 0
-         size 49 23.3345
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
+        EditBoxWidgetClass EditFogDur {
+         position 0.82 0.25
+         size 0.16 0.36
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "EditBoxEventHandler"
+         style VPPInput
+         "no focus" 0
+         text "1"
+         "Use default text" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+       }
+      }
+      PanelWidgetClass PanelWindForce {
+       ignorepointer 0
+       color 0.078 0.086 0.094 0.85
+       position 0.012 0.76
+       size 0.976 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPFillRound
+       {
+        SliderWidgetClass SliderWindForce {
+         color 1 1 1 1
+         position 0 0.22
+         size 0.96 0.4
+         halign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         scriptclass "SliderEventHandler"
+         style VPPSlider
+         vertical 0
+         flipped 0
+         "fill in" 1
          {
-          TextWidgetClass WindForceLabel {
+          TextWidgetClass LabelWindForce {
            ignorepointer 1
+           color 1 1 1 1
            size 1 1
+           halign center_ref
            valign center_ref
-           hexactpos 1
-           vexactpos 1
+           hexactpos 0
+           vexactpos 0
            hexactsize 0
            vexactsize 0
-           text "#VSTR_LBL_WIND_FORCE"
-           font "gui/fonts/sdf_MetronLight24"
+           style None
+           text "WindForce:[0]"
+           font "gui/fonts/sdf_MetronLight72"
+           "outline size" 2
+           "outline color" 0 0 0 0.784
+           "bold text" 1
            "exact text" 1
-           "exact text size" 11
-           "size to text h" 1
-           "size to text v" 0
-           "text halign" center
-           "text valign" center
-          }
-          TextWidgetClass WindForceInput {
-           ignorepointer 1
-           size 1 1
-           halign right_ref
-           valign center_ref
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 0
-           text "null"
-           "size to text h" 1
-           "size to text v" 0
+           "exact text size" 13
            "text halign" center
            "text valign" center
           }
@@ -945,490 +598,1096 @@ FrameWidgetClass rootFrame {
      }
     }
     ButtonWidgetClass BtnSetWeather {
-     position 0 0.01
-     size 0.45 0.04
-     halign center_ref
-     valign bottom_ref
+     ignorepointer 0
+     color 1 1 1 1
+     position 0.008 0.642
+     size 0.485 0.045
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     style Editor
-     text "#VSTR_APPLY"
-     font "gui/fonts/MetronLight"
-    }
-    PanelWidgetClass PanelWeatherConfig {
-     ignorepointer 1
-     color 0 0 0 0.549
-     position 0 0.0633
-     size 0.98 0.3697
-     halign center_ref
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style DayZDefaultPanel
+     style VPPButton
+     "no focus" 1
+     font "gui/fonts/sdf_MetronLight72"
      {
-      PanelWidgetClass PnlBgCOnfig {
+      ImageWidgetClass ImgSetWeather {
        ignorepointer 1
-       color 0 0 0 0
-       position 0 0.12
-       size 0.991 0.865
-       halign center_ref
+       color 0.604 0.627 0.651 1
+       position 0.34 0
+       size 0.056 0.882
+       valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style blank
+       image0 "set:vpp_icons image:check"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
       }
-      PanelWidgetClass weathercfg_title_img {
+      TextWidgetClass LblSetWeather {
        ignorepointer 1
-       color 0 0 0 1
-       position 0 0
-       size 1 0.1158
+       size 1 1
        halign center_ref
-       hexactpos 0
-       vexactpos 0
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
        hexactsize 0
        vexactsize 0
-       style DayZDefaultPanel
+       style None
+       text "#VSTR_LBL_SET_WEATHER"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "size to text h" 1
+       "size to text v" 1
+       "text valign" center
+      }
+     }
+    }
+    PanelWidgetClass PanelInfo {
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.008 0.693
+     size 0.485 0.3
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass Info_Panel {
+       ignorepointer 1
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
        {
-        TextWidgetClass title_sliders_text0 {
+        ImageWidgetClass ImgInfoHeader {
          ignorepointer 1
-         position -0.00432 0
-         size 1.0085 1.669
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
          valign center_ref
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:activity"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_info_txt {
+         ignorepointer 1
+         position 28 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Normal
-         text "#VSTR_LBL_WEATHER_CONFG"
-         font "gui/fonts/sdf_MetronLight24"
+         style None
+         text "#VSTR_LBL_INFORMATION"
+         font "gui/fonts/sdf_MetronLight72"
          "exact text" 1
          "exact text size" 16
-         "text halign" center
+         "size to text h" 1
+         "size to text v" 1
          "text valign" center
         }
        }
       }
-      GridSpacerWidgetClass SpacerPanels {
+      GridSpacerWidgetClass info_stats_content {
        ignorepointer 1
-       size 1.093 0.664
+       color 0 0 0 0
+       position 0.015 30
+       size 0.97 0.82
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       "Ignore invisible" 1
+       Padding 3
+       Margin 0
+       "Size To Content H" 0
+       "Size To Content V" 0
+       Columns 2
+       Rows 3
+       {
+        PanelWidgetClass WeatherTime {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass WeatherTimeLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.55 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_TIME"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass WeatherTimeInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 6 0
+           size 0.4 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass WorldDate {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass WorldDateLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.55 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_DATE"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass WorldDateInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 6 0
+           size 0.5 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass RainValue {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass RainValueLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.55 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_RAIN"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass RainValueInput {
+           ignorepointer 1
+           color 0.239 0.49 0.839 1
+           position 6 0
+           size 0.4 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass OverCast {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass OverCastLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_OVERCAST"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass OverCastInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 6 0
+           size 0.35 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass FogValue {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass FogLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.55 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_FOG"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass FogInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 6 0
+           size 0.4 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass WindForce {
+         ignorepointer 1
+         color 0.106 0.118 0.133 0.85
+         size 0.49 26
+         hexactpos 0
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style VPPFillRound
+         {
+          TextWidgetClass WindForceLabel {
+           ignorepointer 1
+           color 0.604 0.627 0.651 1
+           position 6 0
+           size 0.6 1
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "#VSTR_LBL_WIND_FORCE"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text valign" center
+          }
+          TextWidgetClass WindForceInput {
+           ignorepointer 1
+           color 1 1 1 1
+           position 6 0
+           size 0.35 1
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text "null"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "size to text h" 1
+           "size to text v" 1
+           "text halign" right
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelTime {
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.502 0.065
+     size 0.49 0.335
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass timePanel_title {
+       ignorepointer 1
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
        halign center_ref
-       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgTimeHeader {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:history"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass title_timepanel_text {
+         ignorepointer 1
+         position 28 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_WORLD_TIME"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+      TextWidgetClass txtHour {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.04 0.15
+       size 0.42 0.09
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       Padding 10
-       Margin 8
-       "Size To Content H" 1
-       "Size To Content V" 1
-       content_halign center
-       content_valign center
-       Columns 2
-       Rows 4
+       style None
+       text "#VSTR_LBL_HOUR"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 11
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass EditHour {
+       position 0.04 0.235
+       size 0.42 0.135
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "0"
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass txtMinute {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.54 0.15
+       size 0.42 0.09
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_MINUTE"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 11
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass EditMinute {
+       position 0.54 0.235
+       size 0.42 0.135
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "0"
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass txtDay {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.04 0.4
+       size 0.42 0.09
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_DAY"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 11
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass EditDay {
+       position 0.04 0.495
+       size 0.42 0.135
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "0"
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass txtMonth {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.54 0.4
+       size 0.42 0.09
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_MONTH"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 11
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass EditMonth {
+       position 0.54 0.495
+       size 0.42 0.135
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "0"
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass txtYear {
+       ignorepointer 1
+       color 0.604 0.627 0.651 1
+       position 0.04 0.655
+       size 0.42 0.09
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_LBL_YEAR"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 11
+       "size to text h" 1
+       "size to text v" 1
+      }
+      EditBoxWidgetClass EditYear {
+       position 0.04 0.75
+       size 0.42 0.135
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "0"
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      ButtonWidgetClass BtnSetDate {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.54 0.75
+       size 0.42 0.14
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
        {
-        PanelWidgetClass PanelRain {
-         ignorepointer 0
-         keepsafezone 0
-         color 0 0 0 0.549
-         position 0 0
-         size 0.453 0.653
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style DayZDefaultPanel
-         {
-          SliderWidgetClass SliderRain {
-           position 0 0.17
-           size 0.95 0.25
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "SliderEventHandler"
-           style Default
-           vertical 0
-           flipped 0
-           "fill in" 1
-		 {
-            TextWidgetClass LabelRain {
-             ignorepointer 1
-             size 1 0.45
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             style Bold
-             text "Rain:[50]"
-             font "gui/fonts/sdf_MetronLight24"
-             "outline size" 2
-             "outline color" 0 0 0 1
-             "bold text" 1
-             "exact text" 1
-             "exact text size" 12
-             "text halign" center
-             "text valign" center
-            }
-           }
-          }
-          EditBoxWidgetClass EditRainRate {
-           position 0.02 0.33
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          EditBoxWidgetClass EditRainDur {
-           position 0.02 0.1
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          TextWidgetClass DurationLabel {
-           ignorepointer 1
-           position 0.03296 0.14906
-           size 0.22412 0.15
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_DURATION"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-          TextWidgetClass RateOfChangeLabel {
-           ignorepointer 1
-           position -0.0328 0.33
-           size 0.3901 0.15
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_RATE_OF_CHANGE"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-         }
-        }
-        PanelWidgetClass PanelOvercast {
+        TextWidgetClass LblSetDate {
          ignorepointer 1
-         color 0 0 0 0.549
-         size 0.45 0.65
+         size 0.108 0.79
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
-         {
-          SliderWidgetClass SliderOvercast {
-           clipchildren 1
-           position 0 0.17
-           size 0.95 0.25
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "SliderEventHandler"
-           style Default
-           vertical 0
-           flipped 0
-           "fill in" 1
-		   {
-            TextWidgetClass LabelOvercast {
-             clipchildren 1
-             ignorepointer 1
-             size 1 0.45
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             style Bold
-             text "Overcast:[50]"
-             font "gui/fonts/sdf_MetronBook24"
-             "outline size" 2
-             "outline color" 0 0 0 1
-             "bold text" 1
-             "exact text" 1
-             "exact text size" 12
-             "size to text h" 0
-             "size to text v" 0
-             "text halign" center
-             "text valign" center
-            }
-           }
-          }
-          EditBoxWidgetClass EditOvercastRate {
-           position 0.02 0.33
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          EditBoxWidgetClass EditOvercastDur {
-           position 0.02 0.1
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          TextWidgetClass DurationLabel0 {
-           ignorepointer 1
-           position 0.03296 0.14906
-           size 0.22412 0.15
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_DURATION"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-          TextWidgetClass RateOfChangeLabel0 {
-           ignorepointer 1
-           position -0.03535 0.32635
-           size 0.3901 0.15
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_RATE_OF_CHANGE"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-         }
+         text "#VSTR_LBL_SET_DATE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
         }
-        PanelWidgetClass PanelFog {
+       }
+      }
+     }
+    }
+    PanelWidgetClass PanelPresets {
+     clipchildren 0
+     ignorepointer 1
+     color 1 1 1 1
+     position 0.502 0.405
+     size 0.49 0.585
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style VPPPanel
+     {
+      PanelWidgetClass PanelPresets_Title {
+       ignorepointer 1
+       color 0.039 0.043 0.047 0.85
+       position 0 1
+       size 0.99 28
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgPresetsHeader {
          ignorepointer 1
-         color 0 0 0 0.549
-         size 0.45 0.65
-         halign center_ref
+         color 0.91 0.639 0.239 1
+         position 2 0
+         size 24 24
          valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         style DayZDefaultPanel
-         {
-          SliderWidgetClass SliderFog {
-           position 0 0.17
-           size 0.95 0.25
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "SliderEventHandler"
-           style Default
-           vertical 0
-           flipped 0
-           "fill in" 1
-		   {
-            TextWidgetClass LabelFog {
-             ignorepointer 1
-             size 1 0.45
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             style Bold
-             text "Fog:[50]"
-             font "gui/fonts/sdf_MetronLight24"
-             "outline size" 2
-             "outline color" 0 0 0 1
-             "bold text" 1
-             "exact text" 1
-             "exact text size" 12
-             "text halign" center
-             "text valign" center
-            }
-           }
-          }
-          EditBoxWidgetClass EditFogRate {
-           position 0.02 0.33
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          EditBoxWidgetClass EditFogDur {
-           position 0.02 0.1
-           size 0.29 0.2
-           halign right_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "EditBoxEventHandler"
-           style Editor
-           "no focus" 0
-           text "1"
-           "Use default text" 0
-           "exact text" 0
-           font "gui/fonts/MetronLight16"
-          }
-          TextWidgetClass DurationLabel2 {
-           ignorepointer 1
-           position 0.03296 0.1372
-           size 0.22412 0.16582
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_DURATION"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-          TextWidgetClass RateOfChangeLabel2 {
-           ignorepointer 1
-           position -0.03444 0.31211
-           size 0.3901 0.15791
-           halign center_ref
-           valign bottom_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           text "#VSTR_LBL_RATE_OF_CHANGE"
-           font "gui/fonts/sdf_MetronLight24"
-           "exact text" 1
-           "exact text size" 12
-          }
-         }
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:save"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
         }
-        PanelWidgetClass PanelWindForce {
+        TextWidgetClass title_presets_text {
          ignorepointer 1
-         color 0 0 0 0.549
-         size 0.45 0.65
+         position 28 0
+         size 0.7 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_PRESETS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+      EditBoxWidgetClass EditPresetName {
+       position 0.012 0.3
+       size 0.47 0.08
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPInput
+       text "#VSTR_LBL_ENTER_NAME"
+       "Use default text" 1
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      CheckBoxWidgetClass ChkBoxWorldOrCustom {
+       ignorepointer 0
+       position 0.52 0.3
+       size 0.46 0.08
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPCheckBox
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass TxtWorldOrCustom {
+         ignorepointer 1
+         position 28 0
+         size 1 1
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_USE_CURRENT_TIME"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyWeatherPreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.012 0.41
+       size 0.47 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblApplyPreset {
+         ignorepointer 1
+         size 0.108 0.79
          halign center_ref
          valign center_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         style DayZDefaultPanel
-         {
-          SliderWidgetClass SliderWindForce {
-           position 0 0.17
-           size 0.95 0.25
-           halign center_ref
-           hexactpos 0
-           vexactpos 0
-           hexactsize 0
-           vexactsize 0
-           scriptclass "SliderEventHandler"
-           style Default
-           vertical 0
-           flipped 0
-           "fill in" 1
-		   {
-            TextWidgetClass LabelWindForce {
-             ignorepointer 1
-             position 0 0
-             size 1 0.45
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 0
-             vexactsize 0
-             style Bold
-             text "WindForce:[50]"
-             font "gui/fonts/sdf_MetronLight24"
-             "outline size" 2
-             "outline color" 0 0 0 1
-             "bold text" 1
-             "exact text" 1
-             "exact text size" 12
-             "text halign" center
-             "text valign" center
-            }
-           }
-          }
-         }
+         text "#VSTR_LBL_APPLY_PRESET"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnApplyTimePreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.52 0.41
+       size 0.46 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblApplyPreset0 {
+         ignorepointer 1
+         size 0.108 0.79
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_APPLY_PRESET"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnSaveWeatherPreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.012 0.51
+       size 0.47 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblSavePreset {
+         ignorepointer 1
+         size 0.108 0.79
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_SAVE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnSaveTimePreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.52 0.51
+       size 0.46 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblSavePreset0 {
+         ignorepointer 1
+         size 0.108 0.79
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_SAVE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnDeleteTimePreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.012 0.61
+       size 0.47 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButtonDanger
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblDeletePreset {
+         ignorepointer 1
+         size 0.108 0.79
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_DELETE_W_PRESET"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnDeleteWeatherPreset {
+       ignorepointer 0
+       color 1 1 1 1
+       position 0.52 0.61
+       size 0.46 0.085
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButtonDanger
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        TextWidgetClass LblDeletePreset0 {
+         ignorepointer 1
+         size 0.108 0.79
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "#VSTR_LBL_DELETE_W_PRESET"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 16
+         "size to text h" 1
+         "size to text v" 1
+        }
+       }
+      }
+      ImageWidgetClass ImgInfoWeatherPreset {
+       ignorepointer 0
+       color 0.604 0.627 0.651 1
+       position 0.012 0
+       size 24 24
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ToolTipHandler"
+       image0 "set:vpp_icons image:info"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      ImageWidgetClass ImgInfoTimePreset {
+       ignorepointer 0
+       color 0.604 0.627 0.651 1
+       position 0.012 0.005
+       size 24 24
+       halign right_ref
+       valign bottom_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ToolTipHandler"
+       image0 "set:vpp_icons image:info"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      PanelWidgetClass PresetsDropDownPanel {
+       clipchildren 0
+       ignorepointer 1
+       color 0 0 0 0
+       position 0.012 34
+       size 0.976 0.13
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style blank
+       {
+        TextWidgetClass lbl_weather_presets {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.01 0
+         size 0.48 0.34
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_WEATHER_PRESETS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 11
+         "size to text h" 1
+         "size to text v" 1
+        }
+        TextWidgetClass lbl_time_presets {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 0.01 0
+         size 0.48 0.34
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_LBL_TIME_PRESETS"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 11
+         "size to text h" 1
+         "size to text v" 1
+        }
+        WrapSpacerWidgetClass WeatherPresetsDropDown {
+         visible 1
+         clipchildren 0
+         color 0 0 0 0
+         position 0.005 0.4
+         size 0.485 0.55
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Colorable
+         "no focus" 0
+        }
+        WrapSpacerWidgetClass TimePresetsDropDown {
+         visible 1
+         clipchildren 0
+         color 0 0 0 0
+         position 0.005 0.4
+         size 0.485 0.55
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style Colorable
+         "no focus" 0
         }
        }
       }
@@ -1438,7 +1697,7 @@ FrameWidgetClass rootFrame {
   }
   PanelWidgetClass Header {
    ignorepointer 0
-   size 0.993 0.028
+   size 0.91 0.055
    halign center_ref
    hexactpos 0
    vexactpos 0
@@ -1446,67 +1705,6 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    draggable 1
    style blank
-  }
-  PanelWidgetClass HeaderTitle {
-   ignorepointer 1
-   color 0 0 0 1
-   position 0 0
-   size 1 0.03
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 0
-   scaled 0
-   draggable 0
-   style DayZDefaultPanel
-   {
-    TextWidgetClass Title {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Bold
-     text "#VSTR_WEATHER_MANAGER"
-     font "gui/fonts/sdf_MetronLight24"
-     "exact text" 0
-     "size to text h" 1
-     "size to text v" 1
-     "text halign" center
-     "text valign" center
-    }
-    ButtonWidgetClass BtnClose {
-     clipchildren 1
-     color 0 0 0 1
-     size 0.03 1
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style Editor
-     {
-      ImageWidgetClass ImageClose {
-       ignorepointer 1
-       color 1 0 0 1
-       size 0.97 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       image0 "set:ccgui_enforce image:Icon28EmptySlot"
-       mode additive
-       "src alpha" 1
-      }
-     }
-    }
-   }
   }
  }
 }

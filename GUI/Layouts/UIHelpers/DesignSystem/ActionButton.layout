@@ -1,0 +1,50 @@
+ButtonWidgetClass ActionButtonRoot {
+ ignorepointer 0
+ color 1 1 1 1
+ position 0 0
+ size 0.48 28
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ style VPPButton
+ font "gui/fonts/sdf_MetronLight72"
+ "exact text" 1
+ "exact text size" 14
+ {
+  ImageWidgetClass ActionButtonIcon {
+   ignorepointer 1
+   color 1 1 1 1
+   position 6 0
+   size 13 13
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   image0 "set:vpp_icons image:check"
+   mode blend
+   "src alpha" 1
+   "stretch mode" stretch_w_h
+   filter 1
+  }
+  TextWidgetClass ActionButtonLabel {
+   ignorepointer 1
+   position 26 0
+   size 1 1
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "Action"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+ }
+}

@@ -1,126 +1,88 @@
 PanelWidgetClass PanelPlayer {
  ignorepointer 1
  keepsafezone 1
- color 1 1 1 0.549
- size 1 0.15
+ color 0.106 0.118 0.133 0.85
+ size 1 24
  halign center_ref
  valign center_ref
  hexactpos 0
  vexactpos 0
  hexactsize 0
- vexactsize 0
- style DayZDefaultPanel
+ vexactsize 1
+ style VPPFillRound
  {
-  PanelWidgetClass PnlBg {
-   ignorepointer 1
-   color 0 0 0 1
-   size 0.996 0.966
-   halign center_ref
+  ButtonWidgetClass btnRemoveUser {
+   ignorepointer 0
+   color 1 1 1 1
+   position 3 0
+   size 22 22
    valign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanel
-  }
-  GridSpacerWidgetClass player_content {
-   visible 1
-   ignorepointer 1
-   color 0 0 0 0
-   size 1 0
-   halign center_ref
-   valign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style DayZDefaultPanelBottom
-   Padding 4
-   Margin 6
-   "Size To Content V" 1
-   Columns 1
-   Rows 5
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scriptclass "ConfirmationEventHandler"
+   style VPPButtonGhost
+   "no focus" 1
    {
-    FrameWidgetClass PlayerFrame {
+    ImageWidgetClass icon {
      ignorepointer 1
+     color 0.761 0.271 0.271 1
      position 0 0
-     size 48 35
+     size 24 24
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     {
-      TextWidgetClass TxtPlayerName {
-       ignorepointer 0
-       position 45 0
-       size 0.5 0.8
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "User"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 14
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      TextWidgetClass TextGUID {
-       ignorepointer 1
-       position 0 0
-       size 0.5 0.9
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "5454654654654654"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 12
-       "size to text h" 1
-       "size to text v" 1
-       "text halign" center
-       "text valign" center
-      }
-      ButtonWidgetClass btnRemoveUser {
-       color 1 0 0 1
-       position 0.005 0
-       size 0.07 0.7
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       scriptclass "ConfirmationEventHandler"
-       {
-        ImageWidgetClass icon {
-         ignorepointer 1
-         position 0 0
-         size 1 1
-         halign center_ref
-         valign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:exit"
-         mode additive
-         "src alpha" 1
-         "no wrap" 1
-         stretch 1
-        }
-       }
-      }
-     }
+     image0 "set:vpp_icons image:user_minus"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
     }
    }
+  }
+  TextWidgetClass TxtPlayerName {
+   ignorepointer 0
+   color 1 1 1 1
+   position 30 0
+   size 0.5 1
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "my names long"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 13
+   "size to text h" 1
+   "size to text v" 0
+   "text valign" center
+  }
+  TextWidgetClass TextGUID {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 8 0
+   size 0.5 1
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style None
+   text "12345678999999999"
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 11
+   "size to text h" 1
+   "size to text v" 0
+   "text halign" right
+   "text valign" center
   }
  }
 }

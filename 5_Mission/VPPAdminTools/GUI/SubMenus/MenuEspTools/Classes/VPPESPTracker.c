@@ -5,8 +5,8 @@ class VPPESPTracker: ScriptedWidgetEventHandler
     protected CheckBoxWidget   m_CheckBox;
     protected TextWidget       m_ItemNameWidget;
     protected TextWidget       m_ItemDistanceWidget;
-	protected SliderWidget     m_HealthInput;
-	protected SliderWidget     m_BloodInput;
+	protected Widget           m_HealthInput; //VPPFill bar; width = vital %, tinted by threshold
+	protected Widget           m_BloodInput;
 	
 	protected string 			m_BBtypeName; //for basebuilding typenames
 	protected string 			m_BaseItemCode;
@@ -32,6 +32,8 @@ class VPPESPTracker: ScriptedWidgetEventHandler
     protected vector			m_MarkerPositon;
     protected bool				m_IsMarkerVisible;
 	protected bool				m_DetialedWidget;
+	protected bool				m_DistCollapsed;     //true while sections are auto-collapsed by distance
+	protected ref array<bool>	m_SavedExpandStates; //per-section expand state saved before auto-collapse
 	protected SurvivorBase		player;
 	protected int				m_bgColor;
 	EntityAI					m_TrackerEntity;
@@ -75,7 +77,9 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 
     void ~VPPESPTracker() 
 	{
-		VPPUIManager.WIDGET_PTRs.RemoveItem(m_RootWidget); //For drag-selection
+		if (VPPUIManager.WIDGET_PTRs != NULL && m_RootWidget != NULL)
+			VPPUIManager.WIDGET_PTRs.RemoveItem(m_RootWidget); //For drag-selection
+
 		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Remove(this.DoUpdate);
         if (m_RootWidget != null)
 			m_RootWidget.Unlink();
@@ -121,8 +125,8 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 			
 			m_ItemNameWidget   	 = TextWidget.Cast(m_RootWidget.FindAnyWidget("NameInput"));
 			m_ItemDistanceWidget = TextWidget.Cast(m_RootWidget.FindAnyWidget("DistanceInput"));
-			m_HealthInput		 = SliderWidget.Cast(m_RootWidget.FindAnyWidget("HealthInput"));
-			m_BloodInput		 = SliderWidget.Cast(m_RootWidget.FindAnyWidget("BloodInput"));
+			m_HealthInput		 = m_RootWidget.FindAnyWidget("HealthInput");
+			m_BloodInput		 = m_RootWidget.FindAnyWidget("BloodInput");
 			m_GUIDCopy		 	 = ButtonWidget.Cast(m_RootWidget.FindAnyWidget("GUIDCopy"));
 			m_SteamIDCopy        = ButtonWidget.Cast(m_RootWidget.FindAnyWidget("SteamIDCopy"));
 			m_CopyAll        	 = ButtonWidget.Cast(m_RootWidget.FindAnyWidget("CopyAll"));
@@ -488,15 +492,21 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 
 				float xs, ys;
 				m_RootWidget.GetSize(xs, ys);
-				
-				if(m_ScaleWithDistance && z >= 50)
+
+				if (m_DetialedWidget)
 				{
-					xs = m_ReferenceX * ((50 / z) * FOV_scale);
-					ys = m_ReferenceY * ((50 / z) * FOV_scale);
+					// no resize -- reposition + fade only (handled above), vanilla pattern.
 				}
-				//Print(xs.ToString() + " :: " + ys.ToString());
-				m_RootWidget.SetSize(xs, ys, true);
-				m_RootWidget.Update();
+				else
+				{
+					if (m_ScaleWithDistance && z >= 50)
+					{
+						xs = m_ReferenceX * ((50 / z) * FOV_scale);
+						ys = m_ReferenceY * ((50 / z) * FOV_scale);
+					}
+					m_RootWidget.SetSize(xs, ys, true);
+					m_RootWidget.Update();
+				}
 			}
 		
             m_SpacerGrid.Update();
@@ -514,9 +524,22 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				m_RootWidget.FindAnyWidget("IconDead").Show(!player.IsAlive());
 				m_RootWidget.FindAnyWidget("StrDead").Show(!player.IsAlive());
 
-				m_HealthInput.SetCurrent(player.GetTransferValues().m_HealthClient * 100);
-				m_BloodInput.SetCurrent(player.GetTransferValues().m_BloodClient * 5000);
+				float hpPct = Math.Clamp(player.GetTransferValues().m_HealthClient, 0.0, 1.0);
+				float blPct = Math.Clamp(player.GetTransferValues().m_BloodClient, 0.0, 1.0);
+				if (m_HealthInput)
+				{
+					m_HealthInput.SetSize(hpPct, 1.0);
+					m_HealthInput.SetColor(VitalColor(hpPct));
+				}
+				if (m_BloodInput)
+				{
+					m_BloodInput.SetSize(blPct, 1.0);
+					m_BloodInput.SetColor(VitalColor(blPct));
+				}
 			}
+
+			if (m_DetialedWidget)
+				UpdateDistanceCollapse(z);
         }
 		else if (m_RootWidget != NULL) 
 		{
@@ -524,6 +547,50 @@ class VPPESPTracker: ScriptedWidgetEventHandler
         }
     }
 	
+	//Collapse all detail sections when the camera is far (keeps far-away panels compact), then restore the
+	//previous expand state when it comes back in range. Hysteresis (100 collapse / 85 restore) avoids thrash.
+	void UpdateDistanceCollapse(float dist)
+	{
+		if (!m_catagoryHeaders || m_catagoryHeaders.Count() <= 0)
+			return;
+		if (!m_SavedExpandStates)
+			m_SavedExpandStates = new array<bool>;
+
+		if (!m_DistCollapsed && dist > 100)
+		{
+			m_SavedExpandStates.Clear();
+			foreach (VPPEspCatagoryHeader h : m_catagoryHeaders)
+			{
+				if (!h)
+				{
+					m_SavedExpandStates.Insert(false);
+					continue;
+				}
+				m_SavedExpandStates.Insert(h.IsExpanded());
+				h.SetExpanded(false);
+			}
+			m_DistCollapsed = true;
+		}
+		else if (m_DistCollapsed && dist < 85)
+		{
+			for (int i = 0; i < m_catagoryHeaders.Count(); i++)
+			{
+				if (m_catagoryHeaders[i] && i < m_SavedExpandStates.Count())
+					m_catagoryHeaders[i].SetExpanded(m_SavedExpandStates[i]);
+			}
+			m_DistCollapsed = false;
+		}
+	}
+
+	//design-system vital threshold tint (DesignSystem.md §1)
+	int VitalColor(float pct)
+	{
+		if (pct >= 0.75) return ARGB(255, 76, 175, 80);  //green
+		if (pct >= 0.50) return ARGB(255, 217, 178, 61); //yellow
+		if (pct >= 0.25) return ARGB(255, 232, 163, 61); //orange
+		return ARGB(255, 194, 69, 69);                   //red
+	}
+
 	//For teleport feature
 	void OnDragTracker()
 	{

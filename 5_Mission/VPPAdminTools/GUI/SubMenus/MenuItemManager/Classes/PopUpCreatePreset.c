@@ -2,7 +2,6 @@ class PopUpCreatePreset extends ScriptedWidgetEventHandler
 {
 	private ref MenuItemManager 	m_RootClass;
 	private Widget 		 			m_root;
-	private ButtonWidget 			m_Close;
 	private ButtonWidget 			m_Cancel;
 	private ButtonWidget 			m_Save;
 	private EditBoxWidget           m_editbox_name;
@@ -13,7 +12,6 @@ class PopUpCreatePreset extends ScriptedWidgetEventHandler
 		m_root = w;
 		m_root.SetHandler(this);
 		
-		m_Close  = ButtonWidget.Cast(m_root.FindAnyWidget("button_close"));
 		m_Cancel = ButtonWidget.Cast(m_root.FindAnyWidget("button_cancel"));
 		m_Save   = ButtonWidget.Cast(m_root.FindAnyWidget("button_save"));
 		m_editbox_name   = EditBoxWidget.Cast(m_root.FindAnyWidget("editbox_name"));
@@ -44,7 +42,6 @@ class PopUpCreatePreset extends ScriptedWidgetEventHandler
 	{
 		switch(w)
 		{
-			case m_Close:
 			case m_Cancel:
 			delete this;
 			break;

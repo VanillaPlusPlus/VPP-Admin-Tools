@@ -35,7 +35,7 @@ class ToolTipHandler extends ScriptedWidgetEventHandler
 		{
 			int m_x;
 			int m_y;
-			g_Game.GetMousePos(m_x, m_y);
+			GetMousePos(m_x, m_y);
 			if (m_SnapLeft)
 			{
 				float width,height;

@@ -1,7 +1,7 @@
 PanelWidgetClass PanelHeader {
  inheritalpha 1
  ignorepointer 1
- color 0 0 0 0.4314
+ color 0.039 0.043 0.047 0.9
  size 0.5 0.6
  halign center_ref
  hexactpos 0
@@ -9,12 +9,13 @@ PanelWidgetClass PanelHeader {
  hexactsize 0
  vexactsize 0
  scriptclass "VPPEspCatagoryHeader"
- style rover_sim_black_2
+ style VPPFillRound
  {
   RichTextWidgetClass CatagoryTitle {
    visible 1
    clipchildren 1
    ignorepointer 1
+   color 0.91 0.639 0.239 1
    position 0 0
    size 1 0.092
    halign center_ref
@@ -23,16 +24,14 @@ PanelWidgetClass PanelHeader {
    vexactpos 0
    hexactsize 0
    vexactsize 0
-   text "CATAGORY TITLE"
-   font "gui/fonts/sdf_MetronLight24"
+   text "CATEGORY TITLE"
+   font "gui/fonts/sdf_MetronLight72"
    "text spacing" 0 5
    "outline size" 1
-   "outline color" 1 1 1 0.1961
-   "shadow size" 10
-   "italic text" 0
+   "outline color" 0 0 0 0.6
    "bold text" 1
    "exact text" 1
-   "exact text size" 11
+   "exact text size" 12
    "size to text h" 0
    "size to text v" 1
    "text halign" center
@@ -49,25 +48,24 @@ PanelWidgetClass PanelHeader {
    vexactpos 0
    hexactsize 1
    vexactsize 1
+   style VPPButtonGhost
    {
     ImageWidgetClass IconCollapse {
      ignorepointer 1
-     position 0.01 0
-     size 20 20
-     halign right_ref
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 16 16
+     halign center_ref
      valign center_ref
-     hexactpos 0
-     vexactpos 0
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
-     image0 "set:dayz_gui image:icon_expand"
+     image0 "set:vpp_icons image:chevron_down"
      mode blend
      "src alpha" 1
-     "no wrap" 1
-     stretch 1
-     "flip u" 0
-     "flip v" 0
-     "Transition width" 0.155
+     "stretch mode" stretch_w_h
+     filter 1
     }
    }
   }
@@ -75,33 +73,32 @@ PanelWidgetClass PanelHeader {
    visible 0
    ignorepointer 0
    position 0.12 0
-   size 14 13
+   size 18 18
    halign right_ref
    valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 1
    vexactsize 1
+   style VPPButtonGhost
    {
     ImageWidgetClass IconClose {
      visible 1
      ignorepointer 1
-     position 0.12 0
-     size 14 13
-     halign right_ref
+     color 0.761 0.271 0.271 1
+     position 0 0
+     size 14 14
+     halign center_ref
      valign center_ref
-     hexactpos 0
-     vexactpos 0
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
-     image0 "set:ccgui_enforce image:MarkFailed"
+     image0 "set:vpp_icons image:x"
      mode blend
      "src alpha" 1
-     "no wrap" 1
-     stretch 1
-     "flip u" 0
-     "flip v" 0
-     "Transition width" 0.155
+     "stretch mode" stretch_w_h
+     filter 1
     }
    }
   }

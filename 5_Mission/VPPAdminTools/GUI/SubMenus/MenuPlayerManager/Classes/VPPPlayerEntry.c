@@ -44,8 +44,9 @@ class VPPPlayerEntry : VPPPlayerTemplate
 
     void LabelOwnerName()
     {
+        //positive-green (see GUI/Styles/DesignSystem.md)
         if (GetID() == g_Game.VPPAT_GetSteam64Id())
-            m_PlayerToggle.SetTextColor(ARGB(255,0,255,2));
+            m_PlayerToggle.SetTextColor(ARGB(255,76,175,80));
     }
 	
 	void SetVisible(bool state)
@@ -90,11 +91,12 @@ class VPPPlayerEntry : VPPPlayerTemplate
         if (!m_EntryBox)
             return false;
 
+        //selection-blue / bg-row (see GUI/Styles/DesignSystem.md)
         bool isSelected = (m_PlayerToggle && m_PlayerToggle.IsChecked());
         if (isSelected)
-            m_EntryBox.SetColor(ARGB(140,0,0,255));
+            m_EntryBox.SetColor(ARGB(200,45,90,160));
         else
-            m_EntryBox.SetColor(ARGB(140,255,255,255));
+            m_EntryBox.SetColor(ARGB(200,27,30,34));
 
         return isSelected;
     }
