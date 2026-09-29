@@ -3,6 +3,9 @@ class WebHookMessageBase
 	protected ref array<ref WbEmbed> embeds;
 	ref JsonSerializer serializer;
 	string content;
+	// structured values the producer adds for templates (weapon, distance, positions, ...)
+	[NonSerialized()]
+	ref map<string, string> m_Extra;
 
 	void WebHookMessageBase()
 	{
@@ -29,6 +32,48 @@ class WebHookMessageBase
 	string GetContent()
 	{
 		return content;
+	}
+
+	// The event this message becomes for templated webhooks (null = this message type has no event).
+	VPPWebhookEvent ToEvent()
+	{
+		return null;
+	}
+
+	void SetVar(string name, string value)
+	{
+		if (!m_Extra)
+		{
+			m_Extra = new map<string, string>();
+		}
+
+		m_Extra.Set(name, value);
+	}
+
+	string GetVar(string name)
+	{
+		string value = "";
+		if (m_Extra && m_Extra.Contains(name))
+		{
+			value = m_Extra.Get(name);
+		}
+
+		return value;
+	}
+
+	protected void AddExtras(VPPWebhookEvent webhookEvent)
+	{
+		if (!m_Extra)
+		{
+			return;
+		}
+
+		for (int i = 0; i < m_Extra.Count(); i++)
+		{
+			string extraName = m_Extra.GetKey(i);
+			string extraValue = m_Extra.GetElement(i);
+			webhookEvent.Set(extraName, extraValue);
+		}
 	}
 
 	string BuildMessage(bool simplified = false)

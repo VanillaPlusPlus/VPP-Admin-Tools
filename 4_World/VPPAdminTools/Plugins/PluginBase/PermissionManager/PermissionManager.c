@@ -48,7 +48,7 @@ class PermissionManager extends ConfigurablePlugin
 		//Spectate Tools menu (action perm reuses PlayerManager:SpectatePlayer)
 		AddPermissionType({ "MenuSpectateTools" });
 		//WebHooks Menu
-		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
+		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete", "MenuWebHooks:EditTemplates", "MenuWebHooks:TestSend", "MenuWebHooks:ViewURL" });
 		//Teleport Manager Menu
 		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset", "TeleportManager:TeleportEntity" });
 		//ESP tools menu 
@@ -110,6 +110,7 @@ class PermissionManager extends ConfigurablePlugin
 			MigrateXmlEditorPermissionsV2(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
 			MigrateXmlEditorPermissionsV3(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
 			MigrateXmlEditorPermissionsV4(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
+			MigrateWebhookPermissions(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
 		}
 	}
 	
@@ -813,6 +814,68 @@ class PermissionManager extends ConfigurablePlugin
 		}
 
 		GetSimpleLogger().Log(string.Format("[XMLEditor] Permission migration v4 (EditSpawnables) done: %1 user group(s) updated", groupsUpdated));
+	}
+
+	// Webhook templates (v1): groups that may edit webhooks also get EditTemplates, TestSend and ViewURL (URLs are
+	// masked for everyone else now), once.
+	protected void MigrateWebhookPermissions(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/webhooks_perms_v1.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			return;
+		}
+
+		array<string> added = {"MenuWebHooks:EditTemplates", "MenuWebHooks:TestSend", "MenuWebHooks:ViewURL"};
+		int groupsUpdated = 0;
+		foreach (UserGroup hookGroup : m_UserGroups)
+		{
+			if (!hookGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = hookGroup.GetPermissions();
+			if (!perms || perms.Find("MenuWebHooks:Edit") < 0)
+			{
+				continue;
+			}
+
+			bool changed = false;
+			foreach (string addedPerm : added)
+			{
+				if (perms.Find(addedPerm) < 0)
+				{
+					perms.Insert(addedPerm);
+					changed = true;
+				}
+			}
+
+			if (changed)
+			{
+				hookGroup.SetPermissions(perms);
+				groupsUpdated++;
+			}
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[WebHooksManager] Permission migration v1 (EditTemplates, TestSend, ViewURL) done: %1 user group(s) updated", groupsUpdated));
 	}
 
 	private void LoadCredentials()

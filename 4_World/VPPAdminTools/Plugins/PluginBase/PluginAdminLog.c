@@ -39,6 +39,21 @@ modded class PluginAdminLog
 		}
 	}
 
+	// "x, y, z" rounded to 0.1, for webhook templates
+	protected string VPPWebhookPos(vector pos)
+	{
+		float posX = Math.Round(pos[0] * 10) / 10;
+		float posY = Math.Round(pos[1] * 10) / 10;
+		float posZ = Math.Round(pos[2] * 10) / 10;
+		return posX.ToString() + ", " + posY.ToString() + ", " + posZ.ToString();
+	}
+
+	protected string VPPWebhookRound(float value)
+	{
+		float rounded = Math.Round(value * 10) / 10;
+		return rounded.ToString();
+	}
+
 	override void PlayerHitBy( TotalDamageResult damageResult, int damageType, PlayerBase player, EntityAI source, int component, string dmgZone, string ammo ) // PlayerBase.c 
 	{
 		if ( player && source )		
@@ -54,6 +69,14 @@ modded class PluginAdminLog
 
 			rpt.victimName = player.VPlayerGetName();
 			rpt.victimId   = player.VPlayerGetSteamId();
+			vector victimPosition = player.GetPosition();
+			string victimPos = VPPWebhookPos(victimPosition);
+			rpt.SetVar("victim.pos", victimPos);
+			rpt.SetVar("zone", dmgZone);
+			rpt.SetVar("ammo", ammo);
+			float victimHealth = player.GetHealth();
+			string victimHealthText = VPPWebhookRound(victimHealth);
+			rpt.SetVar("health", victimHealthText);
 
 			switch ( damageType )
 			{
@@ -64,7 +87,15 @@ modded class PluginAdminLog
 						rpt.sourceName = source.GetType();
 						rpt.sourceId   = "_obj";
 						rpt.details    = PlayerPrefix + " hit by " + source.GetDisplayName() + HitMessage;
-					}			
+						if (source.IsZombie())
+						{
+							rpt.SetVar("source.kind", "infected");
+						}
+						else
+						{
+							rpt.SetVar("source.kind", "animal");
+						}
+}			
 					else if ( source.IsPlayer() || (source.GetHierarchyRootPlayer() && source.GetHierarchyRootPlayer().IsPlayer()) )		// Fists, includes bayonets and weapon bitch slaps 
 					{
 						m_Source = PlayerBase.Cast(source.GetHierarchyRootPlayer());
@@ -82,8 +113,9 @@ modded class PluginAdminLog
 
 						rpt.sourceName = m_Source.VPlayerGetName();
 						rpt.sourceId   = m_Source.VPlayerGetSteamId();
-						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with " + m_ItemInHands;			
-					}
+						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with " + m_ItemInHands;
+						rpt.SetVar("weapon", m_ItemInHands);
+}
 					else
 					{
 						//Includes Beartraps and tripwire
@@ -110,11 +142,15 @@ modded class PluginAdminLog
 						{
 							m_PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() ,  m_Source );
 							m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
-						
+
 							rpt.sourceName = m_Source.VPlayerGetName();
 							rpt.sourceId   = m_Source.VPlayerGetSteamId();
+							string hitDistance = VPPWebhookRound(m_Distance);
+							rpt.SetVar("distance", hitDistance);
 						}
-						
+
+						rpt.SetVar("weapon", m_ItemInHands);
+
 						rpt.details = PlayerPrefix + " hit by " + m_PlayerPrefix2 + HitMessage + " with ("+ m_ItemInHands +") from (" + m_Distance + ") meters ";
 					}
 					else 
@@ -174,8 +210,6 @@ modded class PluginAdminLog
 			//Wrap up and send
 			if (shouldSendLog)
 			{
-				rpt.SetContent();
-				rpt.AddEmbed();
 				GetWebHooksManager().PostData(HitDamageMessage, rpt);
 			}
 		}
@@ -198,6 +232,9 @@ modded class PluginAdminLog
 
 			rpt.victimName = player.VPlayerGetName();
 			rpt.victimGUID = player.VPlayerGetSteamId();
+			vector deadPosition = player.GetPosition();
+			string deadPos = VPPWebhookPos(deadPosition);
+			rpt.SetVar("victim.pos", deadPos);
 
 			if( player == source )	// deaths not caused by another object (starvation, dehydration)
 			{
@@ -233,6 +270,13 @@ modded class PluginAdminLog
 				{
 					PlayerPrefix2 = VPPGetPlayerPrefix(m_Source.GetPosition(), m_Source);
 					rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();
+					rpt.killerName = m_Source.VPlayerGetName();
+					rpt.killerGUID = m_Source.VPlayerGetSteamId();
+					vector bomberPosition = m_Source.GetPosition();
+					string bomberPos = VPPWebhookPos(bomberPosition);
+					rpt.SetVar("killer.pos", bomberPos);
+					string explosiveName = source.GetDisplayName();
+					rpt.SetVar("weapon", explosiveName);
 				}else{
 					//Generic no source message fallback
 					rpt.details = PlayerPrefix + " killed by: " + source.GetType();
@@ -250,7 +294,12 @@ modded class PluginAdminLog
 					guid = m_Source.VPlayerGetSteamId();
 					
 					PlayerPrefix2 = VPPGetPlayerPrefix( m_Source.GetPosition() , m_Source );
-					
+					vector killerPosition = m_Source.GetPosition();
+					string killerPos = VPPWebhookPos(killerPosition);
+					rpt.SetVar("killer.pos", killerPos);
+					string weaponName = source.GetDisplayName();
+					rpt.SetVar("weapon", weaponName);
+
 					if ( source.IsMeleeWeapon() )
 					{
 						rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with " + source.GetDisplayName();	
@@ -259,7 +308,9 @@ modded class PluginAdminLog
 					{
 						m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
 						rpt.details = PlayerPrefix + " killed by:\n" + PlayerPrefix2 + " with [" + source.GetDisplayName() + "] from [" + m_Distance + "] meters ";
-					}
+						string killDistance = VPPWebhookRound(m_Distance);
+						rpt.SetVar("distance", killDistance);
+}
 					rpt.killerName = name;
 					rpt.killerGUID = guid;
 				}
@@ -274,10 +325,14 @@ modded class PluginAdminLog
 				{
 					rpt.killerName = "Infected";
 				}
-				rpt.details = PlayerPrefix + " killed by: " + source.GetType();
+				else if (source.IsInherited(AnimalBase))
+				{
+					rpt.SetVar("cause", "animal");
+					string animalName = source.GetDisplayName();
+					rpt.SetVar("killer.name", animalName);
+				}
+rpt.details = PlayerPrefix + " killed by: " + source.GetType();
 			}
-			rpt.SetContent();
-			rpt.AddEmbed();
 			GetWebHooksManager().PostData(KillDeathMessage, rpt);
 		}
 		super.PlayerKilled( player, source );

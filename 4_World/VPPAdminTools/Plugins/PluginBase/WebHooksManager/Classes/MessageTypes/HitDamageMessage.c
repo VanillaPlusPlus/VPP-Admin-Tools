@@ -34,6 +34,39 @@ class HitDamageMessage: WebHookMessageBase
 		content.Replace("\n", " ");
 	}
 
+	// source.kind: player / object / explosion / self / infected / animal (the producer can set it).
+	override VPPWebhookEvent ToEvent()
+	{
+		VPPWebhookEvent webhookEvent = new VPPWebhookEvent(VPPWebhookDefs.EV_HIT);
+		webhookEvent.Set("victim.name", victimName);
+		webhookEvent.Set("victim.id", victimId);
+		webhookEvent.Set("source.name", sourceName);
+		string sourceKind = "player";
+		string sourceSteamId = sourceId;
+		if (sourceId == "_obj")
+		{
+			sourceKind = "object";
+			sourceSteamId = "";
+		}
+		else if (sourceId == "Explosion")
+		{
+			sourceKind = "explosion";
+			sourceSteamId = "";
+		}
+		else if (sourceId == victimId || sourceName == victimName)
+		{
+			sourceKind = "self";
+		}
+
+		webhookEvent.Set("source.id", sourceSteamId);
+		webhookEvent.Set("source.kind", sourceKind);
+		string detailText = details;
+		detailText.Replace("\n", " ");
+		webhookEvent.Set("details", detailText);
+		AddExtras(webhookEvent);
+		return webhookEvent;
+	}
+
 	override WbEmbed AddEmbed()
 	{
 		WbEmbed embed = new WbEmbed("Hit Report:", 16711680, "", "", "");

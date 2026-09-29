@@ -43,6 +43,24 @@ class ServerStatusMessage: WebHookMessageBase
 		}
 	}
 
+	override VPPWebhookEvent ToEvent()
+	{
+		if (m_BoottUp)
+		{
+			return new VPPWebhookEvent(VPPWebhookDefs.EV_BOOT);
+		}
+
+		VPPWebhookEvent webhookEvent = new VPPWebhookEvent(VPPWebhookDefs.EV_STATUS);
+		int fps = g_Game.GetServerFPS();
+		webhookEvent.Set("server.fps", fps.ToString());
+		string upTime = FormatUpTime();
+		webhookEvent.Set("uptime", upTime);
+		int upSeconds = ConvertTime(GetGame().GetTime(), 1000);
+		webhookEvent.Set("uptime.seconds", upSeconds.ToString());
+		AddExtras(webhookEvent);
+		return webhookEvent;
+	}
+
 	string FormatUpTime()
 	{
 		int secs = ConvertTime(GetGame().GetTime(), 1000);

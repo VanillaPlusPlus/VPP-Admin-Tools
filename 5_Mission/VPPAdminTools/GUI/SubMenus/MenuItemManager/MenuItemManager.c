@@ -343,7 +343,7 @@ class MenuItemManager extends AdminHudSubMenu
 	/*
 		Double right-click on the item list: copies the selected item's class name (not its display name).
 		Without Left Ctrl it starts a new list on the clipboard with just that class. With Left Ctrl held it adds the
-		class on a new line of the current list (Ctrl does not have to stay held between copies); a class already
+		item class on a new line of the current list (Ctrl does not have to stay held between copies); a class already
 		in the list is not added twice.
 	*/
 	private void CopySelectedClass(bool append)

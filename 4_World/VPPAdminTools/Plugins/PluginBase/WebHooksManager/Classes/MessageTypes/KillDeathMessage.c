@@ -35,6 +35,37 @@ class KillDeathMessage: WebHookMessageBase
 		content.Replace("\n", " ");
 	}
 
+	// cause: player / suicide / infected / animal / other (the producer can set it, else it is derived like the embed).
+	override VPPWebhookEvent ToEvent()
+	{
+		VPPWebhookEvent webhookEvent = new VPPWebhookEvent(VPPWebhookDefs.EV_KILL);
+		webhookEvent.Set("victim.name", victimName);
+		webhookEvent.Set("victim.id", victimGUID);
+		webhookEvent.Set("killer.name", killerName);
+		webhookEvent.Set("killer.id", killerGUID);
+		string cause = "other";
+		if (killerName == "Infected")
+		{
+			cause = "infected";
+			webhookEvent.Set("killer.id", "");
+		}
+		else if (killerGUID != "" && (killerGUID == victimGUID || killerName == victimName))
+		{
+			cause = "suicide";
+		}
+		else if (killerGUID != "")
+		{
+			cause = "player";
+		}
+
+		webhookEvent.Set("cause", cause);
+		string detailText = details;
+		detailText.Replace("\n", " ");
+		webhookEvent.Set("details", detailText);
+		AddExtras(webhookEvent);
+		return webhookEvent;
+	}
+
 	override WbEmbed AddEmbed()
 	{
 		WbEmbed embed = new WbEmbed("Kill / Death Report:", 16711680, "", "", "");
