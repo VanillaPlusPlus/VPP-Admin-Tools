@@ -4,7 +4,11 @@
 	templates existed, so migrated webhooks look the same until an admin edits them.
 
 	Piece texts are written as they appear inside a JSON string (\n = newline). Webhook custom variables used here:
-	hook.username, hook.avatar (Discord), hook.chat_id (Telegram).
+	hook.username, hook.avatar (Discord, Lolka), hook.chat_id (Telegram).
+
+	Lolka (lolka.app/developers/webhooks) takes Discord's webhook body (content, username, avatar_url, embeds with the
+	same fields and limits); its presets are the Discord ones with plain markdown links (no Discord "(<url>)" preview
+	suppression) and HTTPS links, as Lolka requires external URLs to be HTTPS.
 */
 class VPPWebhookPieceField : Managed
 {
@@ -47,6 +51,8 @@ class VPPWebhookPresets
 {
 	const static string DISCORD_EMBED = "discord_embed";
 	const static string DISCORD_SIMPLE = "discord_simple";
+	const static string LOLKA_EMBED = "lolka_embed";
+	const static string LOLKA_SIMPLE = "lolka_simple";
 	const static string SLACK = "slack";
 	const static string TEAMS = "teams";
 	const static string TELEGRAM = "telegram";
@@ -63,6 +69,8 @@ class VPPWebhookPresets
 		outIds.Clear();
 		outIds.Insert(DISCORD_EMBED);
 		outIds.Insert(DISCORD_SIMPLE);
+		outIds.Insert(LOLKA_EMBED);
+		outIds.Insert(LOLKA_SIMPLE);
 		outIds.Insert(SLACK);
 		outIds.Insert(TEAMS);
 		outIds.Insert(TELEGRAM);
@@ -92,6 +100,17 @@ class VPPWebhookPresets
 		return presetId == DISCORD_EMBED || presetId == DISCORD_SIMPLE;
 	}
 
+	static bool IsLolka(string presetId)
+	{
+		return presetId == LOLKA_EMBED || presetId == LOLKA_SIMPLE;
+	}
+
+	// Presets whose body follows Discord's webhook format and limits (checked with VPPDiscordLint).
+	static bool UsesDiscordLimits(string presetId)
+	{
+		return IsDiscord(presetId) || IsLolka(presetId);
+	}
+
 	// The template of an event in a preset ("" when the event is unknown).
 	static string TemplateFor(string presetId, string eventId)
 	{
@@ -106,6 +125,18 @@ class VPPWebhookPresets
 		if (presetId == DISCORD_SIMPLE)
 		{
 			return DiscordSimple(piece);
+		}
+
+		if (presetId == LOLKA_EMBED)
+		{
+			string lolkaEmbed = DiscordEmbed(piece);
+			return ForLolka(lolkaEmbed);
+		}
+
+		if (presetId == LOLKA_SIMPLE)
+		{
+			string lolkaSimple = DiscordSimple(piece);
+			return ForLolka(lolkaSimple);
 		}
 
 		if (presetId == SLACK)
@@ -167,6 +198,16 @@ class VPPWebhookPresets
 		text = text + "  \"username\": \"{{hook.username|default:VPPAdminTools}}\",\n";
 		text = text + "  \"avatar_url\": \"{{hook.avatar|default:https://i.imgur.com/oSEhCJV.png}}\"\n}\n";
 		return text;
+	}
+
+	// Discord text -> Lolka: "[x](<url>)" becomes "[x](url)" and the server check link uses HTTPS.
+	protected static string ForLolka(string text)
+	{
+		string converted = text;
+		converted.Replace("(<", "(");
+		converted.Replace(">)", ")");
+		converted.Replace("http://dayzsalauncher.com", "https://dayzsalauncher.com");
+		return converted;
 	}
 
 	protected static string Teams(VPPWebhookPiece piece)

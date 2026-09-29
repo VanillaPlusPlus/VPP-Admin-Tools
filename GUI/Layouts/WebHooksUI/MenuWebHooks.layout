@@ -1,8 +1,9 @@
 FrameWidgetClass rootFrame {
  clipchildren 1
+ ignorepointer 0
  color 0 0 0 0
  position 0 0
- size 0.45 0.6
+ size 0.66 0.76
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -14,6 +15,7 @@ FrameWidgetClass rootFrame {
    clipchildren 1
    inheritalpha 0
    color 0.749 0.773 0.8 1
+   position 0 0
    size 1 1
    hexactpos 1
    vexactpos 1
@@ -25,22 +27,22 @@ FrameWidgetClass rootFrame {
    "no focus" 0
    {
     PanelWidgetClass HeaderTitle {
-     ignorepointer 1
-     color 0.031 0.035 0.039 0.85
+     clipchildren 0
+     ignorepointer 0
+     color 0.031 0.035 0.039 1
      position 0 0
-     size 1 0.055
-     halign center_ref
-     hexactpos 0
-     vexactpos 0
+     size 1 36
+     hexactpos 1
+     vexactpos 1
      hexactsize 0
-     vexactsize 0
+     vexactsize 1
      style VPPFillRound
      {
       ImageWidgetClass ImgWindowIcon {
        ignorepointer 1
        color 0.91 0.639 0.239 1
-       position 2 0
-       size 32 32
+       position 8 0
+       size 24 24
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -53,12 +55,14 @@ FrameWidgetClass rootFrame {
        filter 1
       }
       TextWidgetClass Title {
+       clipchildren 1
        ignorepointer 1
+       color 1 1 1 1
        position 40 1
-       size 0.5 20
+       size 400 20
        hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
        style None
        text "#VSTR_WEB_HOOKS_MANAGER_TITLE"
@@ -66,46 +70,76 @@ FrameWidgetClass rootFrame {
        "bold text" 1
        "exact text" 1
        "exact text size" 20
-       "size to text h" 1
-       "size to text v" 1
+       "text valign" center
       }
       TextWidgetClass SubTitle {
+       clipchildren 1
        ignorepointer 1
        color 0.604 0.627 0.651 1
-       position 40 22
-       size 0.6 13
+       position 40 20
+       size 600 14
        hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
        style None
-       text "#VSTR_WEBHOOKS_SUBTITLE"
+       text ""
        font "gui/fonts/sdf_MetronLight72"
-       "text color" 0.604 0.627 0.651 1
        "exact text" 1
        "exact text size" 13
-       "size to text h" 1
-       "size to text v" 1
+       "text valign" center
       }
-      ButtonWidgetClass BtnClose {
+      ButtonWidgetClass BtnRefresh {
        clipchildren 1
+       ignorepointer 0
        color 1 1 1 1
-       position 4 0
+       position 38 5
        size 26 26
        halign right_ref
-       valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
        vexactsize 1
        style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImageRefresh {
+         ignorepointer 1
+         color 0.604 0.627 0.651 1
+         position 3 0
+         size 20 20
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:refresh_cw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnClose {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 6 5
+       size 26 26
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
        {
         ImageWidgetClass ImageClose {
          ignorepointer 1
          color 0.604 0.627 0.651 1
-         position 0 0
-         size 32 32
-         halign center_ref
+         position 3 0
+         size 20 20
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -116,91 +150,107 @@ FrameWidgetClass rootFrame {
          "src alpha" 1
          "stretch mode" stretch_w_h
          filter 1
-         nocache 1
         }
        }
       }
      }
     }
-    PanelWidgetClass PanelLogText {
+    PanelWidgetClass Rail {
+     clipchildren 1
      ignorepointer 1
      color 1 1 1 1
-     position 0.008 0.065
-     size 0.4 0.928
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
+     position 8 44
+     size 290 768
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
      style VPPPanel
      {
-      PanelWidgetClass log_content_title {
+      PanelWidgetClass RailHeader {
+       clipchildren 0
        ignorepointer 0
        color 0.039 0.043 0.047 0.85
-       position 0 1
-       size 0.99 28
-       halign center_ref
+       position 0 0
+       size 290 28
        hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
        style VPPFillRound
        {
-        ImageWidgetClass ImgListHeader {
+        ImageWidgetClass ImgRailHeader {
          ignorepointer 1
          color 0.91 0.639 0.239 1
-         position 2 0
-         size 24 24
+         position 4 0
+         size 22 22
          valign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         image0 "set:vpp_icons image:message_square"
+         image0 "set:vpp_icons image:list"
          mode blend
          "src alpha" 1
          "stretch mode" stretch_w_h
          filter 1
         }
-        TextWidgetClass title_text_logcont {
+        TextWidgetClass TxtRailTitle {
+         clipchildren 1
          ignorepointer 1
-         position 28 0
-         size 0.7 1
-         valign center_ref
+         color 1 1 1 1
+         position 30 0
+         size 250 28
          hexactpos 1
          vexactpos 1
-         hexactsize 0
-         vexactsize 0
+         hexactsize 1
+         vexactsize 1
          style None
-         text "#VSTR_LBL_WEBHOOKS"
+         text "#VSTR_WH_RAIL_TITLE"
          font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
          "exact text" 1
          "exact text size" 16
-         "size to text h" 1
-         "size to text v" 1
          "text valign" center
         }
        }
       }
-      ButtonWidgetClass btnCreateWebhook {
+      TextListboxWidgetClass HookList {
+       visible 1
+       clipchildren 1
+       ignorepointer 0
+       position 6 32
+       size 278 656
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPListbox
+       "no focus" 1
+       "title visible" 1
+       colums "Name;70;;30;"
+       "highlight row" 0
+      }
+      ButtonWidgetClass BtnNew {
+       clipchildren 1
        ignorepointer 0
        color 1 1 1 1
-       position 0.012 34
-       size 0.976 28
-       hexactpos 0
+       position 6 694
+       size 278 32
+       hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
        style VPPButton
        "no focus" 1
-       font "gui/fonts/sdf_MetronLight72"
        {
-        ImageWidgetClass ImgCreateWebhook {
+        ImageWidgetClass ImgNew {
          ignorepointer 1
-         color 0.604 0.627 0.651 1
-         position 0.3 0
-         size 24 24
+         color 0.298 0.686 0.314 1
+         position 8 0
+         size 18 18
          valign center_ref
-         hexactpos 0
+         hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
@@ -210,583 +260,2160 @@ FrameWidgetClass rootFrame {
          "stretch mode" stretch_w_h
          filter 1
         }
-        TextWidgetClass txtcreatewebhook {
+        TextWidgetClass TxtNew {
+         clipchildren 1
          ignorepointer 1
-         position 0 0
-         size 1 1
-         halign center_ref
-         valign center_ref
+         color 1 1 1 1
+         position 32 0
+         size 242 32
          hexactpos 1
          vexactpos 1
-         hexactsize 0
-         vexactsize 0
+         hexactsize 1
+         vexactsize 1
          style None
-         text "#VSTR_LBL_CREATE_NEW_PRESET"
+         text "#VSTR_WH_BTN_NEW"
          font "gui/fonts/sdf_MetronLight72"
          "bold text" 1
          "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
+         "exact text size" 14
          "text valign" center
         }
        }
       }
-      ScrollWidgetClass ScrollerWebhooks {
-       ignorepointer 1
-       position 0 0.105
-       size 0.97 0.86
-       halign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style VPPScroll
-       "Scrollbar V" 1
+      ButtonWidgetClass BtnDuplicate {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 6 732
+       size 136 32
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
        {
-        GridSpacerWidgetClass gridWebHooks {
+        ImageWidgetClass ImgDuplicate {
          ignorepointer 1
-         position 0.005 0
-         size 0.99 0.995
-         halign center_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         "Size To Content H" 1
-         "Size To Content V" 1
-         Columns 1
-         Rows 100
+         color 1 1 1 1
+         position 8 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:copy"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtDuplicate {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 32 0
+         size 100 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_BTN_DUP"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnDelete {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 148 732
+       size 136 32
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonDanger
+       "no focus" 1
+       {
+        ImageWidgetClass ImgDelete {
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:trash_2"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtDelete {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 32 0
+         size 100 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_BTN_DELETE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
         }
        }
       }
      }
     }
-    PanelWidgetClass PanelAttributes {
+    FrameWidgetClass Work {
+     visible 1
      clipchildren 0
      ignorepointer 1
-     color 1 1 1 1
-     position 0.413 0.065
-     size 0.579 0.928
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style VPPPanel
+     position 306 44
+     size 946 768
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
      {
-      PanelWidgetClass title_atts {
-       ignorepointer 0
-       color 0.039 0.043 0.047 0.85
-       position 0 1
-       size 0.99 28
-       halign center_ref
+      PanelWidgetClass ContentBg {
+       clipchildren 0
+       ignorepointer 1
+       color 0.035 0.039 0.047 0.94
+       position 0 0
+       size 1 1
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 1
+       vexactsize 0
        style VPPFillRound
-       {
-        ImageWidgetClass ImgAttsHeader {
-         ignorepointer 1
-         color 0.91 0.639 0.239 1
-         position 2 0
-         size 24 24
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:vpp_icons image:square_pen"
-         mode blend
-         "src alpha" 1
-         "stretch mode" stretch_w_h
-         filter 1
-        }
-        TextWidgetClass title_text_logcont0 {
-         ignorepointer 1
-         position 28 0
-         size 0.7 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_WEBHOOKS_ATTS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 16
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-       }
       }
-      PanelWidgetClass rowDeath {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 34
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SEND_DEATH_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass deathKillLogs {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      PanelWidgetClass rowAdmin {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 62
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label0 {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SEND_ADMIN_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass adminActivityLog {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      PanelWidgetClass rowHit {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 90
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label1 {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SEND_HIT_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass admHitLog {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      PanelWidgetClass rowJoinLeave {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 118
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label2 {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SEND_PLAYER_LEAVE_JOIN_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass joinLeaveLog {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      PanelWidgetClass rowServerStatus {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 146
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label5 {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SEND_SERVER_STATUS_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass serverStatusLog {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      PanelWidgetClass rowSimplified {
-       ignorepointer 1
-       color 0.078 0.086 0.094 0.85
-       position 0.012 174
-       size 0.976 26
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPFillRound
-       {
-        TextWidgetClass Label6 {
-         ignorepointer 1
-         color 0.85 0.871 0.89 1
-         position 8 0
-         size 0.85 1
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_SIMPLIFIED_LOGS"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 13
-         "size to text h" 1
-         "size to text v" 1
-         "text valign" center
-        }
-        CheckBoxWidgetClass simplifiedLogs {
-         ignorepointer 0
-         position 4 0
-         size 22 22
-         halign right_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         style VPPCheckBox
-         "no focus" 1
-        }
-       }
-      }
-      TextWidgetClass lblInterval {
-       ignorepointer 1
-       color 0.604 0.627 0.651 1
-       position 0.012 206
-       size 0.4 22
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style None
-       text "#VSTR_LBL_STATS_INTERVAL"
-       font "gui/fonts/sdf_MetronLight72"
-       "exact text" 1
-       "exact text size" 12
-       "size to text h" 1
-       "size to text v" 1
-       "text valign" center
-      }
-      TextWidgetClass Label3 {
-       ignorepointer 1
-       color 0.604 0.627 0.651 1
-       position 0.012 240
-       size 0.3 16
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style None
-       text "#VSTR_LBL_NAME"
-       font "gui/fonts/sdf_MetronLight72"
-       "exact text" 1
-       "exact text size" 12
-       "size to text h" 1
-       "size to text v" 1
-      }
-      EditBoxWidgetClass webHookName {
+      PanelWidgetClass TabBar {
+       clipchildren 0
        ignorepointer 0
-       position 0.012 258
-       size 0.976 24
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPInput
-       "limit visible" 0
-       "Use default text" 0
-       "exact text" 1
-       font "gui/fonts/sdf_MetronLight24"
-      }
-      TextWidgetClass Label4 {
-       ignorepointer 1
-       color 0.604 0.627 0.651 1
-       position 0.012 288
-       size 0.3 16
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style None
-       text "#VSTR_LBL_URL"
-       font "gui/fonts/sdf_MetronLight72"
-       "exact text" 1
-       "exact text size" 12
-       "size to text h" 1
-       "size to text v" 1
-      }
-      EditBoxWidgetClass urlText {
-       ignorepointer 0
-       position 0.012 306
-       size 0.976 24
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       style VPPInput
-       "limit visible" 0
-       "exact text" 1
-       font "gui/fonts/sdf_MetronLight24"
-      }
-      PanelWidgetClass panel_info {
-       ignorepointer 1
        color 0.039 0.043 0.047 0.85
-       position 0 6
-       size 0.976 46
-       halign center_ref
-       valign bottom_ref
-       hexactpos 0
+       position 0 0
+       size 986 32
+       hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
        style VPPFillRound
        {
-        ImageWidgetClass info_image {
-         ignorepointer 1
-         color 0.91 0.639 0.239 1
-         position 6 0
-         size 24 24
-         valign center_ref
+        ButtonWidgetClass BtnTabEvents {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 4 3
+         size 126 26
          hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         image0 "set:vpp_icons image:info"
-         mode blend
-         "src alpha" 1
-         "stretch mode" stretch_w_h
-         filter 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTabEvents {
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 8 0
+           size 16 16
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:list"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTabEvents {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 30 0
+           size 92 26
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TAB_EVENTS"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
         }
-        MultilineTextWidgetClass info_text {
-         ignorepointer 1
-         color 0.604 0.627 0.651 1
-         position 34 0
-         size 0.86 1
-         valign center_ref
+        ButtonWidgetClass BtnTabTemplate {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 134 3
+         size 136 26
          hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         style None
-         text "#VSTR_LBL_WEBHOOKS_TIP"
-         font "gui/fonts/sdf_MetronLight72"
-         "exact text" 1
-         "exact text size" 11
-         "size to text h" 0
-         "size to text v" 1
-         "text valign" center
-         wrap 1
-        }
-       }
-      }
-      ButtonWidgetClass btnSaveChanges {
-       ignorepointer 0
-       color 1 1 1 1
-       position 0 58
-       size 0.976 30
-       halign center_ref
-       valign bottom_ref
-       hexactpos 0
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       scriptclass "ConfirmationEventHandler"
-       style VPPButton
-       "no focus" 1
-       font "gui/fonts/sdf_MetronLight72"
-       {
-        ImageWidgetClass ImgSaveWebhook {
-         ignorepointer 1
-         color 0.604 0.627 0.651 1
-         position 0.35 0
-         size 24 24
-         valign center_ref
-         hexactpos 0
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         image0 "set:vpp_icons image:save"
-         mode blend
-         "src alpha" 1
-         "stretch mode" stretch_w_h
-         filter 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTabTemplate {
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 8 0
+           size 16 16
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:file_code"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTabTemplate {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 30 0
+           size 102 26
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TAB_TEMPLATE"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
         }
-        TextWidgetClass txtbtnsavechanges {
-         ignorepointer 1
-         position 0 0
-         size 1 1
-         halign center_ref
-         valign center_ref
+        ButtonWidgetClass BtnTabSettings {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 274 3
+         size 126 26
          hexactpos 1
          vexactpos 1
-         hexactsize 0
-         vexactsize 0
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTabSettings {
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 8 0
+           size 16 16
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:settings"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTabSettings {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 30 0
+           size 92 26
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TAB_SETTINGS"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        TextWidgetClass TxtHookTitle {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 410 0
+         size 400 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
          style None
-         text "#VSTR_LBL_SAVE_CHANGES"
+         text ""
          font "gui/fonts/sdf_MetronLight72"
          "bold text" 1
          "exact text" 1
          "exact text size" 14
-         "size to text h" 1
-         "size to text v" 1
+         "text valign" center
+        }
+        ButtonWidgetClass BtnSaveHook {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 4 3
+         size 170 26
+         halign right_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          ImageWidgetClass ImgSaveHook {
+           ignorepointer 1
+           color 0.298 0.686 0.314 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:save"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtSaveHook {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 134 26
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_BTN_SAVE_HOOK"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass EventsView {
+       visible 1
+       clipchildren 0
+       ignorepointer 1
+       position 0 38
+       size 986 694
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextListboxWidgetClass EvList {
+         visible 1
+         clipchildren 1
+         ignorepointer 0
+         position 0 0
+         size 330 650
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPListbox
+         "no focus" 1
+         "title visible" 1
+         colums "Event;66;;34;"
+         "highlight row" 0
+        }
+        ButtonWidgetClass BtnEvAllOn {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 0 658
+         size 160 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgEvAllOn {
+           ignorepointer 1
+           color 0.298 0.686 0.314 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:check"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtEvAllOn {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 124 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_ALL_ON"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnEvAllOff {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 170 658
+         size 160 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgEvAllOff {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:x"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtEvAllOff {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 124 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_ALL_OFF"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass EvForm {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 340 0
+         size 646 694
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCard
+         {
+          TextWidgetClass TxtEvTitle {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 14 10
+           size 610 24
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 18
+           "text valign" center
+          }
+          MultilineTextWidgetClass TxtEvDesc {
+           clipchildren 1
+           ignorepointer 1
+           color 0.639 0.659 0.678 1
+           position 14 38
+           size 610 42
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
+           wrap 1
+          }
+          ButtonWidgetClass BtnEvEnabled {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 14 86
+           size 150 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPButton
+           "no focus" 1
+           {
+            PanelWidgetClass FillEvEnabled {
+             clipchildren 0
+             ignorepointer 1
+             color 0.106 0.118 0.133 1
+             position 0 0
+             size 1 1
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             style VPPFillRound
+            }
+            TextWidgetClass TxtEvEnabled {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 1
+             position 0 0
+             size 150 28
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text "#VSTR_WH_EV_ENABLED"
+             font "gui/fonts/sdf_MetronLight72"
+             "bold text" 1
+             "exact text" 1
+             "exact text size" 13
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          ButtonWidgetClass BtnEvPvp {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 172 86
+           size 150 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPButton
+           "no focus" 1
+           {
+            PanelWidgetClass FillEvPvp {
+             clipchildren 0
+             ignorepointer 1
+             color 0.106 0.118 0.133 1
+             position 0 0
+             size 1 1
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             style VPPFillRound
+            }
+            TextWidgetClass TxtEvPvp {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 1
+             position 0 0
+             size 150 28
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text "#VSTR_WH_EV_PVP"
+             font "gui/fonts/sdf_MetronLight72"
+             "bold text" 1
+             "exact text" 1
+             "exact text size" 13
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          ButtonWidgetClass BtnEvSkipAI {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 330 86
+           size 150 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPButton
+           "no focus" 1
+           {
+            PanelWidgetClass FillEvSkipAI {
+             clipchildren 0
+             ignorepointer 1
+             color 0.106 0.118 0.133 1
+             position 0 0
+             size 1 1
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             style VPPFillRound
+            }
+            TextWidgetClass TxtEvSkipAI {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 1
+             position 0 0
+             size 150 28
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text "#VSTR_WH_EV_SKIPAI"
+             font "gui/fonts/sdf_MetronLight72"
+             "bold text" 1
+             "exact text" 1
+             "exact text size" 13
+             "text halign" center
+             "text valign" center
+            }
+           }
+          }
+          TextWidgetClass LblEvMinDist {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 14 126
+           size 170 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_MINDIST"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+          EditBoxWidgetClass InputEvMinDist {
+           ignorepointer 0
+           color 1 1 1 1
+           position 190 126
+           size 90 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPInput
+           text ""
+           "limit visible" 0
+           "exact text" 1
+           font "gui/fonts/sdf_MetronLight24"
+           scriptclass "VPPXENumericEditHandler"
+          }
+          TextWidgetClass TxtEvMinDistUnit {
+           clipchildren 1
+           ignorepointer 1
+           color 0.639 0.659 0.678 1
+           position 288 126
+           size 340 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_MINDIST_UNIT"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
+           "text valign" center
+          }
+          TextWidgetClass LblEvModules {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 14 126
+           size 170 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_MODULES"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+          EditBoxWidgetClass InputEvModules {
+           ignorepointer 0
+           color 1 1 1 1
+           position 190 126
+           size 440 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPInput
+           text ""
+           "limit visible" 0
+           "exact text" 1
+           font "gui/fonts/sdf_MetronLight24"
+          }
+          TextWidgetClass LblEvExclude {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 14 160
+           size 170 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_EXCLUDE"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+          EditBoxWidgetClass InputEvExclude {
+           ignorepointer 0
+           color 1 1 1 1
+           position 190 160
+           size 440 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPInput
+           text ""
+           "limit visible" 0
+           "exact text" 1
+           font "gui/fonts/sdf_MetronLight24"
+          }
+          MultilineTextWidgetClass TxtEvModulesHint {
+           clipchildren 1
+           ignorepointer 1
+           color 0.639 0.659 0.678 1
+           position 190 192
+           size 440 44
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_MODULES_HINT"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           wrap 1
+          }
+          TextWidgetClass LblEvInterval {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 14 126
+           size 170 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_EV_INTERVAL"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+          PanelWidgetClass EvIntervalHost {
+           clipchildren 0
+           ignorepointer 0
+           color 1 1 1 1
+           position 190 128
+           size 200 24
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style blank
+           priority 60
+          }
+          MultilineTextWidgetClass TxtEvNote {
+           clipchildren 1
+           ignorepointer 1
+           color 0.639 0.659 0.678 1
+           position 14 250
+           size 610 60
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 13
+           wrap 1
+          }
+          ButtonWidgetClass BtnEvTemplate {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 14 650
+           size 220 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPButton
+           "no focus" 1
+           {
+            ImageWidgetClass ImgEvTemplate {
+             ignorepointer 1
+             color 1 1 1 1
+             position 8 0
+             size 18 18
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             image0 "set:vpp_icons image:file_code"
+             mode blend
+             "src alpha" 1
+             "stretch mode" stretch_w_h
+             filter 1
+            }
+            TextWidgetClass TxtEvTemplate {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 1
+             position 32 0
+             size 184 30
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text "#VSTR_WH_EV_EDIT_TEMPLATE"
+             font "gui/fonts/sdf_MetronLight72"
+             "bold text" 1
+             "exact text" 1
+             "exact text size" 14
+             "text valign" center
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass TemplateView {
+       visible 0
+       clipchildren 0
+       ignorepointer 1
+       position 0 38
+       size 986 694
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextWidgetClass LblTplEvent {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 80 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_TPL_EVENT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        PanelWidgetClass TplEventHost {
+         clipchildren 0
+         ignorepointer 0
+         color 1 1 1 1
+         position 84 2
+         size 240 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style blank
+         priority 60
+        }
+        TextWidgetClass TxtTplState {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 336 0
+         size 400 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "text valign" center
+        }
+        ButtonWidgetClass BtnTplReset {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 0 0
+         size 190 28
+         halign right_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonGhost
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTplReset {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:rotate_ccw"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTplReset {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 154 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_RESET"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        PanelWidgetClass TplEditorCard {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 0 34
+         size 746 380
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCard
+         {
+          ScrollWidgetClass TplScroll {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 4 4
+           size 738 372
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPScroll
+           "Scrollbar V" 1
+           "Scrollbar H" 1
+           {
+            MultilineEditBoxWidgetClass TplEditor {
+             ignorepointer 0
+             color 1 1 1 1
+             position 4 4
+             size 1200 800
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style DayZNormal
+             font "gui/fonts/Metron16"
+             "text color" 1 1 1 1
+             "exact text" 1
+             lines 5000
+             "limit visible" 0
+            }
+           }
+          }
+         }
+        }
+        PanelWidgetClass TplSide {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 756 34
+         size 230 380
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPPanel
+         {
+          TextWidgetClass TxtTplSideTitle {
+           clipchildren 1
+           ignorepointer 1
+           color 0.91 0.639 0.239 1
+           position 8 4
+           size 214 22
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_INSERT"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+          TextListboxWidgetClass TplInsertList {
+           visible 1
+           clipchildren 1
+           ignorepointer 0
+           position 4 30
+           size 222 306
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPListbox
+           "no focus" 1
+           "title visible" 1
+           colums "Insert;100;"
+           "highlight row" 0
+          }
+          MultilineTextWidgetClass TxtTplSideHint {
+           clipchildren 1
+           ignorepointer 1
+           color 0.639 0.659 0.678 1
+           position 8 340
+           size 214 36
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_INSERT_HINT"
+           font "gui/fonts/sdf_MetronLight72"
+           "exact text" 1
+           "exact text size" 12
+           wrap 1
+          }
+         }
+        }
+        TextWidgetClass TxtTplResultTitle {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 418
+         size 300 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_TPL_RESULT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        PanelWidgetClass TplResultCard {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 0 440
+         size 486 214
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCard
+         {
+          ScrollWidgetClass TplResultScroll {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 4 4
+           size 478 206
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPScroll
+           "Scrollbar V" 1
+           {
+            MultilineTextWidgetClass TxtTplResult {
+             clipchildren 1
+             ignorepointer 1
+             color 0.8 0.816 0.831 1
+             position 4 0
+             size 456 200
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text ""
+             font "gui/fonts/sdf_MetronLight72"
+             "exact text" 1
+             "exact text size" 13
+             wrap 1
+            }
+           }
+          }
+         }
+        }
+        TextWidgetClass TxtTplPreviewTitle {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 496 418
+         size 300 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_TPL_PREVIEW"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        PanelWidgetClass TplPreviewCard {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 496 440
+         size 490 214
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPCard
+         {
+          ScrollWidgetClass TplPreviewScroll {
+           clipchildren 1
+           ignorepointer 0
+           color 1 1 1 1
+           position 4 4
+           size 482 206
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style VPPScroll
+           "Scrollbar V" 1
+           "Scrollbar H" 1
+           {
+            MultilineTextWidgetClass TxtTplPreview {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 1
+             position 4 0
+             size 460 200
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style None
+             text ""
+             font "gui/fonts/sdf_MetronLight72"
+             "exact text" 1
+             "exact text size" 13
+             wrap 0
+            }
+           }
+          }
+         }
+        }
+        ButtonWidgetClass BtnTplValidate {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 0 662
+         size 140 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTplValidate {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:check"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTplValidate {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 104 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_VALIDATE"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTplSave {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 148 662
+         size 140 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTplSave {
+           ignorepointer 1
+           color 0.298 0.686 0.314 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:save"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTplSave {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 104 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_SAVE"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTplTest {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 296 662
+         size 140 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          ImageWidgetClass ImgTplTest {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:play"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtTplTest {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 104 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_TPL_TEST"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        TextWidgetClass TxtTplStatus {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 446 662
+         size 540 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
          "text valign" center
         }
        }
       }
-      PanelWidgetClass ComboTimer {
+      FrameWidgetClass SettingsView {
+       visible 0
        clipchildren 0
        ignorepointer 1
-       color 0 0 0 0
-       position 0.42 204
-       size 0.56 26
-       hexactpos 0
+       position 0 38
+       size 986 694
+       hexactpos 1
        vexactpos 1
-       hexactsize 0
+       hexactsize 1
        vexactsize 1
-       style blank
+       {
+        TextWidgetClass TxtSetGeneral {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 560 22
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_GENERAL"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        TextWidgetClass LblSetName {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 28
+         size 160 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_NAME"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputSetName {
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 28
+         size 390 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        TextWidgetClass LblSetUrl {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 62
+         size 160 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_URL"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputSetUrl {
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 62
+         size 390 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        MultilineTextWidgetClass TxtSetUrlHint {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 166 92
+         size 390 34
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 12
+         wrap 1
+        }
+        ButtonWidgetClass BtnSetEnabled {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 130
+         size 180 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillSetEnabled {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtSetEnabled {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 0 0
+           size 180 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_SET_ENABLED"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        TextWidgetClass TxtSetFormat {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 172
+         size 560 22
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_FORMAT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        TextWidgetClass LblSetPreset {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 200
+         size 160 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_PRESET"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        PanelWidgetClass SetPresetHost {
+         clipchildren 0
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 202
+         size 250 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style blank
+         priority 60
+        }
+        MultilineTextWidgetClass TxtSetPresetHint {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 166 230
+         size 390 40
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_PRESET_HINT"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 12
+         wrap 1
+        }
+        TextWidgetClass LblSetContentType {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 274
+         size 160 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_CONTENT_TYPE"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputSetContentType {
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 274
+         size 250 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        TextWidgetClass TxtSetDelivery {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 316
+         size 560 22
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_DELIVERY"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        TextWidgetClass LblSetRate {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 344
+         size 160 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_RATE"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputSetRate {
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 344
+         size 90 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+         scriptclass "VPPXENumericEditHandler"
+        }
+        TextWidgetClass TxtSetRateHint {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 262 344
+         size 300 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_RATE_HINT"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 12
+         "text valign" center
+        }
+        TextWidgetClass TxtSetPrivacy {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 386
+         size 560 22
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_PRIVACY"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        ButtonWidgetClass BtnSetHideIds {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 166 414
+         size 180 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillSetHideIds {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtSetHideIds {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 0 0
+           size 180 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_SET_HIDE_IDS"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnSetHideAddr {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 352 414
+         size 204 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillSetHideAddr {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtSetHideAddr {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 0 0
+           size 204 28
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_SET_HIDE_ADDR"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 13
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        MultilineTextWidgetClass TxtSetPrivacyHint {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 166 446
+         size 390 40
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_PRIVACY_HINT"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 12
+         wrap 1
+        }
+        TextWidgetClass TxtSetVars {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 580 0
+         size 406 22
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_VARS"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        MultilineTextWidgetClass TxtSetVarsHint {
+         clipchildren 1
+         ignorepointer 1
+         color 0.639 0.659 0.678 1
+         position 580 24
+         size 406 36
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_VARS_HINT"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 12
+         wrap 1
+        }
+        TextListboxWidgetClass VarList {
+         visible 1
+         clipchildren 1
+         ignorepointer 0
+         position 580 64
+         size 406 400
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPListbox
+         "no focus" 1
+         "title visible" 1
+         colums "Name;38;Value;62;"
+         "highlight row" 0
+        }
+        TextWidgetClass LblVarName {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 580 472
+         size 70 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_VAR_NAME"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputVarName {
+         ignorepointer 0
+         color 1 1 1 1
+         position 654 472
+         size 332 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        TextWidgetClass LblVarValue {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 580 506
+         size 70 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_WH_SET_VAR_VALUE"
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+        EditBoxWidgetClass InputVarValue {
+         ignorepointer 0
+         color 1 1 1 1
+         position 654 506
+         size 332 28
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPInput
+         text ""
+         "limit visible" 0
+         "exact text" 1
+         font "gui/fonts/sdf_MetronLight24"
+        }
+        ButtonWidgetClass BtnVarSet {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 654 542
+         size 160 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          ImageWidgetClass ImgVarSet {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:check"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtVarSet {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 124 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_SET_VAR_SET"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnVarRemove {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 822 542
+         size 164 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButtonDanger
+         "no focus" 1
+         {
+          ImageWidgetClass ImgVarRemove {
+           ignorepointer 1
+           color 1 1 1 1
+           position 8 0
+           size 18 18
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:vpp_icons image:trash_2"
+           mode blend
+           "src alpha" 1
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          TextWidgetClass TxtVarRemove {
+           clipchildren 1
+           ignorepointer 1
+           color 1 1 1 1
+           position 32 0
+           size 128 30
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style None
+           text "#VSTR_WH_SET_VAR_REMOVE"
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 14
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+      MultilineTextWidgetClass TxtWorkEmpty {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 20 80
+       size 900 80
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_WH_EMPTY"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 16
+       wrap 1
+      }
+      PanelWidgetClass HealthBar {
+       clipchildren 1
+       ignorepointer 1
+       color 0.039 0.043 0.047 0.85
+       position 0 738
+       size 986 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPFillRound
+       {
+        ImageWidgetClass ImgHealth {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 6 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:activity"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtHealth {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 30 0
+         size 950 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         "text valign" center
+        }
+       }
       }
      }
     }
@@ -795,12 +2422,12 @@ FrameWidgetClass rootFrame {
   PanelWidgetClass Header {
    ignorepointer 0
    position 0 0
-   size 0.9 0.055
+   size 0.86 36
    halign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
-   vexactsize 0
+   vexactsize 1
    draggable 1
    style blank
   }

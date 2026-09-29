@@ -195,3 +195,57 @@ class VPPWebhookDefs
 		return name.IndexOf("hook.") == 0;
 	}
 };
+
+// What an admin may do in the webhooks menu (the server sends the mask with the list; the server checks again).
+class VPPWebhookAccess
+{
+	const static int CREATE = 1;
+	const static int EDIT = 2;
+	const static int DELETE = 4;
+	const static int EDIT_TEMPLATES = 8;
+	const static int TEST_SEND = 16;
+	const static int VIEW_URL = 32;
+};
+
+class VPPWebhookVarNames
+{
+	// Letters, digits, "_" and "." (template variable and hook.* names).
+	static bool IsPlain(string name)
+	{
+		int total = name.Length();
+		int i = 0;
+		int code = 0;
+		string ch = "";
+		if (total == 0)
+		{
+			return false;
+		}
+
+		for (i = 0; i < total; i++)
+		{
+			ch = name.Get(i);
+			code = ch.ToAscii();
+			if (code >= 97 && code <= 122)
+			{
+				continue;
+			}
+
+			if (code >= 65 && code <= 90)
+			{
+				continue;
+			}
+
+			if (code >= 48 && code <= 57)
+			{
+				continue;
+			}
+
+			if (ch != "." && ch != "_")
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+};

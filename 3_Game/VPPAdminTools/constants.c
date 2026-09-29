@@ -89,7 +89,6 @@ class VPPATUIConstants
 
 	//Webhooks Manager
 	const static string MenuWebHooks 				 = "VPPAdminTools/GUI/Layouts/WebHooksUI/MenuWebHooks.layout";
-	const static string WebHookEntry 				 = "VPPAdminTools/GUI/Layouts/WebHooksUI/WebHookEntry.layout";
 
 	//Weather Manager
 	const static string MenuWeatherManager 			 = "VPPAdminTools/GUI/Layouts/WeatherManagerUI/MenuWeatherManager.layout";

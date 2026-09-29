@@ -98,6 +98,7 @@ class XMLEditor extends PluginBase
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_CreateSnapshot", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_GetDistribution", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_LiveScan", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_TeleportToEntity", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_DeleteLiveObjects", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_CreateTypesFile", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_XMLEditor", "XE_GetMessages", this, SingleplayerExecutionType.Server);
@@ -2347,6 +2348,62 @@ class XMLEditor extends PluginBase
 		}
 
 		m_Dist.RequestLiveScan(sender, reqId, data.param2);
+	}
+
+	// MAP tab: teleports the admin to a live-scan hit where it is now, height included (the scan only sends x / z).
+	// The entity is found by its network id; when it no longer exists the scanned x / z at ground level is used.
+	void XE_TeleportToEntity(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server)
+		{
+			return;
+		}
+
+		Param3<int, int, vector> data;
+		if (!ctx.Read(data))
+		{
+			return;
+		}
+
+		if (!sender)
+		{
+			return;
+		}
+
+		string plainId = sender.GetPlainId();
+		PermissionManager pm = GetPermissionManager();
+		if (!pm.VerifyPermission(plainId, "TeleportManager:TPPlayers") || !pm.VerifyPermission(plainId, "TeleportManager:TPSelf"))
+		{
+			return;
+		}
+
+		PlayerBase admin = pm.GetPlayerBaseByID(plainId);
+		TeleportManager teleporter = GetTeleportManager();
+		if (!admin || !teleporter)
+		{
+			return;
+		}
+
+		vector dest = data.param3;
+		Object found = GetGame().GetObjectByNetworkId(data.param1, data.param2);
+		if (found)
+		{
+			dest = found.GetPosition();
+		}
+		else
+		{
+			dest[1] = 0;
+			pm.NotifyPlayer(plainId, "#VSTR_XMLE_TP_GONE", NotifyTypes.NOTIFY);
+		}
+
+		string destX = dest[0].ToString();
+		string destY = dest[1].ToString();
+		string destZ = dest[2].ToString();
+		array<string> args = new array<string>();
+		args.Insert(destX);
+		args.Insert(destY);
+		args.Insert(destZ);
+		teleporter.TeleportToPoint(args, admin, plainId);
 	}
 
 	void XE_DeleteLiveObjects(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)

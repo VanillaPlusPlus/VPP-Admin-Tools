@@ -54,6 +54,11 @@ class WebHooksManager: ConfigurablePlugin
 		GetRPCManager().AddRPC("RPC_WebHooksManager", "SaveTemplate", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_WebHooksManager", "TestSend", this, SingleplayerExecutionType.Server);
 		GetRPCManager().AddRPC("RPC_WebHooksManager", "ReloadTemplates", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WebHooksManager", "SaveWebhook", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WebHooksManager", "DeleteWebhookById", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WebHooksManager", "DuplicateWebhook", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WebHooksManager", "ResetTemplate", this, SingleplayerExecutionType.Server);
+		GetRPCManager().AddRPC("RPC_WebHooksManager", "GetWebhookStats", this, SingleplayerExecutionType.Server);
 	}
 
 	void ~WebHooksManager()
@@ -567,6 +572,46 @@ class WebHooksManager: ConfigurablePlugin
 		}
 
 		GetRPCManager().VSendRPC("RPC_MenuWebHooks", "PopulateList", new Param1<ref array<ref WebHook>>(copies), true, sender);
+		int access = AccessMask(plainId);
+		GetRPCManager().VSendRPC("RPC_MenuWebHooks", "OnAccess", new Param1<int>(access), true, sender);
+	}
+
+	// What the admin may do in the menu (VPPWebhookAccess bits), so it can disable what the server would refuse.
+	protected int AccessMask(string plainId)
+	{
+		int access = 0;
+		PermissionManager perms = GetPermissionManager();
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:Create", "", false))
+		{
+			access = access | VPPWebhookAccess.CREATE;
+		}
+
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:Edit", "", false))
+		{
+			access = access | VPPWebhookAccess.EDIT;
+		}
+
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:Delete", "", false))
+		{
+			access = access | VPPWebhookAccess.DELETE;
+		}
+
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:EditTemplates", "", false))
+		{
+			access = access | VPPWebhookAccess.EDIT_TEMPLATES;
+		}
+
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:TestSend", "", false))
+		{
+			access = access | VPPWebhookAccess.TEST_SEND;
+		}
+
+		if (perms.VerifyPermission(plainId, "MenuWebHooks:ViewURL", "", false))
+		{
+			access = access | VPPWebhookAccess.VIEW_URL;
+		}
+
+		return access;
 	}
 
 	void GetWebHooks(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
@@ -715,6 +760,494 @@ class WebHooksManager: ConfigurablePlugin
 			GetPermissionManager().NotifyPlayer(sender.GetPlainId(),"WebHook: " + editedName + " was successfully edited & saved!", NotifyTypes.NOTIFY);
 			SendList(sender);
 		}
+	}
+
+	// ---------------------------------------------------------------- webhook RPCs of the new menu
+
+	protected void ReplySaved(PlayerIdentity sender, int reqId, bool ok, string hookId, string error)
+	{
+		VPPWebhookSaveReply reply = new VPPWebhookSaveReply();
+		reply.ReqId = reqId;
+		reply.Ok = ok;
+		reply.HookId = hookId;
+		reply.Error = error;
+		GetRPCManager().VSendRPC("RPC_MenuWebHooks", "OnWebhookSaved", new Param1<ref VPPWebhookSaveReply>(reply), true, sender);
+	}
+
+	protected bool NameInUse(string name, string exceptId)
+	{
+		string lowerName = name;
+		lowerName.ToLower();
+		foreach (WebHook hook : M_DATA)
+		{
+			if (!hook || hook.m_Id == exceptId)
+			{
+				continue;
+			}
+
+			string otherName = hook.GetName();
+			otherName.ToLower();
+			if (otherName == lowerName)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Creates (empty or unknown m_Id) or updates a webhook with everything the menu edits. A changed preset rewrites
+	// the webhook's templates from the new preset; the legacy switches are kept in step for older tools.
+	void SaveWebhook(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server || !sender)
+		{
+			return;
+		}
+
+		Param2<int, ref WebHook> data;
+		if (!ctx.Read(data))
+		{
+			return;
+		}
+
+		string plainId = sender.GetPlainId();
+		WebHook incoming = data.param2;
+		int reqId = data.param1;
+		if (!incoming)
+		{
+			return;
+		}
+
+		WebHook stored = FindHook(incoming.m_Id);
+		bool creating = false;
+		if (!stored)
+		{
+			creating = true;
+		}
+
+		string permission = "MenuWebHooks:Edit";
+		if (creating)
+		{
+			permission = "MenuWebHooks:Create";
+		}
+
+		if (!GetPermissionManager().VerifyPermission(plainId, permission))
+		{
+			return;
+		}
+
+		string newName = incoming.GetName();
+		newName = newName.Trim();
+		if (newName.Length() < 3)
+		{
+			ReplySaved(sender, reqId, false, incoming.m_Id, "NAME_SHORT");
+			return;
+		}
+
+		string exceptId = "";
+		if (stored)
+		{
+			exceptId = stored.m_Id;
+		}
+
+		if (NameInUse(newName, exceptId))
+		{
+			ReplySaved(sender, reqId, false, incoming.m_Id, "NAME_IN_USE");
+			return;
+		}
+
+		string newUrl = incoming.GetURL();
+		newUrl = newUrl.Trim();
+		bool urlGiven = newUrl != "" && !WebHook.IsMasked(newUrl);
+		if (creating && !urlGiven)
+		{
+			ReplySaved(sender, reqId, false, "", "URL_MISSING");
+			return;
+		}
+
+		string newPreset = incoming.m_Preset;
+		if (!VPPWebhookPresets.IsPreset(newPreset))
+		{
+			newPreset = VPPWebhookPresets.DISCORD_EMBED;
+		}
+
+		if (creating)
+		{
+			stored = new WebHook(newName, newUrl);
+			stored.m_Preset = newPreset;
+			stored.Migrate(NextSerial());
+			M_DATA.Insert(stored);
+		}
+
+		bool presetChanged = stored.m_Preset != newPreset;
+		stored.SetName(newName);
+		if (urlGiven)
+		{
+			stored.SetURL(newUrl);
+		}
+
+		stored.m_Preset = newPreset;
+		string contentType = incoming.m_ContentType;
+		contentType = contentType.Trim();
+		if (contentType == "")
+		{
+			contentType = VPPWebhookPresets.ContentTypeOf(newPreset);
+		}
+
+		stored.m_ContentType = contentType;
+		int rateLimit = incoming.m_RateLimit;
+		if (rateLimit < 0)
+		{
+			rateLimit = 0;
+		}
+
+		if (rateLimit > 600)
+		{
+			rateLimit = 600;
+		}
+
+		stored.m_RateLimit = rateLimit;
+		stored.m_Disabled = incoming.m_Disabled;
+		stored.m_HideIds = incoming.m_HideIds;
+		stored.m_HideServerAddress = incoming.m_HideServerAddress;
+		VPPWebHookServerStatsTime interval = ValidInterval(incoming.m_serverStatsInterval);
+		stored.SetServerStatsInterval(interval);
+		CopyVars(incoming, stored);
+		CopyEvents(incoming, stored);
+		stored.SyncSwitchesFromEvents();
+		if (creating || presetChanged)
+		{
+			WritePresetTemplates(stored);
+		}
+
+		RetireSender(stored.m_Id);
+		StartSender(stored);
+		Save();
+		SaveIfTemplatesChanged();
+		WriteReadme();
+		string verb = "Edited";
+		if (creating)
+		{
+			verb = "Created";
+		}
+
+		string logText = "[WebHooksManager] " + verb + " WebHook: " + newName;
+		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(plainId, sender.GetName(), logText));
+		ReplySaved(sender, reqId, true, stored.m_Id, "");
+		SendList(sender);
+	}
+
+	protected VPPWebHookServerStatsTime ValidInterval(VPPWebHookServerStatsTime interval)
+	{
+		if (interval == VPPWebHookServerStatsTime.ONE_MINUTE || interval == VPPWebHookServerStatsTime.FIVE_MINUTES)
+		{
+			return interval;
+		}
+
+		if (interval == VPPWebHookServerStatsTime.TEN_MINUTES || interval == VPPWebHookServerStatsTime.FIFTEEN_MINUTES)
+		{
+			return interval;
+		}
+
+		return VPPWebHookServerStatsTime.FIVE_MINUTES;
+	}
+
+	// hook.* variables: plain names only (letters, digits, _ and .), at most 32, values up to 500 characters.
+	protected void CopyVars(WebHook source, WebHook target)
+	{
+		target.m_Vars.Clear();
+		if (!source.m_Vars)
+		{
+			return;
+		}
+
+		int total = source.m_Vars.Count();
+		for (int i = 0; i < total; i++)
+		{
+			if (target.m_Vars.Count() >= 32)
+			{
+				break;
+			}
+
+			string varName = source.m_Vars.GetKey(i);
+			string varValue = source.m_Vars.GetElement(i);
+			varName = varName.Trim();
+			if (!VPPWebhookVarNames.IsPlain(varName))
+			{
+				continue;
+			}
+
+			if (varValue.Length() > 500)
+			{
+				varValue = varValue.Substring(0, 500);
+			}
+
+			target.m_Vars.Set(varName, varValue);
+		}
+	}
+
+	// Event settings for the known events (unknown ids are ignored); module names are kept lower case and trimmed.
+	protected void CopyEvents(WebHook source, WebHook target)
+	{
+		array<ref VPPWebhookEventDef> eventDefs = VPPWebhookDefs.All();
+		foreach (VPPWebhookEventDef def : eventDefs)
+		{
+			VPPWebhookEventCfg sourceCfg = null;
+			if (source.m_Events)
+			{
+				sourceCfg = source.m_Events.Get(def.Id);
+			}
+
+			VPPWebhookEventCfg cfg = target.m_Events.Get(def.Id);
+			if (!cfg)
+			{
+				cfg = new VPPWebhookEventCfg();
+				target.m_Events.Set(def.Id, cfg);
+			}
+
+			if (!sourceCfg)
+			{
+				continue;
+			}
+
+			cfg.Enabled = sourceCfg.Enabled;
+			cfg.PvPOnly = sourceCfg.PvPOnly;
+			cfg.SkipAI = sourceCfg.SkipAI;
+			cfg.MinDistance = Math.Clamp(sourceCfg.MinDistance, 0, 20000);
+			CopyModules(sourceCfg.Modules, cfg.Modules);
+			CopyModules(sourceCfg.ExcludedModules, cfg.ExcludedModules);
+		}
+	}
+
+	protected void CopyModules(array<string> source, array<string> target)
+	{
+		target.Clear();
+		if (!source)
+		{
+			return;
+		}
+
+		foreach (string moduleName : source)
+		{
+			string cleanName = moduleName.Trim();
+			cleanName.ToLower();
+			if (cleanName == "" || target.Find(cleanName) >= 0 || target.Count() >= 50)
+			{
+				continue;
+			}
+
+			target.Insert(cleanName);
+		}
+	}
+
+	void DeleteWebhookById(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server || !sender)
+		{
+			return;
+		}
+
+		Param1<string> data;
+		if (!ctx.Read(data))
+		{
+			return;
+		}
+
+		string plainId = sender.GetPlainId();
+		if (!GetPermissionManager().VerifyPermission(plainId, "MenuWebHooks:Delete"))
+		{
+			return;
+		}
+
+		int index = -1;
+		for (int i = 0; i < M_DATA.Count(); i++)
+		{
+			if (M_DATA[i] && M_DATA[i].m_Id == data.param1)
+			{
+				index = i;
+				break;
+			}
+		}
+
+		if (index < 0)
+		{
+			SendList(sender);
+			return;
+		}
+
+		WebHook removed = M_DATA[index];
+		string removedName = removed.GetName();
+		RetireSender(removed.m_Id);
+		M_DATA.RemoveOrdered(index);
+		Save();
+		WriteReadme();
+		string logText = "[WebHooksManager] Deleted WebHook: " + removedName;
+		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(plainId, sender.GetName(), logText));
+		SendList(sender);
+	}
+
+	// A copy with a new id, " (copy)" name and copies of all its template files.
+	void DuplicateWebhook(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server || !sender)
+		{
+			return;
+		}
+
+		Param2<int, string> data;
+		if (!ctx.Read(data))
+		{
+			return;
+		}
+
+		string plainId = sender.GetPlainId();
+		if (!GetPermissionManager().VerifyPermission(plainId, "MenuWebHooks:Create"))
+		{
+			return;
+		}
+
+		WebHook source = FindHook(data.param2);
+		if (!source)
+		{
+			ReplySaved(sender, data.param1, false, data.param2, "NOT_FOUND");
+			return;
+		}
+
+		WebHook copy = source.CopyForClient(true);
+		copy.m_Id = WebHook.NewId(NextSerial());
+		string baseName = source.GetName() + " (copy)";
+		string copyName = baseName;
+		int attempt = 2;
+		while (NameInUse(copyName, ""))
+		{
+			copyName = baseName + " " + attempt.ToString();
+			attempt++;
+		}
+
+		copy.SetName(copyName);
+		copy.m_PresetHashes.Copy(source.m_PresetHashes);
+		EnsureHookDir(copy);
+		array<ref VPPWebhookEventDef> eventDefs = VPPWebhookDefs.All();
+		foreach (VPPWebhookEventDef def : eventDefs)
+		{
+			string fromPath = TemplatePath(source, def.Id);
+			string toPath = TemplatePath(copy, def.Id);
+			string text = "";
+			bool readOk = false;
+			if (FileExist(fromPath))
+			{
+				readOk = VPPXmlText.ReadAll(fromPath, text);
+			}
+
+			if (readOk)
+			{
+				VPPXmlText.WriteAll(toPath, text);
+			}
+		}
+
+		M_DATA.Insert(copy);
+		StartSender(copy);
+		Save();
+		SaveIfTemplatesChanged();
+		WriteReadme();
+		string logText = "[WebHooksManager] Duplicated WebHook: " + copyName;
+		GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(plainId, sender.GetName(), logText));
+		ReplySaved(sender, data.param1, true, copy.m_Id, "");
+		SendList(sender);
+	}
+
+	// Puts one event template back to the webhook's preset and answers like GetTemplate.
+	void ResetTemplate(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server || !sender)
+		{
+			return;
+		}
+
+		Param3<int, string, string> data;
+		if (!ctx.Read(data))
+		{
+			return;
+		}
+
+		string plainId = sender.GetPlainId();
+		if (!GetPermissionManager().VerifyPermission(plainId, "MenuWebHooks:EditTemplates"))
+		{
+			return;
+		}
+
+		WebHook hook = FindHook(data.param2);
+		VPPWebhookEventDef def = VPPWebhookDefs.Get(data.param3);
+		if (!hook || !def)
+		{
+			return;
+		}
+
+		EnsureHookDir(hook);
+		RefreshPresetTemplate(hook, def.Id, true);
+		string text = "";
+		string path = TemplatePath(hook, def.Id);
+		VPPXmlText.ReadAll(path, text);
+		VPPWebhookSender hookSender = m_Senders.Get(hook.m_Id);
+		if (hookSender)
+		{
+			VPPWebhookTemplate tpl = new VPPWebhookTemplate();
+			tpl.Parse(text, def);
+			hookSender.SetTemplate(def.Id, tpl);
+		}
+
+		SaveIfTemplatesChanged();
+		VPPWebhookTemplateReply reply = new VPPWebhookTemplateReply();
+		reply.ReqId = data.param1;
+		reply.HookId = hook.m_Id;
+		reply.EventId = def.Id;
+		reply.Text = text;
+		GetRPCManager().VSendRPC("RPC_MenuWebHooks", "OnTemplate", new Param1<ref VPPWebhookTemplateReply>(reply), true, sender);
+	}
+
+	void GetWebhookStats(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Server || !sender)
+		{
+			return;
+		}
+
+		if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "MenuWebHooks", "", false))
+		{
+			return;
+		}
+
+		array<ref VPPWebhookStatsWire> rows = new array<ref VPPWebhookStatsWire>();
+		foreach (WebHook hook : M_DATA)
+		{
+			if (!hook)
+			{
+				continue;
+			}
+
+			VPPWebhookSender hookSender = m_Senders.Get(hook.m_Id);
+			if (!hookSender)
+			{
+				continue;
+			}
+
+			VPPWebhookStatsWire row = new VPPWebhookStatsWire();
+			row.HookId = hook.m_Id;
+			row.Queued = hookSender.Stats.Queued;
+			row.Delivered = hookSender.Stats.Delivered;
+			row.NoReply = hookSender.Stats.NoReply;
+			row.Failed = hookSender.Stats.Failed;
+			row.Dropped = hookSender.Stats.Dropped;
+			row.Waiting = hookSender.QueueCount();
+			row.ConsecutiveFailures = hookSender.Stats.ConsecutiveFailures;
+			row.LastError = hookSender.Stats.LastError;
+			row.LastErrorTime = hookSender.Stats.LastErrorTime;
+			row.LastSuccessTime = hookSender.Stats.LastSuccessTime;
+			rows.Insert(row);
+		}
+
+		GetRPCManager().VSendRPC("RPC_MenuWebHooks", "OnStats", new Param1<ref array<ref VPPWebhookStatsWire>>(rows), true, sender);
 	}
 
 	// ---------------------------------------------------------------- template RPCs (webhook editor)
@@ -876,7 +1409,7 @@ class WebHooksManager: ConfigurablePlugin
 		reply.JsonMessage = verdict.Message;
 		reply.JsonLine = verdict.Line;
 		reply.JsonCol = verdict.Col;
-		if (verdict.Valid && VPPWebhookPresets.IsDiscord(hook.m_Preset))
+		if (verdict.Valid && VPPWebhookPresets.UsesDiscordLimits(hook.m_Preset))
 		{
 			VPPDiscordLint.Check(preview, reply.ServiceProblems);
 		}

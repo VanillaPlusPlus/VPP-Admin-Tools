@@ -55,6 +55,32 @@ class VPPWebhookTestReply : Managed
 	string Reason;
 };
 
+// SaveWebhook / DuplicateWebhook: the webhook id on success, else Error (a stable code the menu localizes:
+// NAME_SHORT, NAME_IN_USE, URL_MISSING, NOT_FOUND).
+class VPPWebhookSaveReply : Managed
+{
+	int ReqId;
+	bool Ok;
+	string HookId;
+	string Error;
+};
+
+// GetWebhookStats: delivery numbers of one webhook since the server started.
+class VPPWebhookStatsWire : Managed
+{
+	string HookId;
+	int Queued;
+	int Delivered;
+	int NoReply;
+	int Failed;
+	int Dropped;
+	int Waiting;
+	int ConsecutiveFailures;
+	string LastError;
+	string LastErrorTime;
+	string LastSuccessTime;
+};
+
 // ReloadTemplates: per webhook, how many templates have problems (details are in the server log).
 class VPPWebhookReloadReply : Managed
 {

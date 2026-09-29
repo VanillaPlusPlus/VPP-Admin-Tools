@@ -57,38 +57,91 @@ class VPPWebhookJob : Managed
 	int TestReqId;
 };
 
+// One request's answer. Bound to a sender + job while the request runs, unbound on the first answer (a second
+// answer for the same request is ignored) and then reused through VPPWebhookCallbackPool.
 class VPPWebhookRequestCallback : RestCallback
 {
 	protected VPPWebhookSender m_Owner;
 	protected int m_JobId;
 
-	void VPPWebhookRequestCallback(VPPWebhookSender owner, int jobId)
+	void Bind(VPPWebhookSender owner, int jobId)
 	{
 		m_Owner = owner;
 		m_JobId = jobId;
 	}
 
+	protected void Answer(int state)
+	{
+		VPPWebhookSender owner = m_Owner;
+		int jobId = m_JobId;
+		m_Owner = null;
+		if (owner)
+		{
+			owner.OnRequestDone(jobId, state, this);
+		}
+	}
+
 	override void OnSuccess(string data, int dataSize)
 	{
-		if (m_Owner)
-		{
-			m_Owner.OnRequestDone(m_JobId, VPPWebhookSender.RESULT_SUCCESS);
-		}
+		Answer(VPPWebhookSender.RESULT_SUCCESS);
 	}
 
 	override void OnError(int errorCode)
 	{
-		if (m_Owner)
-		{
-			m_Owner.OnRequestDone(m_JobId, errorCode);
-		}
+		Answer(errorCode);
 	}
 
 	override void OnTimeout()
 	{
-		if (m_Owner)
+		Answer(VPPWebhookSender.RESULT_NO_REPLY);
+	}
+};
+
+// The engine keeps a reference to every RestCallback it is given (proven 2026-09-29: every callback, also the older
+// VPPAT_IPIFY one, showed as leaked at shutdown), so one new callback per message would grow without end. Answered
+// callbacks go back here and are bound to the next request; the pool never holds more than were in flight at once.
+class VPPWebhookCallbackPool
+{
+	protected static ref array<ref VPPWebhookRequestCallback> s_Free;
+
+	static VPPWebhookRequestCallback Acquire(VPPWebhookSender owner, int jobId)
+	{
+		VPPWebhookRequestCallback callback = null;
+		if (!s_Free)
 		{
-			m_Owner.OnRequestDone(m_JobId, VPPWebhookSender.RESULT_NO_REPLY);
+			s_Free = new array<ref VPPWebhookRequestCallback>();
+		}
+
+		int last = s_Free.Count() - 1;
+		if (last >= 0)
+		{
+			callback = s_Free[last];
+			s_Free.Remove(last);
+		}
+		else
+		{
+			callback = new VPPWebhookRequestCallback();
+		}
+
+		callback.Bind(owner, jobId);
+		return callback;
+	}
+
+	static void Release(VPPWebhookRequestCallback callback)
+	{
+		if (!callback)
+		{
+			return;
+		}
+
+		if (!s_Free)
+		{
+			s_Free = new array<ref VPPWebhookRequestCallback>();
+		}
+
+		if (s_Free.Find(callback) < 0)
+		{
+			s_Free.Insert(callback);
 		}
 	}
 };
@@ -120,11 +173,9 @@ class VPPWebhookSender : Managed
 	protected ref map<string, ref VPPWebhookTemplate> m_Templates;
 	protected ref array<ref VPPWebhookJob> m_Queue;
 	protected ref map<int, ref VPPWebhookJob> m_InFlight;
+	// callbacks of the requests in flight (back to VPPWebhookCallbackPool when answered)
 	protected ref map<int, ref VPPWebhookRequestCallback> m_Callbacks;
 	protected ref array<int> m_SentTimes;
-	// callbacks the engine already answered, released a while later (never inside their own OnSuccess / OnError)
-	protected ref array<int> m_DoneIds;
-	protected ref array<int> m_DoneTimes;
 	protected int m_NextJobId;
 	ref VPPWebhookStats Stats;
 
@@ -136,8 +187,6 @@ class VPPWebhookSender : Managed
 		m_InFlight = new map<int, ref VPPWebhookJob>();
 		m_Callbacks = new map<int, ref VPPWebhookRequestCallback>();
 		m_SentTimes = new array<int>();
-		m_DoneIds = new array<int>();
-		m_DoneTimes = new array<int>();
 		Stats = new VPPWebhookStats();
 	}
 
@@ -237,7 +286,6 @@ class VPPWebhookSender : Managed
 	void Pump()
 	{
 		int now = GetGame().GetTime();
-		ReleaseDoneCallbacks(now);
 		if (m_Queue.Count() == 0 || !m_Hook)
 		{
 			return;
@@ -269,26 +317,16 @@ class VPPWebhookSender : Managed
 		}
 	}
 
-	protected void ReleaseDoneCallbacks(int now)
+	// Messages waiting in the queue (not sent yet).
+	int QueueCount()
 	{
-		for (int i = m_DoneIds.Count() - 1; i >= 0; i--)
-		{
-			if (now - m_DoneTimes[i] < 30000)
-			{
-				continue;
-			}
-
-			int doneId = m_DoneIds[i];
-			m_Callbacks.Remove(doneId);
-			m_DoneIds.RemoveOrdered(i);
-			m_DoneTimes.RemoveOrdered(i);
-		}
+		return m_Queue.Count();
 	}
 
 	// Requests still waiting for the engine (the manager keeps a sender alive until this is 0).
 	int PendingRequests()
 	{
-		return m_InFlight.Count() + m_DoneIds.Count();
+		return m_InFlight.Count();
 	}
 
 	protected void Send(VPPWebhookJob job)
@@ -301,7 +339,7 @@ class VPPWebhookSender : Managed
 		}
 
 		job.Attempts++;
-		VPPWebhookRequestCallback callback = new VPPWebhookRequestCallback(this, job.Id);
+		VPPWebhookRequestCallback callback = VPPWebhookCallbackPool.Acquire(this, job.Id);
 		m_Callbacks.Set(job.Id, callback);
 		m_InFlight.Set(job.Id, job);
 		RestContext context = GetRestApi().GetRestContext(url);
@@ -309,13 +347,12 @@ class VPPWebhookSender : Managed
 		context.POST(callback, "", job.Body);
 	}
 
-	void OnRequestDone(int jobId, int state)
+	void OnRequestDone(int jobId, int state, VPPWebhookRequestCallback callback)
 	{
 		VPPWebhookJob job = m_InFlight.Get(jobId);
 		m_InFlight.Remove(jobId);
-		m_DoneIds.Insert(jobId);
-		int doneAt = GetGame().GetTime();
-		m_DoneTimes.Insert(doneAt);
+		VPPWebhookCallbackPool.Release(callback);
+		m_Callbacks.Remove(jobId);
 		// a retired sender (its webhook was deleted / replaced) only waits for its callbacks
 		if (!job || !m_Hook)
 		{
@@ -434,7 +471,15 @@ class VPPWebhookSender : Managed
 			return;
 		}
 
-		if (VPPWebhookPresets.IsDiscord(m_Hook.m_Preset))
+		bool discordPreset = VPPWebhookPresets.UsesDiscordLimits(m_Hook.m_Preset);
+		if (m_Hook.IsDiscordUrl() && !discordPreset)
+		{
+			string presetName = m_Hook.m_Preset;
+			Print("[WebHooksManager] The URL is a Discord webhook but the preset is " + presetName + ": Discord only accepts the discord_embed / discord_simple formats");
+			return;
+		}
+
+		if (discordPreset)
 		{
 			VPPDiscordLint.Check(job.Body, problems);
 		}

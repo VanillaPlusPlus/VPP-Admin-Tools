@@ -934,7 +934,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		vector hitPos;
 		if (m_Renderer.HitTest(mx, my, hitLayer, hitIndex, hitPos) && hitIndex >= 0 && hitLayer != VPPXELayer.INFECTED)
 		{
-			DoTeleport(hitPos);
+			DoTeleportTo(hitLayer, hitIndex, hitPos);
 			return true;
 		}
 
@@ -1962,7 +1962,24 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			return;
 		}
 
-		DoTeleport(m_SelPos);
+		DoTeleportTo(m_SelLayer, m_SelIndex, m_SelPos);
+	}
+
+	// A live-scan hit is teleported to by its network id (the server uses the entity's current position, height
+	// included); any other marker or map point goes to its x / z at ground level.
+	protected void DoTeleportTo(int layer, int index, vector pos)
+	{
+		VPPXEMapLayerData live = m_Layers[VPPXELayer.LIVE];
+		if (layer == VPPXELayer.LIVE && index >= 0 && live && live.IsMarkerAlive(index) && live.MarkNet.Count() > index * 2 + 1)
+		{
+			int netLow = live.MarkNet[index * 2];
+			int netHigh = live.MarkNet[index * 2 + 1];
+			vector fallback = Vector(pos[0], 0, pos[2]);
+			GetRPCManager().VSendRPC("RPC_XMLEditor", "XE_TeleportToEntity", new Param3<int, int, vector>(netLow, netHigh, fallback), true, null);
+			return;
+		}
+
+		DoTeleport(pos);
 	}
 
 	protected void DoTeleport(vector pos)

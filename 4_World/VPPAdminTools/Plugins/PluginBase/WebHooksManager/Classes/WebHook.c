@@ -164,6 +164,54 @@ class WebHook : Managed
 		return "wh" + stamp.ToString() + serial.ToString() + random.ToString();
 	}
 
+	// Makes the webhook safe to read: missing maps and lists are created, and a missing (null) event setting is
+	// rebuilt from the legacy switch of its group (the server keeps those in step). Returns how many settings were
+	// missing, so a caller can report data that arrived damaged.
+	int RepairEvents()
+	{
+		int repaired = 0;
+		if (!m_Vars)
+		{
+			m_Vars = new map<string, string>();
+		}
+
+		if (!m_Events)
+		{
+			m_Events = new map<string, ref VPPWebhookEventCfg>();
+		}
+
+		if (!m_PresetHashes)
+		{
+			m_PresetHashes = new map<string, int>();
+		}
+
+		array<ref VPPWebhookEventDef> eventDefs = VPPWebhookDefs.All();
+		foreach (VPPWebhookEventDef def : eventDefs)
+		{
+			VPPWebhookEventCfg cfg = m_Events.Get(def.Id);
+			if (!cfg)
+			{
+				cfg = new VPPWebhookEventCfg();
+				cfg.Enabled = SwitchOf(def.LegacyGroup);
+				m_Events.Set(def.Id, cfg);
+				repaired++;
+				continue;
+			}
+
+			if (!cfg.Modules)
+			{
+				cfg.Modules = new array<string>();
+			}
+
+			if (!cfg.ExcludedModules)
+			{
+				cfg.ExcludedModules = new array<string>();
+			}
+		}
+
+		return repaired;
+	}
+
 	// The old per-category switches decide which events are on (old menu and old configs).
 	void SyncEventsFromSwitches()
 	{
@@ -184,6 +232,37 @@ class WebHook : Managed
 
 			cfg.Enabled = SwitchOf(def.LegacyGroup);
 		}
+	}
+
+	// The legacy per-category switches follow the event settings (a group is on when any of its events is).
+	void SyncSwitchesFromEvents()
+	{
+		m_deathKillLogs = IsEventEnabled(VPPWebhookDefs.EV_KILL);
+		m_adminActivityLog = IsEventEnabled(VPPWebhookDefs.EV_ADMIN);
+		m_admHitLog = IsEventEnabled(VPPWebhookDefs.EV_HIT);
+		m_joinLeaveLog = false;
+		m_serverStatusLog = false;
+		array<ref VPPWebhookEventDef> eventDefs = VPPWebhookDefs.All();
+		foreach (VPPWebhookEventDef def : eventDefs)
+		{
+			VPPWebhookEventCfg cfg = m_Events.Get(def.Id);
+			if (!cfg || !cfg.Enabled)
+			{
+				continue;
+			}
+
+			if (def.LegacyGroup == VPPWebhookDefs.GROUP_JOINLEAVE)
+			{
+				m_joinLeaveLog = true;
+			}
+
+			if (def.LegacyGroup == VPPWebhookDefs.GROUP_STATUS)
+			{
+				m_serverStatusLog = true;
+			}
+		}
+
+		m_simplifiedMessages = m_Preset == VPPWebhookPresets.DISCORD_SIMPLE;
 	}
 
 	protected bool SwitchOf(string legacyGroup)
@@ -242,18 +321,35 @@ class WebHook : Managed
 		copy.m_RateLimit = m_RateLimit;
 		copy.m_HideIds = m_HideIds;
 		copy.m_HideServerAddress = m_HideServerAddress;
-		copy.m_Vars.Copy(m_Vars);
-		for (int i = 0; i < m_Events.Count(); i++)
+		if (m_Vars)
+		{
+			copy.m_Vars.Copy(m_Vars);
+		}
+
+		RepairEvents();
+		int total = m_Events.Count();
+		for (int i = 0; i < total; i++)
 		{
 			string eventId = m_Events.GetKey(i);
 			VPPWebhookEventCfg source = m_Events.GetElement(i);
 			VPPWebhookEventCfg cloned = new VPPWebhookEventCfg();
-			cloned.Enabled = source.Enabled;
-			cloned.PvPOnly = source.PvPOnly;
-			cloned.SkipAI = source.SkipAI;
-			cloned.MinDistance = source.MinDistance;
-			cloned.Modules.Copy(source.Modules);
-			cloned.ExcludedModules.Copy(source.ExcludedModules);
+			if (source)
+			{
+				cloned.Enabled = source.Enabled;
+				cloned.PvPOnly = source.PvPOnly;
+				cloned.SkipAI = source.SkipAI;
+				cloned.MinDistance = source.MinDistance;
+				if (source.Modules)
+				{
+					cloned.Modules.Copy(source.Modules);
+				}
+
+				if (source.ExcludedModules)
+				{
+					cloned.ExcludedModules.Copy(source.ExcludedModules);
+				}
+			}
+
 			copy.m_Events.Set(eventId, cloned);
 		}
 
@@ -389,7 +485,8 @@ class WebHook : Managed
 			return m_RateLimit;
 		}
 
-		if (VPPWebhookPresets.IsDiscord(m_Preset))
+		// Discord allows about 30 per minute per webhook, Lolka 30 (then 429)
+		if (VPPWebhookPresets.UsesDiscordLimits(m_Preset))
 		{
 			return 25;
 		}
@@ -399,12 +496,27 @@ class WebHook : Managed
 
 	// The URL requests go to: Discord gets ?wait=true so a delivered message answers with a body (the engine reports a
 	// bodyless 204 as a timeout, memory dayz-restapi-json-internals).
+	bool IsDiscordUrl()
+	{
+		string lower = m_URL;
+		lower.ToLower();
+		return lower.Contains("discord.com/api/webhooks") || lower.Contains("discordapp.com/api/webhooks");
+	}
+
+	bool IsLolkaUrl()
+	{
+		string lower = m_URL;
+		lower.ToLower();
+		return lower.Contains("lolka.app/api/webhooks");
+	}
+
 	string GetSendUrl()
 	{
 		string url = m_URL;
 		string lower = url;
 		lower.ToLower();
-		bool discord = lower.Contains("discord.com/api/webhooks") || lower.Contains("discordapp.com/api/webhooks");
+		// Lolka answers 200 + the message by default too; wait=true makes it explicit
+		bool discord = IsDiscordUrl() || IsLolkaUrl();
 		if (!discord || lower.Contains("wait="))
 		{
 			return url;
