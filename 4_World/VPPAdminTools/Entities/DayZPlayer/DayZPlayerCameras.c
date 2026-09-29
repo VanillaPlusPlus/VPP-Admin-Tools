@@ -1,9 +1,9 @@
 modded class DayZPlayerCameras
 {
-	static const int VPP_FREE_CAMERA		= 32;	//!< free camera
+	static const int VPP_FREE_CAMERA		= 33;	//!< free camera
 	//NOT named VPP_SPECTATE_CAMERA: VPPBR's modded DayZPlayerCameras declares that
 	//exact member and modded chains forbid redeclaration (co-load compile error)
-	static const int VPPAT_SPECTATE_CAMERA	= 33;	//!< spectate camera (VPPDayZPlayerCameraSpectate)
+	static const int VPPAT_SPECTATE_CAMERA	= 34;	//!< spectate camera (VPPDayZPlayerCameraSpectate)
 
 	static float VPPGetTransitionTime(int pFrom, int pTo)
 	{
@@ -45,13 +45,11 @@ modded class DayZPlayerCameras
 			return 0.0;
 		}
 
-		//Print("---transition change---");
 		float transTime = GetTransitionTime(pFrom, pTo);;
 		if (pFrom == VPP_FREE_CAMERA || pTo == VPP_FREE_CAMERA)
 		{
 			transTime = VPPGetTransitionTime(pFrom, pTo);
 		}
-	    //Print("OnCameraChange:" + pFrom.ToString() + "->" + pTo.ToString() + " time:" + transTime.ToString());
 		return transTime;
 	}
 };
