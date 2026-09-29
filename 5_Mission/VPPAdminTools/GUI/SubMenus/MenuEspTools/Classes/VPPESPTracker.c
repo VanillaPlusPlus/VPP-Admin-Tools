@@ -574,8 +574,18 @@ class VPPESPTracker: ScriptedWidgetEventHandler
 				if (strDead)
 					strDead.Show(!player.IsAlive());
 
-				float hpPct = Math.Clamp(player.GetTransferValues().m_HealthClient, 0.0, 1.0);
-				float blPct = Math.Clamp(player.GetTransferValues().m_BloodClient, 0.0, 1.0);
+				float hpPct = -1;
+				float maxHp = player.GetMaxHealth("", "Health");
+				if (maxHp > 0)
+					hpPct = player.GetHealth("", "Health") / maxHp;
+				if (hpPct <= 0)
+					hpPct = player.GetTransferValues().m_HealthClient;
+				hpPct = Math.Clamp(hpPct, 0.0, 1.0);
+
+				float blPct = player.GetHealth("", "Blood") / 5000.0;
+				if (blPct <= 0)
+					blPct = player.GetTransferValues().m_BloodClient;
+				blPct = Math.Clamp(blPct, 0.0, 1.0);
 				if (m_HealthInput)
 				{
 					m_HealthInput.SetSize(hpPct, 1.0);
