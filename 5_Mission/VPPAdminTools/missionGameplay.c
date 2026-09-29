@@ -700,7 +700,8 @@ modded class MissionGameplay
 
         if (!GetVPPUIManager().GetKeybindsStatus() && !GetVPPUIManager().IsTyping())
         {
-            Car targetVehicle = Car.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
+            //any Transport: cars, boats and motorbikes
+            Transport targetVehicle = Transport.Cast(g_Game.getObjectAtCrosshair(1000.0, 0.0,NULL));
             if (targetVehicle)
             {
                 GetRPCManager().VSendRPC("RPC_AdminTools", "RepairVehicles", new Param1<bool>(g_Game.IsLeftCtrlDown()), true, NULL, targetVehicle);

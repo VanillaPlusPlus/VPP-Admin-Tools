@@ -8,8 +8,8 @@
 
 	Visibility self-gates each tick on: pinned OR the toolbar is showing.
 	- pin button     : keep visible after the toolbar closes
-	- corner button  : cycle the 4 screen corners
-	- orient button  : toggle horizontal <-> vertical
+	- corner button  : cycle the 4 screen corners (saved in the profile)
+	- orient button  : toggle vertical <-> horizontal (saved in the profile, vertical by default)
 	- copy buttons   : copy own coords / crosshair-object position to clipboard
 	- changelog button : open/close the changelog window (orange while this update is unseen; toolbar must be open)
 */
@@ -88,8 +88,8 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 		m_Root.SetHandler(this);
 
 		m_Pinned   = false;
-		m_Corner   = 0; //bottom-right
-		m_Vertical = false;
+		m_Corner   = g_Game.GetStatsHudCorner();   //last choice, bottom-right by default
+		m_Vertical = g_Game.IsStatsHudVertical();  //last choice, vertical by default
 
 		UpdatePinVisual();
 		UpdateChangelogVisual();
@@ -206,12 +206,14 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 		if (w == m_BtnCorner)
 		{
 			m_Corner = (m_Corner + 1) % 4;
+			g_Game.SetStatsHudCorner(m_Corner);
 			Relayout();
 			return true;
 		}
 		if (w == m_BtnOrient)
 		{
 			m_Vertical = !m_Vertical;
+			g_Game.SetStatsHudVertical(m_Vertical);
 			Relayout();
 			return true;
 		}

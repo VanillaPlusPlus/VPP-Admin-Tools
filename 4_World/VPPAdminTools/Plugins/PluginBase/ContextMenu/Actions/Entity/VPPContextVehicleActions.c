@@ -36,7 +36,8 @@ class VPPCA_VehicleRepair : VPPContextAction
 		if (!target || target.IsPlayer())
 			return false;
 
-		return Car.Cast(target.GetObject()) != null;
+		//cars, boats and motorbikes (RepairVehicles handles any Transport)
+		return Transport.Cast(target.GetObject()) != null;
 	}
 
 	override bool OnExecuteClient(VPPContextTarget target, VPPContextArgs args)
@@ -87,7 +88,8 @@ class VPPCA_VehicleRepairParts : VPPContextAction
 		if (!target || target.IsPlayer())
 			return false;
 
-		return Car.Cast(target.GetObject()) != null;
+		//cars, boats and motorbikes (RepairVehicles handles any Transport)
+		return Transport.Cast(target.GetObject()) != null;
 	}
 
 	override bool OnExecuteClient(VPPContextTarget target, VPPContextArgs args)

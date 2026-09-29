@@ -6,7 +6,9 @@ enum EVPPATProfileOptions
 	CAM_MOUSE_SENSE,
 	CAM_SMOOTHNESS,
 	CAM_FOV,
-	STATS_HUD_ENABLED
+	STATS_HUD_ENABLED,
+	STATS_HUD_CORNER,
+	STATS_HUD_VERTICAL
 };
 
 typedef Param3<string, float, float> VPPProfileOptionDta;
