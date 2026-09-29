@@ -18,6 +18,7 @@ modded class MissionGameplay
     CanvasWidget m_EspCanvasWidget;
 
     ref VPPSpectateClientHandler m_SpectateHandler; //spectate engine client glue (registers RPC_SpectateClient)
+    ref VPPContextMenuController m_VPPContextMenu; //context action menu (look + cursor mode)
 
 	void MissionGameplay()
 	{
@@ -63,6 +64,7 @@ modded class MissionGameplay
 
         //spectate engine client glue (registers RPC_SpectateClient handlers)
         m_SpectateHandler = VPPSpectateClientHandler.GetInstance();
+        m_VPPContextMenu = new VPPContextMenuController();
 
         //the spectate flag lives game-scope (3_Game) and survives disconnect-while-spectating;
         //a fresh mission is never spectating — clear any stale state
@@ -89,6 +91,7 @@ modded class MissionGameplay
         VPPKeybindsManager.RegisterBind("UAHealTargets", VPPBinds.Press, "HealTargetAtCrosshairs", this);
         VPPKeybindsManager.RegisterBind("UAToggleESP", VPPBinds.Press, "ToggleESP", this);
         VPPKeybindsManager.RegisterBind("UATogglePlayerControls", VPPBinds.Press, "ToggleControlsFocus", this);
+        VPPKeybindsManager.RegisterBind("UAVPPContextMenuToggle", VPPBinds.Press, "ToggleContextMenu", this);
 
         m_EspCanvas = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.PlayerESPCanvas);
         m_EspCanvasWidget = CanvasWidget.Cast(m_EspCanvas.FindAnyWidget("CanvasWidget"));
@@ -102,6 +105,14 @@ modded class MissionGameplay
 
     override void OnMissionFinish()
     {
+        if (m_VPPContextMenu)
+            m_VPPContextMenu.Shutdown();
+        m_VPPContextMenu = null;
+
+        //before the world goes away: map / preview widgets must not outlive it (client crash on exit)
+        if (GetVPPUIManager())
+            GetVPPUIManager().ShutdownMenus();
+
         super.OnMissionFinish();
         Print("[MissionGameplay] OnMissionFinish - Client");
     }
@@ -115,6 +126,9 @@ modded class MissionGameplay
 
     override void OnKeyPress(int key) 
     {
+        if (m_VPPContextMenu && m_VPPContextMenu.OnKeyPress(key))
+            return;
+
         //Avoid Escape key exit done by other mods (stops a client-crash)
         VPPScriptedMenu menu = VPPScriptedMenu.Cast(GetGame().GetUIManager().GetMenu());
         if (menu && key == KeyCode.KC_ESCAPE)
@@ -122,12 +136,6 @@ modded class MissionGameplay
             VPPAdminHud AdminTab = VPPAdminHud.Cast(GetGame().GetUIManager().FindMenu(VPP_ADMIN_HUD));
             if (AdminTab != NULL && AdminTab.IsShowing())
             {
-                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud)).GetSubMenuByType(MenuXMLEditor));
-                if (xmlMenu)
-                {
-                    if (xmlMenu.m_MapScreen)
-                        xmlMenu.m_MapScreen.ShowHide(false);
-                }
                 AdminTab.HideMenu();
             }
             return;
@@ -367,6 +375,25 @@ modded class MissionGameplay
         }else{
             GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_TOOLS_TOGGLE_OFF", "V++ Admin Tools:", 3.0);
         }
+    }
+
+    //hold-RMB look menu on/off; saved per client by the controller
+    void ToggleContextMenu()
+    {
+        if ((!m_Toggles) || (!m_ToolsToggled))
+            return;
+
+        if (GetVPPUIManager().GetKeybindsStatus() || GetVPPUIManager().IsTyping())
+            return;
+
+        if (!m_VPPContextMenu)
+            return;
+
+        //keyed title (#VSTR_CTX_NOTIFY_TITLE) and the context menu's own icon
+        if (m_VPPContextMenu.ToggleLookEnabled())
+            VPPContextActionManager.ClientNotify("#VSTR_CTX_TOGGLE_ON");
+        else
+            VPPContextActionManager.ClientNotify("#VSTR_CTX_TOGGLE_OFF");
     }
 
     void OnDiagResultToggleTools(int result, string input)
@@ -846,12 +873,6 @@ modded class MissionGameplay
                 adminMenu.ShowMenu();
                 return true;
             }else{
-                MenuXMLEditor xmlMenu = MenuXMLEditor.Cast(adminMenu.GetSubMenuByType(MenuXMLEditor));
-                if (xmlMenu)
-                {
-                    if (xmlMenu.m_MapScreen)
-                        xmlMenu.m_MapScreen.ShowHide(false);
-                }
                 adminMenu.HideMenu();
                 return false;
             }
@@ -910,9 +931,8 @@ modded class MissionGameplay
                     //command handler to freeze player
                     if (!player.GetCommand_Vehicle())
                     {
-                        player.InitTablesCmd();
-                        HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(player, player.m_VPPCamHmnCmd);
-                        player.StartCommand_Script(cmdFS);
+                        //engine-owned command (see HumanCommandScript_VPPCam): never `new` it
+                        player.StartCommand_ScriptInst(HumanCommandScript_VPPCam);
                     }
                     player.SetFreeCamActive(true);
                     GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);

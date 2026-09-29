@@ -90,6 +90,19 @@ class VPPUIManager extends PluginBase
 		}
 	}
 	
+	//client mission finish: destroy the menus' world-bound widgets while the world exists (see VPPAdminHud.ShutdownSubMenus)
+	void ShutdownMenus()
+	{
+		foreach (VPPScriptedMenu menu : M_SCRIPTED_UI_INSTANCES)
+		{
+			VPPAdminHud hud = VPPAdminHud.Cast(menu);
+			if (hud)
+			{
+				hud.ShutdownSubMenus();
+			}
+		}
+	}
+
 	void HookConfirmationDialog(Widget target, Widget parent, Class callBack, string funcName, int diagType, string title, string msg, bool allowchars = false)
 	{
 		ConfirmationEventHandler confirmClass;

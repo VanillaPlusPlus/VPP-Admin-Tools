@@ -524,8 +524,9 @@ FrameWidgetClass rootFrame {
      "Size To Content V" 1
      content_halign center
      content_valign center
+     "Ignore invisible" 1
      Columns 1
-     Rows 1
+     Rows 2
      {
       ButtonWidgetClass btnCreateNewSet {
        size 1 0.35
@@ -616,6 +617,106 @@ FrameWidgetClass rootFrame {
          vexactsize 0
          style None
          text "#VSTR_LBL_SAVE_EDITS"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass btnSendEventGroup {
+       visible 0
+       size 1 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        ImageWidgetClass iconSendEventGroup {
+         ignorepointer 1
+         color 0.686 0.49 1 1
+         position 0.08 0
+         size 24 24
+         valign center_ref
+         hexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:boxes"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass txtsendeventgroup {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_OB_BTN_SEND_GROUP"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass btnDiscardEventBuild {
+       visible 0
+       size 1 0.35
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style VPPButton
+       "no focus" 1
+       font "gui/fonts/sdf_MetronLight72"
+       {
+        ImageWidgetClass iconDiscardEventBuild {
+         ignorepointer 1
+         color 0.761 0.271 0.271 1
+         position 0.08 0
+         size 24 24
+         valign center_ref
+         hexactpos 0
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:trash_2"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass txtdiscardeventbuild {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_OB_BTN_DISCARD_BUILD"
          font "gui/fonts/sdf_MetronLight72"
          "bold text" 1
          "exact text" 1

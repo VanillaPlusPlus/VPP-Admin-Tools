@@ -76,8 +76,16 @@ class VPPATUIConstants
 	const static string dropdown_element 			 = "VPPAdminTools/GUI/Layouts/VPPDropdown/dropdown_element.layout";
 	
 	//XML Editor
-	const static string MenuXMLEditor 				 = "VPPAdminTools/GUI/Layouts/XMLEditorUI/MenuXMLEditor.layout";
-	const static string itemscanresultscreen 		 = "VPPAdminTools/GUI/Layouts/XMLEditorUI/itemscanresultscreen.layout";
+	const static string MenuXMLEditor = "VPPAdminTools/GUI/Layouts/XMLEditorUI/MenuXMLEditor.layout";
+	const static string XMLEditorTypesTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorTypesTab.layout";
+	const static string XMLEditorMapTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorMapTab.layout";
+	const static string XMLEditorBackupsTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorBackupsTab.layout";
+	const static string XMLEditorFilesTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorFilesTab.layout";
+	const static string XMLEditorCreateTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorCreateTab.layout";
+	const static string XMLEditorMessagesTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorMessagesTab.layout";
+	const static string XMLEditorEventsTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorEventsTab.layout";
+	const static string XMLEditorSpawnablesTab = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorSpawnablesTab.layout";
+	const static string XMLEditorChip = "VPPAdminTools/GUI/Layouts/XMLEditorUI/XMLEditorChip.layout";
 
 	//Webhooks Manager
 	const static string MenuWebHooks 				 = "VPPAdminTools/GUI/Layouts/WebHooksUI/MenuWebHooks.layout";
@@ -97,6 +105,13 @@ class VPPATUIConstants
 
 	//Stats HUD
 	const static string StatsHud 					 = "VPPAdminTools/GUI/Layouts/StatsHudUI/StatsHud.layout";
+
+	//Changelog
+	const static string ChangelogMenu 				 = "VPPAdminTools/GUI/Layouts/ChangelogUI/MenuChangelog.layout";
+	const static string ChangelogSectionRow 		 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogSectionRow.layout";
+	const static string ChangelogEntryRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogEntryRow.layout";
+	const static string ChangelogLinkRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogLinkRow.layout";
+	const static string ChangelogGapRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogGapRow.layout";
 
 	//Players Manager
 	const static string MenuPlayerManager 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/MenuPlayerManager.layout";
@@ -149,4 +164,9 @@ class VPPATUIConstants
 	const static string MenuSpectateTools 			 = "VPPAdminTools/GUI/Layouts/SpectateUI/MenuSpectateTools.layout";
 	const static string SpectatePlayerEntry 		 = "VPPAdminTools/GUI/Layouts/SpectateUI/SpectatePlayerEntry.layout";
 	const static string SpectateOverlay 			 = "VPPAdminTools/GUI/Layouts/SpectateUI/SpectateOverlay.layout";
+
+	//Context Menu
+	const static string VPPContextMenu 				 = "VPPAdminTools/GUI/Layouts/UIHelpers/ContextMenu/VPPContextMenu.layout";
+	const static string VPPContextMenuRow 			 = "VPPAdminTools/GUI/Layouts/UIHelpers/ContextMenu/VPPContextMenuRow.layout";
+	const static string VPPContextMenuSeparator 		 = "VPPAdminTools/GUI/Layouts/UIHelpers/ContextMenu/VPPContextMenuSeparator.layout";
 };

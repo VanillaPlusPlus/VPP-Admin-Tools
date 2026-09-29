@@ -5,6 +5,8 @@ class BasebuildingHelperFuncs
 
 	static bool HasCombinationLock(Object obj, string type_name, out int combination = -1)
 	{
+		return false; //Patch 1.30 TODO::
+		/*
 		if (!obj)
 			return false;
 		if (type_name == string.Empty)
@@ -43,10 +45,13 @@ class BasebuildingHelperFuncs
 			break;
 		}
 		return false;
+		*/
 	}
 	
 	static bool ClearComboFromLock(BaseBuildingBase obj)
 	{
+		return false; // Patch 1.30 TODO::
+		/*
 		if (!GetGame().IsServer())
 			return false;
 		
@@ -78,6 +83,7 @@ class BasebuildingHelperFuncs
 		}
 
 		return false;
+		*/
 	}
 	
 	static bool IsRelatedToBaseBuilding(Object obj, out string type_name = "")

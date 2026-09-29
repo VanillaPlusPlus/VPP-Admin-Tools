@@ -1,0 +1,1565 @@
+FrameWidgetClass MapTabRoot {
+ clipchildren 1
+ ignorepointer 0
+ color 0 0 0 0
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass MapToolbar {
+   clipchildren 0
+   ignorepointer 1
+   color 0.039 0.043 0.047 1
+   position 0 0
+   size 1 58
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style VPPFill
+   {
+    PanelWidgetClass MapToolbarTop {
+     clipchildren 0
+     ignorepointer 1
+     color 0 0 0 0
+     position 0 0
+     size 1 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style blank
+     {
+      TextWidgetClass TxtMapType {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 8 0
+       size 226 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      PanelWidgetClass TierBar {
+       clipchildren 0
+       ignorepointer 1
+       color 0 0 0 0
+       position 238 3
+       size 228 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style blank
+       {
+        ButtonWidgetClass BtnTier0 {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 0 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier0 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier0 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier1 {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 46 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier1 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier1 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier2 {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 92 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier2 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier2 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier3 {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 138 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier3 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier3 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier4 {
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 184 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier4 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier4 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier5 {
+         visible 0
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 230 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier5 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier5 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier6 {
+         visible 0
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 276 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier6 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier6 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+        ButtonWidgetClass BtnTier7 {
+         visible 0
+         clipchildren 1
+         ignorepointer 0
+         color 1 1 1 1
+         position 322 0
+         size 44 24
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPButton
+         "no focus" 1
+         {
+          PanelWidgetClass FillTier7 {
+           clipchildren 0
+           ignorepointer 1
+           color 0.106 0.118 0.133 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style VPPFillRound
+          }
+          TextWidgetClass TxtTier7 {
+           clipchildren 1
+           ignorepointer 1
+           color 0.8 0.816 0.831 1
+           position 0 0
+           size 1 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           style None
+           text ""
+           font "gui/fonts/sdf_MetronLight72"
+           "bold text" 1
+           "exact text" 1
+           "exact text size" 12
+           "text halign" center
+           "text valign" center
+          }
+         }
+        }
+       }
+      }
+      ButtonWidgetClass BtnRenderMode {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 88 2
+       size 26 26
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImgRenderMode {
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 20 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:flame"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnDrawer {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 58 2
+       size 26 26
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImgDrawer {
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 20 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:list"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      ButtonWidgetClass BtnMapRefresh {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 28 2
+       size 26 26
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImgMapRefresh {
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 20 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:refresh_cw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      ImageWidgetClass ImgMapHelp {
+       ignorepointer 0
+       color 0.8 0.816 0.831 1
+       position 8 0
+       size 16 16
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ToolTipHandler"
+       image0 "set:vpp_icons image:info"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+     }
+    }
+    PanelWidgetClass LayerBar {
+     clipchildren 0
+     ignorepointer 1
+     color 0 0 0 0
+     position 0 30
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style blank
+     {
+      ButtonWidgetClass BtnLayerBuildings {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 2 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerBuildings {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerBuildings {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerBuildings {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_BUILDINGS"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerEventObj {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 100 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerEventObj {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerEventObj {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerEventObj {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_EVENTOBJ"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerEventChild {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 198 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerEventChild {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerEventChild {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerEventChild {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_EVENTCHILD"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerInfected {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 296 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerInfected {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerInfected {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerInfected {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_INFECTED"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerClusters {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 394 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerClusters {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerClusters {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerClusters {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_CLUSTERS"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerDispatch {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 492 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerDispatch {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerDispatch {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerDispatch {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_DISPATCH"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLayerLive {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 590 2
+       size 94 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillLayerLive {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        PanelWidgetClass SwatchLayerLive {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 8 8
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        TextWidgetClass TxtLayerLive {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 16 0
+         size 76 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_LAYER_LIVE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass MapArea {
+   clipchildren 1
+   ignorepointer 1
+   color 0 0 0 0
+   position 0 58
+   size 688 400
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style blank
+   {
+    MapWidgetClass XeMapWidget {
+     visible 1
+     ignorepointer 0
+     position 0 0
+     size 1 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+    }
+    CanvasWidgetClass XeMapCanvas {
+     visible 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     priority 101
+    }
+    PanelWidgetClass MapHud {
+     clipchildren 0
+     ignorepointer 1
+     color 0.031 0.035 0.039 0.85
+     position 0 0
+     size 1 24
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     priority 101
+     {
+      TextWidgetClass TxtMapHud {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 8 0
+       size 0.62 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MAP_HUD_HINT"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       "text valign" center
+      }
+      FrameWidgetClass LegendRamp {
+       clipchildren 0
+       ignorepointer 1
+       position 8 0
+       size 54 10
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        PanelWidgetClass LegendStep0 {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 0 0
+         size 12 10
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        PanelWidgetClass LegendStep1 {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 14 0
+         size 12 10
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        PanelWidgetClass LegendStep2 {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 28 0
+         size 12 10
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+        PanelWidgetClass LegendStep3 {
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 1
+         position 42 0
+         size 12 10
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style VPPFillRound
+        }
+       }
+      }
+      TextWidgetClass TxtMapLegend {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 70 0
+       size 0.34 1
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MAP_LEGEND"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       "text halign" right
+       "text valign" center
+      }
+     }
+    }
+    PanelWidgetClass MapBusy {
+     visible 0
+     clipchildren 0
+     ignorepointer 1
+     color 0.031 0.035 0.039 0.85
+     position 0 0
+     size 320 32
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPFillRound
+     priority 101
+     {
+      TextWidgetClass TxtMapBusy {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 0 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_STATUS_LOADING"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+    PanelWidgetClass MapNotice {
+     visible 0
+     clipchildren 0
+     ignorepointer 1
+     color 0.031 0.035 0.039 0.85
+     position 6 6
+     size 400 60
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPFillRound
+     priority 101
+     {
+      MultilineTextWidgetClass TxtMapNotice {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 7 5
+       size 386 52
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       wrap 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass MapDrawer {
+   visible 0
+   clipchildren 0
+   ignorepointer 1
+   color 1 1 1 1
+   position 484 58
+   size 204 400
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPPanel
+   {
+    PanelWidgetClass DrawerHeader {
+     clipchildren 0
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      TextWidgetClass TxtDrawerTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 8 0
+       size 0.9 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MAP_BREAKDOWN"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+     }
+    }
+    MultilineTextWidgetClass TxtDrawerSummary {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 8 60
+     size 188 60
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     wrap 1
+    }
+    TextListboxWidgetClass BreakdownList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 124
+     size 192 180
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "Source;55;Count;20;Tier;25;"
+     "highlight row" 0
+    }
+    PanelWidgetClass DrawerActions {
+     clipchildren 0
+     ignorepointer 1
+     color 0 0 0 0
+     position 6 308
+     size 192 86
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style blank
+     {
+      ButtonWidgetClass BtnTpSelected {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 0 0
+       size 94 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgTpSelected {
+         ignorepointer 1
+         color 0.298 0.686 0.314 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:locate_fixed"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtTpSelected {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 68 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_MAP_TP"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnNextInstance {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 98 0
+       size 94 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgNextInstance {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:crosshair"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtNextInstance {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 68 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_MAP_NEXT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnLiveScan {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 0 30
+       size 192 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgLiveScan {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:activity"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtLiveScan {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 166 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_MAP_LIVESCAN"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnDeleteLiveSel {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 0 60
+       size 94 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonDanger
+       "no focus" 1
+       {
+        ImageWidgetClass ImgDeleteLiveSel {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:trash_2"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtDeleteLiveSel {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 68 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_MAP_DEL_SEL"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnDeleteLiveAll {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 98 60
+       size 94 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonDanger
+       "no focus" 1
+       {
+        ImageWidgetClass ImgDeleteLiveAll {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:package_x"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtDeleteLiveAll {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 68 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_MAP_DEL_ALL"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass DrawerModeHost {
+     clipchildren 0
+     ignorepointer 0
+     color 1 1 1 1
+     position 6 32
+     size 192 24
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style blank
+    }
+   }
+  }
+ }
+}

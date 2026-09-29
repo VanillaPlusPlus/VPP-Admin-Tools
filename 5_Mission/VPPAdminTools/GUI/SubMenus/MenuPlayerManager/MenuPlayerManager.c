@@ -85,6 +85,11 @@ class MenuPlayerManager extends AdminHudSubMenu
 	private ref VPPCollapsibleSection m_SectionTools;
 	//----------------
 	
+	//Context menu (RMB on a player row)--
+	protected string m_CtxRestoreId;
+	protected bool   m_CtxRestoreChecked;
+	//----------------
+	
 	void MenuPlayerManager()
 	{
 		GetRPCManager().AddRPC("RPC_MenuPlayerManager", "HandlePlayerStats", this, SingleplayerExecutionType.Client);
@@ -436,6 +441,130 @@ class MenuPlayerManager extends AdminHudSubMenu
 			break;
 		}
 		return false;
+	}
+	
+	/*
+		Context menu: RMB on a row's CheckBox (the only hit target; PanelPlayer ignores the pointer).
+		Returning true keeps the HUD select box and the generic window-priority path out of it.
+	*/
+	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
+	{
+		if (button == MouseState.RIGHT)
+		{
+			VPPPlayerEntry hit = FindEntryByCheckWidget(w);
+			if (hit)
+			{
+				VPPAdminHud rootHud = GetToolbarMenu();
+				if (rootHud)
+					rootHud.SetWindowPriorty(this);
+				
+				//RMB may toggle the CheckBox natively: snapshot it, restore on RMB-up and again shortly after
+				m_CtxRestoreId = hit.GetID();
+				m_CtxRestoreChecked = hit.GetCheckWidget().IsChecked();
+				OpenPlayerContext(hit, x, y);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.RestoreContextRowCheckFinal);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.ClearContextRowCheck);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.RestoreContextRowCheck, 50, false);
+				//The snapshot must not outlive this click (the popup may swallow the RMB-up): drop it (no restore) after a grace period
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ClearContextRowCheck, 1000, false);
+				return true;
+			}
+		}
+		return super.OnMouseButtonDown(w, x, y, button);
+	}
+	
+	override bool OnMouseButtonUp(Widget w, int x, int y, int button)
+	{
+		if (button == MouseState.RIGHT && FindEntryByCheckWidget(w))
+		{
+			//Only acts while the snapshot from the matching RMB-down is still pending
+			if (m_CtxRestoreId != "")
+			{
+				RestoreContextRowCheck();
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.ClearContextRowCheck);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.RestoreContextRowCheckFinal);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.RestoreContextRowCheckFinal, 50, false);
+			}
+			return true;
+		}
+		return super.OnMouseButtonUp(w, x, y, button);
+	}
+	
+	protected VPPPlayerEntry FindEntryByCheckWidget(Widget w)
+	{
+		if (!w)
+			return null;
+		
+		foreach (VPPPlayerEntry entry : m_PlayerEntries)
+		{
+			if (!entry || !entry.GetCheckWidget())
+				continue;
+			
+			if (w == entry.GetCheckWidget() || w.GetParent() == entry.GetCheckWidget())
+				return entry;
+		}
+		return null;
+	}
+	
+	/*
+		Explorer semantics: a checked row that is part of a multi-selection targets every
+		checked player, otherwise only the clicked one. The selection is never changed and
+		no widget refs are kept (rows are recreated by RedrawWidgets).
+	*/
+	protected void OpenPlayerContext(VPPPlayerEntry entry, int x, int y)
+	{
+		array<string> ids = new array<string>;
+		array<int> sessions = new array<int>;
+		bool multi = false;
+		
+		if (entry.GetCheckWidget().IsChecked())
+		{
+			array<ref VPPPlayerEntry> sel = GetSelectedPlayers();
+			if (sel.Count() > 1)
+			{
+				multi = true;
+				foreach (VPPPlayerEntry e : sel)
+				{
+					ids.Insert(e.GetID());
+					sessions.Insert(e.GetSessionId());
+				}
+			}
+		}
+		
+		if (!multi)
+		{
+			ids.Insert(entry.GetID());
+			sessions.Insert(entry.GetSessionId());
+		}
+		
+		VPPContextMenuController ctx = GetVPPContextMenu();
+		if (ctx)
+			ctx.OpenForPlayers(ids, sessions, entry.GetID(), entry.GetSessionId(), entry.GetPlayerName(), x, y);
+	}
+	
+	void RestoreContextRowCheck()
+	{
+		if (m_CtxRestoreId == "")
+			return;
+		
+		VPPPlayerEntry entry = GetPlayerEntry(m_CtxRestoreId);
+		if (!entry || !entry.GetCheckWidget())
+			return;
+		
+		if (entry.GetCheckWidget().IsChecked() != m_CtxRestoreChecked)
+			entry.SetSelected(m_CtxRestoreChecked);
+	}
+
+	//Last restore for a context click, then clears the snapshot so a later RMB-up cannot undo LMB selection changes
+	void RestoreContextRowCheckFinal()
+	{
+		RestoreContextRowCheck();
+		m_CtxRestoreId = "";
+	}
+
+	void ClearContextRowCheck()
+	{
+		m_CtxRestoreId = "";
 	}
 	
 	/*

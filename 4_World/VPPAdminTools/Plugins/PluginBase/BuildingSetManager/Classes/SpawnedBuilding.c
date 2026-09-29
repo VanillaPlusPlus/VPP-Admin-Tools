@@ -1,4 +1,5 @@
-class SpawnedBuilding
+// Managed: held by its set's array and by client entries / RPC Params (see BuildingSet).
+class SpawnedBuilding : Managed
 {
 	private string m_Name;
 	private string m_ObjectName;
@@ -33,10 +34,10 @@ class SpawnedBuilding
 			if (m_Building != null){
 			DestroySpawnedEntity();
 			}else{
-				TStringArray strs = new TStringArray;
-				m_NetWorkId.Split( ",",strs );
-				Object netWrkObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
-				GetGame().ObjectDelete(netWrkObj);
+				//only an object of this type that carries the id (an old id may belong to something else now)
+				Object netWrkObj = FindByNetworkId();
+				if (netWrkObj != null)
+					GetGame().ObjectDelete(netWrkObj);
 				//if (netWrkObj != null)
 					//GetRPCManager().VSendRPC("RPC_BuildingSetManager","RemoteQuickDeleteObject", new Param1<Object>(netWrkObj),true,null);
 			}
@@ -130,6 +131,35 @@ class SpawnedBuilding
 	{
 		if (m_Building != null)
 			GetGame().ObjectDelete(m_Building);
+
+		m_NetWorkId = "";
+	}
+
+	void ClearNetworkId()
+	{
+		m_NetWorkId = "";
+	}
+
+	// The object with the saved network id when it is of this building's type, else null.
+	Object FindByNetworkId()
+	{
+		TStringArray strs = new TStringArray;
+		m_NetWorkId.Split(",", strs);
+		if (strs.Count() < 2)
+			return null;
+
+		Object found = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
+		if (found == null)
+			return null;
+
+		string foundType = found.GetType();
+		string ownType = m_ObjectName;
+		foundType.ToLower();
+		ownType.ToLower();
+		if (foundType != ownType)
+			return null;
+
+		return found;
 	}
 	
 	bool IsObject(Object obj)

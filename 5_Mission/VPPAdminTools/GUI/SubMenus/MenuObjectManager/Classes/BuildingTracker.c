@@ -265,7 +265,7 @@ class BuildingTracker: ScriptedWidgetEventHandler
 		}
 		
 		EditBoxWidget underCuror = EditBoxWidget.Cast(GetWidgetUnderCursor());
-		if (orientation != m_Orientation && underCuror != null && underCuror == m_EditYaw || underCuror == m_EditPitch || underCuror == m_EditRoll)
+		if (orientation != m_Orientation && underCuror != null && (underCuror == m_EditYaw || underCuror == m_EditPitch || underCuror == m_EditRoll))
 		{
 			//Update yaw pitch roll
 			m_TrackerEntity.SetYawPitchRoll(Vector(orientation[0],orientation[1],orientation[2]));

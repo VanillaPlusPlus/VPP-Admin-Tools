@@ -1,0 +1,114 @@
+PanelWidgetClass SectionRow {
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 712 48
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style blank
+ {
+  PanelWidgetClass Accent {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 0 0
+   size 3 28
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFill
+  }
+  TextWidgetClass TxtVersion {
+   ignorepointer 1
+   color 1 1 1 1
+   position 12 0
+   size 200 28
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text ""
+   font "gui/fonts/sdf_MetronLight72"
+   "bold text" 1
+   "exact text" 1
+   "exact text size" 22
+   "size to text h" 1
+   "size to text v" 1
+   "text valign" center
+  }
+  PanelWidgetClass ChipLatest {
+   ignorepointer 1
+   color 0.91 0.639 0.239 1
+   position 80 0
+   size 60 20
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFillRound
+   {
+    TextWidgetClass TxtLatest {
+     ignorepointer 1
+     color 0.031 0.035 0.039 1
+     position 0 0
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_CHANGELOG_LATEST"
+     font "gui/fonts/sdf_MetronLight72"
+     "bold text" 1
+     "exact text" 1
+     "exact text size" 12
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+  TextWidgetClass TxtDate {
+   ignorepointer 1
+   color 0.604 0.627 0.651 1
+   position 8 0
+   size 180 20
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style None
+   text ""
+   font "gui/fonts/sdf_MetronLight72"
+   "exact text" 1
+   "exact text size" 14
+   "size to text h" 1
+   "size to text v" 1
+   "text halign" right
+   "text valign" center
+  }
+  PanelWidgetClass Divider {
+   ignorepointer 1
+   color 0.165 0.18 0.2 1
+   position 0 0
+   size 1 1
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style VPPFill
+  }
+ }
+}

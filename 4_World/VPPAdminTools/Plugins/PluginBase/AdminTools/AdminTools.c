@@ -63,9 +63,8 @@ class AdminTools extends PluginBase
 				//command handler to freeze player
 				if (!pb.GetCommand_Vehicle())
 				{
-					pb.InitTablesCmd();
-                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(pb, pb.m_VPPCamHmnCmd);
-                	pb.StartCommand_Script(cmdFS);
+					//engine-owned command (see HumanCommandScript_VPPCam): never `new` it
+					pb.StartCommand_ScriptInst(HumanCommandScript_VPPCam);
 				}
 			}
 			else

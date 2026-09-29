@@ -70,6 +70,11 @@ class EditBoxEventHandler extends ScriptedWidgetEventHandler
 
 	override bool OnMouseWheel(Widget w, int x, int y, int wheel)
 	{
+		if (m_AllowIllegalChar)
+		{
+			return false;
+		}
+
 		string oldValue = m_root.GetText();
 		if (wheel <= -1){
 			m_root.SetText((oldValue.ToInt() - m_step).ToString());

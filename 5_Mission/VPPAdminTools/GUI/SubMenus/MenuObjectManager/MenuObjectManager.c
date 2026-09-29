@@ -8,6 +8,10 @@ class MenuObjectManager extends AdminHudSubMenu
 	private EntityAI 	  	  		 m_PreviewObject;
 	private ButtonWidget             m_btnCreateNewSet;
 	private ButtonWidget             m_btnSaveChanges;
+	private ButtonWidget             m_btnSendEventGroup;
+	private ButtonWidget             m_btnDiscardEventBuild;
+	private ref VPPXEGroupBuild      m_GroupBuild; //the event group edited here as local objects (null = none)
+	private int                      m_LastLateCheck; //ms of the last look for objects that loaded in late
 	private ButtonWidget             m_btnHelp;
 	private CheckBoxWidget           m_chkSnapObjs;
 	private CheckBoxWidget           m_chkGroundMode;
@@ -74,6 +78,8 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_chkGroundMode = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnableNoClip"));
 		m_chkObjSurfaceSnap = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkObjSurfaceSnap"));
 		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSaveChanges"));
+		m_btnSendEventGroup = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSendEventGroup"));
+		m_btnDiscardEventBuild = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnDiscardEventBuild"));
 		m_btnHelp  	= ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnHelp"));
 	    m_btnCreateNewSet = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnCreateNewSet"));
 		m_chkEnablePreview = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnablePreview"));
@@ -104,17 +110,9 @@ class MenuObjectManager extends AdminHudSubMenu
 		//--
 		
 		UpdateFilter();
+		UpdateActionButtons();
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.UpdatePreviewWidget, 100, true);
 		m_loaded = true;
-	}
-
-	float Normalize(float a)
-	{
-		a = Math.ModFloat(a, 360.0); //calculate remainder between x, 360.0
-		if (a < 0)
-			a += 360.0;
-
-		return a;
 	}
 
 	override void OnUpdate(float timeslice)
@@ -128,6 +126,8 @@ class MenuObjectManager extends AdminHudSubMenu
 			m_btnSaveChanges.Enable(true);
 		else
 			m_btnSaveChanges.Enable(false);
+
+		CheckLateObjects();
 		
 		int newSrchCount = m_SearchInputBox.GetText().Length();
 		if (newSrchCount != m_searchBoxCount)
@@ -142,32 +142,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		{
 			if (GetSelectedParent())
 			{
-				Object pObj = GetSelectedParent().GetTrackingObject();
-				vector parentPos = pObj.GetPosition();
-				vector originLocal = pObj.CoordToLocal(pObj.GetPosition());
-				float angleParent = Normalize(pObj.GetOrientation()[0]);
-
-				string outPut = string.Format("\t<!--<pos x=\"%1\" z=\"%2\" a=\"0\" y=\"%3\" group=\"GROUP_NAME\"/>-->\n", parentPos[0], parentPos[2], parentPos[1]);
-				outPut += "\t<group name=\"GROUP_NAME_HERE\">\n";
-				outPut += string.Format("\t\t<child type=\"%1\" deloot=\"0\" lootmax=\"3\" lootmin=\"1\" x=\"%2\" z=\"%3\" y=\"%4\" a=\"%5\"/>\n", pObj.GetType(), originLocal[0], originLocal[2], originLocal[1], angleParent);
-				
-				array<ref SpawnedBuilding> buildings_ = m_SelectedSetData.GetBuildings();
-				foreach(SpawnedBuilding childObj: buildings_)
-				{
-					if (!childObj.GetObject() || childObj.GetObject() == pObj)
-						continue;
-
-					BuildingTracker tracker_ = GetTrackerByObject(childObj.GetObject());
-					if (!tracker_ || !tracker_.IsSelected())
-						continue;
-
-					vector cPos = childObj.GetObject().GetPosition() - parentPos;
-					float angle = Normalize(childObj.GetObject().GetOrientation()[0]);
-					outPut += string.Format("\t\t<child type=\"%1\" deloot=\"0\" lootmax=\"3\" lootmin=\"1\" x=\"%2\" z=\"%3\" y=\"%4\" a=\"%5\"/>\n", childObj.GetObject().GetType(), cPos[0], cPos[2], cPos[1], angle);
-				}
-				outPut += "\t</group>";
-				GetGame().CopyToClipboard(outPut);
-				GetVPPUIManager().DisplayNotification("#VSTR_OB_COPIED_XML", "#VSTR_TITLE_SUCCESS", 3.0);
+				CopyGroupXml();
 			}
 		}
 
@@ -338,6 +313,289 @@ class MenuObjectManager extends AdminHudSubMenu
 		GetToolbarMenu().HideIconsPanel(false);
 	}
 
+	// The selection as a cfgeventgroups.xml group on the clipboard. The parent object is the spawn position: its yaw
+	// is the position angle, so an event spawning the group there rebuilds the layout exactly as placed. The other
+	// selected objects are its children (VPPXEGroupTransform, the server's layout).
+	void CopyGroupXml()
+	{
+		Object parentObj = GetSelectedParent().GetTrackingObject();
+		if (!parentObj || !m_SelectedSetData)
+		{
+			return;
+		}
+
+		vector anchorPos = parentObj.GetPosition();
+		float anchorA = VPPXEGroupTransform.NormalizeAngle(parentObj.GetOrientation()[0]);
+		string posX = VPPXEGroupTransform.FormatNumber(anchorPos[0]);
+		string posZ = VPPXEGroupTransform.FormatNumber(anchorPos[2]);
+		string posY = VPPXEGroupTransform.FormatNumber(anchorPos[1]);
+		string posA = VPPXEGroupTransform.FormatAngle(anchorA);
+		string outPut = "\t<!--pos x=\"" + posX + "\" z=\"" + posZ + "\" a=\"" + posA + "\" y=\"" + posY + "\" group=\"GROUP_NAME_HERE\"/-->\n";
+		outPut += "\t<group name=\"GROUP_NAME_HERE\">\n";
+		outPut += "\t\t" + ChildXml(parentObj, anchorPos, anchorA) + "\n";
+		array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+		foreach (SpawnedBuilding childBuilding : buildings)
+		{
+			Object childObj = childBuilding.GetObject();
+			if (!childObj || childObj == parentObj)
+			{
+				continue;
+			}
+
+			BuildingTracker tracker = GetTrackerByObject(childObj);
+			if (!tracker || !tracker.IsSelected())
+			{
+				continue;
+			}
+
+			outPut += "\t\t" + ChildXml(childObj, anchorPos, anchorA) + "\n";
+		}
+
+		outPut += "\t</group>";
+		GetGame().CopyToClipboard(outPut);
+		GetVPPUIManager().DisplayNotification("#VSTR_OB_COPIED_XML", "#VSTR_TITLE_SUCCESS", 3.0);
+	}
+
+	// One <child> of an object relative to the spawn position (the loot values are the old export's defaults).
+	protected string ChildXml(Object obj, vector anchorPos, float anchorA)
+	{
+		VPPXEGroupChild child = new VPPXEGroupChild();
+		child.Type = obj.GetType();
+		child.Deloot = "0";
+		child.LootMax = "3";
+		child.LootMin = "1";
+		VPPXEGroupTransform.ToChild(obj.GetPosition(), obj.GetOrientation()[0], anchorPos, anchorA, false, child);
+		return VPPXEGroupsIO.ChildTag(child);
+	}
+
+	// ---------------------------------------------------------------- local event group build (XML Editor)
+
+	// EVENTS > GROUPS > EDIT IN BUILDER opens an event group here as LOCAL objects: only this admin sees them and
+	// nothing is saved on the server (the events files are the saved state). They are edited like a set; SEND TO EVENT
+	// GROUP puts them back into the group in the XML Editor (saved there), DISCARD BUILD drops them.
+	bool IsEventGroupBuild()
+	{
+		return m_GroupBuild != null;
+	}
+
+	// The group's objects are created here and opened like a set (an open build is dropped first).
+	void StartEventGroupBuild(VPPXEGroupBuild build)
+	{
+		if (!build)
+			return;
+
+		if (m_GroupBuild)
+			EndEventGroupBuild();
+
+		DeselectAllSets();
+		SetSelectedParent(null);
+		ClearBuildingEntries();
+		m_SelectedSetData = new BuildingSet(build.GroupName, true);
+		array<string> createdKeys = new array<string>;
+		int skipped = 0;
+		for (int i = 0; i < build.Types.Count(); i++)
+		{
+			string typeName = build.Types[i];
+			Object obj = CreateGroupObject(typeName, build.Positions[i], build.Orientations[i]);
+			if (!obj)
+			{
+				skipped++;
+				continue;
+			}
+
+			createdKeys.Insert(build.Keys[i]);
+			SpawnedBuilding added = m_SelectedSetData.AddBuildingObject(typeName, obj.GetPosition(), obj.GetOrientation(), true, obj);
+			AddBuildingEntry(typeName, "0,0", added, obj);
+		}
+
+		// only the children that became objects are matched to the objects that come back
+		build.Keys.Copy(createdKeys);
+		m_GroupBuild = build;
+		m_title_txt_curr_set.SetText(string.Format(Widget.TranslateString("#VSTR_OB_EVENT_BUILD_TITLE"), build.GroupName));
+		UpdateActionButtons();
+		string started = string.Format(Widget.TranslateString("#VSTR_OB_EVENT_BUILD_STARTED"), build.GroupName, createdKeys.Count(), build.AnchorLabel);
+		GetVPPUIManager().DisplayNotification(started, "#VSTR_OB_EVENT_BUILD_NOTIFY_TITLE", 10.0);
+		if (skipped > 0)
+			GetVPPUIManager().DisplayError(string.Format(Widget.TranslateString("#VSTR_OB_EVENT_BUILD_SKIPPED"), skipped));
+	}
+
+	// A local object (only on this client) exactly at pos with that orientation; null when the class cannot be made.
+	protected Object CreateGroupObject(string typeName, vector pos, vector orientation)
+	{
+		if (!GetGame().ConfigIsExisting("CfgVehicles " + typeName))
+			return null;
+
+		Object obj = GetGame().CreateObjectEx(typeName, pos, ECE_LOCAL);
+		if (!obj)
+			return null;
+
+		obj.SetPosition(pos);
+		obj.SetOrientation(orientation);
+		obj.Update();
+		return obj;
+	}
+
+	// The build is closed: its local objects are deleted and the panel is empty again.
+	protected void EndEventGroupBuild()
+	{
+		if (!m_GroupBuild)
+			return;
+
+		ClearBuildingEntries();
+		SetSelectedParent(null);
+		if (m_SelectedSetData)
+		{
+			array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+			foreach (SpawnedBuilding building : buildings)
+			{
+				if (!building || !building.GetObject())
+					continue;
+
+				Object localObj = building.GetObject();
+				building.SetRef(null);
+				GetGame().ObjectDelete(localObj);
+			}
+		}
+
+		m_SelectedSetData = null;
+		m_GroupBuild = null;
+		m_title_txt_curr_set.SetText(Widget.TranslateString("#VSTR_LBL_NO_SET_SELECTED"));
+		UpdateActionButtons();
+	}
+
+	// SEND TO EVENT GROUP: every object of the build, relative to the spawn position it was laid out at, back to the
+	// group in the XML Editor (unsaved there). The local objects go once the XML Editor took them.
+	protected void SendEventGroupBuild()
+	{
+		if (!m_GroupBuild || !m_SelectedSetData)
+			return;
+
+		VPPAdminHud hud = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+		if (!hud || !hud.HasPermission("MenuXMLEditor"))
+		{
+			GetVPPUIManager().DisplayError("#VSTR_OB_NO_XML_PERM");
+			return;
+		}
+
+		VPPXEGroupImport build = new VPPXEGroupImport();
+		build.SuggestedName = m_GroupBuild.GroupName;
+		build.EventName = m_GroupBuild.EventName;
+		build.AnchorPos = m_GroupBuild.AnchorPos;
+		build.AnchorA = m_GroupBuild.AnchorA;
+		build.SentKeys.Copy(m_GroupBuild.Keys);
+		array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+		foreach (SpawnedBuilding building : buildings)
+		{
+			if (building && building.GetObject())
+				build.Children.Insert(BuildChild(building.GetObject(), build));
+		}
+
+		MenuXMLEditor xmlEditor = OpenXmlEditor(hud);
+		if (!xmlEditor)
+			return;
+
+		hud.SetWindowPriorty(xmlEditor);
+		//refused while a dialog of the XML Editor is open: the build stays here to be sent again
+		if (!xmlEditor.ApplyBuilderEdit(build, m_GroupBuild.GroupName))
+			return;
+
+		EndEventGroupBuild();
+		HideSubMenu();
+	}
+
+	protected void AskDiscardEventGroupBuild()
+	{
+		if (!m_GroupBuild)
+			return;
+
+		string body = string.Format(Widget.TranslateString("#VSTR_OB_EVENT_BUILD_DISCARD_BODY"), m_GroupBuild.GroupName);
+		VPPDialogBox dialogBox = GetVPPUIManager().CreateDialogBox(NULL, true);
+		dialogBox.InitDiagBox(DIAGTYPE.DIAG_YESNO, "#VSTR_OB_EVENT_BUILD_DISCARD_TITLE", body, this, "OnDiagDiscardEventGroupBuild");
+	}
+
+	void OnDiagDiscardEventGroupBuild(int result)
+	{
+		if (result == DIAGRESULT.YES)
+			EndEventGroupBuild();
+	}
+
+	// Outside a build: new set / save edits; in a build: send / discard (the grid skips hidden buttons).
+	protected void UpdateActionButtons()
+	{
+		bool building = m_GroupBuild != null;
+		m_btnCreateNewSet.Show(!building);
+		m_btnSaveChanges.Show(!building);
+		if (m_btnSendEventGroup)
+			m_btnSendEventGroup.Show(building);
+
+		if (m_btnDiscardEventBuild)
+			m_btnDiscardEventBuild.Show(building);
+
+		Widget actionGrid = M_SUB_WIDGET.FindAnyWidget("WarperActionBtns");
+		if (actionGrid)
+			actionGrid.Update();
+	}
+
+	// Server set actions do not apply to a build (it is not a set on the server).
+	protected bool RefuseInBuild()
+	{
+		if (!m_GroupBuild)
+			return false;
+
+		GetVPPUIManager().DisplayError("#VSTR_OB_EVENT_BUILD_BUSY");
+		return true;
+	}
+
+	// A set opened while none of its objects were loaded here (far away) is opened again once they are, so their
+	// trackers exist (checked every 2 s).
+	protected void CheckLateObjects()
+	{
+		if (!m_SelectedSetData || m_GroupBuild || GetGame().GetTime() - m_LastLateCheck < 2000)
+			return;
+
+		m_LastLateCheck = GetGame().GetTime();
+		foreach (BuildingEntry entry : m_BuildingEntries)
+		{
+			if (entry && entry.GetTracker())
+				return;
+		}
+
+		array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
+		foreach (SpawnedBuilding building : buildings)
+		{
+			if (building && !building.GetObject() && building.FindByNetworkId())
+			{
+				GetRPCManager().VSendRPC("RPC_BuildingSetManager", "GetSetData", new Param1<string>(m_SelectedSetData.GetName()), true, null);
+				return;
+			}
+		}
+	}
+
+	// The XML Editor window, opened (or shown) when needed.
+	protected MenuXMLEditor OpenXmlEditor(VPPAdminHud hud)
+	{
+		MenuXMLEditor xmlEditor = MenuXMLEditor.Cast(hud.GetSubMenuByType(MenuXMLEditor));
+		if (!xmlEditor)
+		{
+			hud.CreateSubMenu(MenuXMLEditor);
+			xmlEditor = MenuXMLEditor.Cast(hud.GetSubMenuByType(MenuXMLEditor));
+		}
+		else if (!xmlEditor.IsSubMenuVisible())
+		{
+			xmlEditor.ShowSubMenu();
+		}
+
+		return xmlEditor;
+	}
+
+	protected VPPXEGroupChild BuildChild(Object obj, VPPXEGroupImport build)
+	{
+		VPPXEGroupChild child = new VPPXEGroupChild();
+		child.Type = obj.GetType();
+		VPPXEGroupTransform.ToChild(obj.GetPosition(), obj.GetOrientation()[0], build.AnchorPos, build.AnchorA, false, child);
+		return child;
+	}
+
 	void OnDiagResultDeleteSlected(int result)
     {
  		if (result == DIAGRESULT.YES)
@@ -396,6 +654,9 @@ class MenuObjectManager extends AdminHudSubMenu
 	
 	void DeleteSelectedSet()
 	{
+		if (RefuseInBuild())
+			return;
+
 		if (m_SelectedSetData != null)
 		{
 			//Send RPC to delete selected set
@@ -407,6 +668,9 @@ class MenuObjectManager extends AdminHudSubMenu
 	
 	void UpdateBuildingSet(string setName, bool active)
 	{
+		if (RefuseInBuild())
+			return;
+
 		if (m_SelectedSetData != null)
 		{
 			//Send RPC to update selected set
@@ -425,14 +689,17 @@ class MenuObjectManager extends AdminHudSubMenu
 	bool CheckDuplicateSet(string setName)
 	{
 		foreach(BuildingSetEntry entry : m_BuildingSetEntries){
-			if (entry != null)
-				return entry.GetSetName() == setName;
+			if (entry != null && entry.GetSetName() == setName)
+				return true;
 		}
 		return false;
 	}
 
 	void CreateSetEditor(bool editMode = false)
 	{
+		if (editMode && RefuseInBuild())
+			return;
+
 		if (m_setAttributesEditor == null)
 			if (editMode)
 				m_setAttributesEditor = new BuildingSetEditor(M_SUB_WIDGET.FindAnyWidget("PanelConfirmationBox"), m_SelectedSetData.GetName(), m_SelectedSetData.GetActive(), editMode);
@@ -623,7 +890,10 @@ class MenuObjectManager extends AdminHudSubMenu
 		if(type == CallType.Client)
 		{
 			ClearBuildingSetEntries();
-			ClearBuildingEntries();
+			//an open build keeps its objects (the list also arrives after every set change on the server)
+			if (!m_GroupBuild)
+				ClearBuildingEntries();
+
 			m_BuildingSets = data.param1;
 			foreach(string setName : m_BuildingSets)
 				AddBuildingSetEntry(setName);
@@ -637,9 +907,17 @@ class MenuObjectManager extends AdminHudSubMenu
 		
 		if(type == CallType.Client)
 		{
+			//a server set opened over a build drops the build
+			if (m_GroupBuild)
+			{
+				string droppedName = m_GroupBuild.GroupName;
+				EndEventGroupBuild();
+				GetVPPUIManager().DisplayNotification(string.Format(Widget.TranslateString("#VSTR_OB_EVENT_BUILD_DROPPED"), droppedName), "#VSTR_OB_EVENT_BUILD_NOTIFY_TITLE", 6.0);
+			}
+
 			if (m_SelectedSetData != null)
 				delete m_SelectedSetData;
-			
+
 			m_SelectedSetData = data.param1;
 			m_title_txt_curr_set.SetText(Widget.TranslateString("#VSTR_OB_SET_PREFIX")+m_SelectedSetData.GetName());
 			ClearBuildingEntries();
@@ -898,7 +1176,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		switch(w)
 		{
 			case m_btnReloadSets:
-			if (m_SelectedSetData != null)
+			if (m_SelectedSetData != null && !m_GroupBuild)
 			{
 				if (!m_SelectedSetData.GetActive())
 				{
@@ -913,8 +1191,19 @@ class MenuObjectManager extends AdminHudSubMenu
 			case m_btnCreateNewSet:
 				CreateSetEditor(false);
 			break;
-			
+
+			case m_btnSendEventGroup:
+				SendEventGroupBuild();
+			break;
+
+			case m_btnDiscardEventBuild:
+				AskDiscardEventGroupBuild();
+			break;
+
 			case m_btnSaveChanges:
+				if (!m_SelectedSetData || RefuseInBuild())
+					break;
+
 				m_SelectedSetData.UpdateBuildingsData();
 				GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteSaveEdits", new Param2<ref array<ref SpawnedBuilding>,string>(m_SelectedSetData.GetBuildings(),m_SelectedSetData.GetName()),true,null);
 			    GetRPCManager().VSendRPC("RPC_BuildingSetManager", "RemoteUpdateSet", new Param3<string,string,bool>(m_SelectedSetData.GetName(),m_SelectedSetData.GetName(),m_SelectedSetData.GetActive()),true,null);

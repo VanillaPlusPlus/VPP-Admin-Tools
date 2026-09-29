@@ -1,0 +1,1192 @@
+FrameWidgetClass MessagesTabRoot {
+ clipchildren 1
+ ignorepointer 0
+ color 0 0 0 0
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass MsgLeft {
+   clipchildren 1
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.4 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    TextListboxWidgetClass MsgList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 32
+     size 380 300
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "#;8;When;38;Text;54;"
+     "highlight row" 0
+    }
+    ButtonWidgetClass BtnMsgAdd {
+     clipchildren 1
+     ignorepointer 0
+     color 1 1 1 1
+     position 6 340
+     size 120 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButton
+     "no focus" 1
+     {
+      ImageWidgetClass ImgMsgAdd {
+       ignorepointer 1
+       color 0.298 0.686 0.314 1
+       position 6 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:plus"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtMsgAdd {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 28 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MSG_BTN_ADD"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+     }
+    }
+    ButtonWidgetClass BtnMsgDup {
+     clipchildren 1
+     ignorepointer 0
+     color 1 1 1 1
+     position 132 340
+     size 120 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButton
+     "no focus" 1
+     {
+      ImageWidgetClass ImgMsgDup {
+       ignorepointer 1
+       color 1 1 1 1
+       position 6 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:copy"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtMsgDup {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 28 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MSG_BTN_DUP"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+     }
+    }
+    ButtonWidgetClass BtnMsgDelete {
+     clipchildren 1
+     ignorepointer 0
+     color 1 1 1 1
+     position 258 340
+     size 120 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonDanger
+     "no focus" 1
+     {
+      ImageWidgetClass ImgMsgDelete {
+       ignorepointer 1
+       color 1 1 1 1
+       position 6 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:trash_2"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtMsgDelete {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 28 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MSG_BTN_DELETE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+     }
+    }
+    PanelWidgetClass MsgListHeader {
+     clipchildren 0
+     ignorepointer 0
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgMsgList {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 22 22
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:message_square"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtMsgListTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 30 0
+       size 0.5 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MSG_LIST_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "text valign" center
+       valign center_ref
+      }
+      PanelWidgetClass MsgFileHost {
+       clipchildren 0
+       ignorepointer 0
+       color 1 1 1 1
+       position 200 2
+       size 220 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style blank
+       priority 50
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass MsgRight {
+   clipchildren 0
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.59 1
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    PanelWidgetClass MsgEditHeader {
+     clipchildren 0
+     ignorepointer 0
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgMsgEdit {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 22 22
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:square_pen"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtMsgEditTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 30 0
+       size 0.5 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_MSG_EDIT_NONE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "text valign" center
+       valign center_ref
+      }
+      TextWidgetClass TxtMsgLine {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 10 0
+       size 160 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 0
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       "text halign" right
+       "text valign" center
+       halign right_ref
+       valign center_ref
+      }
+     }
+    }
+    FrameWidgetClass MsgForm {
+     clipchildren 0
+     ignorepointer 0
+     position 0 32
+     size 500 460
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      TextWidgetClass TxtMsgWhen {
+       clipchildren 1
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 10 0
+       size 400 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_WHEN"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      ButtonWidgetClass BtnMsgModeConnect {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 10 24
+       size 110 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillMsgModeConnect {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        TextWidgetClass TxtMsgModeConnect {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_MODE_CONNECT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnMsgModeRepeat {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 126 24
+       size 110 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillMsgModeRepeat {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        TextWidgetClass TxtMsgModeRepeat {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_MODE_REPEAT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnMsgModeCountdown {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 242 24
+       size 110 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillMsgModeCountdown {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        TextWidgetClass TxtMsgModeCountdown {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_MODE_COUNTDOWN"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnMsgModeTime {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 358 24
+       size 110 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillMsgModeTime {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        TextWidgetClass TxtMsgModeTime {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_MODE_TIME"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      TextWidgetClass LblMsgDelay {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 10 62
+       size 150 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_DELAY"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgDelay {
+       ignorepointer 0
+       color 1 1 1 1
+       position 164 62
+       size 90 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass TxtMsgDelayUnit {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 260 62
+       size 44 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_MIN"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       "text valign" center
+      }
+      TextWidgetClass LblMsgRepeat {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 10 94
+       size 150 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_REPEAT"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgRepeat {
+       ignorepointer 0
+       color 1 1 1 1
+       position 164 94
+       size 90 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass TxtMsgRepeatUnit {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 260 94
+       size 44 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_MIN"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       "text valign" center
+      }
+      TextWidgetClass LblMsgDeadline {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 10 126
+       size 150 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_DEADLINE"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgDeadline {
+       ignorepointer 0
+       color 1 1 1 1
+       position 164 126
+       size 90 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass TxtMsgDeadlineUnit {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 260 126
+       size 44 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_MIN"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       "text valign" center
+      }
+      ButtonWidgetClass BtnMsgShutdown {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 310 126
+       size 180 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FillMsgShutdown {
+         clipchildren 0
+         ignorepointer 1
+         color 0.106 0.118 0.133 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        TextWidgetClass TxtMsgShutdown {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_SHUTDOWN"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      TextWidgetClass LblMsgTime {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 10 158
+       size 150 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_TIME"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgTime {
+       ignorepointer 0
+       color 1 1 1 1
+       position 164 158
+       size 90 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass LblMsgDate {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 270 158
+       size 150 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_DATE"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgDate {
+       ignorepointer 0
+       color 1 1 1 1
+       position 424 158
+       size 120 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass TxtMsgTextTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 10 196
+       size 240 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_TEXT"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      TextWidgetClass TxtMsgBytes {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 250 196
+       size 240 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       "text halign" right
+       "text valign" center
+      }
+      EditBoxWidgetClass InputMsgText {
+       ignorepointer 0
+       color 1 1 1 1
+       position 10 218
+       size 480 28
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPInput
+       text ""
+       "limit visible" 0
+       "exact text" 1
+       font "gui/fonts/sdf_MetronLight24"
+      }
+      TextWidgetClass TxtMsgInsert {
+       clipchildren 1
+       ignorepointer 1
+       color 0.639 0.659 0.678 1
+       position 10 252
+       size 80 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_INSERT"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       "text valign" center
+      }
+      ButtonWidgetClass BtnPhName {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 94 252
+       size 80 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        TextWidgetClass TxtPhName {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnPhPort {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 180 252
+       size 80 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        TextWidgetClass TxtPhPort {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnPhTmin {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 266 252
+       size 80 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        TextWidgetClass TxtPhTmin {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      TextWidgetClass TxtMsgPreviewTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 10 288
+       size 400 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_MSG_PREVIEW"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      PanelWidgetClass MsgPreviewCard {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 10 310
+       size 480 110
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPCard
+       {
+        MultilineTextWidgetClass TxtMsgPreview {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 8 6
+         size 464 98
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text ""
+         font "gui/fonts/sdf_MetronLight72"
+         "exact text" 1
+         "exact text size" 13
+         wrap 1
+        }
+       }
+      }
+      MultilineTextWidgetClass TxtMsgWarnings {
+       clipchildren 1
+       ignorepointer 1
+       color 0.851 0.698 0.239 1
+       position 10 428
+       size 480 60
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       wrap 1
+      }
+     }
+    }
+    MultilineTextWidgetClass TxtMsgEmpty {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 20 60
+     size 400 80
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text "#VSTR_XMLE_MSG_EMPTY"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     wrap 1
+    }
+    PanelWidgetClass MsgActionBar {
+     clipchildren 0
+     ignorepointer 0
+     color 0.039 0.043 0.047 0.85
+     position 0 460
+     size 500 40
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPFillRound
+     {
+      TextWidgetClass TxtMsgStatus {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 10 0
+       size 0.55 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 13
+       "text valign" center
+       valign center_ref
+      }
+      ButtonWidgetClass BtnMsgRevert {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 142 5
+       halign right_ref
+       size 130 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImgMsgRevert {
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:rotate_ccw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtMsgRevert {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 28 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_MSG_BTN_REVERT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnMsgSave {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 6 5
+       halign right_ref
+       size 130 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgMsgSave {
+         ignorepointer 1
+         color 0.298 0.686 0.314 1
+         position 6 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:save"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtMsgSave {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 28 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_BTN_SAVE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 14
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

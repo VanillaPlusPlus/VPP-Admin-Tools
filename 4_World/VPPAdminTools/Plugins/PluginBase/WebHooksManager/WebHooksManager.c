@@ -153,13 +153,20 @@ class WebHooksManager: ConfigurablePlugin
 			if (!ctx.Read(data))
 				return;
 
+			if (data.param1 < 0 || data.param1 >= M_DATA.Count())
+				return;
+
 			WebHook old = M_DATA.Get(data.param1);
+			if (!old)
+				return;
+
 			GetWebHooksManager().PostData(AdminActivityMessage, new AdminActivityMessage(sender.GetPlainId(), sender.GetName(), "[WebHooksManager] Edited WebHook: " + old.GetName()));
-			if (old && old.GetName() == data.param2)
+			if (old.GetName() == data.param2)
 			{
-				delete old; //call destructor to stop timers n invokers
 				WebHooksManager.m_Invoker.Clear();
+				//out of the array first: deleting an object the array still holds leaves it a dangling reference
 				M_DATA.RemoveOrdered(data.param1);
+				delete old; //call destructor to stop timers n invokers
 				M_DATA.Insert(data.param3);
 				SetupInvokerQueue();
 

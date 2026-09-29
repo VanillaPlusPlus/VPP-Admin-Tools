@@ -1,4 +1,7 @@
-class BuildingSet
+// Managed: a set is held by the manager's array and, while it is sent, by an RPC Param (and on the client by the
+// Object Manager); a plain class with explicit deletes left dangling references that were released again at shutdown
+// (use-after-free, server crash on exit). The members release the buildings (each ~SpawnedBuilding cleans its object).
+class BuildingSet : Managed
 {
    private string m_Name;
    private bool   m_IsActive;
@@ -11,14 +14,6 @@ class BuildingSet
       m_Buildings = new array<ref SpawnedBuilding>;
    }
 
-   void ~BuildingSet()
-   {
-      foreach(SpawnedBuilding building : m_Buildings)
-      {
-		if (building != null)
-         	delete building;
-      }
-   }
 
    string GetName()
    {
@@ -101,13 +96,10 @@ class BuildingSet
 	 return m_Buildings;
    }
 
+   //releasing the references destroys the buildings (never delete an object the array still holds)
    void ClearBuildings()
    {
-	    foreach(SpawnedBuilding buidling : m_Buildings){
-			if (buidling)
-				delete buidling;
-		}
-		m_Buildings = new array<ref SpawnedBuilding>;
+		m_Buildings.Clear();
    }
 	
 	void RemoveBuilding(SpawnedBuilding instance)
@@ -130,10 +122,8 @@ class BuildingSet
 			string networkID = building.GetNetworkId();
 			if (trackerObj == null)
 			{
-				//Find object using network ID
-				TStringArray strs = new TStringArray;
-				networkID.Split( ",",strs );
-				trackerObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
+				//Find object using network ID (only one of this building's type)
+				trackerObj = building.FindByNetworkId();
 				networkObj = true;
 			}
 			

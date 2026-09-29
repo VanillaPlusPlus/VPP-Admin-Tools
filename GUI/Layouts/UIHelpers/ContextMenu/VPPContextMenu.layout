@@ -1,0 +1,128 @@
+PanelWidgetClass CtxRoot {
+ visible 0
+ clipchildren 1
+ ignorepointer 0
+ color 1 1 1 1
+ position 0 0
+ size 280 200
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style VPPPanel
+ "no focus" 1
+ {
+  PanelWidgetClass CtxHeader {
+   ignorepointer 1
+   color 0.039 0.043 0.047 1
+   position 4 4
+   size 272 26
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFillRound
+   {
+    ImageWidgetClass CtxHeaderIcon {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 8 0
+     size 16 16
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:vpp_icons image:info"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    TextWidgetClass CtxHeaderText {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 30 0
+     size 236 26
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "bold text" 1
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass CtxRowHost {
+   ignorepointer 1
+   clipchildren 1
+   position 4 34
+   size 272 120
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+  }
+  PanelWidgetClass CtxScrollTrack {
+   visible 0
+   ignorepointer 1
+   color 0.165 0.18 0.2 1
+   position 273 34
+   size 3 120
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFill
+   {
+    PanelWidgetClass CtxScrollThumb {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0 0
+     size 3 40
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPFill
+    }
+   }
+  }
+  PanelWidgetClass CtxFooter {
+   visible 0
+   ignorepointer 1
+   color 0 0 0 0
+   position 4 176
+   size 272 20
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style blank
+   {
+    TextWidgetClass CtxFooterText {
+     ignorepointer 1
+     color 0.361 0.38 0.4 1
+     position 0 0
+     size 272 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text "#VSTR_CTX_HINT_LOOK"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+ }
+}

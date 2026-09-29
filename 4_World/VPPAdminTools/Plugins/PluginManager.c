@@ -35,6 +35,7 @@ modded class PluginManager
 			RegisterPlugin("BuildingSetManager", 			 false, 	true);
 			RegisterPlugin("SteamAPIManager", 			 	 false, 	true);
 			RegisterPlugin("SpectateManager", 			 	 false, 	true);
+			RegisterPlugin("VPPContextActionManager",		 false, 	true);
 
 			MakeDirectory("$profile:VPPAdminTools");
 			MakeDirectory("$profile:VPPAdminTools/ConfigurablePlugins");
@@ -59,6 +60,7 @@ modded class PluginManager
 		{
 			RegisterPlugin("VPPKeybindsManager",		 true,      false); //Client only
 			RegisterPlugin("VPPUIManager",			     true,      false); //Client only
+			RegisterPlugin("VPPContextActionManager",	 true,      false); //Client (context menu registry)
 		}
 	}
 }

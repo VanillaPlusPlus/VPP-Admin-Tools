@@ -11,6 +11,7 @@
 	- corner button  : cycle the 4 screen corners
 	- orient button  : toggle horizontal <-> vertical
 	- copy buttons   : copy own coords / crosshair-object position to clipboard
+	- changelog button : open/close the changelog window (orange while this update is unseen; toolbar must be open)
 */
 class VPPStatsHud : ScriptedWidgetEventHandler
 {
@@ -34,6 +35,8 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 	protected ButtonWidget m_BtnCopyPos;
 	protected ButtonWidget m_BtnCopyCross;
 	protected ImageWidget  m_ImgPin;
+	protected ButtonWidget m_BtnChangelog;
+	protected ImageWidget  m_ImgChangelog;
 
 	// values
 	protected TextWidget   m_TxtPlayers;
@@ -71,6 +74,8 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 		m_BtnCopyPos   = ButtonWidget.Cast( m_Root.FindAnyWidget("BtnCopyPos") );
 		m_BtnCopyCross = ButtonWidget.Cast( m_Root.FindAnyWidget("BtnCopyCross") );
 		m_ImgPin       = ImageWidget.Cast( m_Root.FindAnyWidget("ImgPin") );
+		m_BtnChangelog = ButtonWidget.Cast( m_Root.FindAnyWidget("BtnChangelog") );
+		m_ImgChangelog = ImageWidget.Cast( m_Root.FindAnyWidget("ImgChangelog") );
 
 		m_TxtPlayers   = TextWidget.Cast( m_Root.FindAnyWidget("TxtPlayers") );
 		m_TxtPos       = TextWidget.Cast( m_Root.FindAnyWidget("TxtPos") );
@@ -87,6 +92,7 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 		m_Vertical = false;
 
 		UpdatePinVisual();
+		UpdateChangelogVisual();
 		Relayout();
 		m_Root.Show(false); //hidden until the toolbar opens (or it gets pinned)
 
@@ -130,6 +136,8 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 
 	protected void RefreshData()
 	{
+		UpdateChangelogVisual();
+
 		//player count (client-resident, no RPC)
 		if (m_TxtPlayers && GetPlayerListManager())
 			m_TxtPlayers.SetText( GetPlayerListManager().GetCount().ToString() );
@@ -225,6 +233,15 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 			}
 			return true;
 		}
+		if (w == m_BtnChangelog)
+		{
+			VPPAdminHud toolbar = VPPAdminHud.Cast(GetVPPUIManager().GetMenuByType(VPPAdminHud));
+			if (toolbar && toolbar.IsShowing())
+				toolbar.OpenChangelog(true);
+
+			UpdateChangelogVisual();
+			return true;
+		}
 		return false;
 	}
 
@@ -238,13 +255,24 @@ class VPPStatsHud : ScriptedWidgetEventHandler
 			m_ImgPin.SetColor( ARGB(255, 154, 160, 166) );  //secondary-grey = unpinned
 	}
 
+	protected void UpdateChangelogVisual()
+	{
+		if (!m_ImgChangelog)
+			return;
+
+		if (VPPChangelogState.HasUnseen())
+			m_ImgChangelog.SetColor( ARGB(255, 232, 163, 61) );   //accent-orange = unseen update
+		else
+			m_ImgChangelog.SetColor( ARGB(255, 154, 160, 166) );  //secondary-grey
+	}
+
 	//Position the cells (row vs column), size the card, then anchor it to the chosen corner.
 	protected void Relayout()
 	{
 		if (!m_Root)
 			return;
 
-		float wControls = 92.0;
+		float wControls = 122.0;
 		float wPlayers  = 70.0;
 		float wFlags    = 104.0;
 		float wPos      = 196.0;
