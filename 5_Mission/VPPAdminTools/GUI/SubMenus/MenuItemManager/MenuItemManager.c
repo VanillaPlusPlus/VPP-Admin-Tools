@@ -59,6 +59,12 @@ class MenuItemManager extends AdminHudSubMenu
 	private int 	 		  		 m_RotationY;
 	private vector   		  		 m_ItemOrientation;
 
+	//Copy to clipboard (double right-click): the class list last put on the clipboard (one class per line, kept
+	//while the game runs, so searching or closing the menu between copies does not lose it) and its lower-case
+	//entries for the duplicate check
+	private string 					 m_CopyBuffer;
+	private ref array<string> 		 m_CopyLower = new array<string>;
+
 	//Data
 	private ref CustomGridSpacer 	 m_LastGrid;
 	private ref array<ref PresetItemEntry>  m_Entries;
@@ -324,9 +330,77 @@ class MenuItemManager extends AdminHudSubMenu
 				else
 					RequestSpawnSelected();
 			}
+			else if (button == MouseState.RIGHT)
+			{
+				bool appendCopy = g_Game.IsLeftCtrlDown();
+				CopySelectedClass(appendCopy);
+			}
 			return true;
 		}
 		return super.OnDoubleClick(w, x, y, button);
+	}
+
+	/*
+		Double right-click on the item list: copies the selected item's class name (not its display name).
+		Without Left Ctrl it starts a new list on the clipboard with just that class. With Left Ctrl held it adds the
+		class on a new line of the current list (Ctrl does not have to stay held between copies); a class already
+		in the list is not added twice.
+	*/
+	private void CopySelectedClass(bool append)
+	{
+		int row = m_ItemListBox.GetSelectedRow();
+		if (row == -1)
+		{
+			GetVPPUIManager().DisplayError("#VSTR_NOTIFY_IM_COPY_NOSEL");
+			return;
+		}
+
+		string className = "";
+		m_ItemListBox.GetItemText(row, 0, className);
+		if (className == "")
+		{
+			return;
+		}
+
+		string lowerName = className;
+		lowerName.ToLower();
+		string message = "";
+		if (append && m_CopyLower.Count() > 0)
+		{
+			int listed = m_CopyLower.Count();
+			if (m_CopyLower.Find(lowerName) >= 0)
+			{
+				string dupPattern = Widget.TranslateString("#VSTR_NOTIFY_IM_COPY_DUP");
+				message = string.Format(dupPattern, className, listed);
+				GetGame().CopyToClipboard(m_CopyBuffer);
+				GetVPPUIManager().DisplayNotification(message);
+				return;
+			}
+
+			m_CopyBuffer = m_CopyBuffer + "\n" + className;
+			m_CopyLower.Insert(lowerName);
+		}
+		else
+		{
+			m_CopyBuffer = className;
+			m_CopyLower.Clear();
+			m_CopyLower.Insert(lowerName);
+		}
+
+		GetGame().CopyToClipboard(m_CopyBuffer);
+		int copyCount = m_CopyLower.Count();
+		if (append)
+		{
+			string appendPattern = Widget.TranslateString("#VSTR_NOTIFY_IM_COPIED_LIST");
+			message = string.Format(appendPattern, className, copyCount);
+		}
+		else
+		{
+			string copyPattern = Widget.TranslateString("#VSTR_NOTIFY_IM_COPIED");
+			message = string.Format(copyPattern, className);
+		}
+
+		GetVPPUIManager().DisplayNotification(message);
 	}
 
 	/*
