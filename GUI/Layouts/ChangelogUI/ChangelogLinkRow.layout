@@ -1,0 +1,80 @@
+PanelWidgetClass LinkRow {
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 712 42
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style blank
+ {
+  ButtonWidgetClass BtnLink {
+   ignorepointer 0
+   clipchildren 1
+   color 1 1 1 1
+   position 138 2
+   size 566 38
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPButtonGhost
+   "no focus" 1
+   font "gui/fonts/sdf_MetronLight72"
+   {
+    ImageWidgetClass ImgLink {
+     ignorepointer 1
+     color 0.376 0.62 0.922 1
+     position 8 0
+     size 18 18
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:dayz_gui image:externallink"
+     mode blend
+     "src alpha" 1
+     "stretch mode" stretch_w_h
+     filter 1
+    }
+    RichTextWidgetClass TxtLinkLabel {
+     ignorepointer 1
+     color 1 1 1 1
+     position 34 2
+     size 524 21
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 17
+     "size to text h" 0
+     "size to text v" 0
+     wrap 0
+    }
+    TextWidgetClass TxtLinkUrl {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 34 22
+     size 524 15
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 13
+     "size to text h" 0
+     "size to text v" 0
+    }
+   }
+  }
+ }
+}

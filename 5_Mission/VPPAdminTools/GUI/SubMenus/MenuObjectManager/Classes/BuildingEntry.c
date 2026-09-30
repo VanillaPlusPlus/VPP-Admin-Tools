@@ -44,10 +44,11 @@ class BuildingEntry : VPPPlayerTemplate
 		}
 		else
 		{
-			//Find object using its network ID
-			TStringArray strs = new TStringArray;
-			objectID.Split( ",",strs );
-			Object trackerObj = GetGame().GetObjectByNetworkId(strs[1].ToInt(), strs[0].ToInt()); //low,high
+			//Find object using its network ID (only one of this building's type)
+			Object trackerObj = null;
+			if (m_SpawnedBuilding)
+				trackerObj = m_SpawnedBuilding.FindByNetworkId();
+
 			if (trackerObj != null)
 			{
 				placedObject = trackerObj;

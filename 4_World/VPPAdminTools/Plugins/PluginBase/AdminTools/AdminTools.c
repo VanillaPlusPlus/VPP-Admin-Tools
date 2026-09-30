@@ -63,9 +63,8 @@ class AdminTools extends PluginBase
 				//command handler to freeze player
 				if (!pb.GetCommand_Vehicle())
 				{
-					pb.InitTablesCmd();
-                	HumanCommandScript_VPPCam cmdFS = new HumanCommandScript_VPPCam(pb, pb.m_VPPCamHmnCmd);
-                	pb.StartCommand_Script(cmdFS);
+					//engine-owned command (see HumanCommandScript_VPPCam): never `new` it
+					pb.StartCommand_ScriptInst(HumanCommandScript_VPPCam);
 				}
 			}
 			else
@@ -134,7 +133,8 @@ class AdminTools extends PluginBase
             callerID = sender.GetPlainId();
             callerName = sender.GetName();
         	
-        	Car vehicle = Car.Cast( target );
+        	//any Transport: cars, boats and motorbikes
+        	Transport vehicle = Transport.Cast( target );
         	EntityAI carEntity = EntityAI.Cast(target);
         	if ( vehicle == NULL || carEntity == NULL)
         		return;
@@ -143,7 +143,7 @@ class AdminTools extends PluginBase
 			dBodyApplyImpulse(carEntity, vector.Up);
 			carEntity.SetHealthMax("", "Health");
 			carEntity.SetHealthMax();
-			CarScript.Cast(target).RefillAllLiquids();
+			VPPVehicleUtils.RefillAllFluids(vehicle);
 
 			string childClass;
 			string cfgPath = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
@@ -218,12 +218,10 @@ class AdminTools extends PluginBase
 				}
 				else if (data.param1) //Allow for spawn of attachments
 				{
-					string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
-					typeName.ToLower();
-					if (typeName.Contains("_ruined"))
-						typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
-
-					vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
+					//slots the game has no item for (possible on boats / motorbikes / modded vehicles) are skipped
+					string typeName = VPPVehicleUtils.PartForSlot(carSlot);
+					if (typeName != "")
+						vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
 				}
 			}
 			carEntity.SetSynchDirty();

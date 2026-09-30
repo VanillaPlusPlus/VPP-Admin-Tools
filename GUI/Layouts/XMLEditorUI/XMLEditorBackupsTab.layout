@@ -1,0 +1,536 @@
+FrameWidgetClass BackupsTabRoot {
+ clipchildren 1
+ ignorepointer 0
+ color 0 0 0 0
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass BackupsLeft {
+   clipchildren 0
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.42 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    PanelWidgetClass BackupsHeader {
+     clipchildren 0
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgBackupsHeader {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 22 22
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:history"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtBackupsHeader {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 30 0
+       size 0.6 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_BK_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "text valign" center
+      }
+     }
+    }
+    TextListboxWidgetClass BackupsList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 60
+     size 380 300
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "When;20;File;20;Admin;14;Summary;46;"
+     "highlight row" 0
+    }
+    PanelWidgetClass BackupsActions {
+     clipchildren 0
+     ignorepointer 1
+     color 0 0 0 0
+     position 6 368
+     size 380 26
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style blank
+     {
+      ButtonWidgetClass BtnBkSnapshot {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 0 0
+       size 92 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgBkSnapshot {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:folder_plus"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtBkSnapshot {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 66 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_BK_SNAPSHOT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnBkPin {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 96 0
+       size 92 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgBkPin {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:pin"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtBkPin {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 66 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_BK_PIN"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnBkRestore {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 192 0
+       size 92 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        ImageWidgetClass ImgBkRestore {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:rotate_ccw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtBkRestore {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 66 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_BK_RESTORE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnBkDelete {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 288 0
+       size 92 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonDanger
+       "no focus" 1
+       {
+        ImageWidgetClass ImgBkDelete {
+         ignorepointer 1
+         color 1 1 1 1
+         position 5 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:trash_2"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtBkDelete {
+         clipchildren 1
+         ignorepointer 1
+         color 1 1 1 1
+         position 24 0
+         size 66 26
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style None
+         text "#VSTR_XMLE_BK_DELETE"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+    MultilineTextWidgetClass TxtBkRetention {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 6 400
+     size 380 34
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     wrap 1
+    }
+    PanelWidgetClass BackupsFileHost {
+     clipchildren 0
+     ignorepointer 0
+     color 1 1 1 1
+     position 6 32
+     size 380 24
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style blank
+    }
+   }
+  }
+  PanelWidgetClass BackupsRight {
+   clipchildren 1
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.575 1
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    PanelWidgetClass DiffHeader {
+     clipchildren 0
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgDiffHeader {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 22 22
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:list"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtDiffHeader {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 30 0
+       size 0.6 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_BK_DIFF"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "text valign" center
+      }
+      ButtonWidgetClass BtnDiffVsCurrent {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 250 2
+       size 120 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        TextWidgetClass TxtDiffVsCurrent {
+         clipchildren 1
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_BK_VS_CURRENT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnDiffVsNext {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 374 2
+       size 124 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        TextWidgetClass TxtDiffVsNext {
+         clipchildren 1
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_BK_VS_NEXT"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 12
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+     }
+    }
+    TextWidgetClass TxtDiffSummary {
+     clipchildren 1
+     ignorepointer 1
+     color 1 1 1 1
+     position 8 32
+     size 500 18
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "text valign" center
+    }
+    MultilineTextWidgetClass TxtBkMeta {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 8 52
+     size 500 60
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     wrap 1
+    }
+    TextListboxWidgetClass DiffList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 116
+     size 520 300
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "Entry;30;Field;18;Before;26;After;26;"
+     "highlight row" 0
+    }
+    MultilineTextWidgetClass TxtDiffEmpty {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 6 116
+     size 520 300
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text "#VSTR_XMLE_BK_SELECT"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 14
+     "text halign" center
+     "text valign" center
+     wrap 1
+    }
+   }
+  }
+ }
+}

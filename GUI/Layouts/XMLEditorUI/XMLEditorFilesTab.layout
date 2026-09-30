@@ -1,0 +1,316 @@
+FrameWidgetClass FilesTabRoot {
+ clipchildren 1
+ ignorepointer 0
+ color 0 0 0 0
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass FilesLeft {
+   clipchildren 1
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.38 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    PanelWidgetClass FilesHeader {
+     clipchildren 0
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 28
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgFilesHeader {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 4 0
+       size 22 22
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:file_text"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtFilesHeader {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 30 0
+       size 0.6 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_FILES_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 16
+       "text valign" center
+      }
+     }
+    }
+    TextListboxWidgetClass FilesList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 32
+     size 330 300
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "File;58;Kind;22;State;20;"
+     "highlight row" 0
+    }
+    ButtonWidgetClass BtnFilesRemove {
+     clipchildren 1
+     ignorepointer 0
+     color 1 1 1 1
+     position 6 300
+     size 200 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPButtonDanger
+     "no focus" 1
+     {
+      ImageWidgetClass ImgFilesRemove {
+       ignorepointer 1
+       color 1 1 1 1
+       position 6 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:trash_2"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtFilesRemove {
+       ignorepointer 1
+       color 1 1 1 1
+       position 28 0
+       size 1 1
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style None
+       text "#VSTR_XMLE_FILES_BTN_REMOVE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+     }
+    }
+    MultilineTextWidgetClass TxtFilesLegend {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 6 340
+     size 330 64
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     wrap 1
+    }
+   }
+  }
+  PanelWidgetClass FilesRight {
+   clipchildren 0
+   ignorepointer 1
+   color 1 1 1 1
+   position 0 0
+   size 0.61 1
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style VPPPanel
+   {
+    TextListboxWidgetClass IssuesList {
+     visible 1
+     clipchildren 1
+     ignorepointer 0
+     position 6 34
+     size 560 380
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style VPPListbox
+     "no focus" 1
+     "title visible" 1
+     colums "Sev;12;Line;10;Entry;26;Message;52;"
+     "highlight row" 0
+    }
+    TextWidgetClass TxtIssuesHint {
+     clipchildren 1
+     ignorepointer 1
+     color 0.8 0.816 0.831 1
+     position 8 420
+     size 560 18
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style None
+     text "#VSTR_XMLE_ISS_HINT"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 12
+     "text valign" center
+    }
+    PanelWidgetClass IssuesToolbar {
+     clipchildren 0
+     ignorepointer 1
+     color 0.039 0.043 0.047 0.85
+     position 0 0
+     size 1 30
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style VPPFillRound
+     {
+      ImageWidgetClass ImgIssues {
+       ignorepointer 1
+       color 0.91 0.639 0.239 1
+       position 5 0
+       size 18 18
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:vpp_icons image:info"
+       mode blend
+       "src alpha" 1
+       "stretch mode" stretch_w_h
+       filter 1
+      }
+      TextWidgetClass TxtIssuesTitle {
+       clipchildren 1
+       ignorepointer 1
+       color 1 1 1 1
+       position 28 0
+       size 80 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text "#VSTR_XMLE_ISS_TITLE"
+       font "gui/fonts/sdf_MetronLight72"
+       "bold text" 1
+       "exact text" 1
+       "exact text size" 14
+       "text valign" center
+      }
+      TextWidgetClass TxtIssuesCount {
+       clipchildren 1
+       ignorepointer 1
+       color 0.8 0.816 0.831 1
+       position 114 0
+       size 220 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style None
+       text ""
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 1
+       "exact text size" 12
+       "text valign" center
+      }
+      ButtonWidgetClass BtnIssuesRefresh {
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 6 2
+       size 26 26
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButtonGhost
+       "no focus" 1
+       {
+        ImageWidgetClass ImgIssuesRefresh {
+         ignorepointer 1
+         color 0.8 0.816 0.831 1
+         position 0 0
+         size 20 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:refresh_cw"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+       }
+      }
+      PanelWidgetClass IssuesSeverityHost {
+       clipchildren 0
+       ignorepointer 0
+       color 1 1 1 1
+       position 344 3
+       size 170 24
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style blank
+      }
+     }
+    }
+   }
+  }
+ }
+}

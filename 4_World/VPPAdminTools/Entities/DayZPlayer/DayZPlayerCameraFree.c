@@ -108,7 +108,10 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 		if ((input.LocalValue("UACamFOV") > 0 && CanControl()) || m_forceFovOverride)
 		{
 			CAM_MOUSE_SENSE = 0.1;
-			float camFov = input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct");
+			float camFov = 0;
+			//m_forceFovOverride bypasses CanControl(), so gate the wheel-driven FOV change on look-mode capture too
+			if (!VPPContextMenuState.IsCapturing())
+				camFov = input.LocalValue("UACamSpeedAdd") - input.LocalValue("UACamSpeedDeduct");
 			float fovVelocity = (fovVelocity + camFov * 0.01);
 
 			more_fov  += fovVelocity;
@@ -163,6 +166,9 @@ class DayZPlayerCameraFree extends DayZPlayerCameraBase
 
 	bool CanControl()
 	{
+		if (VPPContextMenuState.IsCapturing())
+			return false;
+
 		bool isTyping;
 
 		if (GetGame().GetUIManager().GetMenu() == null)

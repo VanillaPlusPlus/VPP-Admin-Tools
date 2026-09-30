@@ -109,6 +109,13 @@ class VPPDialogBox extends ScriptedWidgetEventHandler
 		editClass.HideCharsOnInput(hide);
 	}
 
+	// DIAG_OK_CANCEL_INPUT: text already in the box (the admin can keep or change it).
+	void SetInputText(string text)
+	{
+		if (m_InputBox)
+			m_InputBox.SetText(text);
+	}
+
 	void SetContentText(string text)
 	{
 		m_Content.SetText(text);

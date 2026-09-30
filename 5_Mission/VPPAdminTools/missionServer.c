@@ -234,7 +234,8 @@ modded class MissionServer
                     string steam64 = player.VPlayerGetSteamId();
                     GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
                     Print(string.Format("Player \"%1\" (steamid=%2) disconnected early from server (EXIT NOW).", player.VPlayerGetName(), steam64));
-                    GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), steam64, "disconnected early from server (EXIT NOW)."));
+                    string earlyName = player.VPlayerGetName();
+                    GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(earlyName, steam64, "disconnected early from server (EXIT NOW).", VPPWebhookDefs.EV_LEAVE_EARLY));
                 }
                 break;
             }
@@ -266,11 +267,13 @@ modded class MissionServer
 
         if (identity)
         {
-            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "left the server!"));
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "left the server!", VPPWebhookDefs.EV_LEAVE));
         }
         else if (player)
         {
-            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(player.VPlayerGetName(), player.VPlayerGetSteamId(), "left the server!"));
+            string leftName = player.VPlayerGetName();
+            string leftId = player.VPlayerGetSteamId();
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(leftName, leftId, "left the server!", VPPWebhookDefs.EV_LEAVE));
         }
 
         if (PlayerListManager.RemoveEntry(uid))
@@ -454,12 +457,12 @@ modded class MissionServer
         {
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) connected to server!", identity.GetName(), identity.GetPlainId()));
-            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "joined the server!"));
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "joined the server!", VPPWebhookDefs.EV_JOIN));
         }
         else if (canceledLogout)
         {
             m_LogoutQueueInital.Remove(player);
-            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "canceled logout"));
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "canceled logout", VPPWebhookDefs.EV_LOGOUT_CANCEL));
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) aborted logout process [canceledLogout]", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("[VPPAT] Player \"%1\" (steamId=%2) aborted logout process [canceledLogout]", identity.GetName(), identity.GetPlainId()));
         }
@@ -492,7 +495,7 @@ modded class MissionServer
         {
             GetSimpleLogger().Log(string.Format("Player \"%1\" (steamId=%2) initiated disconnect process...", identity.GetName(), identity.GetPlainId()));
             Print(string.Format("Player \"%1\" (steamid=%2) initiated disconnect process...", identity.GetName(), identity.GetPlainId()));
-            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "initiated disconnect process..⌛"));
+            GetWebHooksManager().PostData(JoinLeaveMessage, new JoinLeaveMessage(identity.GetName(), identity.GetPlainId(), "initiated disconnect process..⌛", VPPWebhookDefs.EV_LOGOUT_START));
         }
         else if (identity && finished)
         {

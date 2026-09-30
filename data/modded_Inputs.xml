@@ -46,6 +46,15 @@
 			<input name="UAExecuteCommand" loc="" visible="false"/>
 			<input name="UAUPCommand" loc="" visible="false"/>
 			<input name="UADOWNCommand" loc="" visible="false"/>
+			<input name="UAVPPContextMenu" loc="vpp_settings_contextmenu"/>
+			<input name="UAVPPContextSelect" loc="vpp_settings_contextselect"/>
+			<input name="UAVPPContextMenuToggle" loc="vpp_settings_contextmenutoggle"/>
+			<input name="UAVPPCtxNavUp" loc="" visible="false"/>
+			<input name="UAVPPCtxNavDown" loc="" visible="false"/>
+			<input name="UAVPPCtxWheelUp" loc="" visible="false"/>
+			<input name="UAVPPCtxWheelDown" loc="" visible="false"/>
+			<input name="UAVPPCtxBack" loc="" visible="false"/>
+			<input name="UAVPPCtxForward" loc="" visible="false"/>
 		</actions>
 		<sorting name="vpp" loc="vpp_menu_vpp">
 			<input name="UAToggleAdminTools"/>
@@ -92,6 +101,15 @@
 			<input name="UAExecuteCommand"/>
 			<input name="UAUPCommand"/>
 			<input name="UADOWNCommand"/>
+			<input name="UAVPPContextMenu"/>
+			<input name="UAVPPContextSelect"/>
+			<input name="UAVPPContextMenuToggle"/>
+			<input name="UAVPPCtxNavUp"/>
+			<input name="UAVPPCtxNavDown"/>
+			<input name="UAVPPCtxWheelUp"/>
+			<input name="UAVPPCtxWheelDown"/>
+			<input name="UAVPPCtxBack"/>
+			<input name="UAVPPCtxForward"/>
 		</sorting>
 		<exclude name="VPPCamControls">
 			<input name="UACamForward"/>
@@ -109,6 +127,31 @@
 			<input name="UACamSpeedDeduct"/>
 			<input name="UACamRelease"/>
 			<input name="UACamFOV"/>
+		</exclude>
+		<exclude name="VPPContextMenu">
+			<input name="UAFire"/>
+			<input name="UADefaultAction"/>
+			<input name="UATempRaiseWeapon"/>
+			<input name="UAHeavyMeleeAttack"/>
+			<input name="UAAimLeft"/>
+			<input name="UAAimRight"/>
+			<input name="UAAimUp"/>
+			<input name="UAAimDown"/>
+			<input name="UALookAround"/>
+			<input name="UALookAroundToggle"/>
+			<input name="UANextAction"/>
+			<input name="UAPrevAction"/>
+			<input name="UANextActionCategory"/>
+			<input name="UAPrevActionCategory"/>
+			<input name="UAZoomInOptics"/>
+			<input name="UAZoomOutOptics"/>
+			<input name="UAUIGesturesOpen"/>
+			<input name="UAUIQuickbarRadialOpen"/>
+			<input name="UAUIQuickbarRadialInventoryOpen"/>
+			<input name="UAGear"/>
+			<input name="UAUIMenu"/>
+			<input name="UAVoiceDistanceUp"/>
+			<input name="UAVoiceDistanceDown"/>
 		</exclude>
 	</inputs>
 	<preset>
@@ -269,6 +312,42 @@
 		<input name="UAToggleInvis">
 			<btn name="kI">
             </btn>
+		</input>
+		<input name="UAVPPContextMenu">
+			<btn name="mBRight">
+			</btn>
+		</input>
+		<input name="UAVPPContextSelect">
+			<btn name="mBLeft">
+			</btn>
+		</input>
+		<input name="UAVPPContextMenuToggle">
+			<btn name="kO">
+			</btn>
+		</input>
+		<input name="UAVPPCtxNavUp">
+			<btn name="mUp">
+			</btn>
+		</input>
+		<input name="UAVPPCtxNavDown">
+			<btn name="mDown">
+			</btn>
+		</input>
+		<input name="UAVPPCtxWheelUp">
+			<btn name="mWheelUp">
+			</btn>
+		</input>
+		<input name="UAVPPCtxWheelDown">
+			<btn name="mWheelDown">
+			</btn>
+		</input>
+		<input name="UAVPPCtxBack">
+			<btn name="kLeft">
+			</btn>
+		</input>
+		<input name="UAVPPCtxForward">
+			<btn name="kRight">
+			</btn>
 		</input>
 	</preset>
 </modded_inputs>

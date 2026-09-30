@@ -22,6 +22,8 @@ class CfgMods
 		author="DaOne & GravityWolf";
 		authorID="420420";
 		version="Version 1.0";
+		//In-game changelog update number (integer). Bump it when a new changelog section ships: the window opens with the toolbar again for every admin and their dont-show-again choice resets.
+		changelogVersion=2;
 		extra=0;
 		type="mod";
 		inputs="VPPAdminTools/data/modded_Inputs.xml";

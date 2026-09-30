@@ -98,7 +98,10 @@ class UserGroupTemplate : VPPPlayerTemplate
 			if (userInput != "")
 			{
 				m_PermsLevel.SetText(userInput);
-				GetRPCManager().VSendRPC( "RPC_PermissionManager", "UpdateUserGroupPermLvl", new Param2<int,string>(userInput.ToInt(),m_group.GetGroupName()), true);
+				//arguments in locals first: a script call among the arguments can zero the ones evaluated before it
+				int permLevel = userInput.ToInt();
+				string groupName = m_group.GetGroupName();
+				GetRPCManager().VSendRPC( "RPC_PermissionManager", "UpdateUserGroupPermLvl", new Param2<int,string>(permLevel, groupName), true);
 				GetVPPUIManager().DisplayNotification("#VSTR_NOTIFY_PERMLVL_UPDATED "+userInput);
 			}
 		}

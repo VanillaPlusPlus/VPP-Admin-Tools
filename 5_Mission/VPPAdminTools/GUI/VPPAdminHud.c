@@ -26,6 +26,7 @@ class VPPAdminHud extends VPPScriptedMenu
 	protected float   m_SafeScreenMargin  = 64.0;
 	protected float   m_IconsBaseW, m_IconsBaseH;
 	protected float   m_WrapBaseW,  m_WrapBaseH;
+	protected bool    m_ChangelogAutoPending; //armed on every toolbar show (Init), consumed in Update
 
 	static ref ScriptInvoker m_OnPermissionsChanged = new ScriptInvoker(); //invoker
 	
@@ -75,6 +76,8 @@ class VPPAdminHud extends VPPScriptedMenu
 	*/
    	override Widget Init()
    	{
+		m_ChangelogAutoPending = true; //every toolbar open may auto-open the changelog (Init also runs on ShowMenu)
+
 		if (!m_Init)
 		{
 			layoutRoot   	    = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPAdminHud);
@@ -209,6 +212,15 @@ class VPPAdminHud extends VPPScriptedMenu
 	{
 		super.Update(timeslice);
 
+		//changelog auto-open on every toolbar open unless Don't show again is ticked for this update.
+		//Deferred to Update on purpose: during the first Init the toolbar is not registered in VPPUIManager yet (ShowSubMenu would null-deref).
+		if (m_ChangelogAutoPending && IsShowing())
+		{
+			m_ChangelogAutoPending = false;
+			if (VPPChangelogState.ShouldAutoOpen())
+				OpenChangelog(false);
+		}
+
 		//advance or rewind the hover progress
         float delta = timeslice * m_AnimSpeed;
         if (m_IsHovered && m_HoverProgress < 1.0)
@@ -276,6 +288,35 @@ class VPPAdminHud extends VPPScriptedMenu
 		}
 	}
 	
+	/*
+		Client mission finish (MissionGameplay.OnMissionFinish -> VPPUIManager.ShutdownMenus): destroys every submenu
+		layout while the world still exists. A submenu that is never freed keeps its layout until the workspace is
+		destroyed, after the world, and a MapWidget or item/player preview destroyed that late reads freed world data
+		and crashes the game on exit.
+	*/
+	void ShutdownSubMenus()
+	{
+		array<Widget> subRoots = new array<Widget>;
+		foreach (AdminHudSubMenu subMenu : M_SUB_MENUS)
+		{
+			if (subMenu && subMenu.M_SUB_WIDGET)
+			{
+				subRoots.Insert(subMenu.M_SUB_WIDGET);
+			}
+		}
+
+		//release the submenus first so their destructors still see their widgets
+		M_SUB_MENUS.Clear();
+
+		foreach (Widget subRoot : subRoots)
+		{
+			if (subRoot)
+			{
+				subRoot.Unlink();
+			}
+		}
+	}
+
 	AdminHudSubMenu GetSubMenuByType(typename subMenuType)
 	{
 		for(int i = 0; i < M_SUB_MENUS.Count(); i++)
@@ -288,6 +329,37 @@ class VPPAdminHud extends VPPScriptedMenu
 			}
 		}
 		return NULL;
+	}
+
+	/*
+		Opens the changelog window. toggle = true (Stats HUD button) hides it when it is already showing; toggle = false (auto-open) only brings a visible window to the front.
+		Only valid while the toolbar is showing: submenus live inside the toolbar.
+	*/
+	void OpenChangelog(bool toggle)
+	{
+		MenuChangelog changelog = MenuChangelog.Cast(GetSubMenuByType(MenuChangelog));
+		if (!changelog)
+		{
+			CreateSubMenu(MenuChangelog);
+			changelog = MenuChangelog.Cast(GetSubMenuByType(MenuChangelog));
+			//CreateSubMenu shows the menu before inserting it, so its own SetWindowPriorty call found nothing: raise it now
+			if (changelog)
+				SetWindowPriorty(changelog);
+
+			return;
+		}
+
+		if (changelog.IsSubMenuVisible())
+		{
+			if (toggle)
+				changelog.HideSubMenu();
+			else
+				SetWindowPriorty(changelog);
+
+			return;
+		}
+
+		changelog.ShowSubMenu();
 	}
 
 	//toggle hide/show

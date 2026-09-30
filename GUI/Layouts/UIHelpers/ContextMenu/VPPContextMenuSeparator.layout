@@ -1,0 +1,24 @@
+PanelWidgetClass CtxSep {
+ ignorepointer 0
+ color 0 0 0 0
+ position 0 0
+ size 272 9
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style blank
+ {
+  PanelWidgetClass CtxSepLine {
+   ignorepointer 1
+   color 0.165 0.18 0.2 1
+   position 8 4
+   size 256 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style VPPFill
+  }
+ }
+}

@@ -541,9 +541,8 @@ class SpectateManager extends PluginBase
 			adminPb.StartCommand_Move();
 	}
 
-	//NO scripted freeze command for spectate (the body LINK corrupts
-	//HumanCommandScript_VPPCam — double-free instance leak — and exits could
-	//never cleanly hand locomotion back). VPPBR precedent: linked spectators
+	//NO scripted freeze command for spectate (exits could never cleanly hand
+	//locomotion back from HumanCommandScript_VPPCam while the body is linked). VPPBR precedent: linked spectators
 	//keep their ordinary Move command; only the input controller is held off.
 	protected void FreezeAdminBody(PlayerBase adminPb, bool freeze)
 	{

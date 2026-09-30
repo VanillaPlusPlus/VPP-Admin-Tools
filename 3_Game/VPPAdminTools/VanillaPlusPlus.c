@@ -208,6 +208,10 @@ modded class DayZGame
 		//Stats HUD on/off. Encoded 1.0=enabled (default) / 2.0=disabled — never 0.0, because
 		//RegisterProfileOption treats a stored "0" as "unset" and would reset the user's choice.
 		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.STATS_HUD_ENABLED, "vppat_stats_hud_enabled", 1.0);
+		//Stats HUD corner (stored 1..4 = corner 0..3, default 1 = bottom-right) and orientation
+		//(1.0=vertical (default) / 2.0=horizontal); same "never store 0" rule as above.
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.STATS_HUD_CORNER, "vppat_stats_hud_corner", 1.0);
+		m_VPPATProfileOptions.RegisterProfileOption(EVPPATProfileOptions.STATS_HUD_VERTICAL, "vppat_stats_hud_vertical", 1.0);
 	}
 
 	//Credit to philip from CFTools ;)
@@ -319,6 +323,42 @@ modded class DayZGame
 		if (enabled)
 			val = 1.0;
 		SetVPPATProfileVal(EVPPATProfileOptions.STATS_HUD_ENABLED, val);
+	}
+
+	//Stats HUD screen corner, 0=bottom-right, 1=bottom-left, 2=top-left, 3=top-right (persisted in the profile)
+	int GetStatsHudCorner()
+	{
+		float stored = GetVPPATProfileVal(EVPPATProfileOptions.STATS_HUD_CORNER);
+		int corner = Math.Round(stored) - 1;
+		if (corner < 0 || corner > 3)
+		{
+			corner = 0;
+		}
+
+		return corner;
+	}
+
+	void SetStatsHudCorner(int corner)
+	{
+		float stored = corner + 1;
+		SetVPPATProfileVal(EVPPATProfileOptions.STATS_HUD_CORNER, stored);
+	}
+
+	//Stats HUD orientation (persisted in the profile); vertical unless the user switched it to horizontal
+	bool IsStatsHudVertical()
+	{
+		return GetVPPATProfileVal(EVPPATProfileOptions.STATS_HUD_VERTICAL) < 1.5;
+	}
+
+	void SetStatsHudVertical(bool vertical)
+	{
+		float val = 2.0;
+		if (vertical)
+		{
+			val = 1.0;
+		}
+
+		SetVPPATProfileVal(EVPPATProfileOptions.STATS_HUD_VERTICAL, val);
 	}
 
 	bool IsSpectateMode()

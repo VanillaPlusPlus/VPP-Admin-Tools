@@ -14,6 +14,7 @@ class PermissionManager extends ConfigurablePlugin
 	private ref PermissionLoader 		  m_PermissionLoader;
 	private ref array<string> 		  	  m_Permissions;
 	private ref array<ref UserGroup> 	  m_UserGroups;
+	protected bool m_XmleGroupsDefaulted;
 	
 	void PermissionManager()
 	{
@@ -47,13 +48,13 @@ class PermissionManager extends ConfigurablePlugin
 		//Spectate Tools menu (action perm reuses PlayerManager:SpectatePlayer)
 		AddPermissionType({ "MenuSpectateTools" });
 		//WebHooks Menu
-		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete" });
+		AddPermissionType({ "MenuWebHooks","MenuWebHooks:Create", "MenuWebHooks:Edit", "MenuWebHooks:Delete", "MenuWebHooks:EditTemplates", "MenuWebHooks:TestSend", "MenuWebHooks:ViewURL" });
 		//Teleport Manager Menu
 		AddPermissionType({ "MenuTeleportManager","TeleportManager:ViewPlayerPositions","TeleportManager:TPPlayers","TeleportManager:TPSelf","TeleportManager:DeletePreset","TeleportManager:AddNewPreset","TeleportManager:EditPreset", "TeleportManager:TeleportEntity" });
 		//ESP tools menu 
 		AddPermissionType({ "EspToolsMenu","EspToolsMenu:DeleteObjects","EspToolsMenu:PlayerESP", "EspToolsMenu:RestPasscodeFence", "EspToolsMenu:RetriveCodeFromObj", "EspToolsMenu:PlayerMeshEsp", "EspToolsMenu:InstantBaseBuild" });
 		//XML Editor menu
-		AddPermissionType({ "MenuXMLEditor" });
+		AddPermissionType({ "MenuXMLEditor", "MenuXMLEditor:EditTypes", "MenuXMLEditor:AddRemoveTypes", "MenuXMLEditor:DistributionMap", "MenuXMLEditor:ViewBackups", "MenuXMLEditor:RestoreBackup", "MenuXMLEditor:DeleteBackup", "MenuXMLEditor:LiveScan", "MenuXMLEditor:DeleteObjects", "MenuXMLEditor:EditMessages", "MenuXMLEditor:EditEvents", "MenuXMLEditor:EditSpawnables" });
 		//Commands console menu
 		AddPermissionType({ "MenuCommandsConsole" });
 		
@@ -89,7 +90,27 @@ class PermissionManager extends ConfigurablePlugin
 				LoadCredentials();
 			}
 			LoadSuperAdmins();
+
+			// XML Editor permission migration: judge UserGroups.json BEFORE LoadUserGroups, which replaces an
+			// unreadable file with defaults (and saves them over it).
+			bool xmleGroupsTrusted = true;
+			if (FileExist(m_UserGroupsSavePath + ".json"))
+			{
+				array<ref UserGroup> xmleProbe;
+				string xmleErr;
+				xmleGroupsTrusted = JsonFileLoader<array<ref UserGroup>>.LoadFile(m_UserGroupsSavePath + ".json", xmleProbe, xmleErr);
+				if (xmleProbe == null)
+				{
+					xmleGroupsTrusted = false;
+				}
+			}
+
 			LoadUserGroups();
+			MigrateXmlEditorPermissions(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
+			MigrateXmlEditorPermissionsV2(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
+			MigrateXmlEditorPermissionsV3(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
+			MigrateXmlEditorPermissionsV4(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
+			MigrateWebhookPermissions(xmleGroupsTrusted && !m_XmleGroupsDefaulted);
 		}
 	}
 	
@@ -561,6 +582,7 @@ class PermissionManager extends ConfigurablePlugin
 			{
 				GetSimpleLogger().Log("[PermissionManager] Failed to convert UserGroups to JSON format!");
 				Print("[PermissionManager] Failed to convert UserGroups to JSON format!");
+				m_XmleGroupsDefaulted = true;
 				CreateDefualtUserGroups();
 				return;
 			}
@@ -572,6 +594,7 @@ class PermissionManager extends ConfigurablePlugin
 			if (m_UserGroups == NULL)
 			{
 				GetSimpleLogger().Log("[PermissionManager] Failed to load UserGroups.json, creating defaults");
+				m_XmleGroupsDefaulted = true;
 				CreateDefualtUserGroups();
 				return;
 			}
@@ -583,6 +606,278 @@ class PermissionManager extends ConfigurablePlugin
 		}
 	}
 	
+	// One-time XML Editor permission migration (marker xmleditor_perms_v1.txt): groups holding MenuXMLEditor
+	// gain EditTypes, LiveScan, DeleteObjects, DistributionMap and ViewBackups. Skipped without a marker when
+	// UserGroups.json exists but could not be loaded, so it runs once the owner fixes the file.
+	protected void MigrateXmlEditorPermissions(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/xmleditor_perms_v1.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			string skipped = "[XMLEditor] UserGroups.json could not be loaded; permission migration skipped and will run after the file loads";
+			GetSimpleLogger().Log(skipped);
+			Print(skipped);
+			return;
+		}
+
+		array<string> xmleGranted = { "MenuXMLEditor:EditTypes", "MenuXMLEditor:LiveScan", "MenuXMLEditor:DeleteObjects", "MenuXMLEditor:DistributionMap", "MenuXMLEditor:ViewBackups" };
+		int groupsUpdated = 0;
+		foreach (UserGroup xmleGroup : m_UserGroups)
+		{
+			if (!xmleGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = xmleGroup.GetPermissions();
+			if (!perms || perms.Find("MenuXMLEditor") < 0)
+			{
+				continue;
+			}
+
+			bool groupChanged = false;
+			foreach (string granted : xmleGranted)
+			{
+				if (perms.Find(granted) < 0)
+				{
+					perms.Insert(granted);
+					groupChanged = true;
+				}
+			}
+
+			if (groupChanged)
+			{
+				xmleGroup.SetPermissions(perms);
+				groupsUpdated++;
+			}
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[XMLEditor] Permission migration done: %1 user group(s) updated", groupsUpdated));
+	}
+
+	// XML Editor MESSAGES tab (v2): groups that may edit types also get MenuXMLEditor:EditMessages, once.
+	protected void MigrateXmlEditorPermissionsV2(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/xmleditor_perms_v2.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			return;
+		}
+
+		int groupsUpdated = 0;
+		foreach (UserGroup xmleGroup : m_UserGroups)
+		{
+			if (!xmleGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = xmleGroup.GetPermissions();
+			if (!perms || perms.Find("MenuXMLEditor:EditTypes") < 0 || perms.Find("MenuXMLEditor:EditMessages") >= 0)
+			{
+				continue;
+			}
+
+			perms.Insert("MenuXMLEditor:EditMessages");
+			xmleGroup.SetPermissions(perms);
+			groupsUpdated++;
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[XMLEditor] Permission migration v2 (EditMessages) done: %1 user group(s) updated", groupsUpdated));
+	}
+
+	// XML Editor EVENTS tab (v3): groups that may edit types also get MenuXMLEditor:EditEvents, once.
+	protected void MigrateXmlEditorPermissionsV3(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/xmleditor_perms_v3.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			return;
+		}
+
+		int groupsUpdated = 0;
+		foreach (UserGroup xmleGroup : m_UserGroups)
+		{
+			if (!xmleGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = xmleGroup.GetPermissions();
+			if (!perms || perms.Find("MenuXMLEditor:EditTypes") < 0 || perms.Find("MenuXMLEditor:EditEvents") >= 0)
+			{
+				continue;
+			}
+
+			perms.Insert("MenuXMLEditor:EditEvents");
+			xmleGroup.SetPermissions(perms);
+			groupsUpdated++;
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[XMLEditor] Permission migration v3 (EditEvents) done: %1 user group(s) updated", groupsUpdated));
+	}
+
+	// XML Editor SPAWNABLES tab (v4): groups that may edit types also get MenuXMLEditor:EditSpawnables, once.
+	protected void MigrateXmlEditorPermissionsV4(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/xmleditor_perms_v4.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			return;
+		}
+
+		int groupsUpdated = 0;
+		foreach (UserGroup xmleGroup : m_UserGroups)
+		{
+			if (!xmleGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = xmleGroup.GetPermissions();
+			if (!perms || perms.Find("MenuXMLEditor:EditTypes") < 0 || perms.Find("MenuXMLEditor:EditSpawnables") >= 0)
+			{
+				continue;
+			}
+
+			perms.Insert("MenuXMLEditor:EditSpawnables");
+			xmleGroup.SetPermissions(perms);
+			groupsUpdated++;
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[XMLEditor] Permission migration v4 (EditSpawnables) done: %1 user group(s) updated", groupsUpdated));
+	}
+
+	// Webhook templates (v1): groups that may edit webhooks also get EditTemplates, TestSend and ViewURL (URLs are
+	// masked for everyone else now), once.
+	protected void MigrateWebhookPermissions(bool groupsTrusted)
+	{
+		string markerPath = "$profile:VPPAdminTools/Permissions/webhooks_perms_v1.txt";
+		if (FileExist(markerPath))
+		{
+			return;
+		}
+
+		if (!groupsTrusted || !m_UserGroups)
+		{
+			return;
+		}
+
+		array<string> added = {"MenuWebHooks:EditTemplates", "MenuWebHooks:TestSend", "MenuWebHooks:ViewURL"};
+		int groupsUpdated = 0;
+		foreach (UserGroup hookGroup : m_UserGroups)
+		{
+			if (!hookGroup)
+			{
+				continue;
+			}
+
+			array<string> perms = hookGroup.GetPermissions();
+			if (!perms || perms.Find("MenuWebHooks:Edit") < 0)
+			{
+				continue;
+			}
+
+			bool changed = false;
+			foreach (string addedPerm : added)
+			{
+				if (perms.Find(addedPerm) < 0)
+				{
+					perms.Insert(addedPerm);
+					changed = true;
+				}
+			}
+
+			if (changed)
+			{
+				hookGroup.SetPermissions(perms);
+				groupsUpdated++;
+			}
+		}
+
+		if (groupsUpdated > 0)
+		{
+			Save();
+		}
+
+		FileHandle marker = OpenFile(markerPath, FileMode.WRITE);
+		if (marker != 0)
+		{
+			FPrint(marker, "1");
+			CloseFile(marker);
+		}
+
+		GetSimpleLogger().Log(string.Format("[WebHooksManager] Permission migration v1 (EditTemplates, TestSend, ViewURL) done: %1 user group(s) updated", groupsUpdated));
+	}
+
 	private void LoadCredentials()
 	{
 		string path = "$profile:VPPAdminTools/Permissions/credentials.txt";

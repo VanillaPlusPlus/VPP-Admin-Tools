@@ -10,7 +10,8 @@ class RefuelVehicleChatModule extends ChatCommand
         string callerID   = caller.VPlayerGetSteamId();
         string callerName = caller.VPlayerGetName();
     
-    	Car vehicle = Car.Cast(caller.GetCommand_Vehicle().GetTransport());
+    	//any Transport: cars, boats and motorbikes
+    	Transport vehicle = caller.GetCommand_Vehicle().GetTransport();
     	EntityAI carEntity = vehicle;
     	if ( vehicle == NULL || carEntity == NULL)
     		return;
@@ -19,7 +20,7 @@ class RefuelVehicleChatModule extends ChatCommand
 		dBodyApplyImpulse(carEntity, vector.Up);
 		carEntity.SetHealthMax("", "Health");
 		carEntity.SetHealthMax();
-		CarScript.Cast(vehicle).RefillAllLiquids();
+		VPPVehicleUtils.RefillAllFluids(vehicle);
 
 		string childClass;
 		string cfgPath = CFG_VEHICLESPATH + " " + vehicle.GetType() + " attachments";
@@ -71,12 +72,10 @@ class RefuelVehicleChatModule extends ChatCommand
 			EntityAI attachment = vehicle.GetInventory().FindAttachment(slotId);
 			if (!attachment)
 			{
-				string typeName = VPPATInventorySlots.SlotsItems[carSlot].GetRandomElement();
-				typeName.ToLower();
-				if (typeName.Contains("_ruined"))
-					typeName = VPPATInventorySlots.SlotsItems[carSlot][0];
-
-				vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
+				//slots the game has no item for (possible on boats / motorbikes / modded vehicles) are skipped
+				string typeName = VPPVehicleUtils.PartForSlot(carSlot);
+				if (typeName != "")
+					vehicle.GetInventory().CreateAttachmentEx(typeName, slotId);
 			}
 			else
 			{

@@ -35,6 +35,7 @@ Layout colors are `R G B A` floats (0-1). Script colors are `ARGB(a, r, g, b)` i
 | `warning-yellow`   | #D9B23D | `0.851 0.698 0.239 1`         | `ARGB(255, 217, 178, 61)`  | Mid vitals, warnings |
 | `danger-red`       | #C24545 | `0.761 0.271 0.271 1`         | `ARGB(255, 194, 69, 69)`   | Low vitals, destructive accents |
 | `danger-button`    | #5E1F1F | `0.369 0.122 0.122 1`         | `ARGB(255, 94, 31, 31)`    | Kick/Ban button fill |
+| `accent-indigo`    | #4746B4 | `0.278 0.275 0.706 1`         | `ARGB(255, 71, 70, 180)`   | Context menu focused row |
 
 ### Text
 
@@ -311,3 +312,156 @@ To change the look of every button/input/panel at once: edit the color constants
   (`ButtonNO`/`ButtonCANCEL`/`ButtonPaste`) = `VPPButtonGhost`, labels 16 bold. Never rename
   the script-bound widgets (`TitleText`, `ContentText`, `InputBox`, `BorderOutline`, the five
   `Button*`) or drop their scriptclasses.
+
+### Context menu
+
+The right-click context action menu (`5_Mission/.../GUI/UIHelpers/ContextMenu/`, layouts in
+`GUI/Layouts/UIHelpers/ContextMenu/`). Metrics live in `VPPContextMenuStyle`.
+
+- **Metrics**: width 280, header strip 26, rows 30 with a 2 px gap, separators 9, footer 20,
+  4 px padding, at most 14 visible items (more scroll in a window with a 3 px thumb).
+  Created once at workspace root with `SetSort(1024)` - above the admin HUD, Stats HUD and
+  notifications, and never inside a scroller.
+- **Focus** = `accent-indigo` row background; idle rows `bg-row`; danger rows tint label + icon
+  `danger-red` while not focused.
+- **Confirm-armed** = `danger-red` row background. The label is KEPT (the admin always sees which
+  action is armed) and `#VSTR_CTX_CONFIRM_AGAIN` ("Click again") shows in the hint slot.
+- **Toggle rows** use the `vpp_ui` check sprites (`vpp_check_on` / `vpp_check_off`).
+- **Chevrons** are `chevron_down` rotated with `SetRotation(0, 0, +-90)` (sign constants in
+  `VPPContextMenuStyle`, flip if wrong in game).
+- **Drill-down pages**: a submenu replaces the panel content and gets a Back row; no cascading flyouts.
+- **Clip frames**: labels and hints sit in `clipchildren 1` frames; hints are truncated to
+  18 characters (16 + ".."), so long translations never overlap.
+- **DELIBERATE DEVIATION from the reference image**: the header strip shows the target name and
+  icon. It is needed in look-mode (crosshair, no cursor) to know what the menu acts on. Do not remove it.
+- **Third-party rules** (full list A1-A9 in the context menu contract / `4_World/.../ContextMenu/Examples`):
+  1. Actions are stateless singletons; register server-logic actions from 4_World so client and server both know the id (unknown ids fail as INVALID).
+  2. Provider rows should reference a REGISTERED action (`GetVPPContextActionManager().GetAction(id)`); a row runs server-side only if `IsTargetType` holds for the server-resolved target.
+  3. Never `AddRPC` on `RPC_VPPContextMenu` / `RPC_VPPContextMenuClient` (CF AddRPC is last-wins); use your own namespace. `CallbackInst` is weak and must outlive the open menu.
+  4. Guard integration code with `#ifdef VPPADMINTOOLS` and add `requiredAddons "DZM_VPPAdminTools"`.
+  5. New permissions are not granted to existing groups (admins grant them in the Permissions Editor); if `AutoRegisterPermission()` returns false, register the string yourself with `AddPermissionType`.
+
+### XML Editor
+
+The reworked XML Editor (`5_Mission/.../SubMenus/MenuXMLEditor/`, layouts in `GUI/Layouts/XMLEditorUI/`,
+contract in the XML Editor INTERFACES v2.1). It follows the content-dominant layout: a slim rail on the left,
+one big surface on the right, and the controls in narrow strips.
+
+- **Tab-host pattern**: `MenuXMLEditor.layout` holds four empty frames (`TabHostTypes`, `TabHostMap`,
+  `TabHostBackups`, `TabHostFiles`). Every tab is its own layout (`VPPATUIConstants.XMLEditor*Tab`), created
+  into its host by a `ScriptedWidgetEventHandler` class that takes `(Widget host, MenuXMLEditor owner)`.
+  A tab sets its root handler to itself, returns `false` from `OnMouseButtonDown` (so the window can
+  still be dragged), registers its own server-to-client receivers, and exposes `Show`, `OnResize`,
+  `OnUpdate(float)`, `OnSessionChanged` and `Refresh`. The shell only forwards. The header `BtnRefresh`
+  calls `Refresh()` on the active tab. Tabs are sized to their translated labels, and the rail shows on
+  TYPES and MAP only.
+- **Chips** (`XMLEditorChip.layout`: `ChipRoot` ButtonWidget > `ChipFill` + `ChipText`; control
+  `VPPXEChipGroup`, laid out in a WrapSpacer): used for category, usage, value and tag, plus the bulk
+  editor's tri-state lists. There are three modes: radio (exactly one ON), multi (ON/OFF) and tri-state
+  (keep, ADD, REMOVE). The width follows the text: `Math.Clamp(20 + 7 * label.Length(), 56, 220)` px.
+
+  | State | Fill `ARGB()` | Text |
+  |-------|---------------|------|
+  | OFF (idle) | `bg-row` `ARGB(255, 27, 30, 34)` | `text-secondary` |
+  | ON (set in the edited definition) | `accent-orange` `ARGB(255, 232, 163, 61)` | `text-primary` |
+  | MIXED (inherited from an earlier definition, shown but not set here) | `accent-blue` at alpha 150 `ARGB(150, 61, 125, 214)` | `text-primary` |
+  | ADD (bulk) | `positive-green` | `text-primary` |
+  | REMOVE (bulk) | `danger-red` | `text-primary` |
+  | disabled | unchanged fill | `text-muted` |
+
+  Clicking an inherited (MIXED) chip turns it off and writes the inherited list minus that name into the
+  edited definition.
+- **Numeric inputs** (`Input{F}`, scriptclass `VPPXENumericEditHandler`, never `"Use default text"`):
+  the box accepts empty text, a lone `-` while typing, and an optional minus followed by digits inside
+  `SetRange`. Anything else restores the last valid text, and the box never resets to 0. That matters
+  because `quantmin`/`quantmax` -1 must be typeable, and the shared EditBox handler rejects `-`. The mouse
+  wheel steps by `SetStep`, and leaving the box clears focus. Steppers are `[-] [value] [+]`, using 26 px
+  `minus` / `plus` buttons.
+- **Map canvas overlay** (`VPPXEMapTab` + `VPPXEMapRenderer`):
+  - Structure: a `CanvasWidget` (`XeMapCanvas`) is a later sibling of the `MapWidget` (`XeMapWidget`)
+    with `ignorepointer 1` and `priority 101` (the vanilla `day_z_map.layout` tools container
+    precedent). The HUD strip, busy and notice overlays are `ignorepointer 1` as well.
+  - Coordinates: the canvas draws in its own local pixels. Every redraw calibrates world-to-canvas from
+    two `MapToScreen` samples and detects whether the answer is absolute or widget-local.
+  - Levels: `SetData` precomputes 100 m, 500 m and 2 km aggregates per cell layer. A redraw picks the
+    finest level whose cell is at least 6 px on screen, then rebins to 12 px screen bins at that level
+    only.
+  - Throttle: the view is polled every frame, but it redraws at most every 100 ms while the view changes,
+    plus one final redraw 150 ms after it settles. A redraw draws at most 6000 lines (heat stops at 4000
+    so markers and circles still fit).
+  - Styling: the heat ramp is `accent-blue`, `warning-yellow`, `accent-orange` and `danger-red` at
+    alpha 140; clusters use a green ramp. Markers are 6 px squares, drawn only when fewer than 600 are
+    visible. Infected zones are 32-segment circles.
+  - Pins fallback: `BtnRenderMode` (`flame`) switches to `AddUserMark` pins for the top 300 candidates.
+  - Gestures: click shows the hit in the HUD, and double-click teleports.
+  - Dialogs: the map and the canvas are hidden while any dialog is open (a map draws over popups).
+- **OpenConfirm with a weak dialog handle**: every confirmation goes through `MenuXMLEditor.OpenConfirm(title,
+  body, diagType, cbInst, cbFunc, allowChars)`.
+  - The shell keeps a WEAK `VPPDialogBox` reference, hides the map, and forwards the result as
+    `void cbFunc(int result, string input)`. `VPPDialogBox` calls back with one int for YES/NO/CANCEL
+    and with `Param2` for input OK, so the forwarder always uses `CallFunctionParams` with a `Param2`.
+  - `IsDialogOpen()` means the handle is not null.
+  - `OnMenuShow`, `ShowTab` and `OnUpdate` restore the map when the handle became null without a
+    callback (the dialog was closed some other way).
+  - The dialog buttons are literally `YES`/`NO`, so translated bodies name them unchanged.
+- **Dropdown z-order rule** (extends the Dropdowns convention above): `VPPDropDownMenu` creates its popup
+  INSIDE the host (`DropDownMenu.c:20`), and widgets draw in tree order. So every later sibling of the
+  host, or of any of its ancestors, draws over the open popup.
+  1. The hosts of one parent form the trailing sibling group. A host whose popup can cover another host
+     comes after it (`FilterHost` before `FileScopeHost`).
+  2. From the host's parent up to (not including) its drop container, every widget is the LAST child of
+     its own parent. The drop container is the smallest ancestor whose rect holds the whole open popup.
+  3. `clipchildren 0` is set on the host and on every widget of that chain.
+
+  Drop containers: `FileScopeHost`/`FilterHost` use `PanelRail`, `DefSelectHost`/`MoveTargetHost` use
+  `InspectorRoot`, `DrawerModeHost` uses `MapDrawer`, `BackupsFileHost` uses `BackupsLeft`, and
+  `IssuesSeverityHost` uses `FilesRight`. A strip that must sit at the TOP but hold a host is placed by
+  offset and kept last in the tree (`InspHeader` is the last child of `InspectorRoot`, `IssuesToolbar`
+  the last child of `FilesRight`). `tools/verify_xml_editor.py` check 9 enforces all three parts.
+- **Width budgets** (checked at 1280x720, 1366x768 and 1920x1080; 7 px per character at 12 px bold):
+  - Window and rail: the window is 0.70 of the screen width (896 / 956 / 1344 px). The rail is 0.28
+    (251 / 268 / 376 px). The content next to the rail is about 645 / 688 / 968 px.
+  - Rail footer (56 px): `TxtRowCount` sits on its own 18 px line (`ROWCOUNT` / `ROWS_CAPPED`, at most
+    16 characters without the `%N` placeholders), above `BtnAddType` and `BtnBulkEdit`. Those two are
+    sized to their text: `Math.Clamp(36 + 7 * Tr(label).Length(), 56, 122)` px. `BTN_ADD` and
+    `BTN_BULK` are at most 12 characters.
+  - Map toolbar row 1 (30 px): `TxtMapType` 0.34, five 44 px tier chips, three 26 px ghost buttons and an
+    info icon. `TIER_*` labels are at most 4 characters (T1..T4, U = unique).
+  - Map toolbar row 2 (28 px): 7 layer chips at 1/7 of the width. A chip shows its count only when name
+    plus count fit. `LAYER_*` labels are at most 12 characters.
+  - Map drawer (0.30 of the map area): `DrawerActions` is a 3-row grid of 26 px rows with 4 px gaps:
+    TELEPORT | NEXT, then SCAN LIVE (full width), then DELETE | DELETE ALL. A half-width button hides
+    its icon when `22 + 7 * label length` exceeds its width. `MAP_TP`, `MAP_NEXT`, `MAP_DEL_SEL` and
+    `MAP_DEL_ALL` are at most 10 characters, and `MAP_LIVESCAN` at most 18.
+  - Inspector header (44 px): the 40 px preview card, then the name (18 bold) over `Editing in <file>`
+    (12). On the right sit `DefSelectHost` (180 x 24 exact; `MoveTargetHost` shares the rect) and four
+    26 px icon buttons. Dropdown entries are fitted into 21 characters, keeping the status word.
+  - Backups list: the When column shows `MM-DD HH:MM`, and the full stamp stays in `TxtBkMeta`.
+
+  `tools/_append_xmle_strings.py` and verifier check 7 enforce every cap in all 13 languages.
+- **Icon map (XML Editor)**:
+
+  | Purpose | Sprite |
+  |---------|--------|
+  | Window / TYPES tab / empty inspector | `file_code` |
+  | MAP tab | `map` |
+  | BACKUPS tab / backups header | `history` |
+  | FILES tab / files header | `file_text` |
+  | Rail toggle, rail header, drawer toggle, diff header | `list` |
+  | Search | `search` |
+  | Help and info icons (tooltips only here) | `info` |
+  | Refresh (header, map, issues) | `refresh_cw` |
+  | Close | `x` |
+  | Add type, stepper + | `plus` |
+  | Stepper - | `minus` |
+  | Bulk edit | `boxes` |
+  | Duplicate / move / rename / delete type | `copy` / `move` / `square_pen` / `trash_2` (danger-red) |
+  | Revert type / restore backup | `rotate_ccw` |
+  | Save | `save` |
+  | Section chevrons | `chevron_up` / `chevron_down` |
+  | Render mode heat / pins | `flame` / `map_pin` |
+  | Teleport to selection | `locate_fixed` |
+  | Next instance | `crosshair` |
+  | Live scan | `activity` |
+  | Delete live selection / delete all live | `trash_2` / `package_x` |
+  | Snapshot / pin backup | `folder_plus` / `pin` |
