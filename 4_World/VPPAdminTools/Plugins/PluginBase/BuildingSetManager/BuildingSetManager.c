@@ -1,11 +1,16 @@
 class BuildingSetManager : ConfigurablePlugin
 {
    private ref array<ref BuildingSet> m_BuildingSets;
+	// where every set file is (DayZ 1.30 broke FindFile, so the folder can no longer be listed): VPPBuildingSetJournal
+	[NonSerialized()]
+	protected ref VPPBuildingSetJournal m_Journal;
 
    void BuildingSetManager()
    {
       JSONPATH = "$profile:VPPAdminTools/ConfigurablePlugins/BuildingSetManager/";
       m_BuildingSets = new array<ref BuildingSet>;
+		m_Journal = new VPPBuildingSetJournal();
+		m_Journal.SetFolder(JSONPATH);
 
       /* RPCs */
       GetRPCManager().AddRPC("RPC_BuildingSetManager", "GetBuildingSets", this, SingleplayerExecutionType.Server);
@@ -24,51 +29,111 @@ class BuildingSetManager : ConfigurablePlugin
 		Load();
    }
 	
-   override void Load()
-   {
-      array<string> paths = new array<string>;
-      GetFilePaths(paths);
+	// Loads the sets listed in the journal (server only). Sets added by hand come from BuildingSetImport.txt or the
+	// capped folder scan; a listed file that is gone or unreadable is dropped from the journal and logged.
+	override void Load()
+	{
+		if (!GetGame().IsServer())
+		{
+			return;
+		}
 
-      if(paths.Count() == 0)
-      {
-         MakeDirectory(JSONPATH);
-         return;
-      }
+		if (!FileExist(JSONPATH))
+		{
+			MakeDirectory(JSONPATH);
+		}
 
-      BuildingSet bSet;
-
-      foreach(string path : paths)
-      {
-         bSet = null;
-		
-         if(FileExist(path))
-         {
-			FileSerializer file = new FileSerializer();
-			if (file.Open(path, FileMode.READ))
+		bool hadJournal = m_Journal.Load();
+		m_Journal.WriteImportHelper();
+		int imported = m_Journal.ImportList();
+		int scanned = m_Journal.ScanForSets();
+		int loaded = 0;
+		int dropped = 0;
+		array<string> paths = new array<string>();
+		m_Journal.GetPaths(paths);
+		foreach (string path : paths)
+		{
+			BuildingSet bSet = ReadSetFile(path);
+			if (!bSet)
 			{
-			    file.Read(bSet);
-			    file.Close();
-				if(bSet)
+				string reason = "unreadable";
+				if (!FileExist(path))
 				{
-					if(m_BuildingSets.Find(bSet) < 0)
-					{
-						m_BuildingSets.Insert(bSet);
-					}
+					reason = "missing";
 				}
+
+				m_Journal.Remove(path, reason);
+				GetSimpleLogger().Log("[BuildingSetManager] Building set file " + reason + ", removed from the journal: " + path);
+				dropped++;
+				continue;
 			}
-         }
-      }
-      SpawnActiveBuildings();
-   }
+
+			string setName = bSet.GetName();
+			if (GetBuildingSetByName(setName))
+			{
+				GetSimpleLogger().Log("[BuildingSetManager] Skipped " + path + ": a set named " + setName + " is already loaded");
+				continue;
+			}
+
+			m_BuildingSets.Insert(bSet);
+			m_Journal.Put(setName, path, "");
+			loaded++;
+		}
+
+		if (!hadJournal || m_Journal.IsDirty())
+		{
+			m_Journal.Save();
+		}
+
+		string summary = "[BuildingSetManager] Journal: " + loaded.ToString() + " set(s) loaded, " + imported.ToString() + " imported, " + scanned.ToString() + " found by the folder scan, " + dropped.ToString() + " dropped";
+		GetSimpleLogger().Log(summary);
+		Print(summary);
+		if (!hadJournal && loaded == 0)
+		{
+			string hint = "[BuildingSetManager] No building sets found. Sets saved before this update can not be listed while DayZ FindFile is broken: run " + JSONPATH + VPPBuildingSetJournal.HELPER_NAME + " on the server machine (or write the set names, one per line, into " + VPPBuildingSetJournal.IMPORT_NAME + ") and restart.";
+			GetSimpleLogger().Log(hint);
+			Print(hint);
+		}
+
+		SpawnActiveBuildings();
+	}
+
+	// One set file (null when it is missing or cannot be read).
+	protected BuildingSet ReadSetFile(string path)
+	{
+		BuildingSet bSet = null;
+		if (!FileExist(path))
+		{
+			return null;
+		}
+
+		FileSerializer file = new FileSerializer();
+		if (!file.Open(path, FileMode.READ))
+		{
+			return null;
+		}
+
+		file.Read(bSet);
+		file.Close();
+		return bSet;
+	}
 
 	void SaveBuildingSet(BuildingSet bSet)
 	{
+		if (!bSet)
+		{
+			return;
+		}
+
 		FileSerializer file = new FileSerializer();
-		string path = JSONPATH + bSet.GetName() + ".vpp";
+		string setName = bSet.GetName();
+		string path = m_Journal.PathFor(setName);
 		if (file.Open(path, FileMode.WRITE))
 		{
 		    file.Write(bSet);
 		    file.Close();
+			m_Journal.Put(setName, path, "save");
+			m_Journal.SaveIfDirty();
 			GetSimpleLogger().Log("[BuildingSetManager] Saved: " + path);
 			return;
 		}
@@ -84,9 +149,12 @@ class BuildingSetManager : ConfigurablePlugin
 	//use only when you edit an exisitng building set name (to delete old set file)
 	void DeleteSavedFile(string fileName)
 	{
-		if (FileExist(JSONPATH + fileName + ".vpp"))
+		string path = m_Journal.PathFor(fileName);
+		m_Journal.Remove(path, "rename");
+		m_Journal.SaveIfDirty();
+		if (FileExist(path))
 		{
-			DeleteFile(JSONPATH + fileName + ".vpp");
+			DeleteFile(path);
 			GetSimpleLogger().Log("[BuildingSetManager] Deleted file: "+ fileName);
 			return;
 		}
@@ -339,7 +407,10 @@ class BuildingSetManager : ConfigurablePlugin
 
       if(bSet)
       {
-         DeleteFile(JSONPATH + bSet.GetName() + ".vpp");
+			string path = m_Journal.PathFor(bSet.GetName());
+			DeleteFile(path);
+			m_Journal.Remove(path, "delete");
+			m_Journal.SaveIfDirty();
          m_BuildingSets.RemoveItem(bSet);
          delete bSet;
       }
