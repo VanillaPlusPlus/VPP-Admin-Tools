@@ -26,10 +26,6 @@ class VPPChangelogContent : Managed
 	void Build(VPPChangelogBuilder b)
 	{
 		b.Section("1.7", "2026-09-29");
-		b.Changed("{orange}Building sets{/}: DayZ 1.30 broke listing the files of a folder, so the server could no longer find saved building sets. It now keeps its own list of every set it saves (BuildingSetJournal.json in the building sets folder) and loads the sets from that list.");
-		b.Bullet("{yellow}Action needed once after updating: building sets saved before this update are not loaded until you import them.{/}");
-		b.Bullet("{yellow}On the server, open your profile folder, then VPPAdminTools / ConfigurablePlugins / BuildingSetManager. Run ImportBuildingSets.bat there (the server writes it on its first start with this update), then restart the server.{/}");
-		b.Bullet("Not on Windows or can't execute batch script? Write the set names into BuildingSetImport.txt in the same folder instead, one per line, and restart. Sets created or saved from now on are added to the list automatically.");
 		b.Added("{orange}XML Editor rebuilt{/}: edit the Central Economy files in game. Every save makes a backup first and only changes the lines you edited, so comments and formatting stay as they were.");
 		b.Bullet("{orange}TYPES{/}: search and filters, an inspector with a 3D preview, bulk edits, and add, rename, duplicate, move or delete. A filter lists game items that are in no types file yet, ready to register.");
 		b.Bullet("{orange}MAP{/}: see where a type can spawn (buildings, event wrecks, trees, infected) as a heat map or pins. Live scan shows what is on the server right now, and its teleport takes you to the exact spot of the item, upper floors included.");
@@ -54,6 +50,7 @@ class VPPChangelogContent : Managed
 		b.Fixed("Notifications could get stuck on screen when many arrived at once.");
 		b.Fixed("The admin free camera clashed with the new motorbike camera of DayZ 1.30.");
 		b.Fixed("A crash when quitting the game or stopping the server after using the free camera.");
+		b.Fixed("{orange}Building sets{/} were no longer found on DayZ 1.30, which broke listing the files of a folder. They load again with Community Framework's fix, and the server also keeps a list of every set it saves (BuildingSetJournal.json in the building sets folder) so they keep loading either way.");
 		b.Gap();
 		b.Section("1.6", "2026-09-23");
 		b.Added("{orange}Context Action Menu{/}: right-click players, items, weapons, vehicles and creatures to act on them directly.");

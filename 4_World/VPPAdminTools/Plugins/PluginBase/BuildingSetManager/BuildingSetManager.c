@@ -1,7 +1,7 @@
 class BuildingSetManager : ConfigurablePlugin
 {
    private ref array<ref BuildingSet> m_BuildingSets;
-	// where every set file is (DayZ 1.30 broke FindFile, so the folder can no longer be listed): VPPBuildingSetJournal
+	// where every set file is (journal + CF.FindFileEx folder scan, DayZ 1.30 FindFile workaround): VPPBuildingSetJournal
 	[NonSerialized()]
 	protected ref VPPBuildingSetJournal m_Journal;
 
@@ -29,8 +29,8 @@ class BuildingSetManager : ConfigurablePlugin
 		Load();
    }
 	
-	// Loads the sets listed in the journal (server only). Sets added by hand come from BuildingSetImport.txt or the
-	// capped folder scan; a listed file that is gone or unreadable is dropped from the journal and logged.
+	// Loads the sets listed in the journal plus any *.vpp the folder scan finds (CF.FindFileEx; server only). A listed
+	// file that is gone or unreadable is dropped from the journal and logged.
 	override void Load()
 	{
 		if (!GetGame().IsServer())
@@ -44,8 +44,6 @@ class BuildingSetManager : ConfigurablePlugin
 		}
 
 		bool hadJournal = m_Journal.Load();
-		m_Journal.WriteImportHelper();
-		int imported = m_Journal.ImportList();
 		int scanned = m_Journal.ScanForSets();
 		int loaded = 0;
 		int dropped = 0;
@@ -85,16 +83,9 @@ class BuildingSetManager : ConfigurablePlugin
 			m_Journal.Save();
 		}
 
-		string summary = "[BuildingSetManager] Journal: " + loaded.ToString() + " set(s) loaded, " + imported.ToString() + " imported, " + scanned.ToString() + " found by the folder scan, " + dropped.ToString() + " dropped";
+		string summary = "[BuildingSetManager] Journal: " + loaded.ToString() + " set(s) loaded, " + scanned.ToString() + " found by the folder scan, " + dropped.ToString() + " dropped";
 		GetSimpleLogger().Log(summary);
 		Print(summary);
-		if (!hadJournal && loaded == 0)
-		{
-			string hint = "[BuildingSetManager] No building sets found. Sets saved before this update can not be listed while DayZ FindFile is broken: run " + JSONPATH + VPPBuildingSetJournal.HELPER_NAME + " on the server machine (or write the set names, one per line, into " + VPPBuildingSetJournal.IMPORT_NAME + ") and restart.";
-			GetSimpleLogger().Log(hint);
-			Print(hint);
-		}
-
 		SpawnActiveBuildings();
 	}
 
