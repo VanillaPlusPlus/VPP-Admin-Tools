@@ -8,6 +8,20 @@ class VPPESPTools extends PluginBase
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "RetriveCodeFromObj", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "ToggleMeshESP", this, SingeplayerExecutionType.Server );
 		GetRPCManager().AddRPC( "RPC_VPPESPTools", "BringReturnObj", this, SingeplayerExecutionType.Server );
+		GetRPCManager().AddRPC( "RPC_VPPESPTools", "GetAdminIds", this, SingeplayerExecutionType.Server );
+	}
+
+	//Send the list of superadmin/usergroup steam64 ids so the ESP can highlight admins
+	void GetAdminIds(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type == CallType.Server && sender != null)
+		{
+			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(), "EspToolsMenu", "", false))
+				return;
+
+			array<string> ids = GetPermissionManager().GetAllAdminIds();
+			GetRPCManager().VSendRPC("RPC_VPPESPTools", "HandleAdminIds", new Param1<ref array<string>>(ids), true, sender);
+		}
 	}
 	
 	void BringReturnObj(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
