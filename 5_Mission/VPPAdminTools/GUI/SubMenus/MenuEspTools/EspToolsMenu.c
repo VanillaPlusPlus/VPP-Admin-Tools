@@ -20,6 +20,17 @@ class EspToolsMenu extends AdminHudSubMenu
 	private CheckBoxWidget   m_chkSelectAll; //Filter checkbox
 	CheckBoxWidget   		  m_ChkShowClassName;
 	CheckBoxWidget 			 m_ChkShowDeadPlayers;
+	CheckBoxWidget 			 m_ChkShowLookArrow;
+	private ButtonWidget	 m_BtnArrowColor;
+	private SliderWidget	 m_SliderArrowSize;
+	private bool			 m_PickingArrowColor;
+	private ref map<string,bool> m_AdminIds; //steam64 -> true, for gold admin names
+
+	//look-direction arrow settings (read by VPPESPTracker every frame)
+	static bool  s_ShowLookArrow = true;
+	static bool  s_EspActive     = false; //mirrors M_SCAN_ACTIVE for the canvas look-arrow pass
+	static int   s_ArrowColor    = ARGB(255, 0, 170, 255);
+	static float s_ArrowSize     = 1.0;
 	private int                 m_UpdateIntervalSeconds = 1;
 	private ref VPPDropDownMenu  m_IntervalDropDown;
 	private ref array<int>       m_IntervalPresets;
@@ -52,6 +63,9 @@ class EspToolsMenu extends AdminHudSubMenu
 
 		m_IntervalPresets = {1, 2, 3, 5, 10, 30};
 		m_IntervalLabels  = {"1s", "2s", "3s", "5s", "10s", "30s"};
+
+		m_AdminIds = new map<string,bool>;
+		GetRPCManager().AddRPC("RPC_VPPESPTools", "HandleAdminIds", this, SingeplayerExecutionType.Client);
 	}
 
 	void ~EspToolsMenu()
@@ -97,6 +111,11 @@ class EspToolsMenu extends AdminHudSubMenu
 		m_chkSelectAll = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSelectAll"));
 		m_ChkShowClassName = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowClassName"));
 		m_ChkShowDeadPlayers = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowDeadPlayers"));
+		m_ChkShowLookArrow = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkShowLookArrow"));
+		m_BtnArrowColor    = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnArrowColor"));
+		m_SliderArrowSize  = SliderWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SliderArrowSize"));
+		LoadArrowSettings();
+		RequestAdminIds();
 		//update-interval preset dropdown (replaces the old edit box)
 		m_IntervalDropDown = new VPPDropDownMenu(M_SUB_WIDGET.FindAnyWidget("IntervalDropDownPanel"), m_IntervalLabels[0]);
 		foreach (string ivLabel : m_IntervalLabels)
@@ -182,6 +201,16 @@ class EspToolsMenu extends AdminHudSubMenu
 
 	void OnColorPicked(int index)
 	{
+		if (m_PickingArrowColor)
+		{
+			s_ArrowColor = VPPFilterEntry.ColorFromIndex(index);
+			if (m_BtnArrowColor)
+				m_BtnArrowColor.SetColor(s_ArrowColor);
+			SaveArrowSettings();
+			CloseColorPicker();
+			return;
+		}
+
 		if (m_ActiveColorFilter)
 		{
 			m_ActiveColorFilter.ApplyColorIndex(index);
@@ -195,6 +224,64 @@ class EspToolsMenu extends AdminHudSubMenu
 		if (m_ColorPickerPopup)
 			m_ColorPickerPopup.Show(false);
 		m_ActiveColorFilter = null;
+		m_PickingArrowColor = false;
+	}
+
+	//---- look-direction arrow settings ----
+	void LoadArrowSettings()
+	{
+		string val;
+		if (GetGame().GetProfileString("vppat_esp_arrowon", val) && val != "")
+			s_ShowLookArrow = (val == "1");
+		if (GetGame().GetProfileString("vppat_esp_arrowclr", val) && val != "")
+			s_ArrowColor = val.ToInt();
+		if (GetGame().GetProfileString("vppat_esp_arrowsize", val) && val != "")
+			s_ArrowSize = val.ToFloat();
+
+		if (m_ChkShowLookArrow)
+			m_ChkShowLookArrow.SetChecked(s_ShowLookArrow);
+		if (m_BtnArrowColor)
+			m_BtnArrowColor.SetColor(s_ArrowColor);
+		if (m_SliderArrowSize)
+			m_SliderArrowSize.SetCurrent(Math.Clamp(((s_ArrowSize - 0.4) / 1.6) * 100, 0, 100));
+	}
+
+	void SaveArrowSettings()
+	{
+		string chk = "0";
+		if (s_ShowLookArrow)
+			chk = "1";
+		GetGame().SetProfileString("vppat_esp_arrowon", chk);
+		GetGame().SetProfileString("vppat_esp_arrowclr", s_ArrowColor.ToString());
+		GetGame().SetProfileString("vppat_esp_arrowsize", s_ArrowSize.ToString());
+	}
+
+	void SyncArrowSettings()
+	{
+		if (m_ChkShowLookArrow)
+			s_ShowLookArrow = m_ChkShowLookArrow.IsChecked();
+		if (m_SliderArrowSize)
+			s_ArrowSize = 0.4 + ((m_SliderArrowSize.GetCurrent() / 100) * 1.6);
+	}
+
+	//---- admin highlight (gold names) ----
+	void RequestAdminIds()
+	{
+		GetRPCManager().VSendRPC("RPC_VPPESPTools", "GetAdminIds", new Param1<bool>(true), true);
+	}
+
+	void HandleAdminIds(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+	{
+		if (type != CallType.Client)
+			return;
+
+		Param1<ref array<string>> data;
+		if (!ctx.Read(data) || !data.param1)
+			return;
+
+		m_AdminIds.Clear();
+		foreach(string id : data.param1)
+			m_AdminIds.Set(id, true);
 	}
 
 	//update-interval preset dropdown selection
@@ -220,6 +307,8 @@ class EspToolsMenu extends AdminHudSubMenu
 			
 			if (M_SCAN_ACTIVE)
 			{
+				SyncArrowSettings();
+
 				vector startPos = GetGame().GetPlayer().GetPosition();
 				if (IsFreeCamActive())
 					startPos = VPPGetCurrentCameraPosition();
@@ -448,7 +537,22 @@ class EspToolsMenu extends AdminHudSubMenu
 							}
 						}
 					}
-					m_EspTrackers.Insert(man, new VPPESPTracker(pName, man, survivorFilter.m_Props.color));
+
+					//gold name for admins/superadmins
+					int trackerColor = survivorFilter.m_Props.color;
+					if (m_AdminIds.Count() > 0)
+					{
+						foreach(SyncPlayer adminChk : data)
+						{
+							if (adminChk && adminChk.m_PlayerName == pName && m_AdminIds.Contains(adminChk.m_UID))
+							{
+								trackerColor = ARGB(255, 255, 170, 0);
+								pName = "[A] " + pName;
+								break;
+							}
+						}
+					}
+					m_EspTrackers.Insert(man, new VPPESPTracker(pName, man, trackerColor));
 				}
 			}
 		}
@@ -483,9 +587,11 @@ class EspToolsMenu extends AdminHudSubMenu
 			m_btnToggle.SetColor(ARGB(255,255,0,0));
 			m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
 			M_SCAN_ACTIVE = false;
+			s_EspActive = false;
 			ClearTrackers();
 		}else{
 			M_SCAN_ACTIVE = true;
+			s_EspActive = true;
 			m_btnToggle.SetColor(ARGB(255,0,255,0));
 			m_SliderEvent.ChangeColor(ARGB(255,0,255,0));
 			GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
@@ -508,6 +614,23 @@ class EspToolsMenu extends AdminHudSubMenu
 			CloseColorPicker();
 			return true;
 		}
+		if (w == m_BtnArrowColor)
+		{
+			if (m_ColorPickerPopup && m_ColorPickerPopup.IsVisible() && m_PickingArrowColor)
+			{
+				CloseColorPicker();
+				return true;
+			}
+			OpenColorPicker(null, m_BtnArrowColor);
+			m_PickingArrowColor = true;
+			return true;
+		}
+		if (w == m_ChkShowLookArrow)
+		{
+			s_ShowLookArrow = m_ChkShowLookArrow.IsChecked();
+			SaveArrowSettings();
+			return true;
+		}
 
 		switch(w)
 		{
@@ -515,9 +638,11 @@ class EspToolsMenu extends AdminHudSubMenu
 			if (M_SCAN_ACTIVE)
 			{
 				M_SCAN_ACTIVE = false;
+				s_EspActive = false;
 				ClearTrackers();
 			}else{
 				M_SCAN_ACTIVE = true;
+				s_EspActive = true;
 				GetRPCManager().VSendRPC( "RPC_VPPESPTools", "ToggleESP", null, true, null); //for logging
 			}
 			UpdateToggleVisual();
@@ -746,6 +871,11 @@ class EspToolsMenu extends AdminHudSubMenu
 			if (m_SliderEvent)
 				m_SliderEvent.ChangeColor(ARGB(255,255,0,0));
 		}
+	}
+
+	map<EntityAI, ref VPPESPTracker> GetTrackers()
+	{
+		return m_EspTrackers;
 	}
 
 	void ClearTrackers()
