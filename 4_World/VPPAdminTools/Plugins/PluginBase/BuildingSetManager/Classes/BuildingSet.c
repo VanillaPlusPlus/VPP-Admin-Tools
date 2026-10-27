@@ -6,6 +6,7 @@ class BuildingSet : Managed
    private string m_Name;
    private bool   m_IsActive;
    private ref array<ref SpawnedBuilding> m_Buildings;
+	// runtime / RPC class only: files are VPPBuildingSetFile JSON (see VPPBuildingSetStore)
 
    void BuildingSet(string name, bool isAlive = false)
    {
@@ -142,7 +143,7 @@ class BuildingSet : Managed
 		m_FileHandle = OpenFile("$profile:VPPAdminTools/Exports/"+m_Name+".txt", FileMode.WRITE);
 		if (m_FileHandle == 0) return;
 
-		string function = "void SpawnObject(string objType, vector objPos, vector objOrientation)\n";
+		string function = "void SpawnObject(string objType, vector objPos, vector objOrientation, float objScale = 1.0)\n";
 		function 		+= "{\n";
 		function 		+= "\tObject m_Building = Object.Cast(GetGame().CreateObject(objType, objPos));\n";
 		function 		+= "\tif (m_Building == null) return;\n";
@@ -150,16 +151,26 @@ class BuildingSet : Managed
 		function 		+= "\tGetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().UpdatePathgraphRegionByObject, 100, false, m_Building);\n";
 		function 		+= "\tm_Building.SetPosition(objPos);\n";
 		function 		+= "\tm_Building.SetOrientation(objOrientation);\n";
+		function 		+= "\tif (objScale != 1.0)\n";
+		function 		+= "\t\tm_Building.SetScale(objScale);\n";
 		function 		+= "}\n\n\n";
-		
+
 		FPrintln(m_FileHandle, function);
-		
+
 		foreach(SpawnedBuilding building: m_Buildings)
 		{
-			string format = "SpawnObject( \"" + building.GetTypeName() + "\", \"" + building.GetPosition().ToString(false) + "\", \"" + building.GetOrientation().ToString(false) + "\" );";
+			string format = "SpawnObject( \"" + building.GetTypeName() + "\", \"" + building.GetPosition().ToString(false) + "\", \"" + building.GetOrientation().ToString(false) + "\"";
+			float scale = building.GetScale();
+			if (scale != 1.0)
+			{
+				string scaleText = scale.ToString();
+				format += ", " + scaleText;
+			}
+
+			format += " );";
 			FPrintln(m_FileHandle, format);
 		}
-		
+
 		CloseFile(m_FileHandle);
 	}
 

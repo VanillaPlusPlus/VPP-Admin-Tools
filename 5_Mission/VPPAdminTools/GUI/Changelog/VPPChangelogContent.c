@@ -25,6 +25,21 @@ class VPPChangelogContent : Managed
 {
 	void Build(VPPChangelogBuilder b)
 	{
+		b.Section("1.8", "2026-10-28");
+		b.Added("{orange}Context Action Menu{/}: two new actions.");
+		b.Bullet("{orange}Set scale{/}: type a size from 0.01 to 100 (1 is normal). Works on players, AI, animals, infected, building set objects and the map's own buildings, and lasts until the server restarts.");
+		b.Bullet("{orange}Ragdoll{/}: knocks a player or AI down (the game's unconscious state) and gets them back up when switched off.");
+		b.Added("New permissions {yellow}ContextMenu:SetScale, ContextMenu:Ragdoll{/}. Existing groups do not get them automatically, so grant them in the Permissions Editor.");
+		b.Added("{orange}Object Builder{/}: a Scale field in the attributes window of a placed object. The scale is saved with the set and included by Export to code.");
+		b.Added("{orange}Conform To Terrain{/} in the Object Builder toolbar: while you drag an object it tilts to the slope of the ground under it and keeps its heading.");
+		b.Changed("{orange}Building sets are saved as JSON{/}, one SetName.json per set, so they can be read and edited in a text editor. Old .vpp sets are converted automatically when the server starts and the originals are moved to Backups/BuildingSets in the VPPAdminTools profile folder. Every save keeps the previous file as a .bak.");
+		b.Added("XML Editor TYPES: a highlighted {orange}FIND IN WORLD{/} button opens the map with its side panel and runs a live scan for the type. When nothing is found, the map says so.");
+		b.Changed("XML Editor MAP: a type opens with only the Live layer shown. The other layers are one click away.");
+		b.Fixed("XML Editor MAP: tiers were unavailable for areaflags.map files saved by other editors. The file is now read the way the server reads it, which also makes the tier and usage values on the map more accurate on every map.");
+		b.LinkRow("areaflags.map issue on GitHub", "https://github.com/VanillaPlusPlus/VPP-Admin-Tools/issues/221");
+		b.Fixed("XML Editor panels clipped into each other at resolutions above 1080p.");
+		b.Removed("The outdated note in the XML Editor FILES tab saying that only types files could be edited.");
+		b.Gap();
 		b.Section("1.7", "2026-09-29");
 		b.Added("{orange}XML Editor rebuilt{/}: edit the Central Economy files in game. Every save makes a backup first and only changes the lines you edited, so comments and formatting stay as they were.");
 		b.Bullet("{orange}TYPES{/}: search and filters, an inspector with a 3D preview, bulk edits, and add, rename, duplicate, move or delete. A filter lists game items that are in no types file yet, ready to register.");

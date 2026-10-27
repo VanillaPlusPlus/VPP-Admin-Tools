@@ -161,6 +161,12 @@ class VPPContextUtils
 		return text;
 	}
 
+	//"x1.50"
+	static string FormatScale(float scale)
+	{
+		return "x" + FormatFixed2(scale);
+	}
+
 	//fixed 2-decimal formatting; float.ToString() has no precision argument and drops trailing zeros
 	protected static string FormatFixed2(float value)
 	{

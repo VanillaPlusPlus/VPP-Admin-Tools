@@ -7,13 +7,16 @@
 	BuildingSetJournal.json
 	{
 		"Version": 1,
-		"Sets": [ { "Name": "MyBase", "Path": "$profile:VPPAdminTools/ConfigurablePlugins/BuildingSetManager/MyBase.vpp" } ],
+		"Sets": [ { "Name": "MyBase", "Path": "$profile:VPPAdminTools/ConfigurablePlugins/BuildingSetManager/MyBase.json" } ],
 		"History": [ { "Time": "2026-10-06 12:00:00", "Action": "save", "Name": "MyBase", "Path": "..." } ]
 	}
 
 	Writes go to .tmp first; the previous journal is kept as .bak and is used when the main file cannot be read (an
 	unreadable main file is kept as .corrupt). A "Path" may also be written by hand as a full path, a file name or
 	just the set name.
+
+	Set files are <name>.json (VPPBuildingSetStore); an old binary <name>.vpp is still listed and scanned so the
+	manager can convert it.
 */
 class VPPBuildingSetJournalEntry : Managed
 {
@@ -40,7 +43,6 @@ class VPPBuildingSetJournal : Managed
 	const static int VERSION = 1;
 	const static int HISTORY_MAX = 100;
 	const static string FILE_NAME = "BuildingSetJournal.json";
-	const static string SET_EXT = ".vpp";
 
 	int Version;
 	ref array<ref VPPBuildingSetJournalEntry> Sets;
@@ -84,14 +86,20 @@ class VPPBuildingSetJournal : Managed
 	// The file of a set name, as the manager writes it.
 	string PathFor(string setName)
 	{
-		return m_Dir + setName + SET_EXT;
+		return m_Dir + setName + VPPBuildingSetStore.JSON_EXT;
 	}
 
-	// A hand-written entry made usable: "MyBase", "MyBase.vpp" or a full path ("$profile:..." / "C:/...").
+	// Where an old binary file of that set name would be.
+	string LegacyPathFor(string setName)
+	{
+		return m_Dir + setName + VPPBuildingSetStore.LEGACY_EXT;
+	}
+
+	// A hand-written entry made usable: "MyBase", "MyBase.json", "MyBase.vpp" or a full path ("$profile:..." /
+	// "C:/..."). Without an extension it is the .json, unless only an old .vpp of that name exists.
 	string NormalizePath(string text)
 	{
 		string path = text.Trim();
-		string lower = "";
 		if (path == "")
 		{
 			return "";
@@ -103,14 +111,39 @@ class VPPBuildingSetJournal : Managed
 			path = m_Dir + path;
 		}
 
-		lower = path;
-		lower.ToLower();
-		if (lower.Length() < 4 || lower.Substring(lower.Length() - 4, 4) != SET_EXT)
+		if (VPPBuildingSetStore.HasExtension(path, VPPBuildingSetStore.JSON_EXT) || VPPBuildingSetStore.HasExtension(path, VPPBuildingSetStore.LEGACY_EXT))
 		{
-			path = path + SET_EXT;
+			return path;
 		}
 
-		return path;
+		string jsonPath = path + VPPBuildingSetStore.JSON_EXT;
+		string legacyPath = path + VPPBuildingSetStore.LEGACY_EXT;
+		if (!FileExist(jsonPath) && FileExist(legacyPath))
+		{
+			return legacyPath;
+		}
+
+		return jsonPath;
+	}
+
+	// A file the folder scan may list: <name>.json (not the journal itself) or an old <name>.vpp.
+	protected bool IsSetFileName(string fileName)
+	{
+		string lower = fileName;
+		string journalName = FILE_NAME;
+		lower.ToLower();
+		journalName.ToLower();
+		if (lower == journalName)
+		{
+			return false;
+		}
+
+		if (VPPBuildingSetStore.HasExtension(fileName, VPPBuildingSetStore.JSON_EXT))
+		{
+			return true;
+		}
+
+		return VPPBuildingSetStore.HasExtension(fileName, VPPBuildingSetStore.LEGACY_EXT);
 	}
 
 	protected int IndexOfPath(string path)
@@ -412,14 +445,13 @@ class VPPBuildingSetJournal : Managed
 
 	// ---------------------------------------------------------------- folder scan
 
-	// Every *.vpp in the set folder that the journal does not list yet is added (sets saved before the journal, or
-	// copied in by hand). CF.FindFileEx resolves "$profile:" itself while the engine's FindFile is broken. Capped so
-	// endless or garbage results cannot hang the boot.
+	// Every set file (*.json, old *.vpp) in the set folder that the journal does not list yet is added (sets saved
+	// before the journal, or copied in by hand). CF.FindFileEx resolves "$profile:" itself while the engine's FindFile
+	// is broken. Capped so endless or garbage results cannot hang the boot.
 	int ScanForSets()
 	{
 		string fileName = "";
 		string path = "";
-		string lower = "";
 		FileAttr attributes = 0;
 		int added = 0;
 		int steps = 0;
@@ -429,9 +461,7 @@ class VPPBuildingSetJournal : Managed
 		while (more && steps < 5000)
 		{
 			steps++;
-			lower = fileName;
-			lower.ToLower();
-			if (fileName != "" && attributes != FileAttr.DIRECTORY && lower.Length() > 4 && lower.Substring(lower.Length() - 4, 4) == SET_EXT)
+			if (fileName != "" && attributes != FileAttr.DIRECTORY && IsSetFileName(fileName))
 			{
 				path = m_Dir + fileName;
 				if (!HasPath(path) && FileExist(path))

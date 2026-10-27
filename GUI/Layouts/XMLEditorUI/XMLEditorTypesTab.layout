@@ -2841,7 +2841,7 @@ FrameWidgetClass TypesTabRoot {
         TextWidgetClass TxtTypeName {
          ignorepointer 1
          color 1 1 1 1
-         position 0 26
+         position 0 10
          size 1 22
          hexactpos 1
          vexactpos 1
@@ -2861,7 +2861,7 @@ FrameWidgetClass TypesTabRoot {
         TextWidgetClass TxtTypeSub {
          ignorepointer 1
          color 0.8 0.816 0.831 1
-         position 0 50
+         position 0 34
          size 1 16
          hexactpos 1
          vexactpos 1
@@ -2875,6 +2875,66 @@ FrameWidgetClass TypesTabRoot {
          "exact text size" 12
          "size to text h" 0
          "size to text v" 0
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass BtnFindInWorld {
+       visible 0
+       clipchildren 1
+       ignorepointer 0
+       color 1 1 1 1
+       position 100 58
+       size 140 26
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style VPPButton
+       "no focus" 1
+       {
+        PanelWidgetClass FindInWorldGlow {
+         ignorepointer 1
+         color 0.91 0.639 0.239 1
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style VPPFillRound
+        }
+        ImageWidgetClass ImgFindInWorld {
+         ignorepointer 1
+         color 1 1 1 1
+         position 6 0
+         size 18 18
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:vpp_icons image:crosshair"
+         mode blend
+         "src alpha" 1
+         "stretch mode" stretch_w_h
+         filter 1
+        }
+        TextWidgetClass TxtFindInWorld {
+         ignorepointer 1
+         color 1 1 1 1
+         position 28 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style None
+         text "#VSTR_XMLE_BTN_FIND_IN_WORLD"
+         font "gui/fonts/sdf_MetronLight72"
+         "bold text" 1
+         "exact text" 1
+         "exact text size" 13
          "text valign" center
         }
        }

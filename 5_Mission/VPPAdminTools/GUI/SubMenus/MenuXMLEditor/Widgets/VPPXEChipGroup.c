@@ -115,7 +115,7 @@ class VPPXEChipGroup : Managed
 				}
 
 				int width = Math.Clamp(20 + 7 * label.LengthUtf8(), 56, 220);
-				chipRoot.SetSize(width, 24);
+				VPPXEScale.Size(chipRoot, width, 24);
 				if (handler)
 				{
 					handler.RegisterOnMouseButtonDown(chipRoot, this, "OnChipDown");

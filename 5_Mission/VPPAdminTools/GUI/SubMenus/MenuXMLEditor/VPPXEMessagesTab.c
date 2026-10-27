@@ -2059,8 +2059,8 @@ class VPPXEMessagesTab : ScriptedWidgetEventHandler
 		}
 
 		float hostW = Math.Clamp(m_LeftW * 0.55, 150, 320);
-		m_FileHost.SetPos(m_LeftW - hostW - 4, 2);
-		m_FileHost.SetSize(hostW, 24);
+		VPPXEScale.Pos(m_FileHost, m_LeftW - hostW - 4, 2);
+		VPPXEScale.Size(m_FileHost, hostW, 24);
 		float footerY = m_LeftH - FOOTER_H;
 		float listH = footerY - 32 - 4;
 		if (listH < 40)
@@ -2068,15 +2068,15 @@ class VPPXEMessagesTab : ScriptedWidgetEventHandler
 			listH = 40;
 		}
 
-		m_MsgList.SetPos(6, 32);
-		m_MsgList.SetSize(m_LeftW - 12, listH);
+		VPPXEScale.Pos(m_MsgList, 6, 32);
+		VPPXEScale.Size(m_MsgList, m_LeftW - 12, listH);
 		float buttonW = (m_LeftW - 12 - 12) / 3;
-		m_BtnAdd.SetPos(6, footerY + 3);
-		m_BtnAdd.SetSize(buttonW, 30);
-		m_BtnDup.SetPos(6 + buttonW + 6, footerY + 3);
-		m_BtnDup.SetSize(buttonW, 30);
-		m_BtnDelete.SetPos(6 + 2 * (buttonW + 6), footerY + 3);
-		m_BtnDelete.SetSize(buttonW, 30);
+		VPPXEScale.Pos(m_BtnAdd, 6, footerY + 3);
+		VPPXEScale.Size(m_BtnAdd, buttonW, 30);
+		VPPXEScale.Pos(m_BtnDup, 6 + buttonW + 6, footerY + 3);
+		VPPXEScale.Size(m_BtnDup, buttonW, 30);
+		VPPXEScale.Pos(m_BtnDelete, 6 + 2 * (buttonW + 6), footerY + 3);
+		VPPXEScale.Size(m_BtnDelete, buttonW, 30);
 	}
 
 	// Right: header, the form rows (see the constants), the preview card, the warnings, the action bar at the bottom.
@@ -2089,20 +2089,20 @@ class VPPXEMessagesTab : ScriptedWidgetEventHandler
 
 		float innerW = m_RightW - 20;
 		float formH = m_RightH - 32 - BAR_H - 4;
-		m_Form.SetPos(0, 32);
-		m_Form.SetSize(m_RightW, formH);
-		m_TxtEmpty.SetPos(20, 60);
-		m_TxtEmpty.SetSize(m_RightW - 40, 80);
-		m_TxtWhen.SetPos(10, 0);
-		m_TxtWhen.SetSize(innerW, 20);
+		VPPXEScale.Pos(m_Form, 0, 32);
+		VPPXEScale.Size(m_Form, m_RightW, formH);
+		VPPXEScale.Pos(m_TxtEmpty, 20, 60);
+		VPPXEScale.Size(m_TxtEmpty, m_RightW - 40, 80);
+		VPPXEScale.Pos(m_TxtWhen, 10, 0);
+		VPPXEScale.Size(m_TxtWhen, innerW, 20);
 		float modeW = (innerW - 18) / MODE_COUNT;
 		for (int i = 0; i < m_BtnMode.Count(); i++)
 		{
 			ButtonWidget modeButton = m_BtnMode[i];
 			if (modeButton)
 			{
-				modeButton.SetPos(10 + i * (modeW + 6), 24);
-				modeButton.SetSize(modeW, ROW_H);
+				VPPXEScale.Pos(modeButton, 10 + i * (modeW + 6), 24);
+				VPPXEScale.Size(modeButton, modeW, ROW_H);
 			}
 		}
 
@@ -2118,37 +2118,37 @@ class VPPXEMessagesTab : ScriptedWidgetEventHandler
 			shutdownW = 120;
 		}
 
-		m_BtnShutdown.SetPos(shutdownX, 126);
-		m_BtnShutdown.SetSize(shutdownW, ROW_H);
-		m_LblTime.SetPos(10, 158);
-		m_LblTime.SetSize(LABEL_W, ROW_H);
-		m_InputTime.SetPos(inputX, 158);
-		m_InputTime.SetSize(INPUT_W, ROW_H);
-		m_LblDate.SetPos(unitX + 10, 158);
-		m_LblDate.SetSize(LABEL_W, ROW_H);
-		m_InputDate.SetPos(unitX + 10 + LABEL_W + 4, 158);
-		m_InputDate.SetSize(INPUT_W + 30, ROW_H);
-		m_TxtTextTitle.SetPos(10, 196);
-		m_TxtTextTitle.SetSize(innerW * 0.5, 20);
-		m_TxtBytes.SetPos(10 + innerW * 0.5, 196);
-		m_TxtBytes.SetSize(innerW * 0.5, 20);
-		m_InputText.SetPos(10, 218);
-		m_InputText.SetSize(innerW, ROW_H);
-		m_TxtInsert.SetPos(10, 252);
-		m_TxtInsert.SetSize(80, 26);
-		m_BtnPhName.SetPos(94, 252);
-		m_BtnPhName.SetSize(80, 26);
-		m_BtnPhPort.SetPos(180, 252);
-		m_BtnPhPort.SetSize(80, 26);
-		m_BtnPhTmin.SetPos(266, 252);
-		m_BtnPhTmin.SetSize(80, 26);
-		m_TxtPreviewTitle.SetPos(10, 288);
-		m_TxtPreviewTitle.SetSize(innerW, 20);
+		VPPXEScale.Pos(m_BtnShutdown, shutdownX, 126);
+		VPPXEScale.Size(m_BtnShutdown, shutdownW, ROW_H);
+		VPPXEScale.Pos(m_LblTime, 10, 158);
+		VPPXEScale.Size(m_LblTime, LABEL_W, ROW_H);
+		VPPXEScale.Pos(m_InputTime, inputX, 158);
+		VPPXEScale.Size(m_InputTime, INPUT_W, ROW_H);
+		VPPXEScale.Pos(m_LblDate, unitX + 10, 158);
+		VPPXEScale.Size(m_LblDate, LABEL_W, ROW_H);
+		VPPXEScale.Pos(m_InputDate, unitX + 10 + LABEL_W + 4, 158);
+		VPPXEScale.Size(m_InputDate, INPUT_W + 30, ROW_H);
+		VPPXEScale.Pos(m_TxtTextTitle, 10, 196);
+		VPPXEScale.Size(m_TxtTextTitle, innerW * 0.5, 20);
+		VPPXEScale.Pos(m_TxtBytes, 10 + innerW * 0.5, 196);
+		VPPXEScale.Size(m_TxtBytes, innerW * 0.5, 20);
+		VPPXEScale.Pos(m_InputText, 10, 218);
+		VPPXEScale.Size(m_InputText, innerW, ROW_H);
+		VPPXEScale.Pos(m_TxtInsert, 10, 252);
+		VPPXEScale.Size(m_TxtInsert, 80, 26);
+		VPPXEScale.Pos(m_BtnPhName, 94, 252);
+		VPPXEScale.Size(m_BtnPhName, 80, 26);
+		VPPXEScale.Pos(m_BtnPhPort, 180, 252);
+		VPPXEScale.Size(m_BtnPhPort, 80, 26);
+		VPPXEScale.Pos(m_BtnPhTmin, 266, 252);
+		VPPXEScale.Size(m_BtnPhTmin, 80, 26);
+		VPPXEScale.Pos(m_TxtPreviewTitle, 10, 288);
+		VPPXEScale.Size(m_TxtPreviewTitle, innerW, 20);
 		float previewH = 110;
-		m_PreviewCard.SetPos(10, 310);
-		m_PreviewCard.SetSize(innerW, previewH);
-		m_TxtPreview.SetPos(8, 6);
-		m_TxtPreview.SetSize(innerW - 16, previewH - 12);
+		VPPXEScale.Pos(m_PreviewCard, 10, 310);
+		VPPXEScale.Size(m_PreviewCard, innerW, previewH);
+		VPPXEScale.Pos(m_TxtPreview, 8, 6);
+		VPPXEScale.Size(m_TxtPreview, innerW - 16, previewH - 12);
 		float warnY = 310 + previewH + 8;
 		float warnH = formH - warnY - 4;
 		if (warnH < 20)
@@ -2156,20 +2156,20 @@ class VPPXEMessagesTab : ScriptedWidgetEventHandler
 			warnH = 20;
 		}
 
-		m_TxtWarnings.SetPos(10, warnY);
-		m_TxtWarnings.SetSize(innerW, warnH);
-		m_ActionBar.SetPos(0, m_RightH - BAR_H);
-		m_ActionBar.SetSize(m_RightW, BAR_H);
+		VPPXEScale.Pos(m_TxtWarnings, 10, warnY);
+		VPPXEScale.Size(m_TxtWarnings, innerW, warnH);
+		VPPXEScale.Pos(m_ActionBar, 0, m_RightH - BAR_H);
+		VPPXEScale.Size(m_ActionBar, m_RightW, BAR_H);
 	}
 
 	protected void PlaceRow(TextWidget label, EditBoxWidget input, TextWidget unit, float y, float inputX, float unitX)
 	{
-		label.SetPos(10, y);
-		label.SetSize(LABEL_W, ROW_H);
-		input.SetPos(inputX, y);
-		input.SetSize(INPUT_W, ROW_H);
-		unit.SetPos(unitX, y);
-		unit.SetSize(44, ROW_H);
+		VPPXEScale.Pos(label, 10, y);
+		VPPXEScale.Size(label, LABEL_W, ROW_H);
+		VPPXEScale.Pos(input, inputX, y);
+		VPPXEScale.Size(input, INPUT_W, ROW_H);
+		VPPXEScale.Pos(unit, unitX, y);
+		VPPXEScale.Size(unit, 44, ROW_H);
 	}
 
 	// ---------------------------------------------------------------- helpers

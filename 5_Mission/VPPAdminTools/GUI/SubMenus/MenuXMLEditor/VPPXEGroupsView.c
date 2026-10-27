@@ -2848,7 +2848,7 @@ class VPPXEGroupsView : Managed
 			{
 				float slideX = probeNow[0] - m_AnchorScreen[0];
 				float slideY = probeNow[1] - m_AnchorScreen[1];
-				m_Canvas.SetPos(slideX / m_Unit, slideY / m_Unit);
+				VPPXEScale.Pos(m_Canvas, slideX / m_Unit, slideY / m_Unit);
 				if (Math.AbsFloat(slideX) > cw * 0.35 || Math.AbsFloat(slideY) > ch * 0.35)
 				{
 					m_Redraw = true;
@@ -2884,7 +2884,7 @@ class VPPXEGroupsView : Managed
 
 	protected void DoRedraw(int now)
 	{
-		m_Canvas.SetPos(0, 0);
+		VPPXEScale.Pos(m_Canvas, 0, 0);
 		m_Renderer.Redraw();
 		m_AnchorWorld = m_Map.GetMapPos();
 		m_AnchorScreen = m_Map.MapToScreen(m_AnchorWorld);
@@ -3025,8 +3025,8 @@ class VPPXEGroupsView : Managed
 		}
 
 		m_Unit = unit;
-		m_View.SetPos(0, 32);
-		m_View.SetSize(rightW, formH);
+		VPPXEScale.Pos(m_View, 0, 32);
+		VPPXEScale.Size(m_View, rightW, formH);
 		float bottomH = 18 + ROW_H + 6 + ROW_H + 6 + 58;
 		float mapH = formH - bottomH - 2;
 		if (mapH < 140)
@@ -3037,14 +3037,14 @@ class VPPXEGroupsView : Managed
 		float sideW = Math.Clamp(innerW * 0.32, 170, 260);
 		float mapW = innerW - sideW - 6;
 		float sideX = 10 + mapW + 6;
-		m_MapArea.SetPos(10, 0);
-		m_MapArea.SetSize(mapW, mapH);
+		VPPXEScale.Pos(m_MapArea, 10, 0);
+		VPPXEScale.Size(m_MapArea, mapW, mapH);
 		float listsH = mapH - 20 - 32 - 20 - 4;
 		float groupListH = listsH * 0.5;
-		m_TxtGroupsTitle.SetPos(sideX, 0);
-		m_TxtGroupsTitle.SetSize(sideW, 20);
-		m_GroupList.SetPos(sideX, 20);
-		m_GroupList.SetSize(sideW, groupListH);
+		VPPXEScale.Pos(m_TxtGroupsTitle, sideX, 0);
+		VPPXEScale.Size(m_TxtGroupsTitle, sideW, 20);
+		VPPXEScale.Pos(m_GroupList, sideX, 20);
+		VPPXEScale.Size(m_GroupList, sideW, groupListH);
 		float buttonY = 20 + groupListH + 4;
 		float gap = (sideW - 5 * ROW_H) / 4;
 		array<ButtonWidget> groupButtons = new array<ButtonWidget>;
@@ -3065,15 +3065,15 @@ class VPPXEGroupsView : Managed
 				continue;
 			}
 
-			groupButton.SetPos(sideX + b * (buttonSize + gap), buttonY);
-			groupButton.SetSize(buttonSize, buttonSize);
+			VPPXEScale.Pos(groupButton, sideX + b * (buttonSize + gap), buttonY);
+			VPPXEScale.Size(groupButton, buttonSize, buttonSize);
 		}
 
 		float childTitleY = buttonY + ROW_H + 4;
-		m_TxtChildrenTitle.SetPos(sideX, childTitleY);
-		m_TxtChildrenTitle.SetSize(sideW, 20);
-		m_ChildList.SetPos(sideX, childTitleY + 20);
-		m_ChildList.SetSize(sideW, mapH - childTitleY - 20);
+		VPPXEScale.Pos(m_TxtChildrenTitle, sideX, childTitleY);
+		VPPXEScale.Size(m_TxtChildrenTitle, sideW, 20);
+		VPPXEScale.Pos(m_ChildList, sideX, childTitleY + 20);
+		VPPXEScale.Size(m_ChildList, sideW, mapH - childTitleY - 20);
 		float labelY = mapH + 6;
 		float inputY = labelY + 18;
 		// the type gets the most room, the numbers share the rest
@@ -3089,10 +3089,10 @@ class VPPXEGroupsView : Managed
 
 			TextWidget label = m_Lbl[i];
 			EditBoxWidget box = m_Input[i];
-			label.SetPos(x, labelY);
-			label.SetSize(boxW, 18);
-			box.SetPos(x, inputY);
-			box.SetSize(boxW, ROW_H);
+			VPPXEScale.Pos(label, x, labelY);
+			VPPXEScale.Size(label, boxW, 18);
+			VPPXEScale.Pos(box, x, inputY);
+			VPPXEScale.Size(box, boxW, ROW_H);
 			x = x + boxW + 6;
 		}
 
@@ -3101,20 +3101,20 @@ class VPPXEGroupsView : Managed
 		float traceW = Math.Clamp(innerW * 0.14, 70, 110);
 		float addModeW = Math.Clamp(innerW * 0.24, 100, 170);
 		x = 10;
-		m_BtnSpawnSec.SetPos(x, rowY);
-		m_BtnSpawnSec.SetSize(spawnSecW, ROW_H);
+		VPPXEScale.Pos(m_BtnSpawnSec, x, rowY);
+		VPPXEScale.Size(m_BtnSpawnSec, spawnSecW, ROW_H);
 		x = x + spawnSecW + 6;
-		m_BtnTrace.SetPos(x, rowY);
-		m_BtnTrace.SetSize(traceW, ROW_H);
+		VPPXEScale.Pos(m_BtnTrace, x, rowY);
+		VPPXEScale.Size(m_BtnTrace, traceW, ROW_H);
 		x = x + traceW + 6;
-		m_BtnAddMode.SetPos(x, rowY);
-		m_BtnAddMode.SetSize(addModeW, ROW_H);
+		VPPXEScale.Pos(m_BtnAddMode, x, rowY);
+		VPPXEScale.Size(m_BtnAddMode, addModeW, ROW_H);
 		x = x + addModeW + 6;
-		m_BtnChildAdd.SetPos(x, rowY);
-		m_BtnChildAdd.SetSize(ROW_H, ROW_H);
+		VPPXEScale.Pos(m_BtnChildAdd, x, rowY);
+		VPPXEScale.Size(m_BtnChildAdd, ROW_H, ROW_H);
 		x = x + ROW_H + 6;
-		m_BtnChildRemove.SetPos(x, rowY);
-		m_BtnChildRemove.SetSize(ROW_H, ROW_H);
+		VPPXEScale.Pos(m_BtnChildRemove, x, rowY);
+		VPPXEScale.Size(m_BtnChildRemove, ROW_H, ROW_H);
 		float infoY = rowY + ROW_H + 6;
 		float infoH = formH - infoY - 2;
 		if (infoH < 20)
@@ -3122,8 +3122,8 @@ class VPPXEGroupsView : Managed
 			infoH = 20;
 		}
 
-		m_TxtInfo.SetPos(10, infoY);
-		m_TxtInfo.SetSize(innerW, infoH);
+		VPPXEScale.Pos(m_TxtInfo, 10, infoY);
+		VPPXEScale.Size(m_TxtInfo, innerW, infoH);
 		m_Redraw = true;
 	}
 

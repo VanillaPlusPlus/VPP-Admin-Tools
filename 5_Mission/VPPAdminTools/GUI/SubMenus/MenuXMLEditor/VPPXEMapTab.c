@@ -26,7 +26,14 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 	const static int LAYER_TOTAL = 8;
 	const static int ALL_TIERS = 255;
 	const static int CHIP_LAYERS_MASK = 127;
+	// a type opens with only the LIVE layer shown (1 << VPPXELayer.LIVE); the distribution layers are toggled on by
+	// their chips
+	const static int LIVE_ONLY_MASK = 64;
 	const static int DIST_LAYER_MASK = 191;
+	// a live scan that finds nothing says so in the centre busy pill for this long
+	const static int NONE_FOUND_MS = 3500;
+	const static float BUSY_MIN_W = 320;
+	const static float BUSY_H = 32;
 	const static int DELETE_SEND_MS = 50;
 	const static int MAX_DELETE_TRACK = 200;
 	const static int MAX_PLAYER_EVENTS = 8;
@@ -115,6 +122,8 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 	protected int m_ChunksExpected;
 	protected int m_LastActivity;
 	protected string m_ErrorNotice;
+	protected int m_BusyFlashUntil;
+	protected string m_BusyText;
 
 	protected int m_LiveReqId;
 	protected bool m_LivePending;
@@ -217,7 +226,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		m_NoticeParts = new array<string>;
 		m_SummaryParts = new array<string>;
 
-		m_VisibleMask = CHIP_LAYERS_MASK;
+		m_VisibleMask = LIVE_ONLY_MASK;
 		m_TierMask = ALL_TIERS;
 		m_RenderMode = VPPXEMapRenderer.MODE_HEAT;
 		m_ChunksExpected = -1;
@@ -475,14 +484,14 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		}
 
 		m_AreaW = areaW;
-		m_MapArea.SetPos(0, TOOLBAR_H);
-		m_MapArea.SetSize(areaW, bodyH);
+		VPPXEScale.Pos(m_MapArea, 0, TOOLBAR_H);
+		VPPXEScale.Size(m_MapArea, areaW, bodyH);
 		if (m_DrawerOpen)
 		{
 			m_DrawerW = w - areaW - 4;
 			m_DrawerH = bodyH;
-			m_MapDrawer.SetPos(areaW + 4, TOOLBAR_H);
-			m_MapDrawer.SetSize(m_DrawerW, m_DrawerH);
+			VPPXEScale.Pos(m_MapDrawer, areaW + 4, TOOLBAR_H);
+			VPPXEScale.Size(m_MapDrawer, m_DrawerW, m_DrawerH);
 			LayoutDrawer();
 		}
 
@@ -504,6 +513,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			SendDistRequest();
 		}
 
+		CheckBusyFlash(now);
 		CheckTimeouts(now);
 		PollBreakdownSelection();
 		if (!m_MapVisible || !m_Map || !m_Canvas)
@@ -589,6 +599,10 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			return;
 		}
 
+		m_VisibleMask = LIVE_ONLY_MASK;
+		m_Renderer.SetVisibleLayers(m_VisibleMask);
+		UpdateLayerChips();
+		RequestRedraw();
 		if (m_Shown && HasPerm(VPPXEPerm.DIST_MAP))
 		{
 			ScheduleRequest(REQUEST_DEBOUNCE_MS);
@@ -1415,6 +1429,18 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 
 	// ---------------------------------------------------------------- live layer
 
+	// TYPES FIND IN WORLD (MenuXMLEditor.FindTypeInWorld, after the MAP tab is shown).
+	void FindInWorld(string typeName)
+	{
+		OnTypeSelected(typeName);
+		if (!m_DrawerOpen)
+		{
+			SetDrawerOpen(true);
+		}
+
+		BeginLiveScan();
+	}
+
 	protected void BeginLiveScan()
 	{
 		if (!HasPerm(VPPXEPerm.LIVE_SCAN) || m_TypeName == "" || m_LivePending)
@@ -1482,6 +1508,13 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			m_LiveNotice = string.Format(Tr("#VSTR_XMLE_MAP_LIVE_FMT"), m_LiveTotal);
 		}
 
+		if (received == 0 && m_LiveTotal == 0)
+		{
+			string noneFmt = Tr("#VSTR_XMLE_MAP_LIVE_NONE");
+			string noneText = string.Format(noneFmt, m_LiveType);
+			FlashBusy(noneText);
+		}
+
 		HideBusyIfIdle();
 		UpdateLayerChips();
 		UpdateDrawerSummary();
@@ -1504,6 +1537,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		m_LiveType = "";
 		m_LiveGen++;
 		m_PendingDelete.Clear();
+		m_BusyFlashUntil = 0;
 		if (m_SelLayer == VPPXELayer.LIVE)
 		{
 			ResetSelection();
@@ -2312,12 +2346,12 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			}
 
 			float w = widths[j] * scale;
-			chip.SetPos(x, 0);
-			chip.SetSize(w, 24);
+			VPPXEScale.Pos(chip, x, 0);
+			VPPXEScale.Size(chip, w, 24);
 			x = x + w + 2;
 		}
 
-		m_TierBar.SetSize(x, 24);
+		VPPXEScale.Size(m_TierBar, x, 24);
 	}
 
 	// Tier chips are disabled (and the filter passes everything) when the server has no map tiers.
@@ -2591,17 +2625,61 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		}
 	}
 
+	// Progress text waits behind an active "none found" flash and is put back when the flash ends.
 	protected void ShowBusy(string text)
 	{
-		if (m_TxtMapBusy)
+		m_BusyText = text;
+		if (m_BusyFlashUntil != 0)
 		{
-			m_TxtMapBusy.SetText(text);
+			return;
 		}
 
-		if (m_MapBusy)
+		SetBusyPill(text, ARGB(255, 255, 255, 255));
+	}
+
+	// The centre pill as a short-lived alert (a live scan that found nothing), not tied to a pending request.
+	protected void FlashBusy(string text)
+	{
+		m_BusyFlashUntil = NowMs() + NONE_FOUND_MS;
+		SetBusyPill(text, ARGB(255, 232, 163, 61));
+	}
+
+	protected void SetBusyPill(string text, int textColor)
+	{
+		if (!m_MapBusy || !m_TxtMapBusy)
 		{
-			m_MapBusy.Show(true);
+			return;
 		}
+
+		m_TxtMapBusy.SetText(text);
+		m_TxtMapBusy.SetColor(textColor);
+		float pillW = 40 + 7 * text.LengthUtf8();
+		float maxW = m_AreaW - 24;
+		if (maxW < BUSY_MIN_W)
+		{
+			maxW = BUSY_MIN_W;
+		}
+
+		pillW = Math.Clamp(pillW, BUSY_MIN_W, maxW);
+		VPPXEScale.Size(m_MapBusy, pillW, BUSY_H);
+		m_MapBusy.Show(true);
+	}
+
+	protected void CheckBusyFlash(int now)
+	{
+		if (m_BusyFlashUntil == 0 || now < m_BusyFlashUntil)
+		{
+			return;
+		}
+
+		m_BusyFlashUntil = 0;
+		if (m_DistPending || m_LivePending)
+		{
+			SetBusyPill(m_BusyText, ARGB(255, 255, 255, 255));
+			return;
+		}
+
+		HideBusyIfIdle();
 	}
 
 	protected void HideBusyIfIdle()
@@ -2611,6 +2689,12 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			return;
 		}
 
+		if (m_BusyFlashUntil != 0 && NowMs() < m_BusyFlashUntil)
+		{
+			return;
+		}
+
+		m_BusyFlashUntil = 0;
 		if (m_MapBusy)
 		{
 			m_MapBusy.Show(false);
@@ -2844,12 +2928,12 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		m_TypeTextW = typeW - 8;
 		if (m_TxtMapType)
 		{
-			m_TxtMapType.SetSize(m_TypeTextW, TOOLBAR_TOP_H);
+			VPPXEScale.Size(m_TxtMapType, m_TypeTextW, TOOLBAR_TOP_H);
 		}
 
 		if (m_TierBar)
 		{
-			m_TierBar.SetPos(typeW + 4, 3);
+			VPPXEScale.Pos(m_TierBar, typeW + 4, 3);
 			m_TierBarW = w - typeW - 4 - TIER_BAR_RESERVED;
 			LayoutTierChips();
 		}
@@ -2862,14 +2946,14 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			Widget chip = m_BtnLayer[i];
 			if (chip)
 			{
-				chip.SetPos(i * slot + 2, 2);
-				chip.SetSize(m_ChipW, 24);
+				VPPXEScale.Pos(chip, i * slot + 2, 2);
+				VPPXEScale.Size(chip, m_ChipW, 24);
 			}
 
 			// label sits right of the 8 px legend swatch
 			if (i < m_TxtLayer.Count() && m_TxtLayer[i])
 			{
-				m_TxtLayer[i].SetSize(Math.Max(m_ChipW - 20, 10), 1);
+				VPPXEScale.Size(m_TxtLayer[i], Math.Max(m_ChipW - 20, 10), 1);
 			}
 		}
 
@@ -2886,8 +2970,8 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		}
 
 		float innerW = m_DrawerW - 12;
-		m_DrawerModeHost.SetPos(6, 32);
-		m_DrawerModeHost.SetSize(innerW, 24);
+		VPPXEScale.Pos(m_DrawerModeHost, 6, 32);
+		VPPXEScale.Size(m_DrawerModeHost, innerW, 24);
 		int summaryLines = EstimateLines(m_SummaryParts, m_DrawerW - 16);
 		float summaryH = summaryLines * 15 + 4;
 		if (summaryLines == 0)
@@ -2895,8 +2979,8 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			summaryH = 1;
 		}
 
-		m_TxtDrawerSummary.SetPos(8, 60);
-		m_TxtDrawerSummary.SetSize(m_DrawerW - 16, summaryH);
+		VPPXEScale.Pos(m_TxtDrawerSummary, 8, 60);
+		VPPXEScale.Size(m_TxtDrawerSummary, m_DrawerW - 16, summaryH);
 		float listY = 60 + summaryH + 4;
 		float actionsY = m_DrawerH - DRAWER_ACTIONS_H - 6;
 		float listH = actionsY - listY - 4;
@@ -2905,10 +2989,10 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			listH = 30;
 		}
 
-		m_BreakdownList.SetPos(6, listY);
-		m_BreakdownList.SetSize(innerW, listH);
-		m_DrawerActions.SetPos(6, actionsY);
-		m_DrawerActions.SetSize(innerW, DRAWER_ACTIONS_H);
+		VPPXEScale.Pos(m_BreakdownList, 6, listY);
+		VPPXEScale.Size(m_BreakdownList, innerW, listH);
+		VPPXEScale.Pos(m_DrawerActions, 6, actionsY);
+		VPPXEScale.Size(m_DrawerActions, innerW, DRAWER_ACTIONS_H);
 		float half = innerW * 0.5 - 2;
 		PlaceActionButton(m_BtnTpSelected, m_ImgTpSelected, m_TxtTpSelected, "#VSTR_XMLE_MAP_TP", 0, 0, half);
 		PlaceActionButton(m_BtnNextInstance, m_ImgNextInstance, m_TxtNextInstance, "#VSTR_XMLE_MAP_NEXT", innerW - half, 0, half);
@@ -2925,8 +3009,8 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 			return;
 		}
 
-		button.SetPos(x, y);
-		button.SetSize(width, ACTION_ROW_H);
+		VPPXEScale.Pos(button, x, y);
+		VPPXEScale.Size(button, width, ACTION_ROW_H);
 		string text = Tr(key);
 		bool showIcon = 24 + EstimateTextPx(text, 7) <= width;
 		if (iconWidget)
@@ -2941,13 +3025,13 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 
 		if (showIcon)
 		{
-			label.SetPos(24, 0);
-			label.SetSize(width - 28, ACTION_ROW_H);
+			VPPXEScale.Pos(label, 24, 0);
+			VPPXEScale.Size(label, width - 28, ACTION_ROW_H);
 		}
 		else
 		{
-			label.SetPos(4, 0);
-			label.SetSize(width - 8, ACTION_ROW_H);
+			VPPXEScale.Pos(label, 4, 0);
+			VPPXEScale.Size(label, width - 8, ACTION_ROW_H);
 		}
 	}
 
@@ -2976,9 +3060,9 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		}
 
 		float noticeH = lines * 15 + 10;
-		m_MapNotice.SetSize(noticeW, noticeH);
-		m_TxtMapNotice.SetPos(7, 5);
-		m_TxtMapNotice.SetSize(noticeW - 14, noticeH - 8);
+		VPPXEScale.Size(m_MapNotice, noticeW, noticeH);
+		VPPXEScale.Pos(m_TxtMapNotice, 7, 5);
+		VPPXEScale.Size(m_TxtMapNotice, noticeW - 14, noticeH - 8);
 	}
 
 	// ---------------------------------------------------------------- view polling and redraw
@@ -3034,7 +3118,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 		vector anchorNow = m_Map.MapToScreen(Vector(0, 0, 0));
 		float slideX = anchorNow[0] - m_PanAnchorScreen[0];
 		float slideY = anchorNow[1] - m_PanAnchorScreen[1];
-		m_Canvas.SetPos(slideX, slideY);
+		VPPXEScale.Pos(m_Canvas, slideX, slideY);
 		if (Math.AbsFloat(slideX) > cw * PAN_REDRAW_FRAC || Math.AbsFloat(slideY) > ch * PAN_REDRAW_FRAC)
 		{
 			m_ViewDirty = true;
@@ -3043,7 +3127,7 @@ class VPPXEMapTab : ScriptedWidgetEventHandler
 
 	protected void DoRedraw(int now)
 	{
-		m_Canvas.SetPos(0, 0);
+		VPPXEScale.Pos(m_Canvas, 0, 0);
 		m_Renderer.Redraw();
 		m_PanAnchorScreen = m_Map.MapToScreen(Vector(0, 0, 0));
 		m_PanAnchorScale = m_Map.GetScale();

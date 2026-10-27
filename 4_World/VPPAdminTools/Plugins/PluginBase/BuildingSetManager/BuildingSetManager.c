@@ -4,6 +4,13 @@ class BuildingSetManager : ConfigurablePlugin
 	// where every set file is (journal + CF.FindFileEx folder scan, DayZ 1.30 FindFile workaround): VPPBuildingSetJournal
 	[NonSerialized()]
 	protected ref VPPBuildingSetJournal m_Journal;
+	// Load(): the set ConvertLegacySet read, and the format counts for the summary line
+	[NonSerialized()]
+	protected ref BuildingSet m_ConvertedSet;
+	[NonSerialized()]
+	protected int m_ConvertedCount;
+	[NonSerialized()]
+	protected int m_UpgradedCount;
 
    void BuildingSetManager()
    {
@@ -29,8 +36,10 @@ class BuildingSetManager : ConfigurablePlugin
 		Load();
    }
 	
-	// Loads the sets listed in the journal plus any *.vpp the folder scan finds (CF.FindFileEx; server only). A listed
-	// file that is gone or unreadable is dropped from the journal and logged.
+	// Loads the sets listed in the journal plus any set file the folder scan finds (CF.FindFileEx; server only). Old
+	// binary .vpp sets are converted to JSON on the way (VPPBuildingSetStore), JSON sets of an older format version
+	// are upgraded and saved again. A listed file that is gone or unreadable is dropped from the journal and logged
+	// (the file itself is never touched).
 	override void Load()
 	{
 		if (!GetGame().IsServer())
@@ -47,11 +56,30 @@ class BuildingSetManager : ConfigurablePlugin
 		int scanned = m_Journal.ScanForSets();
 		int loaded = 0;
 		int dropped = 0;
+		m_ConvertedCount = 0;
+		m_UpgradedCount = 0;
 		array<string> paths = new array<string>();
 		m_Journal.GetPaths(paths);
 		foreach (string path : paths)
 		{
-			BuildingSet bSet = ReadSetFile(path);
+			string loadedPath = path;
+			BuildingSet bSet = null;
+			if (VPPBuildingSetStore.IsLegacyPath(path))
+			{
+				loadedPath = ConvertLegacySet(path);
+				if (loadedPath == "")
+				{
+					continue;
+				}
+
+				bSet = m_ConvertedSet;
+				m_ConvertedSet = null;
+			}
+			else
+			{
+				bSet = ReadJsonSet(path);
+			}
+
 			if (!bSet)
 			{
 				string reason = "unreadable";
@@ -69,12 +97,12 @@ class BuildingSetManager : ConfigurablePlugin
 			string setName = bSet.GetName();
 			if (GetBuildingSetByName(setName))
 			{
-				GetSimpleLogger().Log("[BuildingSetManager] Skipped " + path + ": a set named " + setName + " is already loaded");
+				GetSimpleLogger().Log("[BuildingSetManager] Skipped " + loadedPath + ": a set named " + setName + " is already loaded");
 				continue;
 			}
 
 			m_BuildingSets.Insert(bSet);
-			m_Journal.Put(setName, path, "");
+			m_Journal.Put(setName, loadedPath, "");
 			loaded++;
 		}
 
@@ -84,29 +112,85 @@ class BuildingSetManager : ConfigurablePlugin
 		}
 
 		string summary = "[BuildingSetManager] Journal: " + loaded.ToString() + " set(s) loaded, " + scanned.ToString() + " found by the folder scan, " + dropped.ToString() + " dropped";
+		int currentVersion = VPPBuildingSetFile.CURRENT_VERSION;
+		string formatText = ", " + m_ConvertedCount.ToString() + " converted from .vpp, " + m_UpgradedCount.ToString() + " upgraded to format " + currentVersion.ToString();
+		summary = summary + formatText;
 		GetSimpleLogger().Log(summary);
 		Print(summary);
 		SpawnActiveBuildings();
 	}
 
-	// One set file (null when it is missing or cannot be read).
-	protected BuildingSet ReadSetFile(string path)
+	// A JSON set (null when it cannot be read). A file of an older format version is saved again right away.
+	protected BuildingSet ReadJsonSet(string path)
 	{
-		BuildingSet bSet = null;
-		if (!FileExist(path))
+		VPPBuildingSetReadInfo info = new VPPBuildingSetReadInfo();
+		BuildingSet bSet = VPPBuildingSetStore.ReadJson(path, info);
+		if (!bSet)
 		{
+			if (info.Error != "")
+			{
+				GetSimpleLogger().Log("[BuildingSetManager] " + info.Error);
+			}
+
 			return null;
 		}
 
-		FileSerializer file = new FileSerializer();
-		if (!file.Open(path, FileMode.READ))
+		// a file of a NEWER version is never rewritten automatically (its unknown fields would be lost)
+		if (info.Upgraded && info.FileVersion <= VPPBuildingSetFile.CURRENT_VERSION)
 		{
-			return null;
+			if (VPPBuildingSetStore.Write(bSet, path))
+			{
+				int currentVersion = VPPBuildingSetFile.CURRENT_VERSION;
+				string fromText = info.FileVersion.ToString();
+				string toText = currentVersion.ToString();
+				GetSimpleLogger().Log("[BuildingSetManager] Upgraded " + path + " from format " + fromText + " to " + toText + " (previous file kept as .bak)");
+				m_UpgradedCount++;
+			}
 		}
 
-		file.Read(bSet);
-		file.Close();
 		return bSet;
+	}
+
+	// An old binary set: written as JSON at the set's normal path, then the .vpp is moved to the backups. Returns the
+	// path the set is loaded from (m_ConvertedSet holds it), or "" when the .vpp only had to be moved away / the set
+	// is loaded through another journal entry. A .vpp that cannot be read leaves m_ConvertedSet null (dropped, kept).
+	protected string ConvertLegacySet(string path)
+	{
+		m_ConvertedSet = VPPBuildingSetStore.ReadLegacy(path);
+		if (!m_ConvertedSet)
+		{
+			return path;
+		}
+
+		string setName = m_ConvertedSet.GetName();
+		string jsonPath = m_Journal.PathFor(setName);
+		if (FileExist(jsonPath))
+		{
+			// converted before (or saved since): the JSON wins, the leftover .vpp is moved away
+			m_ConvertedSet = null;
+			m_Journal.Remove(path, "superseded");
+			VPPBuildingSetStore.ArchiveLegacy(path);
+			if (m_Journal.HasPath(jsonPath))
+			{
+				return "";
+			}
+
+			m_ConvertedSet = ReadJsonSet(jsonPath);
+			return jsonPath;
+		}
+
+		if (!VPPBuildingSetStore.Write(m_ConvertedSet, jsonPath))
+		{
+			GetSimpleLogger().Log("[BuildingSetManager] Could not convert " + path + " to JSON; it is loaded from the old file this time and converted at the next start");
+			return path;
+		}
+
+		m_Journal.Remove(path, "converted");
+		m_Journal.Put(setName, jsonPath, "convert");
+		VPPBuildingSetStore.ArchiveLegacy(path);
+		GetSimpleLogger().Log("[BuildingSetManager] Converted " + path + " to " + jsonPath);
+		m_ConvertedCount++;
+		return jsonPath;
 	}
 
 	void SaveBuildingSet(BuildingSet bSet)
@@ -116,19 +200,27 @@ class BuildingSetManager : ConfigurablePlugin
 			return;
 		}
 
-		FileSerializer file = new FileSerializer();
 		string setName = bSet.GetName();
 		string path = m_Journal.PathFor(setName);
-		if (file.Open(path, FileMode.WRITE))
+		if (VPPBuildingSetStore.Write(bSet, path))
 		{
-		    file.Write(bSet);
-		    file.Close();
 			m_Journal.Put(setName, path, "save");
 			m_Journal.SaveIfDirty();
 			GetSimpleLogger().Log("[BuildingSetManager] Saved: " + path);
 			return;
 		}
-		GetSimpleLogger().Log("[BuildingSetManager] FALIED To Save: "+path);
+		GetSimpleLogger().Log("[BuildingSetManager] FAILED To Save: "+path);
+	}
+
+	// The old .vpp of a set name, if one is still around (a conversion that failed): removed with the set.
+	protected void DeleteLegacyFile(string setName)
+	{
+		string legacyPath = m_Journal.LegacyPathFor(setName);
+		m_Journal.Remove(legacyPath, "delete");
+		if (FileExist(legacyPath))
+		{
+			DeleteFile(legacyPath);
+		}
 	}
 	
 	// The set names, to the Object Manager.
@@ -142,9 +234,18 @@ class BuildingSetManager : ConfigurablePlugin
 	{
 		string path = m_Journal.PathFor(fileName);
 		m_Journal.Remove(path, "rename");
+		DeleteLegacyFile(fileName);
 		m_Journal.SaveIfDirty();
 		if (FileExist(path))
 		{
+			//the caller saves the set again right after (same or new name); the last copy is kept as .bak meanwhile
+			string backupPath = path + ".bak";
+			if (FileExist(backupPath))
+			{
+				DeleteFile(backupPath);
+			}
+
+			CopyFile(path, backupPath);
 			DeleteFile(path);
 			GetSimpleLogger().Log("[BuildingSetManager] Deleted file: "+ fileName);
 			return;
@@ -266,11 +367,11 @@ class BuildingSetManager : ConfigurablePlugin
 	{
 		Param2<ref array<ref SpawnedBuilding>,string> data;
 		if (!ctx.Read(data)) return;
-		
+
 		if (type == CallType.Server)
 		{
 			if (!GetPermissionManager().VerifyPermission(sender.GetPlainId(),"MenuObjectManager:EditSet")) return;
-		
+
 			BuildingSet bSet = GetBuildingSetByName(data.param2);
 			if (bSet == null)
 			{
@@ -353,6 +454,11 @@ class BuildingSetManager : ConfigurablePlugin
 	protected void ClearNetworkIds(BuildingSet bSet)
 	{
 		array<ref SpawnedBuilding> buildings = bSet.GetBuildings();
+		if (!buildings)
+		{
+			return;
+		}
+
 		foreach (SpawnedBuilding building : buildings)
 		{
 			if (building && !building.GetObject())
@@ -401,6 +507,7 @@ class BuildingSetManager : ConfigurablePlugin
 			string path = m_Journal.PathFor(bSet.GetName());
 			DeleteFile(path);
 			m_Journal.Remove(path, "delete");
+			DeleteLegacyFile(bSet.GetName());
 			m_Journal.SaveIfDirty();
          m_BuildingSets.RemoveItem(bSet);
          delete bSet;

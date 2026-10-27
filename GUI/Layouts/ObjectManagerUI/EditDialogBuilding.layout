@@ -1,6 +1,6 @@
 PanelWidgetClass rootFrame {
  color 1 1 1 1
- size 0.25 0.16
+ size 0.25 0.21
  halign center_ref
  valign center_ref
  hexactpos 0
@@ -110,7 +110,7 @@ PanelWidgetClass rootFrame {
    "Size To Content H" 1
    "Size To Content V" 1
    Columns 2
-   Rows 1
+   Rows 2
    {
     CheckBoxWidgetClass checkbox_active {
      size 24 24
@@ -135,6 +135,44 @@ PanelWidgetClass rootFrame {
      vexactsize 0
      style None
      text "#VSTR_LBL_BLD_SET_ACTIVE_S"
+     font "gui/fonts/sdf_MetronLight72"
+     "exact text" 1
+     "exact text size" 13
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     "text valign" center
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+    }
+    EditBoxWidgetClass edit_scale {
+     size 64 24
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "EditBoxEventHandler"
+     style VPPInput
+     "no focus" 0
+     text "1"
+     "exact text" 1
+     font "gui/fonts/sdf_MetronLight24"
+    }
+    MultilineTextWidgetClass txt_scale {
+     ignorepointer 1
+     color 0.604 0.627 0.651 1
+     position 0.021 0
+     size 0.74 0.523
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style None
+     text "#VSTR_LBL_OBJ_SCALE"
      font "gui/fonts/sdf_MetronLight72"
      "exact text" 1
      "exact text size" 13

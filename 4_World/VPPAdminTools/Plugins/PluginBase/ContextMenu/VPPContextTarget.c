@@ -169,6 +169,11 @@ class VPPContextTarget : Managed
 			Object netObj = GetGame().GetObjectByNetworkId(req.NetLow, req.NetHigh);
 			if (netObj && (req.TypeName == "" || netObj.GetType() == req.TypeName))
 				t.m_Object = netObj;
+
+			//static map objects carry a stable id with a negative high word; if the id lookup misses an
+			//unregistered one, fall back to the same type + position search used for id-less objects
+			if (!t.m_Object && req.NetHigh < 0 && req.TypeName != "")
+				t.m_Object = FindStaticObject(req.TypeName, req.Position);
 			return t;
 		}
 

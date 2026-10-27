@@ -59,6 +59,7 @@ modded class MissionGameplay
         GetRPCManager().AddRPC("RPC_MissionGameplay", "LoginAttemptFail", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableToggles", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("RPC_MissionGameplay", "EnableTogglesNonPassword", this, SingleplayerExecutionType.Client);
+        GetRPCManager().AddRPC("RPC_MissionGameplay", "ApplyObjectScale", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("RPC_HandleFreeCam", "HandleFreeCam", this, SingleplayerExecutionType.Client);
         GetRPCManager().AddRPC("RPC_HandleMeshEspToggle", "HandleMeshEspToggle", this, SingleplayerExecutionType.Client);
 
@@ -498,6 +499,22 @@ modded class MissionGameplay
                 m_ToolsToggled = true;
             }
         }
+    }
+
+    //every client: the scale of a building-set object spawned while this client already had it in range (the engine
+    //only sends scale in the create message, which went out before SetScale; see SpawnedBuilding.ApplySpawnScale)
+    void ApplyObjectScale(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)
+    {
+        if (type != CallType.Client || !target)
+            return;
+
+        Param1<float> data;
+        if (!ctx.Read(data))
+            return;
+
+        float scale = Math.Clamp(data.param1, VPPBuildingSetStore.SCALE_MIN, VPPBuildingSetStore.SCALE_MAX);
+        target.SetScale(scale);
+        target.Update();
     }
 
     void EnableTogglesNonPassword(CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target)

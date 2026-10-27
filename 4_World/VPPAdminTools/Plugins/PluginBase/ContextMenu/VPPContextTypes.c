@@ -64,6 +64,8 @@ class VPPContextConstants
 
 	const static string PERM_SPAWN_ATTACHMENT = "ContextMenu:SpawnAttachment";
 	const static string PERM_WEAPON_LOAD      = "ContextMenu:WeaponLoad";
+	const static string PERM_SET_SCALE        = "ContextMenu:SetScale";
+	const static string PERM_RAGDOLL          = "ContextMenu:Ragdoll";
 
 	const static string ARG_INPUT   = "input";
 	const static string STATE_TRUE  = "1";
@@ -134,6 +136,8 @@ class VPPContextConstants
 	const static string ICON_EJECT        = "set:vpp_icons image:arrow_up_from_line";
 	const static string ICON_CROSSHAIR    = "set:vpp_icons image:crosshair";
 	const static string ICON_LIST         = "set:vpp_icons image:list";
+	const static string ICON_SCALING      = "set:vpp_icons image:scaling";
+	const static string ICON_ZAP          = "set:vpp_icons image:zap";
 };
 
 //look-mode input capture flag, read by 4_World DayZPlayerCameraFree.CanControl

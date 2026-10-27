@@ -848,16 +848,16 @@ class VPPXECreateTab : ScriptedWidgetEventHandler
 
 		float innerW = m_LeftW - 12;
 		float hintY = m_LeftH - HINT_H - 6;
-		m_TxtCeHint.SetPos(6, hintY);
-		m_TxtCeHint.SetSize(innerW, HINT_H);
+		VPPXEScale.Pos(m_TxtCeHint, 6, hintY);
+		VPPXEScale.Size(m_TxtCeHint, innerW, HINT_H);
 		float listH = hintY - 32 - 4;
 		if (listH < 30)
 		{
 			listH = 30;
 		}
 
-		m_CeList.SetPos(6, 32);
-		m_CeList.SetSize(innerW, listH);
+		VPPXEScale.Pos(m_CeList, 6, 32);
+		VPPXEScale.Size(m_CeList, innerW, listH);
 	}
 
 	// Right: folder row (input + existing-folder dropdown), file row, rules line, preview card, status, buttons, note.
@@ -870,8 +870,8 @@ class VPPXECreateTab : ScriptedWidgetEventHandler
 
 		float pickW = Math.Clamp(m_RightW * 0.32, 130, 200);
 		float pickX = m_RightW - 10 - pickW;
-		m_PickHost.SetPos(pickX, FOLDER_Y + 1);
-		m_PickHost.SetSize(pickW, 24);
+		VPPXEScale.Pos(m_PickHost, pickX, FOLDER_Y + 1);
+		VPPXEScale.Size(m_PickHost, pickW, 24);
 		float folderW = pickX - 6 - INPUT_X;
 		if (m_FolderChoices.Count() == 0)
 		{
@@ -884,49 +884,49 @@ class VPPXECreateTab : ScriptedWidgetEventHandler
 		}
 
 		float kindW = Math.Clamp((m_RightW - INPUT_X - 34) / 5, 70, 150);
-		m_BtnKindTypes.SetPos(INPUT_X, KIND_Y);
-		m_BtnKindTypes.SetSize(kindW, ROW_H);
-		m_BtnKindMessages.SetPos(INPUT_X + kindW + 6, KIND_Y);
-		m_BtnKindMessages.SetSize(kindW, ROW_H);
-		m_BtnKindEvents.SetPos(INPUT_X + 2 * (kindW + 6), KIND_Y);
-		m_BtnKindEvents.SetSize(kindW, ROW_H);
-		m_BtnKindSpawnable.SetPos(INPUT_X + 3 * (kindW + 6), KIND_Y);
-		m_BtnKindSpawnable.SetSize(kindW, ROW_H);
-		m_BtnKindPresets.SetPos(INPUT_X + 4 * (kindW + 6), KIND_Y);
-		m_BtnKindPresets.SetSize(kindW, ROW_H);
-		m_InputFolder.SetPos(INPUT_X, FOLDER_Y);
-		m_InputFolder.SetSize(folderW, ROW_H);
+		VPPXEScale.Pos(m_BtnKindTypes, INPUT_X, KIND_Y);
+		VPPXEScale.Size(m_BtnKindTypes, kindW, ROW_H);
+		VPPXEScale.Pos(m_BtnKindMessages, INPUT_X + kindW + 6, KIND_Y);
+		VPPXEScale.Size(m_BtnKindMessages, kindW, ROW_H);
+		VPPXEScale.Pos(m_BtnKindEvents, INPUT_X + 2 * (kindW + 6), KIND_Y);
+		VPPXEScale.Size(m_BtnKindEvents, kindW, ROW_H);
+		VPPXEScale.Pos(m_BtnKindSpawnable, INPUT_X + 3 * (kindW + 6), KIND_Y);
+		VPPXEScale.Size(m_BtnKindSpawnable, kindW, ROW_H);
+		VPPXEScale.Pos(m_BtnKindPresets, INPUT_X + 4 * (kindW + 6), KIND_Y);
+		VPPXEScale.Size(m_BtnKindPresets, kindW, ROW_H);
+		VPPXEScale.Pos(m_InputFolder, INPUT_X, FOLDER_Y);
+		VPPXEScale.Size(m_InputFolder, folderW, ROW_H);
 		float fileW = m_RightW - 10 - INPUT_X;
 		if (fileW < 60)
 		{
 			fileW = 60;
 		}
 
-		m_InputFile.SetPos(INPUT_X, FILE_Y);
-		m_InputFile.SetSize(fileW, ROW_H);
-		m_TxtRules.SetPos(INPUT_X, RULES_Y);
-		m_TxtRules.SetSize(fileW, 18);
+		VPPXEScale.Pos(m_InputFile, INPUT_X, FILE_Y);
+		VPPXEScale.Size(m_InputFile, fileW, ROW_H);
+		VPPXEScale.Pos(m_TxtRules, INPUT_X, RULES_Y);
+		VPPXEScale.Size(m_TxtRules, fileW, 18);
 		float cardW = m_RightW - 20;
-		m_PreviewCard.SetPos(10, PREVIEW_Y);
-		m_PreviewCard.SetSize(cardW, PREVIEW_H);
-		m_TxtPreview.SetPos(8, 6);
-		m_TxtPreview.SetSize(cardW - 16, PREVIEW_H - 12);
-		m_TxtStatus.SetPos(10, STATUS_Y);
-		m_TxtStatus.SetSize(cardW, 22);
+		VPPXEScale.Pos(m_PreviewCard, 10, PREVIEW_Y);
+		VPPXEScale.Size(m_PreviewCard, cardW, PREVIEW_H);
+		VPPXEScale.Pos(m_TxtPreview, 8, 6);
+		VPPXEScale.Size(m_TxtPreview, cardW - 16, PREVIEW_H - 12);
+		VPPXEScale.Pos(m_TxtStatus, 10, STATUS_Y);
+		VPPXEScale.Size(m_TxtStatus, cardW, 22);
 		float createW = ButtonWidth("#VSTR_XMLE_CR_BTN_CREATE");
 		float openW = ButtonWidth("#VSTR_XMLE_CR_BTN_OPEN");
-		m_BtnCreate.SetPos(10, BUTTONS_Y);
-		m_BtnCreate.SetSize(createW, BUTTON_H);
-		m_BtnOpen.SetPos(10 + createW + 8, BUTTONS_Y);
-		m_BtnOpen.SetSize(openW, BUTTON_H);
+		VPPXEScale.Pos(m_BtnCreate, 10, BUTTONS_Y);
+		VPPXEScale.Size(m_BtnCreate, createW, BUTTON_H);
+		VPPXEScale.Pos(m_BtnOpen, 10 + createW + 8, BUTTONS_Y);
+		VPPXEScale.Size(m_BtnOpen, openW, BUTTON_H);
 		float noteH = m_RightH - NOTE_Y - 8;
 		if (noteH < 30)
 		{
 			noteH = 30;
 		}
 
-		m_TxtNote.SetPos(10, NOTE_Y);
-		m_TxtNote.SetSize(cardW, noteH);
+		VPPXEScale.Pos(m_TxtNote, 10, NOTE_Y);
+		VPPXEScale.Size(m_TxtNote, cardW, noteH);
 	}
 
 	protected float ButtonWidth(string key)

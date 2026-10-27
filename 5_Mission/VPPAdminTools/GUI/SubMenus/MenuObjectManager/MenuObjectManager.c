@@ -16,6 +16,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	private CheckBoxWidget           m_chkSnapObjs;
 	private CheckBoxWidget           m_chkGroundMode;
 	private CheckBoxWidget           m_chkObjSurfaceSnap;
+	private CheckBoxWidget           m_chkConformTerrain;
 	private int 	 		  		 m_RotationX;
 	private int 	 		  		 m_RotationY;
 	private vector   		  		 m_ItemOrientation;
@@ -77,6 +78,7 @@ class MenuObjectManager extends AdminHudSubMenu
 		m_chkSnapObjs  = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkSnapObjs"));
 		m_chkGroundMode = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkEnableNoClip"));
 		m_chkObjSurfaceSnap = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkObjSurfaceSnap"));
+		m_chkConformTerrain = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("chkConformTerrain"));
 		m_btnSaveChanges  = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSaveChanges"));
 		m_btnSendEventGroup = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnSendEventGroup"));
 		m_btnDiscardEventBuild = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("btnDiscardEventBuild"));
@@ -234,10 +236,26 @@ class MenuObjectManager extends AdminHudSubMenu
 				}
 				tm[3] = cursor_pos;
 			}
-			
+
+			//GetTransform may carry the object's scale in the axes: hand SetTransform a pure rotation and put the
+			//saved scale back afterwards, so a scaled object neither resets nor compounds while it is dragged
+			vector axisX = tm[0];
+			vector axisY = tm[1];
+			vector axisZ = tm[2];
+			tm[0] = axisX.Normalized();
+			tm[1] = axisY.Normalized();
+			tm[2] = axisZ.Normalized();
 			worldObject.SetTransform(tm);
+			float parentScale = ScaleOfObject(worldObject);
+			bool conform = m_chkConformTerrain && m_chkConformTerrain.IsChecked() && !g_Game.IsLeftAltHolding() && !g_Game.IsLShiftHolding();
+			if (conform)
+			{
+				ConformToTerrain(worldObject, tm[3]);
+			}
+
+			KeepScale(worldObject, parentScale);
 			offSetPos = tm[3] - offSetPos;
-			
+
 			array<ref SpawnedBuilding> buildings = m_SelectedSetData.GetBuildings();
 			foreach(SpawnedBuilding bld: buildings)
 			{
@@ -256,6 +274,7 @@ class MenuObjectManager extends AdminHudSubMenu
 				else if (g_Game.IsLShiftHolding()) //Rotation axis
 				{
 					bld.GetObject().SetOrientation(worldObject.GetOrientation());
+					KeepScale(bld.GetObject(), bld.GetScale());
 				}
 
 				//position
@@ -283,6 +302,11 @@ class MenuObjectManager extends AdminHudSubMenu
 						childPos[1] = GetGame().SurfaceY(childPos[0], childPos[2]) + ((minMax[1][1] - minMax[0][1]) / 2);
 					}
 					bld.GetObject().SetPosition(childPos);
+					if (conform)
+					{
+						ConformToTerrain(bld.GetObject(), childPos);
+						KeepScale(bld.GetObject(), bld.GetScale());
+					}
 				}
 			}
 		}
@@ -613,8 +637,55 @@ class MenuObjectManager extends AdminHudSubMenu
 	void UpdateBuildingAttributes(SpawnedBuilding target)
 	{
 		SpawnedBuilding building = m_SelectedSetData.GetSpawnedBuilding(target);
-		if (target != null)
+		if (target != null && building != null)
+		{
 			building.SetActive(target.GetActive());
+			building.SetScale(target.GetScale());
+		}
+	}
+
+	// The saved scale of a placed object of the open set (0 = not one of its objects).
+	protected float ScaleOfObject(Object obj)
+	{
+		if (!obj || !m_SelectedSetData)
+			return 0;
+
+		SpawnedBuilding building = m_SelectedSetData.GetBuildingByType(obj);
+		if (!building)
+			return 0;
+
+		return building.GetScale();
+	}
+
+	protected void KeepScale(Object obj, float scale)
+	{
+		if (!obj || scale <= 0)
+			return;
+
+		if (Math.AbsFloat(obj.GetScale() - scale) < 0.0005)
+			return;
+
+		obj.SetScale(scale);
+	}
+
+	// Conform To Terrain: up = the terrain normal under pos, heading = the object's current yaw laid onto that slope.
+	protected void ConformToTerrain(Object obj, vector pos)
+	{
+		vector up = GetGame().SurfaceGetNormal(pos[0], pos[2]);
+		vector heading = obj.GetDirection();
+		heading[1] = 0;
+		if (heading.Length() < 0.001)
+			heading = "0 0 1";
+
+		heading = heading.Normalized();
+		float along = vector.Dot(heading, up);
+		heading = heading - (up * along);
+		heading = heading.Normalized();
+
+		vector mat[4];
+		Math3D.DirectionAndUpMatrix(heading, up, mat);
+		mat[3] = pos;
+		obj.SetTransform(mat);
 	}
 	
 	void SetSelectedObject(Object obj, bool showNotification = false, bool forceMultiSelect = false)
@@ -904,7 +975,7 @@ class MenuObjectManager extends AdminHudSubMenu
 	{
 		Param1<ref BuildingSet> data;
 		if(!ctx.Read(data)) return;
-		
+
 		if(type == CallType.Client)
 		{
 			//a server set opened over a build drops the build

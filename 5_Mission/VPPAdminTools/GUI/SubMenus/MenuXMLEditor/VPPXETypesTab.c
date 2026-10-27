@@ -13,6 +13,10 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 	const static float INSP_HEADER_H = 96.0;
 	//the shared dropdown prefab lays out at most 50 rows (dropdown_content GridSpacer 'Rows 50')
 	const static int MOVE_DD_MAX_ROWS = 50;
+	// FIND IN WORLD: the orange fill behind the label fades between these alphas once every FIND_PULSE_PERIOD seconds
+	const static float FIND_PULSE_PERIOD = 1.6;
+	const static float FIND_PULSE_MIN = 0.1;
+	const static float FIND_PULSE_MAX = 0.5;
 
 	protected MenuXMLEditor m_Owner;
 	protected Widget m_Root;
@@ -45,6 +49,9 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 	protected ButtonWidget m_BtnMoveType;
 	protected ButtonWidget m_BtnRenameType;
 	protected ButtonWidget m_BtnDeleteType;
+	protected ButtonWidget m_BtnFindInWorld;
+	protected Widget m_FindInWorldGlow;
+	protected float m_FindPulseTime;
 	protected Widget m_DefSelectHost;
 	protected Widget m_MoveTargetHost;
 	protected ref VPPDropDownMenu m_DefDD;
@@ -261,6 +268,8 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 		m_BtnMoveType = ButtonWidget.Cast(m_Root.FindAnyWidget("BtnMoveType"));
 		m_BtnRenameType = ButtonWidget.Cast(m_Root.FindAnyWidget("BtnRenameType"));
 		m_BtnDeleteType = ButtonWidget.Cast(m_Root.FindAnyWidget("BtnDeleteType"));
+		m_BtnFindInWorld = ButtonWidget.Cast(m_Root.FindAnyWidget("BtnFindInWorld"));
+		m_FindInWorldGlow = m_Root.FindAnyWidget("FindInWorldGlow");
 		m_DefSelectHost = m_Root.FindAnyWidget("DefSelectHost");
 		m_MoveTargetHost = m_Root.FindAnyWidget("MoveTargetHost");
 		m_TxtLifetimeHuman = TextWidget.Cast(m_Root.FindAnyWidget("TxtLifetimeHuman"));
@@ -560,21 +569,28 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 			inspH = 60;
 		}
 
-		m_InspScroll.SetSize(1, inspH);
+		VPPXEScale.Size(m_InspScroll, 1, inspH);
 		float bulkH = rootUnitsH - 34 - 38;
 		if (bulkH < 60)
 		{
 			bulkH = 60;
 		}
 
-		m_BulkScroll.SetSize(1, bulkH);
+		VPPXEScale.Size(m_BulkScroll, 1, bulkH);
 		float clipW = rootUnitsW - 100 - 332;
 		if (clipW < 60)
 		{
 			clipW = 60;
 		}
 
-		m_TitleClip.SetSize(clipW, INSP_HEADER_H);
+		VPPXEScale.Size(m_TitleClip, clipW, INSP_HEADER_H);
+		float findW = LabelWidth("#VSTR_XMLE_BTN_FIND_IN_WORLD", 110, 220) + 18;
+		if (findW > clipW)
+		{
+			findW = clipW;
+		}
+
+		VPPXEScale.Size(m_BtnFindInWorld, findW, 26);
 		LayoutActionBar();
 		RenderDetailsTexts();
 		m_InspSpacer.Update();
@@ -623,12 +639,35 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 			revertW = 150;
 		}
 
-		m_BtnSave.SetPos(6, 0);
-		m_BtnSave.SetSize(saveW + 18, 26);
-		m_BtnRevertAll.SetPos(6 + saveW + 18 + 6, 0);
-		m_BtnRevertAll.SetSize(allW, 26);
-		m_BtnRevert.SetPos(6 + saveW + 18 + 6 + allW + 6, 0);
-		m_BtnRevert.SetSize(revertW, 26);
+		VPPXEScale.Pos(m_BtnSave, 6, 0);
+		VPPXEScale.Size(m_BtnSave, saveW + 18, 26);
+		VPPXEScale.Pos(m_BtnRevertAll, 6 + saveW + 18 + 6, 0);
+		VPPXEScale.Size(m_BtnRevertAll, allW, 26);
+		VPPXEScale.Pos(m_BtnRevert, 6 + saveW + 18 + 6 + allW + 6, 0);
+		VPPXEScale.Size(m_BtnRevert, revertW, 26);
+	}
+
+	// Fades the FIND IN WORLD fill in and out (a smooth sine between FIND_PULSE_MIN and FIND_PULSE_MAX).
+	protected void PulseFindInWorld(float timeslice)
+	{
+		float phase = 0;
+		float wave = 0;
+		float alpha = 0;
+		if (!m_FindInWorldGlow || !m_BtnFindInWorld || !m_BtnFindInWorld.IsVisible())
+		{
+			return;
+		}
+
+		m_FindPulseTime = m_FindPulseTime + timeslice;
+		if (m_FindPulseTime >= FIND_PULSE_PERIOD)
+		{
+			m_FindPulseTime = m_FindPulseTime - FIND_PULSE_PERIOD;
+		}
+
+		phase = m_FindPulseTime / FIND_PULSE_PERIOD * Math.PI2;
+		wave = Math.Sin(phase);
+		alpha = FIND_PULSE_MIN + (FIND_PULSE_MAX - FIND_PULSE_MIN) * (0.5 + 0.5 * wave);
+		m_FindInWorldGlow.SetAlpha(alpha);
 	}
 
 	//a rail toggle can change the root size after the single ResizeActiveTab read a stale width
@@ -663,6 +702,7 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 		CheckRootResize();
 		ApplyMovePageNext();
 		CheckSpawnablesRevision();
+		PulseFindInWorld(timeslice);
 		m_RefreshTimer += timeslice;
 		if (m_RefreshTimer >= REFRESH_INTERVAL)
 		{
@@ -1686,7 +1726,7 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 			lines = 1;
 		}
 
-		txt.SetSize(0.98, lines * 16 + 4);
+		VPPXEScale.Size(txt, 0.98, lines * 16 + 4);
 	}
 
 	//---------------------------------------------------------------- chips vocabulary
@@ -1878,6 +1918,12 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 			sig = sig | 256;
 		}
 
+		bool liveScan = HasPerm(VPPXEPerm.LIVE_SCAN);
+		if (liveScan)
+		{
+			sig = sig | 512;
+		}
+
 		if (!force && sig == m_StateSig)
 		{
 			return;
@@ -1919,6 +1965,7 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 		m_ChipsValue.Enable(canEdit);
 		m_ChipsTag.Enable(canEdit);
 
+		m_BtnFindInWorld.Show(liveScan);
 		m_BtnDuplicate.Show(addRemove);
 		m_BtnMoveType.Show(addRemove);
 		m_BtnRenameType.Show(addRemove);
@@ -3398,6 +3445,16 @@ class VPPXETypesTab : ScriptedWidgetEventHandler
 			if (m_TypeName != "" && m_Owner)
 			{
 				m_Owner.OpenSpawnablesType(m_TypeName);
+			}
+
+			return true;
+		}
+
+		if (w == m_BtnFindInWorld)
+		{
+			if (m_TypeName != "" && m_Owner)
+			{
+				m_Owner.FindTypeInWorld(m_TypeName);
 			}
 
 			return true;

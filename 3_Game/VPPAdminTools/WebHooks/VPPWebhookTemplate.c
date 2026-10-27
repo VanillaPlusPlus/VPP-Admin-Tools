@@ -714,16 +714,27 @@ class VPPWebhookTemplate : Managed
 
 	// ---------------------------------------------------------------- helpers
 
+	// The special characters are built from their codes: a string literal holding an escaped backslash followed by
+	// another escape (backslash backslash backslash quote) makes the script preprocessor (CParser) fail with a
+	// quoted string not closed error.
 	static string EscapeJson(string value)
 	{
-		string escaped = value;
-		escaped.Replace("\\", "\\\\");
-		escaped.Replace("\"", "\\\"");
-		escaped.Replace("\n", "\\n");
+		int backslashCode = 92;
+		int quoteCode = 34;
+		int newlineCode = 10;
 		int carriageCode = 13;
+		int tabCode = 9;
+		string backslash = backslashCode.AsciiToString();
+		string quote = quoteCode.AsciiToString();
+		string newline = newlineCode.AsciiToString();
 		string carriage = carriageCode.AsciiToString();
-		escaped.Replace(carriage, "\\r");
-		escaped.Replace("\t", "\\t");
+		string tab = tabCode.AsciiToString();
+		string escaped = value;
+		escaped.Replace(backslash, backslash + backslash);
+		escaped.Replace(quote, backslash + quote);
+		escaped.Replace(newline, backslash + "n");
+		escaped.Replace(carriage, backslash + "r");
+		escaped.Replace(tab, backslash + "t");
 		return escaped;
 	}
 

@@ -1,9 +1,14 @@
 // XML Editor: areaflags.map sampler (DIST-ALGO v2.1 R7).
-// Layout: a 24 B header of 6 ints (W, H, worldX, worldZ, 32, 0), then a u32 usage plane of W*H cells,
-// then a u8 value plane of W*H cells. The file is streamed with ReadFile(fh, int[4096], 16384) inside
-// budgeted steps (byte length, advancing position: CF_ModStorageModule.c:111) and only the sorted unique
-// cells that are needed are kept. Validation: header sanity, total bytes == 24 + 5*W*H, and one more read
-// returns 0. A cache in $profile is used when its key matches; a once-per-boot background job revalidates it.
+// Layout, as the server reads it (DayZServer 1.30 sub_1406B7AA0 / sub_1406D34A0 / sub_1406D3420): 4 ints
+// (W, H, worldX, worldZ), then the usage grid, then the value grid. Each grid is one int "bits per cell" followed
+// by H rows of W / (32 / bits) ints; a cell sits in int (col / cpw + row * wordsPerRow) with cpw = 32 / bits cells
+// per int, packed from the high bits down: (int >> bits * (cpw - col % cpw - 1)) & mask. Vanilla 1.2x+ files are
+// 32 / 8 bits, older missions 16 / 4, map editors also write 32 / 16. Bytes after the value grid are never read by
+// the server (some editors append data there), so they are ignored here too.
+// Cell of a position: col = (int)(clamp(x, 0, worldX - 1) * W / worldX), row likewise from z and H.
+// The file is streamed with ReadFile(fh, int[4096], 16384) inside budgeted steps (byte length, advancing position:
+// CF_ModStorageModule.c:111) up to the end of the value grid, and only the sorted unique cells that are needed are
+// kept. A cache in $profile is used when its key matches; a once-per-boot background job revalidates it.
 
 class VPPXEAreaFlagsCache
 {
@@ -37,6 +42,9 @@ class VPPXEAreaSamples : Managed
 	int H;
 	float WorldX;
 	float WorldZ;
+	// cells per metre on each axis (W / worldX, H / worldZ), as the server computes them
+	float ColsPerMetre;
+	float RowsPerMetre;
 	ref array<int> HeaderInts;
 	int FirstChunkHash;
 	int ByteTotal;
@@ -54,6 +62,8 @@ class VPPXEAreaSamples : Managed
 		H = 0;
 		WorldX = 0;
 		WorldZ = 0;
+		ColsPerMetre = 0;
+		RowsPerMetre = 0;
 		FirstChunkHash = 0;
 		ByteTotal = 0;
 		LastChunkHash = 0;
@@ -64,22 +74,27 @@ class VPPXEAreaSamples : Managed
 		Index = new map<int, int>();
 	}
 
-	void SetHeader(int w, int h, int worldX, int worldZ)
+	// the cache key keeps the header and the usage grid's bits per cell (5 ints; a cache from the old 6-int key
+	// never matches, so its samples, taken with the earlier wrong cell offsets, are dropped)
+	void SetHeader(int w, int h, int worldX, int worldZ, int usageBits)
 	{
 		W = w;
 		H = h;
 		WorldX = worldX;
 		WorldZ = worldZ;
+		float wf = w;
+		float hf = h;
+		ColsPerMetre = wf / WorldX;
+		RowsPerMetre = hf / WorldZ;
 		HeaderInts.Clear();
 		HeaderInts.Insert(w);
 		HeaderInts.Insert(h);
 		HeaderInts.Insert(worldX);
 		HeaderInts.Insert(worldZ);
-		HeaderInts.Insert(32);
-		HeaderInts.Insert(0);
+		HeaderInts.Insert(usageBits);
 	}
 
-	// R7: col = clamp(floor(x / (worldX / W)), 0, W-1); row = clamp(floor(z / (worldZ / H)), 0, H-1)
+	// R7, as the server: col = (int)(clamp(x, 0, worldX - 1) * W / worldX), row likewise; key = row * W + col
 	int CellOf(float x, float z)
 	{
 		if (W < 1 || H < 1)
@@ -87,10 +102,12 @@ class VPPXEAreaSamples : Managed
 			return 0;
 		}
 
-		float cellW = WorldX / W;
-		float cellH = WorldZ / H;
-		int col = Math.Floor(x / cellW);
-		int row = Math.Floor(z / cellH);
+		float cx = Math.Clamp(x, 0, WorldX - 1);
+		float cz = Math.Clamp(z, 0, WorldZ - 1);
+		float fx = cx * ColsPerMetre;
+		float fz = cz * RowsPerMetre;
+		int col = Math.Floor(fx);
+		int row = Math.Floor(fz);
 		col = VPPXEDistUtil.ClampInt(col, 0, W - 1);
 		row = VPPXEDistUtil.ClampInt(row, 0, H - 1);
 		return row * W + col;
@@ -164,9 +181,25 @@ class VPPXEAreaFlags : Managed
 	protected int m_ChunkStart;
 	protected int m_ChunkEnd;
 	protected int m_Total;
+	// end of the value grid (an estimate until its bits-per-cell int was read, see m_VKnown)
 	protected int m_Expected;
-	protected int m_ValueBase;
 	protected bool m_ShortSeen;
+	// usage grid: bits per cell, cells per int, ints per row, int count, mask, byte offset of its first int
+	protected int m_UBits;
+	protected int m_UCpw;
+	protected int m_UWpr;
+	protected int m_UWords;
+	protected int m_UMask;
+	protected int m_UStart;
+	// value grid: the same, known once the int at m_VHdr (right after the usage grid) was streamed
+	protected bool m_VKnown;
+	protected int m_VHdr;
+	protected int m_VBits;
+	protected int m_VCpw;
+	protected int m_VWpr;
+	protected int m_VWords;
+	protected int m_VMask;
+	protected int m_VStart;
 	protected int m_UCur;
 	protected int m_VCur;
 	protected int m_Phase;
@@ -197,8 +230,21 @@ class VPPXEAreaFlags : Managed
 		m_ChunkEnd = 0;
 		m_Total = 0;
 		m_Expected = 0;
-		m_ValueBase = 0;
 		m_ShortSeen = false;
+		m_UBits = 0;
+		m_UCpw = 1;
+		m_UWpr = 0;
+		m_UWords = 0;
+		m_UMask = 0;
+		m_UStart = 0;
+		m_VKnown = false;
+		m_VHdr = 0;
+		m_VBits = 0;
+		m_VCpw = 1;
+		m_VWpr = 0;
+		m_VWords = 0;
+		m_VMask = 0;
+		m_VStart = 0;
 		m_UCur = 0;
 		m_VCur = 0;
 		m_Phase = PH_OPEN;
@@ -457,7 +503,7 @@ class VPPXEAreaFlags : Managed
 
 		m_FileOpen = true;
 		int n = ReadChunk();
-		if (n < 24)
+		if (n < 20)
 		{
 			Fail("header too short");
 			return;
@@ -467,20 +513,26 @@ class VPPXEAreaFlags : Managed
 		int h = BufAt(1);
 		int worldX = BufAt(2);
 		int worldZ = BufAt(3);
-		int bits = BufAt(4);
-		int pad = BufAt(5);
-		bool sane = w >= 1 && w <= MAX_DIM && h >= 1 && h <= MAX_DIM && worldX > 0 && worldZ > 0 && bits == 32 && pad == 0;
+		int usageBits = BufAt(4);
+		bool sane = w >= 1 && w <= MAX_DIM && h >= 1 && h <= MAX_DIM && worldX > 0 && worldZ > 0;
 		if (!sane)
 		{
-			string headerText = w.ToString() + " " + h.ToString() + " " + worldX.ToString() + " " + worldZ.ToString() + " " + bits.ToString() + " " + pad.ToString();
+			string headerText = w.ToString() + " " + h.ToString() + " " + worldX.ToString() + " " + worldZ.ToString();
 			Fail("unexpected header " + headerText);
 			return;
 		}
 
-		m_Out.SetHeader(w, h, worldX, worldZ);
-		int cellsTotal = w * h;
-		m_Expected = 24 + 5 * cellsTotal;
-		m_ValueBase = 24 + 4 * cellsTotal;
+		m_Out.SetHeader(w, h, worldX, worldZ, usageBits);
+		if (!SetupGrid(usageBits, true, 20))
+		{
+			Fail("unsupported usage grid (" + usageBits.ToString() + " bits per cell)");
+			return;
+		}
+
+		// the value grid's size is only known once its bits-per-cell int was read; until then the percent shown
+		// assumes the vanilla 8 bits
+		m_VHdr = m_UStart + 4 * m_UWords;
+		m_Expected = m_VHdr + 4 + m_UWords / 4;
 		m_Out.FirstChunkHash = HashBuffer(m_CurB, n / 4);
 		if (n < CHUNK_BYTES_READ)
 		{
@@ -651,13 +703,79 @@ class VPPXEAreaFlags : Managed
 		m_Phase = PH_STREAM;
 	}
 
-	// sample the current chunk, then read the next one; validation at EOF
+	// One grid's layout from its bits-per-cell int, as the server's sub_1406D3570: cpw = 32 / bits cells per int,
+	// W / cpw ints per row, mask = the low "bits" bits. 0 or more than 32 bits, or a row of no ints, is refused.
+	protected bool SetupGrid(int bits, bool usageGrid, int start)
+	{
+		int cpw = 0;
+		int wpr = 0;
+		int half = 0;
+		int mask = 0;
+		if (bits < 1 || bits > 32)
+		{
+			return false;
+		}
+
+		cpw = 32 / bits;
+		wpr = m_Out.W / cpw;
+		if (wpr < 1)
+		{
+			return false;
+		}
+
+		half = 1 << (bits - 1);
+		mask = half | (half - 1);
+		if (usageGrid)
+		{
+			m_UBits = bits;
+			m_UCpw = cpw;
+			m_UWpr = wpr;
+			m_UWords = wpr * m_Out.H;
+			m_UMask = mask;
+			m_UStart = start;
+			return true;
+		}
+
+		m_VBits = bits;
+		m_VCpw = cpw;
+		m_VWpr = wpr;
+		m_VWords = wpr * m_Out.H;
+		m_VMask = mask;
+		m_VStart = start;
+		m_VKnown = true;
+		m_Expected = m_VStart + 4 * m_VWords;
+		return true;
+	}
+
+	// index of the int that holds a cell (cell key = row * W + col) in a grid of cpw cells per int, wpr ints per row
+	protected int WordOf(int cell, int cpw, int wpr)
+	{
+		int col = cell % m_Out.W;
+		int row = cell / m_Out.W;
+		return col / cpw + wpr * row;
+	}
+
+	// the cell's bits in its int, packed from the high bits down (the server's sub_1406D3420)
+	protected int CellBits(int word, int cell, int bits, int cpw, int mask)
+	{
+		int col = cell % m_Out.W;
+		int slot = col % cpw;
+		int shift = bits * (cpw - slot - 1);
+		return (word >> shift) & mask;
+	}
+
+	// sample the current chunk, then read the next one; stops at the end of the value grid (later bytes are
+	// never read by the server either)
 	protected void StreamUnit()
 	{
-		SampleCurrent();
-		if (m_Total > m_Expected)
+		if (!SampleCurrent())
 		{
-			Fail("areaflags.map is larger than its header says");
+			return;
+		}
+
+		if (m_VKnown && m_Total >= m_Expected)
+		{
+			FinishStream();
 			return;
 		}
 
@@ -686,43 +804,78 @@ class VPPXEAreaFlags : Managed
 		}
 	}
 
-	protected void SampleCurrent()
+	// Takes the needed cells that lie in the current chunk (cells are sorted, so their ints are in file order in both
+	// grids; every offset is a multiple of 4, so an int never straddles two chunks). A cell past the end of a grid
+	// (W not a multiple of the cells per int) reads 0. False when the value grid's header is unusable (failed).
+	protected bool SampleCurrent()
 	{
+		if (!m_VKnown && m_VHdr >= m_ChunkStart && m_VHdr + 4 <= m_ChunkEnd)
+		{
+			int relHdr = m_VHdr - m_ChunkStart;
+			int valueBits = BufAt(relHdr / 4);
+			int valueStart = m_VHdr + 4;
+			if (!SetupGrid(valueBits, false, valueStart))
+			{
+				Fail("unsupported value grid (" + valueBits.ToString() + " bits per cell)");
+				return false;
+			}
+		}
+
 		int count = m_Cells.Count();
 		while (m_UCur < count)
 		{
 			int cellU = m_Cells[m_UCur];
-			int byteU = 24 + 4 * cellU;
+			int wordU = WordOf(cellU, m_UCpw, m_UWpr);
+			if (wordU >= m_UWords)
+			{
+				m_OutU.Insert(0);
+				m_UCur++;
+				continue;
+			}
+
+			int byteU = m_UStart + 4 * wordU;
 			if (byteU + 4 > m_ChunkEnd)
 			{
 				break;
 			}
 
 			int relU = byteU - m_ChunkStart;
-			m_OutU.Insert(BufAt(relU / 4));
+			int rawU = BufAt(relU / 4);
+			int cellUsage = CellBits(rawU, cellU, m_UBits, m_UCpw, m_UMask);
+			m_OutU.Insert(cellUsage);
 			m_UCur++;
 		}
 
-		if (m_UCur < count)
+		if (m_UCur < count || !m_VKnown)
 		{
-			return;
+			return true;
 		}
 
 		while (m_VCur < count)
 		{
 			int cellV = m_Cells[m_VCur];
-			int byteV = m_ValueBase + cellV;
-			if (byteV >= m_ChunkEnd)
+			int wordV = WordOf(cellV, m_VCpw, m_VWpr);
+			if (wordV >= m_VWords)
+			{
+				m_OutV.Insert(0);
+				m_VCur++;
+				continue;
+			}
+
+			int byteV = m_VStart + 4 * wordV;
+			if (byteV + 4 > m_ChunkEnd)
 			{
 				break;
 			}
 
 			int relV = byteV - m_ChunkStart;
-			int word = BufAt(relV / 4);
-			int shift = 8 * (relV % 4);
-			m_OutV.Insert((word >> shift) & 255);
+			int rawV = BufAt(relV / 4);
+			int cellValue = CellBits(rawV, cellV, m_VBits, m_VCpw, m_VMask);
+			m_OutV.Insert(cellValue);
 			m_VCur++;
 		}
+
+		return true;
 	}
 
 	protected void FinishStream()
@@ -738,9 +891,15 @@ class VPPXEAreaFlags : Managed
 		}
 
 		CloseStream();
-		if (m_Total != m_Expected)
+		if (!m_VKnown)
 		{
-			Fail("size " + m_Total.ToString() + " B, expected " + m_Expected.ToString() + " B");
+			Fail("areaflags.map ends inside its usage grid (" + m_Total.ToString() + " B)");
+			return;
+		}
+
+		if (m_Total < m_Expected)
+		{
+			Fail("size " + m_Total.ToString() + " B, expected at least " + m_Expected.ToString() + " B");
 			return;
 		}
 
@@ -810,7 +969,8 @@ class VPPXEAreaFlags : Managed
 				return;
 			}
 
-			m_Result = "streamed " + m_Total.ToString() + " B, " + m_Out.Cells.Count().ToString() + " cells sampled (" + m_Reads.ToString() + " reads in " + ms.ToString() + " ms)";
+			string gridText = m_UBits.ToString() + "/" + m_VBits.ToString() + " bit grids";
+			m_Result = "streamed " + m_Total.ToString() + " B (" + gridText + "), " + m_Out.Cells.Count().ToString() + " cells sampled (" + m_Reads.ToString() + " reads in " + ms.ToString() + " ms)";
 			if (m_Revalidate)
 			{
 				m_Result = "revalidated, samples replaced; " + m_Result;

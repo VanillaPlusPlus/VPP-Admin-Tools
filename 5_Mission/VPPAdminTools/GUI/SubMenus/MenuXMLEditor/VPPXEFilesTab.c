@@ -765,17 +765,21 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 	protected void UpdateLegend()
 	{
 		m_LegendParts.Clear();
-		m_LegendParts.Insert(Tr("#VSTR_XMLE_FILES_LEGEND"));
 		VPPXESessionInfo session = GetSession();
 		if (session)
 		{
 			m_LegendParts.Insert(Tr(VPPXEText.EolKey(session.EolMode)));
 		}
 
-		string text = m_LegendParts[0];
-		for (int i = 1; i < m_LegendParts.Count(); i++)
+		string text = "";
+		for (int i = 0; i < m_LegendParts.Count(); i++)
 		{
-			text = text + "\n" + m_LegendParts[i];
+			if (i > 0)
+			{
+				text = text + "\n";
+			}
+
+			text = text + m_LegendParts[i];
 		}
 
 		if (m_TxtFilesLegend)
@@ -1021,13 +1025,13 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 		int legendLines = EstimateLines(m_LegendParts, innerW);
 		float legendH = legendLines * LINE_H + 4;
 		float legendY = m_LeftH - legendH - 6;
-		m_TxtFilesLegend.SetPos(6, legendY);
-		m_TxtFilesLegend.SetSize(innerW, legendH);
+		VPPXEScale.Pos(m_TxtFilesLegend, 6, legendY);
+		VPPXEScale.Size(m_TxtFilesLegend, innerW, legendH);
 		float removeY = legendY - REMOVE_H - 6;
 		if (m_BtnRemove)
 		{
-			m_BtnRemove.SetPos(6, removeY);
-			m_BtnRemove.SetSize(innerW, REMOVE_H);
+			VPPXEScale.Pos(m_BtnRemove, 6, removeY);
+			VPPXEScale.Size(m_BtnRemove, innerW, REMOVE_H);
 		}
 
 		float listH = removeY - 32 - 4;
@@ -1036,8 +1040,8 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 			listH = 30;
 		}
 
-		m_FilesList.SetPos(6, 32);
-		m_FilesList.SetSize(innerW, listH);
+		VPPXEScale.Pos(m_FilesList, 6, 32);
+		VPPXEScale.Size(m_FilesList, innerW, listH);
 	}
 
 	// Right: IssuesToolbar (the last child of FilesRight, placed at the top) with the severity host
@@ -1051,11 +1055,11 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 
 		float hostW = Math.Clamp(m_RightW * 0.3, 140, 200);
 		float hostX = m_RightW - 6 - 26 - 6 - hostW;
-		m_SevHost.SetPos(hostX, 3);
-		m_SevHost.SetSize(hostW, 24);
+		VPPXEScale.Pos(m_SevHost, hostX, 3);
+		VPPXEScale.Size(m_SevHost, hostW, 24);
 		float titleW = 12 + EstimateTextPx(Tr("#VSTR_XMLE_ISS_TITLE"), 9);
-		m_TxtIssuesTitle.SetPos(28, 0);
-		m_TxtIssuesTitle.SetSize(titleW, TOOLBAR_H);
+		VPPXEScale.Pos(m_TxtIssuesTitle, 28, 0);
+		VPPXEScale.Size(m_TxtIssuesTitle, titleW, TOOLBAR_H);
 		float countX = 28 + titleW + 6;
 		float countW = hostX - countX - 8;
 		if (countW < 20)
@@ -1063,8 +1067,8 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 			countW = 20;
 		}
 
-		m_TxtIssuesCount.SetPos(countX, 0);
-		m_TxtIssuesCount.SetSize(countW, TOOLBAR_H);
+		VPPXEScale.Pos(m_TxtIssuesCount, countX, 0);
+		VPPXEScale.Size(m_TxtIssuesCount, countW, TOOLBAR_H);
 		float listY = TOOLBAR_H + 4;
 		float listH = m_RightH - listY - HINT_H - 8;
 		if (listH < 30)
@@ -1072,10 +1076,10 @@ class VPPXEFilesTab : ScriptedWidgetEventHandler
 			listH = 30;
 		}
 
-		m_IssuesList.SetPos(6, listY);
-		m_IssuesList.SetSize(m_RightW - 12, listH);
-		m_TxtIssuesHint.SetPos(8, m_RightH - HINT_H - 4);
-		m_TxtIssuesHint.SetSize(m_RightW - 16, HINT_H);
+		VPPXEScale.Pos(m_IssuesList, 6, listY);
+		VPPXEScale.Size(m_IssuesList, m_RightW - 12, listH);
+		VPPXEScale.Pos(m_TxtIssuesHint, 8, m_RightH - HINT_H - 4);
+		VPPXEScale.Size(m_TxtIssuesHint, m_RightW - 16, HINT_H);
 	}
 
 	// ---------------------------------------------------------------- helpers

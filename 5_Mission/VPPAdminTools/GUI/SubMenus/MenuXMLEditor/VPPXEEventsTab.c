@@ -4041,13 +4041,13 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 		}
 
 		float hostW = Math.Clamp(m_LeftW * 0.55, 150, 320);
-		m_FileHost.SetPos(m_LeftW - hostW - 4, 2);
-		m_FileHost.SetSize(hostW, 24);
+		VPPXEScale.Pos(m_FileHost, m_LeftW - hostW - 4, 2);
+		VPPXEScale.Size(m_FileHost, hostW, 24);
 		float filterW = Math.Clamp(m_LeftW * 0.42, 120, 240);
-		m_FilterHost.SetPos(m_LeftW - filterW - 6, 34);
-		m_FilterHost.SetSize(filterW, 24);
-		m_SearchPanel.SetPos(6, 34);
-		m_SearchPanel.SetSize(m_LeftW - filterW - 6 - 6 - 6, 24);
+		VPPXEScale.Pos(m_FilterHost, m_LeftW - filterW - 6, 34);
+		VPPXEScale.Size(m_FilterHost, filterW, 24);
+		VPPXEScale.Pos(m_SearchPanel, 6, 34);
+		VPPXEScale.Size(m_SearchPanel, m_LeftW - filterW - 6 - 6 - 6, 24);
 		float footerY = m_LeftH - FOOTER_H;
 		float listH = footerY - 66 - 4;
 		if (listH < 40)
@@ -4055,15 +4055,15 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			listH = 40;
 		}
 
-		m_EvtList.SetPos(6, 66);
-		m_EvtList.SetSize(m_LeftW - 12, listH);
+		VPPXEScale.Pos(m_EvtList, 6, 66);
+		VPPXEScale.Size(m_EvtList, m_LeftW - 12, listH);
 		float buttonW = (m_LeftW - 12 - 12) / 3;
-		m_BtnAdd.SetPos(6, footerY + 3);
-		m_BtnAdd.SetSize(buttonW, 30);
-		m_BtnDup.SetPos(6 + buttonW + 6, footerY + 3);
-		m_BtnDup.SetSize(buttonW, 30);
-		m_BtnDelete.SetPos(6 + 2 * (buttonW + 6), footerY + 3);
-		m_BtnDelete.SetSize(buttonW, 30);
+		VPPXEScale.Pos(m_BtnAdd, 6, footerY + 3);
+		VPPXEScale.Size(m_BtnAdd, buttonW, 30);
+		VPPXEScale.Pos(m_BtnDup, 6 + buttonW + 6, footerY + 3);
+		VPPXEScale.Size(m_BtnDup, buttonW, 30);
+		VPPXEScale.Pos(m_BtnDelete, 6 + 2 * (buttonW + 6), footerY + 3);
+		VPPXEScale.Size(m_BtnDelete, buttonW, 30);
 	}
 
 	// Right: header, then the form rows top down (name, state, the numbers in two columns, position / limit / flags
@@ -4077,10 +4077,10 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 
 		float innerW = m_RightW - 20;
 		float formH = m_RightH - 32 - BAR_H - 4;
-		m_Form.SetPos(0, 32);
-		m_Form.SetSize(m_RightW, formH);
-		m_TxtEmpty.SetPos(20, 60);
-		m_TxtEmpty.SetSize(m_RightW - 40, 80);
+		VPPXEScale.Pos(m_Form, 0, 32);
+		VPPXEScale.Size(m_Form, m_RightW, formH);
+		VPPXEScale.Pos(m_TxtEmpty, 20, 60);
+		VPPXEScale.Size(m_TxtEmpty, m_RightW - 40, 80);
 		float activeW = 110;
 		float kindW = 110;
 		float nameW = innerW - 64 - kindW - activeW - 18;
@@ -4089,16 +4089,16 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			nameW = 120;
 		}
 
-		m_LblName.SetPos(10, 0);
-		m_LblName.SetSize(60, ROW_H);
-		m_InputName.SetPos(74, 0);
-		m_InputName.SetSize(nameW, ROW_H);
-		m_TxtKind.SetPos(74 + nameW + 8, 0);
-		m_TxtKind.SetSize(kindW, ROW_H);
-		m_BtnActive.SetPos(m_RightW - 10 - activeW, 0);
-		m_BtnActive.SetSize(activeW, ROW_H);
-		m_TxtState.SetPos(10, 32);
-		m_TxtState.SetSize(innerW, 20);
+		VPPXEScale.Pos(m_LblName, 10, 0);
+		VPPXEScale.Size(m_LblName, 60, ROW_H);
+		VPPXEScale.Pos(m_InputName, 74, 0);
+		VPPXEScale.Size(m_InputName, nameW, ROW_H);
+		VPPXEScale.Pos(m_TxtKind, 74 + nameW + 8, 0);
+		VPPXEScale.Size(m_TxtKind, kindW, ROW_H);
+		VPPXEScale.Pos(m_BtnActive, m_RightW - 10 - activeW, 0);
+		VPPXEScale.Size(m_BtnActive, activeW, ROW_H);
+		VPPXEScale.Pos(m_TxtState, 10, 32);
+		VPPXEScale.Size(m_TxtState, innerW, 20);
 		float colW = innerW / 2;
 		for (int i = 0; i < VPPXEEventRules.NUMBER_FIELDS; i++)
 		{
@@ -4109,36 +4109,36 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			TextWidget label = m_LblNum[i];
 			EditBoxWidget input = m_InputNum[i];
 			TextWidget hint = m_TxtHint[i];
-			label.SetPos(x, y);
-			label.SetSize(NUM_LABEL_W, ROW_H);
-			input.SetPos(x + NUM_LABEL_W + 2, y);
-			input.SetSize(NUM_INPUT_W, ROW_H);
-			hint.SetPos(x + NUM_LABEL_W + 2 + NUM_INPUT_W + 4, y);
-			hint.SetSize(colW - NUM_LABEL_W - NUM_INPUT_W - 10, ROW_H);
+			VPPXEScale.Pos(label, x, y);
+			VPPXEScale.Size(label, NUM_LABEL_W, ROW_H);
+			VPPXEScale.Pos(input, x + NUM_LABEL_W + 2, y);
+			VPPXEScale.Size(input, NUM_INPUT_W, ROW_H);
+			VPPXEScale.Pos(hint, x + NUM_LABEL_W + 2 + NUM_INPUT_W + 4, y);
+			VPPXEScale.Size(hint, colW - NUM_LABEL_W - NUM_INPUT_W - 10, ROW_H);
 		}
 
 		PlaceChips(m_LblPosition, m_BtnPos, 188, innerW);
 		PlaceChips(m_LblLimit, m_BtnLim, 220, innerW);
 		PlaceChips(m_LblFlags, m_BtnFlag, 252, innerW);
-		m_LblSecondary.SetPos(10, 284);
-		m_LblSecondary.SetSize(CHIP_LABEL_W, ROW_H);
+		VPPXEScale.Pos(m_LblSecondary, 10, 284);
+		VPPXEScale.Size(m_LblSecondary, CHIP_LABEL_W, ROW_H);
 		float secondaryW = Math.Clamp(innerW * 0.45, 140, 300);
-		m_InputSecondary.SetPos(10 + CHIP_LABEL_W + 2, 284);
-		m_InputSecondary.SetSize(secondaryW, ROW_H);
-		m_TxtSecondaryHint.SetPos(10 + CHIP_LABEL_W + 2 + secondaryW + 6, 284);
-		m_TxtSecondaryHint.SetSize(innerW - CHIP_LABEL_W - secondaryW - 10, ROW_H);
+		VPPXEScale.Pos(m_InputSecondary, 10 + CHIP_LABEL_W + 2, 284);
+		VPPXEScale.Size(m_InputSecondary, secondaryW, ROW_H);
+		VPPXEScale.Pos(m_TxtSecondaryHint, 10 + CHIP_LABEL_W + 2 + secondaryW + 6, 284);
+		VPPXEScale.Size(m_TxtSecondaryHint, innerW - CHIP_LABEL_W - secondaryW - 10, ROW_H);
 		LayoutChildren(innerW, formH);
 		LayoutHeaderChips();
 		LayoutSpawnView(innerW, formH);
 		m_GroupsView.Layout(m_RightW, innerW, formH, m_Unit);
-		m_ActionBar.SetPos(0, m_RightH - BAR_H);
-		m_ActionBar.SetSize(m_RightW, BAR_H);
+		VPPXEScale.Pos(m_ActionBar, 0, m_RightH - BAR_H);
+		VPPXEScale.Size(m_ActionBar, m_RightW, BAR_H);
 	}
 
 	protected void PlaceChips(TextWidget label, array<ButtonWidget> chips, float y, float innerW)
 	{
-		label.SetPos(10, y);
-		label.SetSize(CHIP_LABEL_W, ROW_H);
+		VPPXEScale.Pos(label, 10, y);
+		VPPXEScale.Size(label, CHIP_LABEL_W, ROW_H);
 		int count = chips.Count();
 		float chipW = (innerW - CHIP_LABEL_W - 4 - (count - 1) * 6) / count;
 		for (int i = 0; i < count; i++)
@@ -4146,8 +4146,8 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			ButtonWidget chip = chips[i];
 			if (chip)
 			{
-				chip.SetPos(10 + CHIP_LABEL_W + 4 + i * (chipW + 6), y);
-				chip.SetSize(chipW, ROW_H);
+				VPPXEScale.Pos(chip, 10 + CHIP_LABEL_W + 4 + i * (chipW + 6), y);
+				VPPXEScale.Size(chip, chipW, ROW_H);
 			}
 		}
 	}
@@ -4165,11 +4165,11 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			listH = 60;
 		}
 
-		m_ImgChildren.SetPos(10, titleY + 10);
-		m_TxtChildrenTitle.SetPos(34, titleY);
-		m_TxtChildrenTitle.SetSize(innerW - 24, 20);
-		m_ChildList.SetPos(10, listY);
-		m_ChildList.SetSize(innerW, listH);
+		VPPXEScale.Pos(m_ImgChildren, 10, titleY + 10);
+		VPPXEScale.Pos(m_TxtChildrenTitle, 34, titleY);
+		VPPXEScale.Size(m_TxtChildrenTitle, innerW - 24, 20);
+		VPPXEScale.Pos(m_ChildList, 10, listY);
+		VPPXEScale.Size(m_ChildList, innerW, listH);
 		float labelY = listY + listH + 4;
 		float inputY = labelY + 18;
 		float gap = 6;
@@ -4186,26 +4186,26 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 		x = x + numW + gap;
 		PlaceChildInput(m_LblChildLootMax, m_InputChildLootMax, x, labelY, inputY, numW);
 		float row2Y = inputY + ROW_H + 4;
-		m_LblChildDeloot.SetPos(10, row2Y);
-		m_LblChildDeloot.SetSize(60, ROW_H);
-		m_InputChildDeloot.SetPos(72, row2Y);
-		m_InputChildDeloot.SetSize(50, ROW_H);
+		VPPXEScale.Pos(m_LblChildDeloot, 10, row2Y);
+		VPPXEScale.Size(m_LblChildDeloot, 60, ROW_H);
+		VPPXEScale.Pos(m_InputChildDeloot, 72, row2Y);
+		VPPXEScale.Size(m_InputChildDeloot, 50, ROW_H);
 		float buttonW = Math.Clamp(innerW * 0.18, 80, 140);
 		float chipsW = innerW - 118 - 2 * buttonW - 3 * gap;
 		float spawnSecW = chipsW * 0.6;
 		float traceW = chipsW - spawnSecW - gap;
 		x = 128;
-		m_BtnChildSpawnSec.SetPos(x, row2Y);
-		m_BtnChildSpawnSec.SetSize(spawnSecW, ROW_H);
+		VPPXEScale.Pos(m_BtnChildSpawnSec, x, row2Y);
+		VPPXEScale.Size(m_BtnChildSpawnSec, spawnSecW, ROW_H);
 		x = x + spawnSecW + gap;
-		m_BtnChildTrace.SetPos(x, row2Y);
-		m_BtnChildTrace.SetSize(traceW, ROW_H);
+		VPPXEScale.Pos(m_BtnChildTrace, x, row2Y);
+		VPPXEScale.Size(m_BtnChildTrace, traceW, ROW_H);
 		x = x + traceW + gap;
-		m_BtnChildAdd.SetPos(x, row2Y);
-		m_BtnChildAdd.SetSize(buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnChildAdd, x, row2Y);
+		VPPXEScale.Size(m_BtnChildAdd, buttonW, ROW_H);
 		x = x + buttonW + gap;
-		m_BtnChildRemove.SetPos(x, row2Y);
-		m_BtnChildRemove.SetSize(buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnChildRemove, x, row2Y);
+		VPPXEScale.Size(m_BtnChildRemove, buttonW, ROW_H);
 		float warnY = row2Y + ROW_H + 8;
 		float warnRoom = formH - warnY - 4;
 		if (warnRoom < 20)
@@ -4213,16 +4213,16 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			warnRoom = 20;
 		}
 
-		m_TxtWarnings.SetPos(10, warnY);
-		m_TxtWarnings.SetSize(innerW, warnRoom);
+		VPPXEScale.Pos(m_TxtWarnings, 10, warnY);
+		VPPXEScale.Size(m_TxtWarnings, innerW, warnRoom);
 	}
 
 	protected void PlaceChildInput(TextWidget label, EditBoxWidget input, float x, float labelY, float inputY, float w)
 	{
-		label.SetPos(x, labelY);
-		label.SetSize(w, 18);
-		input.SetPos(x, inputY);
-		input.SetSize(w, ROW_H);
+		VPPXEScale.Pos(label, x, labelY);
+		VPPXEScale.Size(label, w, 18);
+		VPPXEScale.Pos(input, x, inputY);
+		VPPXEScale.Size(input, w, ROW_H);
 	}
 
 	// ---------------------------------------------------------------- spawns (cfgeventspawns.xml, SPAWNS view)
@@ -5531,7 +5531,7 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 				vector anchorNow = m_SpawnMap.MapToScreen(Vector(0, 0, 0));
 				float slideX = anchorNow[0] - m_SpawnAnchorScreen[0];
 				float slideY = anchorNow[1] - m_SpawnAnchorScreen[1];
-				m_SpawnCanvas.SetPos(slideX / m_Unit, slideY / m_Unit);
+				VPPXEScale.Pos(m_SpawnCanvas, slideX / m_Unit, slideY / m_Unit);
 				if (Math.AbsFloat(slideX) > cw * 0.35 || Math.AbsFloat(slideY) > ch * 0.35)
 				{
 					m_SpawnRedraw = true;
@@ -5553,7 +5553,7 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 
 	protected void DoSpawnRedraw(int now)
 	{
-		m_SpawnCanvas.SetPos(0, 0);
+		VPPXEScale.Pos(m_SpawnCanvas, 0, 0);
 		m_SpawnRenderer.Redraw();
 		m_SpawnAnchorScreen = m_SpawnMap.MapToScreen(Vector(0, 0, 0));
 		m_SpawnAnchorScale = m_SpawnMap.GetScale();
@@ -5887,35 +5887,35 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 		float spawnsW = 118;
 		float formW = 84;
 		float groupsX = m_RightW - 6 - groupsW;
-		m_BtnViewGroups.SetPos(groupsX, 3);
-		m_BtnViewGroups.SetSize(groupsW, 22);
+		VPPXEScale.Pos(m_BtnViewGroups, groupsX, 3);
+		VPPXEScale.Size(m_BtnViewGroups, groupsW, 22);
 		float spawnsX = groupsX - 6 - spawnsW;
-		m_BtnViewSpawns.SetPos(spawnsX, 3);
-		m_BtnViewSpawns.SetSize(spawnsW, 22);
-		m_BtnViewForm.SetPos(spawnsX - 6 - formW, 3);
-		m_BtnViewForm.SetSize(formW, 22);
-		m_TxtLine.SetPos(6 + groupsW + 6 + spawnsW + 6 + formW + 10, 0);
+		VPPXEScale.Pos(m_BtnViewSpawns, spawnsX, 3);
+		VPPXEScale.Size(m_BtnViewSpawns, spawnsW, 22);
+		VPPXEScale.Pos(m_BtnViewForm, spawnsX - 6 - formW, 3);
+		VPPXEScale.Size(m_BtnViewForm, formW, 22);
+		VPPXEScale.Pos(m_TxtLine, 6 + groupsW + 6 + spawnsW + 6 + formW + 10, 0);
 	}
 
 	// SPAWNS view: zone row, the map with the positions list at its right, the position editor, the buttons, the
 	// info / checks text.
 	protected void LayoutSpawnView(float innerW, float formH)
 	{
-		m_SpawnView.SetPos(0, 32);
-		m_SpawnView.SetSize(m_RightW, formH);
+		VPPXEScale.Pos(m_SpawnView, 0, 32);
+		VPPXEScale.Size(m_SpawnView, m_RightW, formH);
 		float zoneX = 10;
-		m_BtnZone.SetPos(zoneX, 0);
-		m_BtnZone.SetSize(80, ROW_H);
+		VPPXEScale.Pos(m_BtnZone, zoneX, 0);
+		VPPXEScale.Size(m_BtnZone, 80, ROW_H);
 		zoneX = zoneX + 86;
 		float zoneStep = Math.Clamp((innerW - 86) / 5, 70, 110);
 		for (int z = 0; z < m_InputZone.Count(); z++)
 		{
 			TextWidget zoneLabel = m_LblZone[z];
 			EditBoxWidget zoneBox = m_InputZone[z];
-			zoneLabel.SetPos(zoneX, 0);
-			zoneLabel.SetSize(36, ROW_H);
-			zoneBox.SetPos(zoneX + 36, 0);
-			zoneBox.SetSize(zoneStep - 42, ROW_H);
+			VPPXEScale.Pos(zoneLabel, zoneX, 0);
+			VPPXEScale.Size(zoneLabel, 36, ROW_H);
+			VPPXEScale.Pos(zoneBox, zoneX + 36, 0);
+			VPPXEScale.Size(zoneBox, zoneStep - 42, ROW_H);
 			zoneX = zoneX + zoneStep;
 		}
 
@@ -5929,10 +5929,10 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 
 		float listW = Math.Clamp(innerW * 0.3, 150, 230);
 		float mapW = innerW - listW - 6;
-		m_SpawnMapArea.SetPos(10, mapTop);
-		m_SpawnMapArea.SetSize(mapW, mapH);
-		m_SpawnList.SetPos(10 + mapW + 6, mapTop);
-		m_SpawnList.SetSize(listW, mapH);
+		VPPXEScale.Pos(m_SpawnMapArea, 10, mapTop);
+		VPPXEScale.Size(m_SpawnMapArea, mapW, mapH);
+		VPPXEScale.Pos(m_SpawnList, 10 + mapW + 6, mapTop);
+		VPPXEScale.Size(m_SpawnList, listW, mapH);
 		float labelY = mapTop + mapH + 6;
 		float inputY = labelY + 18;
 		// x and z get the most room, angle and height a bit less, the group the rest (at most 160)
@@ -5954,23 +5954,23 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 
 			TextWidget posLabel = m_LblPos[p];
 			EditBoxWidget posBox = m_InputPos[p];
-			posLabel.SetPos(posX, labelY);
-			posLabel.SetSize(boxW, 18);
-			posBox.SetPos(posX, inputY);
-			posBox.SetSize(boxW, ROW_H);
+			VPPXEScale.Pos(posLabel, posX, labelY);
+			VPPXEScale.Size(posLabel, boxW, 18);
+			VPPXEScale.Pos(posBox, posX, inputY);
+			VPPXEScale.Size(posBox, boxW, ROW_H);
 			posX = posX + boxW + 6;
 		}
 
 		float buttonY = inputY + ROW_H + 6;
 		float buttonW = (innerW - 18) / 4;
-		m_BtnSpawnAdd.SetPos(10, buttonY);
-		m_BtnSpawnAdd.SetSize(buttonW, ROW_H);
-		m_BtnSpawnHere.SetPos(10 + buttonW + 6, buttonY);
-		m_BtnSpawnHere.SetSize(buttonW, ROW_H);
-		m_BtnSpawnRemove.SetPos(10 + 2 * (buttonW + 6), buttonY);
-		m_BtnSpawnRemove.SetSize(buttonW, ROW_H);
-		m_BtnSpawnGroup.SetPos(10 + 3 * (buttonW + 6), buttonY);
-		m_BtnSpawnGroup.SetSize(buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnSpawnAdd, 10, buttonY);
+		VPPXEScale.Size(m_BtnSpawnAdd, buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnSpawnHere, 10 + buttonW + 6, buttonY);
+		VPPXEScale.Size(m_BtnSpawnHere, buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnSpawnRemove, 10 + 2 * (buttonW + 6), buttonY);
+		VPPXEScale.Size(m_BtnSpawnRemove, buttonW, ROW_H);
+		VPPXEScale.Pos(m_BtnSpawnGroup, 10 + 3 * (buttonW + 6), buttonY);
+		VPPXEScale.Size(m_BtnSpawnGroup, buttonW, ROW_H);
 		float infoY = buttonY + ROW_H + 6;
 		float infoH = formH - infoY - 2;
 		if (infoH < 20)
@@ -5978,8 +5978,8 @@ class VPPXEEventsTab : ScriptedWidgetEventHandler
 			infoH = 20;
 		}
 
-		m_TxtSpawnInfo.SetPos(10, infoY);
-		m_TxtSpawnInfo.SetSize(innerW, infoH);
+		VPPXEScale.Pos(m_TxtSpawnInfo, 10, infoY);
+		VPPXEScale.Size(m_TxtSpawnInfo, innerW, infoH);
 		m_SpawnRedraw = true;
 	}
 

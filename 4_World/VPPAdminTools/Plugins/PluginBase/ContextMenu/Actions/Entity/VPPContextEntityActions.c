@@ -18,6 +18,8 @@ class VPPCA_EntityActions
 		mgr.AddAction(new VPPCA_VehicleRefuel());
 		mgr.AddAction(new VPPCA_CreatureHeal());
 		mgr.AddAction(new VPPCA_CreatureKill());
+		mgr.AddAction(new VPPCA_EntityScale());
+		mgr.AddAction(new VPPCA_EntityRagdoll());
 		mgr.AddAction(new VPPCA_EntityAttachments());
 		mgr.AddAction(new VPPCA_AttachSpawn());
 		mgr.AddAction(new VPPCA_WeaponLoadMagazine());

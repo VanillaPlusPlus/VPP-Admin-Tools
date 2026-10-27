@@ -6,6 +6,9 @@
 class MenuXMLEditor extends AdminHudSubMenu
 {
 	const static int SEARCH_DEBOUNCE_MS = 350;
+	// a TYPES rail row is only loaded (details, spawnables, found-in...) once the selection rested on it this long,
+	// so scrolling through the list with the keys or the wheel does not request every type it passes
+	const static int RAIL_SELECT_DELAY_MS = 850;
 	const static float TIMEOUT_CHECK_INTERVAL = 1.0;
 	const static int TAB_X0 = 38;
 	const static int TAB_BAR_H = 30;
@@ -49,6 +52,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 	protected Widget m_Main;
 	protected Widget m_Body;
 	protected Widget m_TabBar;
+	// exact 100 x 100 probe inside Main, sized from script by VPPXEScale.Measure
+	protected Widget m_ScaleProbe;
 	protected Widget m_PanelRail;
 	protected Widget m_PanelContent;
 	protected TextWidget m_SubTitle;
@@ -89,6 +94,10 @@ class MenuXMLEditor extends AdminHudSubMenu
 	protected ref array<string> m_RailNames;
 	protected ref map<string, int> m_RailIndex;
 	protected int m_LastRailRow;
+	// rail row waiting for RAIL_SELECT_DELAY_MS (kept by lower-case name: a rail rebuild may move its row)
+	protected bool m_RailPending;
+	protected string m_PendingRailName;
+	protected int m_RailChangedAt;
 	protected string m_LastSearch;
 	protected int m_SearchChangedAt;
 	protected bool m_SearchPending;
@@ -116,6 +125,8 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_ScopeSig = "-";
 		m_FilterSig = "-";
 		m_LastRailRow = -1;
+		m_RailPending = false;
+		m_PendingRailName = "";
 		m_TabButtons = new array<ButtonWidget>();
 		m_TabTexts = new array<TextWidget>();
 		m_TabImages = new array<ImageWidget>();
@@ -166,6 +177,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_Main = M_SUB_WIDGET.FindAnyWidget("Main");
 		m_Body = M_SUB_WIDGET.FindAnyWidget("Body");
 		m_TabBar = M_SUB_WIDGET.FindAnyWidget("TabBar");
+		m_ScaleProbe = M_SUB_WIDGET.FindAnyWidget("ScaleProbe");
 		m_PanelRail = M_SUB_WIDGET.FindAnyWidget("PanelRail");
 		m_PanelContent = M_SUB_WIDGET.FindAnyWidget("PanelContent");
 		m_SubTitle = TextWidget.Cast(M_SUB_WIDGET.FindAnyWidget("SubTitle"));
@@ -440,6 +452,23 @@ class MenuXMLEditor extends AdminHudSubMenu
 	}
 
 	// TYPES inspector: the type's spawnabletypes entry in the SPAWNABLES tab (or an ADD dialog when it has none).
+	// TYPES FIND IN WORLD: switch to MAP for the type and start its live scan (a building type still asks first).
+	void FindTypeInWorld(string typeName)
+	{
+		if (typeName == "" || !HasPerm(VPPXEPerm.LIVE_SCAN))
+		{
+			return;
+		}
+
+		ShowTab(VPPXETab.MAP);
+		if (m_ActiveTab != VPPXETab.MAP)
+		{
+			return;
+		}
+
+		m_MapTab.FindInWorld(typeName);
+	}
+
 	void OpenSpawnablesType(string typeName)
 	{
 		ShowTab(VPPXETab.SPAWNABLES);
@@ -994,13 +1023,13 @@ class MenuXMLEditor extends AdminHudSubMenu
 		m_PanelRail.Show(railVisible);
 		if (railVisible)
 		{
-			m_PanelContent.SetPos(0.288, 0);
-			m_PanelContent.SetSize(0.708, 1);
+			VPPXEScale.Pos(m_PanelContent, 0.288, 0);
+			VPPXEScale.Size(m_PanelContent, 0.708, 1);
 		}
 		else
 		{
-			m_PanelContent.SetPos(0.004, 0);
-			m_PanelContent.SetSize(0.992, 1);
+			VPPXEScale.Pos(m_PanelContent, 0.004, 0);
+			VPPXEScale.Size(m_PanelContent, 0.992, 1);
 		}
 
 		if (m_ImgToggleRail)
@@ -1078,10 +1107,24 @@ class MenuXMLEditor extends AdminHudSubMenu
 				width = width + 30;
 			}
 
-			btn.SetPos(x, 0);
-			btn.SetSize(width, 24);
+			VPPXEScale.Pos(btn, x, 0);
+			VPPXEScale.Size(btn, width, 24);
 			x = x + width + 4;
 		}
+	}
+
+	// After the resolution scale changed every tab lays itself out again (a hidden tab's root size does not change,
+	// so its own resize check would not notice).
+	protected void ResizeAllTabs()
+	{
+		m_TypesTab.OnResize();
+		m_MapTab.OnResize();
+		m_BackupsTab.OnResize();
+		m_FilesTab.OnResize();
+		m_MessagesTab.OnResize();
+		m_EventsTab.OnResize();
+		m_SpawnablesTab.OnResize();
+		m_CreateTab.OnResize();
 	}
 
 	protected void ResizeActiveTab()
@@ -1209,7 +1252,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 
 		string label = Tr("#VSTR_XMLE_PENDING_RESTART");
 		float width = Math.Clamp(16 + 7 * label.LengthUtf8(), 80, 220);
-		m_PendingChip.SetSize(width, 22);
+		VPPXEScale.Size(m_PendingChip, width, 22);
 		m_PendingChip.Show(pending);
 	}
 
@@ -1274,13 +1317,13 @@ class MenuXMLEditor extends AdminHudSubMenu
 		float x = 8;
 		if (m_BtnAddType.IsVisible())
 		{
-			m_BtnAddType.SetPos(x, 26);
-			m_BtnAddType.SetSize(addW, 26);
+			VPPXEScale.Pos(m_BtnAddType, x, 26);
+			VPPXEScale.Size(m_BtnAddType, addW, 26);
 			x = x + addW + 6;
 		}
 
-		m_BtnBulkEdit.SetPos(x, 26);
-		m_BtnBulkEdit.SetSize(bulkW, 26);
+		VPPXEScale.Pos(m_BtnBulkEdit, x, 26);
+		VPPXEScale.Size(m_BtnBulkEdit, bulkW, 26);
 	}
 
 	//screen pixels per layout unit, measured on the exact 30-unit TabBar row (Main is "scaled 1", so units are not pixels)
@@ -1320,14 +1363,14 @@ class MenuXMLEditor extends AdminHudSubMenu
 			bodyH = 120;
 		}
 
-		m_Body.SetSize(1, bodyH);
+		VPPXEScale.Size(m_Body, 1, bodyH);
 		float listH = bodyH - 118 - 56 - 4;
 		if (listH < 40)
 		{
 			listH = 40;
 		}
 
-		m_TypesList.SetSize(0.95, listH);
+		VPPXEScale.Size(m_TypesList, 0.95, listH);
 	}
 
 	//---------------------------------------------------------------- scope and Show filter dropdowns
@@ -1744,17 +1787,42 @@ class MenuXMLEditor extends AdminHudSubMenu
 		}
 
 		m_LastRailRow = row;
+		m_RailPending = false;
 	}
 
+	// The rail selection moved: remember the row's type and when; ApplyPendingRailRow loads it once the selection
+	// stayed there RAIL_SELECT_DELAY_MS.
 	protected void OnRailRowChosen(int row)
 	{
 		m_LastRailRow = row;
 		if (row < 0 || row >= m_RailNames.Count())
 		{
+			m_RailPending = false;
 			return;
 		}
 
-		string lower = m_RailNames[row];
+		m_PendingRailName = m_RailNames[row];
+		m_RailPending = true;
+		m_RailChangedAt = GetGame().GetTime();
+	}
+
+	protected void ApplyPendingRailRow()
+	{
+		int now = 0;
+		string lower = "";
+		if (!m_RailPending)
+		{
+			return;
+		}
+
+		now = GetGame().GetTime();
+		if (now - m_RailChangedAt < RAIL_SELECT_DELAY_MS)
+		{
+			return;
+		}
+
+		m_RailPending = false;
+		lower = m_PendingRailName;
 		if (CurrentFilterKind() == VPPXEClientModel.FILTER_UNREGISTERED && !m_Model.HasName(lower))
 		{
 			if (lower != VPPXEClientModel.LowerOf(m_UnregSelected))
@@ -1890,7 +1958,12 @@ class MenuXMLEditor extends AdminHudSubMenu
 			m_LastMainW = mainW;
 			m_LastMainH = mainH;
 			m_LastUnit = curUnit;
+			bool scaleChanged = VPPXEScale.Measure(m_TabBar, TAB_BAR_H, m_ScaleProbe);
 			Layout();
+			if (scaleChanged)
+			{
+				ResizeAllTabs();
+			}
 		}
 
 		float bodyW;
@@ -1906,6 +1979,7 @@ class MenuXMLEditor extends AdminHudSubMenu
 		CheckDialogHandle();
 		PollSearch();
 		PollRailSelection();
+		ApplyPendingRailRow();
 		UpdateActiveTab(timeslice);
 	}
 

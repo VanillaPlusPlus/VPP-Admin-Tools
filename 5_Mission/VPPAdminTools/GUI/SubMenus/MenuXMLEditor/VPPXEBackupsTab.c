@@ -1460,12 +1460,12 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 		float retentionH = retentionLines * LINE_H + 4;
 		float retentionY = m_LeftH - retentionH - 4;
 		float actionsY = retentionY - ACTION_H - 4;
-		m_FileHost.SetPos(6, 32);
-		m_FileHost.SetSize(innerW, 24);
-		m_TxtRetention.SetPos(6, retentionY);
-		m_TxtRetention.SetSize(innerW, retentionH);
-		m_BackupsActions.SetPos(6, actionsY);
-		m_BackupsActions.SetSize(innerW, ACTION_H);
+		VPPXEScale.Pos(m_FileHost, 6, 32);
+		VPPXEScale.Size(m_FileHost, innerW, 24);
+		VPPXEScale.Pos(m_TxtRetention, 6, retentionY);
+		VPPXEScale.Size(m_TxtRetention, innerW, retentionH);
+		VPPXEScale.Pos(m_BackupsActions, 6, actionsY);
+		VPPXEScale.Size(m_BackupsActions, innerW, ACTION_H);
 		float listY = 60;
 		float listH = actionsY - listY - 4;
 		if (listH < 30)
@@ -1473,8 +1473,8 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 			listH = 30;
 		}
 
-		m_BackupsList.SetPos(6, listY);
-		m_BackupsList.SetSize(innerW, listH);
+		VPPXEScale.Pos(m_BackupsList, 6, listY);
+		VPPXEScale.Size(m_BackupsList, innerW, listH);
 		LayoutActions();
 	}
 
@@ -1501,8 +1501,8 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 			return;
 		}
 
-		button.SetPos(x, 0);
-		button.SetSize(width, ACTION_H);
+		VPPXEScale.Pos(button, x, 0);
+		VPPXEScale.Size(button, width, ACTION_H);
 		bool showIcon = 24 + EstimateTextPx(text, 7) <= width;
 		if (iconWidget)
 		{
@@ -1516,13 +1516,13 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 
 		if (showIcon)
 		{
-			label.SetPos(24, 0);
-			label.SetSize(width - 28, ACTION_H);
+			VPPXEScale.Pos(label, 24, 0);
+			VPPXEScale.Size(label, width - 28, ACTION_H);
 		}
 		else
 		{
-			label.SetPos(4, 0);
-			label.SetSize(width - 8, ACTION_H);
+			VPPXEScale.Pos(label, 4, 0);
+			VPPXEScale.Size(label, width - 8, ACTION_H);
 		}
 	}
 
@@ -1538,10 +1538,10 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 		float currentW = TextButtonWidth(Tr("#VSTR_XMLE_BK_VS_CURRENT"));
 		float nextX = m_RightW - 6 - nextW;
 		float currentX = nextX - 4 - currentW;
-		m_BtnVsNext.SetPos(nextX, 2);
-		m_BtnVsNext.SetSize(nextW, 24);
-		m_BtnVsCurrent.SetPos(currentX, 2);
-		m_BtnVsCurrent.SetSize(currentW, 24);
+		VPPXEScale.Pos(m_BtnVsNext, nextX, 2);
+		VPPXEScale.Size(m_BtnVsNext, nextW, 24);
+		VPPXEScale.Pos(m_BtnVsCurrent, currentX, 2);
+		VPPXEScale.Size(m_BtnVsCurrent, currentW, 24);
 		// TxtDiffHeader (x 30, width a proportion of the full-width DiffHeader strip) ends 6 units before the
 		// mode buttons, so a long title clips instead of running under them
 		if (m_TxtDiffHeader)
@@ -1552,12 +1552,12 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 				headerRatio = 0.02;
 			}
 
-			m_TxtDiffHeader.SetSize(headerRatio, 1);
+			VPPXEScale.Size(m_TxtDiffHeader, headerRatio, 1);
 		}
 
 		float innerW = m_RightW - 16;
-		m_TxtDiffSummary.SetPos(8, 32);
-		m_TxtDiffSummary.SetSize(innerW, 18);
+		VPPXEScale.Pos(m_TxtDiffSummary, 8, 32);
+		VPPXEScale.Size(m_TxtDiffSummary, innerW, 18);
 		int metaLines = EstimateLines(m_MetaParts, innerW);
 		float metaH = metaLines * LINE_H + 4;
 		if (metaLines == 0)
@@ -1565,8 +1565,8 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 			metaH = 1;
 		}
 
-		m_TxtBkMeta.SetPos(8, 52);
-		m_TxtBkMeta.SetSize(innerW, metaH);
+		VPPXEScale.Pos(m_TxtBkMeta, 8, 52);
+		VPPXEScale.Size(m_TxtBkMeta, innerW, metaH);
 		float listY = 52 + metaH + 4;
 		float listH = m_RightH - listY - 6;
 		if (listH < 30)
@@ -1574,10 +1574,10 @@ class VPPXEBackupsTab : ScriptedWidgetEventHandler
 			listH = 30;
 		}
 
-		m_DiffList.SetPos(6, listY);
-		m_DiffList.SetSize(m_RightW - 12, listH);
-		m_TxtDiffEmpty.SetPos(6, listY);
-		m_TxtDiffEmpty.SetSize(m_RightW - 12, listH);
+		VPPXEScale.Pos(m_DiffList, 6, listY);
+		VPPXEScale.Size(m_DiffList, m_RightW - 12, listH);
+		VPPXEScale.Pos(m_TxtDiffEmpty, 6, listY);
+		VPPXEScale.Size(m_TxtDiffEmpty, m_RightW - 12, listH);
 	}
 
 	protected float TextButtonWidth(string text)

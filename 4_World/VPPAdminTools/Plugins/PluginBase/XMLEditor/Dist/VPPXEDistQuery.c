@@ -449,8 +449,9 @@ class VPPXEDistQueryJob : VPPXEJob
 		return true;
 	}
 
-	// R10 usage/value tests with the area flags sampled at (x, z); tier = every value bit (the areaflags value plane is
-	// one byte: up to 8 value flags, in cfglimitsdefinition <valueflags> order; custom maps may define more than 5)
+	// R10 usage/value tests with the area flags sampled at (x, z); tier = the low 8 value bits (vanilla value grids are
+	// 8 bits per cell: up to 8 value flags, in cfglimitsdefinition <valueflags> order; custom maps may define more than
+	// 5, and 16-bit grids from map editors still pass their higher bits to the value-mask test)
 	protected bool PassUV(int groupIdx, float x, float z, out int tier)
 	{
 		tier = 0;
