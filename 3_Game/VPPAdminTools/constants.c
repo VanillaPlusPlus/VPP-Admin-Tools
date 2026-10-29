@@ -111,6 +111,7 @@ class VPPATUIConstants
 	const static string ChangelogEntryRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogEntryRow.layout";
 	const static string ChangelogLinkRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogLinkRow.layout";
 	const static string ChangelogGapRow 			 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogGapRow.layout";
+	const static string ChangelogBuddy 				 = "VPPAdminTools/GUI/Layouts/ChangelogUI/ChangelogBuddy.layout";
 
 	//Players Manager
 	const static string MenuPlayerManager 			 = "VPPAdminTools/GUI/Layouts/PlayerManagerUI/MenuPlayerManager.layout";

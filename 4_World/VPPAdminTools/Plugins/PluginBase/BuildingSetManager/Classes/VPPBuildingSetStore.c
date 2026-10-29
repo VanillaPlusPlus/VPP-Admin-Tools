@@ -219,6 +219,62 @@ class VPPBuildingSetStore
 	const static float SCALE_MIN = 0.01;
 	const static float SCALE_MAX = 100.0;
 
+	//decimals of positions and angles as text; float.ToString keeps only 6 significant digits (12345.678 -> 12345.7),
+	//which moved objects by up to 5 cm whenever the text was used again. Editor boxes: 4 (within 0.0001 of the float),
+	//Export to code: 6 (within 0.000001, practically the exact float)
+	const static int TEXT_DECIMALS = 4;
+	const static int EXPORT_DECIMALS = 6;
+
+	// Fixed-point text with up to `decimals` decimals, trailing zeros dropped ("12345.678", "90", "-0.5"). The whole and
+	// the fraction are rounded separately: value * 10^decimals would leave a float's exact integer range above ~1600.
+	static string FormatDecimal(float value, int decimals)
+	{
+		float absValue = Math.AbsFloat(value);
+		int whole = Math.Floor(absValue);
+		float fraction = absValue - whole;
+		int scale = 1;
+		for (int i = 0; i < decimals; i++)
+		{
+			scale = scale * 10;
+		}
+
+		float scaledFraction = fraction * scale;
+		int fractionDigits = Math.Round(scaledFraction);
+		if (fractionDigits >= scale)
+		{
+			whole++;
+			fractionDigits = 0;
+		}
+
+		string text = whole.ToString();
+		if (decimals > 0 && fractionDigits > 0)
+		{
+			string fractionText = fractionDigits.ToStringLen(decimals);
+			while (fractionText.Length() > 1 && fractionText.Substring(fractionText.Length() - 1, 1) == "0")
+			{
+				fractionText = fractionText.Substring(0, fractionText.Length() - 1);
+			}
+
+			text = text + "." + fractionText;
+		}
+
+		if (value < 0 && (whole > 0 || fractionDigits > 0))
+		{
+			text = "-" + text;
+		}
+
+		return text;
+	}
+
+	// "x y z" with FormatDecimal parts at EXPORT_DECIMALS (a vector literal for Export to code).
+	static string FormatVector(vector value)
+	{
+		string x = FormatDecimal(value[0], EXPORT_DECIMALS);
+		string y = FormatDecimal(value[1], EXPORT_DECIMALS);
+		string z = FormatDecimal(value[2], EXPORT_DECIMALS);
+		return x + " " + y + " " + z;
+	}
+
 	static bool HasExtension(string path, string ext)
 	{
 		string lower = path;

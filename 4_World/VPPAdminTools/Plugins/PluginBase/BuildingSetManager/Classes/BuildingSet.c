@@ -159,7 +159,10 @@ class BuildingSet : Managed
 
 		foreach(SpawnedBuilding building: m_Buildings)
 		{
-			string format = "SpawnObject( \"" + building.GetTypeName() + "\", \"" + building.GetPosition().ToString(false) + "\", \"" + building.GetOrientation().ToString(false) + "\"";
+			string typeName = building.GetTypeName();
+			string posText = VPPBuildingSetStore.FormatVector(building.GetPosition());
+			string oriText = VPPBuildingSetStore.FormatVector(building.GetOrientation());
+			string format = "SpawnObject( \"" + typeName + "\", \"" + posText + "\", \"" + oriText + "\"";
 			float scale = building.GetScale();
 			if (scale != 1.0)
 			{

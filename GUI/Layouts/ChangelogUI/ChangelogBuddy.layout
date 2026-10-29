@@ -1,0 +1,16 @@
+ImageWidgetClass ChangelogBuddy {
+ visible 0
+ ignorepointer 1
+ color 1 1 1 1
+ position 0 0
+ size 192 108
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ image0 "VPPAdminTools/GUI/Textures/vpp_changelog_buddy_1.paa"
+ mode blend
+ "src alpha" 1
+ "stretch mode" stretch_w_h
+ filter 1
+}

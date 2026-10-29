@@ -33,6 +33,7 @@ class VPPChangelogContent : Managed
 		b.Added("{orange}Object Builder{/}: a Scale field in the attributes window of a placed object. The scale is saved with the set and included by Export to code.");
 		b.Added("{orange}Conform To Terrain{/} in the Object Builder toolbar: while you drag an object it tilts to the slope of the ground under it and keeps its heading.");
 		b.Changed("{orange}Building sets are saved as JSON{/}, one SetName.json per set, so they can be read and edited in a text editor. Old .vpp sets are converted automatically when the server starts and the originals are moved to Backups/BuildingSets in the VPPAdminTools profile folder. Every save keeps the previous file as a .bak.");
+		b.Fixed("Object Builder: positions and rotations lost their decimals. The position and YPR boxes showed only 6 digits and moved the object to that rounded value, so a saved set loaded slightly off. The boxes now show up to 4 decimals and only move the object when you type in them, and Export to code keeps 6 decimals.");
 		b.Added("XML Editor TYPES: a highlighted {orange}FIND IN WORLD{/} button opens the map with its side panel and runs a live scan for the type. When nothing is found, the map says so.");
 		b.Changed("XML Editor MAP: a type opens with only the Live layer shown. The other layers are one click away.");
 		b.Fixed("XML Editor MAP: tiers were unavailable for areaflags.map files saved by other editors. The file is now read the way the server reads it, which also makes the tier and usage values on the map more accurate on every map.");

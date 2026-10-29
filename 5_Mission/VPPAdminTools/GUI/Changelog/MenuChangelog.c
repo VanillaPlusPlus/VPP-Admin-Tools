@@ -23,6 +23,13 @@ class MenuChangelog extends AdminHudSubMenu
 	protected const float LATEST_GAP = 10.0;
 	//line breaks settle only after the first layout passes, so rows keep being re-measured for about a second
 	protected const int MEASURE_FRAMES = 60;
+	//screensaver-style image bouncing around the window, one of BUDDY_IMAGES picked at random each time it opens: height
+	//as a fraction of the screen, speed per axis in screen heights per second, gap kept to the window
+	protected const int BUDDY_IMAGES = 3;
+	protected const float BUDDY_H_FRAC = 0.1;
+	protected const float BUDDY_SPEED_FRAC = 0.12;
+	protected const float BUDDY_GAP = 6.0;
+	protected const int BUDDY_TINTS = 6;
 
 	protected ScrollWidget m_ScrollBody;
 	protected WrapSpacerWidget m_WrapBody;
@@ -40,11 +47,35 @@ class MenuChangelog extends AdminHudSubMenu
 	protected ref array<RichTextWidget> m_TextBodies;
 	protected int m_MeasureFrames;
 
+	//sibling of the window on Panel_Content (hides with the HUD), positions in Panel_Content pixels
+	protected ImageWidget m_Buddy;
+	protected float m_BuddyX;
+	protected float m_BuddyY;
+	protected float m_BuddyW;
+	protected float m_BuddyH;
+	protected float m_BuddyVX;
+	protected float m_BuddyVY;
+	protected int m_BuddyTint;
+	protected int m_BuddyImage = -1;
+	//refreshed by RefreshBuddyRects: the area size and the window rect relative to the area
+	protected float m_AreaW;
+	protected float m_AreaH;
+	protected float m_WinX;
+	protected float m_WinY;
+	protected float m_WinW;
+	protected float m_WinH;
+
 	void MenuChangelog()
 	{
 		m_LinkRows = new array<ref VPPChangelogLinkRow>;
 		m_TextRows = new array<Widget>;
 		m_TextBodies = new array<RichTextWidget>;
+	}
+
+	void ~MenuChangelog()
+	{
+		if (m_Buddy)
+			m_Buddy.Unlink();
 	}
 
 	override void OnCreate(Widget RootW)
@@ -63,6 +94,7 @@ class MenuChangelog extends AdminHudSubMenu
 
 		CenterWindow();
 		Rebuild();
+		CreateBuddy();
 	}
 
 	//Panel_Content is full screen, so these pixels are screen pixels
@@ -350,7 +382,11 @@ class MenuChangelog extends AdminHudSubMenu
 	override void OnUpdate(float timeslice)
 	{
 		super.OnUpdate(timeslice);
-		if (m_MeasureFrames <= 0 || !IsSubMenuVisible())
+		if (!IsSubMenuVisible())
+			return;
+
+		MoveBuddy(timeslice);
+		if (m_MeasureFrames <= 0)
 			return;
 
 		m_MeasureFrames--;
@@ -368,6 +404,322 @@ class MenuChangelog extends AdminHudSubMenu
 			m_ScrollBody.VScrollToPos(0);
 
 		m_MeasureFrames = MEASURE_FRAMES;
+		m_BuddyW = 0;
+		StartBuddy();
+	}
+
+	override void OnMenuHide()
+	{
+		super.OnMenuHide();
+		if (m_Buddy)
+			m_Buddy.Show(false);
+	}
+
+	/*
+		Bouncing image: drifts at a constant speed, bounces off the screen edges and off the window (never overlaps it),
+		and changes tint on every bounce, like the old DVD screensaver.
+	*/
+	protected void CreateBuddy()
+	{
+		if (!M_SUB_WIDGET || !M_SUB_WIDGET.GetParent())
+			return;
+
+		Widget created = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.ChangelogBuddy, M_SUB_WIDGET.GetParent());
+		m_Buddy = ImageWidget.Cast(created);
+		if (!m_Buddy)
+			return;
+
+		m_Buddy.Show(false);
+		m_Buddy.SetSort(1);
+	}
+
+	//the area it moves in (Panel_Content) and the window relative to it; false while the area has no size yet
+	protected bool RefreshBuddyRects()
+	{
+		Widget area = m_Buddy.GetParent();
+		if (!area)
+			return false;
+
+		float areaX;
+		float areaY;
+		area.GetScreenPos(areaX, areaY);
+		area.GetScreenSize(m_AreaW, m_AreaH);
+		if (m_AreaW <= 1 || m_AreaH <= 1)
+			return false;
+
+		float screenX;
+		float screenY;
+		M_SUB_WIDGET.GetScreenPos(screenX, screenY);
+		M_SUB_WIDGET.GetScreenSize(m_WinW, m_WinH);
+		m_WinX = screenX - areaX;
+		m_WinY = screenY - areaY;
+		return true;
+	}
+
+	protected void StartBuddy()
+	{
+		if (!m_Buddy || !M_SUB_WIDGET)
+			return;
+
+		if (!RefreshBuddyRects())
+			return;
+
+		//a different image than last time
+		int image = Math.RandomIntInclusive(0, BUDDY_IMAGES - 1);
+		if (image == m_BuddyImage)
+			image = (image + 1) % BUDDY_IMAGES;
+
+		m_BuddyImage = image;
+		string imagePath = BuddyImagePath(image);
+		m_Buddy.LoadImageFile(0, imagePath);
+		m_Buddy.SetImage(0);
+
+		float aspect = BuddyAspect(image);
+		m_BuddyH = Math.Round(m_AreaH * BUDDY_H_FRAC);
+		m_BuddyW = Math.Round(m_BuddyH * aspect);
+		m_Buddy.SetSize(m_BuddyW, m_BuddyH);
+
+		float speed = m_AreaH * BUDDY_SPEED_FRAC;
+		m_BuddyVX = speed;
+		m_BuddyVY = speed;
+		if (Math.RandomIntInclusive(0, 1) == 0)
+			m_BuddyVX = -speed;
+
+		if (Math.RandomIntInclusive(0, 1) == 0)
+			m_BuddyVY = -speed;
+
+		//first corner that is clear of the window; PushBuddyOut handles a window that covers all four
+		m_BuddyX = BUDDY_GAP;
+		m_BuddyY = BUDDY_GAP;
+		int corner = Math.RandomIntInclusive(0, 3);
+		for (int i = 0; i < 4; i++)
+		{
+			int pick = (corner + i) % 4;
+			m_BuddyX = BUDDY_GAP;
+			m_BuddyY = BUDDY_GAP;
+			if (pick == 1 || pick == 3)
+				m_BuddyX = m_AreaW - m_BuddyW - BUDDY_GAP;
+
+			if (pick == 2 || pick == 3)
+				m_BuddyY = m_AreaH - m_BuddyH - BUDDY_GAP;
+
+			if (!BuddyHitsWindow(m_BuddyX, m_BuddyY))
+				break;
+		}
+
+		m_BuddyTint = 0;
+		int tint = BuddyTint(m_BuddyTint);
+		m_Buddy.SetColor(tint);
+		if (!PushBuddyOut())
+		{
+			m_Buddy.Show(false);
+			return;
+		}
+
+		m_Buddy.SetPos(m_BuddyX, m_BuddyY);
+		m_Buddy.Show(true);
+	}
+
+	protected void MoveBuddy(float timeslice)
+	{
+		if (!m_Buddy || !M_SUB_WIDGET)
+			return;
+
+		//the area can have no size yet on the first show: start once it has one
+		if (m_BuddyW <= 0)
+		{
+			StartBuddy();
+			return;
+		}
+
+		if (!RefreshBuddyRects())
+			return;
+
+		float dt = timeslice;
+		if (dt > 0.1)
+			dt = 0.1;
+
+		float maxX = m_AreaW - m_BuddyW;
+		float maxY = m_AreaH - m_BuddyH;
+		bool bounced = false;
+
+		//one axis at a time, so a corner hit flips both and a side hit only the one it touched
+		float nextX = m_BuddyX + m_BuddyVX * dt;
+		if (nextX < 0)
+		{
+			nextX = 0;
+			m_BuddyVX = Math.AbsFloat(m_BuddyVX);
+			bounced = true;
+		}
+		else if (nextX > maxX)
+		{
+			nextX = maxX;
+			m_BuddyVX = -Math.AbsFloat(m_BuddyVX);
+			bounced = true;
+		}
+
+		if (BuddyHitsWindow(nextX, m_BuddyY))
+		{
+			if (m_BuddyVX > 0)
+				nextX = m_WinX - m_BuddyW - BUDDY_GAP;
+			else
+				nextX = m_WinX + m_WinW + BUDDY_GAP;
+
+			m_BuddyVX = -m_BuddyVX;
+			bounced = true;
+		}
+
+		m_BuddyX = nextX;
+
+		float nextY = m_BuddyY + m_BuddyVY * dt;
+		if (nextY < 0)
+		{
+			nextY = 0;
+			m_BuddyVY = Math.AbsFloat(m_BuddyVY);
+			bounced = true;
+		}
+		else if (nextY > maxY)
+		{
+			nextY = maxY;
+			m_BuddyVY = -Math.AbsFloat(m_BuddyVY);
+			bounced = true;
+		}
+
+		if (BuddyHitsWindow(m_BuddyX, nextY))
+		{
+			if (m_BuddyVY > 0)
+				nextY = m_WinY - m_BuddyH - BUDDY_GAP;
+			else
+				nextY = m_WinY + m_WinH + BUDDY_GAP;
+
+			m_BuddyVY = -m_BuddyVY;
+			bounced = true;
+		}
+
+		m_BuddyY = nextY;
+
+		//the window was dragged onto it (or a bounce left no room on that side)
+		if (!PushBuddyOut())
+		{
+			m_Buddy.Show(false);
+			return;
+		}
+
+		if (bounced)
+		{
+			m_BuddyTint = (m_BuddyTint + 1) % BUDDY_TINTS;
+			int tint = BuddyTint(m_BuddyTint);
+			m_Buddy.SetColor(tint);
+		}
+
+		m_Buddy.SetPos(m_BuddyX, m_BuddyY);
+		if (!m_Buddy.IsVisible())
+			m_Buddy.Show(true);
+	}
+
+	//uses the rects from the last RefreshBuddyRects
+	protected bool BuddyHitsWindow(float x, float y)
+	{
+		if (x >= m_WinX + m_WinW + BUDDY_GAP || x + m_BuddyW <= m_WinX - BUDDY_GAP)
+			return false;
+
+		if (y >= m_WinY + m_WinH + BUDDY_GAP || y + m_BuddyH <= m_WinY - BUDDY_GAP)
+			return false;
+
+		return true;
+	}
+
+	//moves it to the closest free side of the window and back inside the area; false when it fits nowhere
+	protected bool PushBuddyOut()
+	{
+		float maxX = m_AreaW - m_BuddyW;
+		float maxY = m_AreaH - m_BuddyH;
+		m_BuddyX = Math.Clamp(m_BuddyX, 0, maxX);
+		m_BuddyY = Math.Clamp(m_BuddyY, 0, maxY);
+		if (!BuddyHitsWindow(m_BuddyX, m_BuddyY))
+			return true;
+
+		float leftX = m_WinX - m_BuddyW - BUDDY_GAP;
+		float rightX = m_WinX + m_WinW + BUDDY_GAP;
+		float topY = m_WinY - m_BuddyH - BUDDY_GAP;
+		float bottomY = m_WinY + m_WinH + BUDDY_GAP;
+
+		float bestMove = -1;
+		float bestX = m_BuddyX;
+		float bestY = m_BuddyY;
+		if (leftX >= 0)
+		{
+			bestMove = m_BuddyX - leftX;
+			bestX = leftX;
+			bestY = m_BuddyY;
+		}
+
+		if (rightX <= maxX && (bestMove < 0 || rightX - m_BuddyX < bestMove))
+		{
+			bestMove = rightX - m_BuddyX;
+			bestX = rightX;
+			bestY = m_BuddyY;
+		}
+
+		if (topY >= 0 && (bestMove < 0 || m_BuddyY - topY < bestMove))
+		{
+			bestMove = m_BuddyY - topY;
+			bestX = m_BuddyX;
+			bestY = topY;
+		}
+
+		if (bottomY <= maxY && (bestMove < 0 || bottomY - m_BuddyY < bestMove))
+		{
+			bestMove = bottomY - m_BuddyY;
+			bestX = m_BuddyX;
+			bestY = bottomY;
+		}
+
+		if (bestMove < 0)
+			return false;
+
+		m_BuddyX = bestX;
+		m_BuddyY = bestY;
+		return true;
+	}
+
+	protected string BuddyImagePath(int index)
+	{
+		int number = index + 1;
+		return "VPPAdminTools/GUI/Textures/vpp_changelog_buddy_" + number.ToString() + ".paa";
+	}
+
+	//width / height of the original image (the textures are stretched to power-of-two sizes)
+	protected float BuddyAspect(int index)
+	{
+		switch (index)
+		{
+			case 0:
+				return 228.0 / 128.0;
+			case 2:
+				return 152.0 / 128.0;
+		}
+
+		return 1.0;
+	}
+
+	protected int BuddyTint(int index)
+	{
+		switch (index)
+		{
+			case 1:
+				return ARGB(255, 255, 170, 170);
+			case 2:
+				return ARGB(255, 170, 210, 255);
+			case 3:
+				return ARGB(255, 180, 255, 180);
+			case 4:
+				return ARGB(255, 255, 235, 150);
+			case 5:
+				return ARGB(255, 225, 175, 255);
+		}
+
+		return ARGB(255, 255, 255, 255);
 	}
 
 	override bool OnClick(Widget w, int x, int y, int button)

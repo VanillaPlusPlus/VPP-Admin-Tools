@@ -19,6 +19,14 @@ class BuildingTracker: ScriptedWidgetEventHandler
 	Object 					   m_TrackerEntity;
 	vector                     m_Orientation;
 	vector                     m_Position;
+	// the text last written into each box: a box is applied to the object only when its text differs from this (the
+	// admin typed), so the shown rounding never moves the object
+	protected string           m_ShownX;
+	protected string           m_ShownY;
+	protected string           m_ShownZ;
+	protected string           m_ShownYaw;
+	protected string           m_ShownPitch;
+	protected string           m_ShownRoll;
 	bool   					   m_IsSelected;
 	MenuObjectManager 		   objManager; //weak ptr
 	ref ScriptInvoker 		   OnTrackerSelected = new ScriptInvoker();
@@ -219,27 +227,30 @@ class BuildingTracker: ScriptedWidgetEventHandler
         return vector.Distance(adminPos, startPos);
     }
 	
+	//EditX = X, EditZ = height, EditY = Z (the layout's naming)
 	void UpdateDataBoxes(bool useObject = false)
 	{
-		if (useObject)
+		vector pos = m_Position;
+		vector orientation = m_Orientation;
+		if (useObject && m_TrackerEntity)
 		{
-			vector pos = m_TrackerEntity.GetPosition();
-			vector orientation = m_TrackerEntity.GetOrientation();
-			
-			m_EditYaw.SetText(orientation[0].ToString());
-			m_EditPitch.SetText(orientation[1].ToString());
-			m_EditRoll.SetText(orientation[2].ToString());
-			m_EditX.SetText(pos[0].ToString());
-			m_EditZ.SetText(pos[1].ToString());
-			m_EditY.SetText(pos[2].ToString());
-			return;
+			pos = m_TrackerEntity.GetPosition();
+			orientation = m_TrackerEntity.GetOrientation();
 		}
-		m_EditYaw.SetText(m_Orientation[0].ToString());
-		m_EditPitch.SetText(m_Orientation[1].ToString());
-		m_EditRoll.SetText(m_Orientation[2].ToString());
-		m_EditX.SetText(m_Position[0].ToString());
-		m_EditZ.SetText(m_Position[1].ToString());
-		m_EditY.SetText(m_Position[2].ToString());
+
+		int decimals = VPPBuildingSetStore.TEXT_DECIMALS;
+		m_ShownYaw   = VPPBuildingSetStore.FormatDecimal(orientation[0], decimals);
+		m_ShownPitch = VPPBuildingSetStore.FormatDecimal(orientation[1], decimals);
+		m_ShownRoll  = VPPBuildingSetStore.FormatDecimal(orientation[2], decimals);
+		m_ShownX     = VPPBuildingSetStore.FormatDecimal(pos[0], decimals);
+		m_ShownZ     = VPPBuildingSetStore.FormatDecimal(pos[1], decimals);
+		m_ShownY     = VPPBuildingSetStore.FormatDecimal(pos[2], decimals);
+		m_EditYaw.SetText(m_ShownYaw);
+		m_EditPitch.SetText(m_ShownPitch);
+		m_EditRoll.SetText(m_ShownRoll);
+		m_EditX.SetText(m_ShownX);
+		m_EditZ.SetText(m_ShownZ);
+		m_EditY.SetText(m_ShownY);
 	}
 
     void DoUpdate()
@@ -248,28 +259,52 @@ class BuildingTracker: ScriptedWidgetEventHandler
 			delete this;
 			return;
 		}
-		
-		vector position    = Vector(m_EditX.GetText().ToFloat(), m_EditZ.GetText().ToFloat(), m_EditY.GetText().ToFloat());
-		vector orientation = Vector(m_EditYaw.GetText().ToFloat(), m_EditPitch.GetText().ToFloat(), m_EditRoll.GetText().ToFloat());
-		if (position != m_Position)
+
+		//position: typed by the admin (text changed) -> applied once; moved by a drag -> boxes refreshed
+		string textX = m_EditX.GetText();
+		string textZ = m_EditZ.GetText();
+		string textY = m_EditY.GetText();
+		if (textX != m_ShownX || textZ != m_ShownZ || textY != m_ShownY)
 		{
-			//Update by Boxes
+			m_ShownX = textX;
+			m_ShownZ = textZ;
+			m_ShownY = textY;
+			float posX = textX.ToFloat();
+			float posHeight = textZ.ToFloat();
+			float posZ = textY.ToFloat();
+			vector position = Vector(posX, posHeight, posZ);
 			m_TrackerEntity.SetPosition(position);
 			m_Position = m_TrackerEntity.GetPosition();
 		}
 		else if (m_TrackerEntity.GetPosition() != m_Position)
 		{
-			//Update by drag
 			m_Position = m_TrackerEntity.GetPosition();
 			UpdateDataBoxes();
 		}
-		
-		EditBoxWidget underCuror = EditBoxWidget.Cast(GetWidgetUnderCursor());
-		if (orientation != m_Orientation && underCuror != null && (underCuror == m_EditYaw || underCuror == m_EditPitch || underCuror == m_EditRoll))
+
+		//yaw pitch roll: the same rule (a rotation by Shift-drag refreshes the boxes)
+		string textYaw = m_EditYaw.GetText();
+		string textPitch = m_EditPitch.GetText();
+		string textRoll = m_EditRoll.GetText();
+		if (textYaw != m_ShownYaw || textPitch != m_ShownPitch || textRoll != m_ShownRoll)
 		{
-			//Update yaw pitch roll
-			m_TrackerEntity.SetYawPitchRoll(Vector(orientation[0],orientation[1],orientation[2]));
+			m_ShownYaw = textYaw;
+			m_ShownPitch = textPitch;
+			m_ShownRoll = textRoll;
+			float yaw = textYaw.ToFloat();
+			float pitch = textPitch.ToFloat();
+			float roll = textRoll.ToFloat();
+			float keptScale = m_TrackerEntity.GetScale();
+			m_TrackerEntity.SetYawPitchRoll(Vector(yaw, pitch, roll));
+			if (Math.AbsFloat(m_TrackerEntity.GetScale() - keptScale) > 0.0005)
+				m_TrackerEntity.SetScale(keptScale);
+
 			m_Orientation = m_TrackerEntity.GetOrientation();
+		}
+		else if (m_TrackerEntity.GetOrientation() != m_Orientation)
+		{
+			m_Orientation = m_TrackerEntity.GetOrientation();
+			UpdateDataBoxes();
 		}
 		
 		if (IsCursorOnEditorBoxs()) return; //Dont update widget pos since its being used
