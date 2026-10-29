@@ -237,8 +237,8 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 
 		if (m_FooterText && lookMode)
 		{
-			string footerKey = m_FooterText.GetText();
-			string footerText = Widget.TranslateString(footerKey);
+			//the layout's footer text (TextWidget has no GetText)
+			string footerText = Widget.TranslateString("#VSTR_CTX_HINT_LOOK");
 			float footerPx = MeasureText(m_FooterText, footerText, VPPContextMenuStyle.FOOTER_TEXT_SIZE);
 			float footerNeed = footerPx + (2 * Px(VPPContextMenuStyle.TEXT_PAD));
 			if (footerNeed > m_NeedW)
