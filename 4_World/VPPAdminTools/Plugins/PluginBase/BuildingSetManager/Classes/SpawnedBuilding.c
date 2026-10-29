@@ -218,9 +218,8 @@ class SpawnedBuilding : Managed
 
 	// The engine only sends an object's scale inside its create message, and a client already in range gets that
 	// message from CreateObjectEx itself, before SetScale runs (a set saved while players are online came back at scale
-	// 1; one spawned at boot was fine). Buildings, animals and infected carry it in their synced m_VPPEntityScale (part
-	// of every create message and of the sync updates); any other object gets one RPC for the clients that already
-	// have it, later creates (late joiners, bubble re-entry) carry the scale themselves.
+	// 1; one spawned at boot was fine). So the clients that already have it get one RPC; later creates (late joiners,
+	// bubble re-entry) carry the scale themselves.
 	protected void ApplySpawnScale()
 	{
 		float scale = GetScale();
@@ -228,27 +227,6 @@ class SpawnedBuilding : Managed
 			return;
 
 		m_Building.SetScale(scale);
-		BuildingBase building = BuildingBase.Cast(m_Building);
-		if (building)
-		{
-			building.VPPSetEntityScale(scale);
-			return;
-		}
-
-		AnimalBase animal = AnimalBase.Cast(m_Building);
-		if (animal)
-		{
-			animal.VPPSetEntityScale(scale);
-			return;
-		}
-
-		ZombieBase zombie = ZombieBase.Cast(m_Building);
-		if (zombie)
-		{
-			zombie.VPPSetEntityScale(scale);
-			return;
-		}
-
 		if (GetGame().IsMultiplayer())
 		{
 			Param1<float> scaleParam = new Param1<float>(scale);

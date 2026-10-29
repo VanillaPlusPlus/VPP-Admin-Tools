@@ -25,6 +25,12 @@ class VPPChangelogContent : Managed
 {
 	void Build(VPPChangelogBuilder b)
 	{
+		b.Section("1.8.1", "2026-10-29");
+		b.Fixed("Infected and animals could change size on their own after 1.8.");
+		b.Removed("{orange}Set scale{/} for animals, infected and buildings. It now works on players and AI only. Scale saved in building sets is not affected.");
+		b.Fixed("{orange}Context Action Menu{/}: long labels and hints were cut off. The menu now widens to fit its text, scales with the screen resolution and always stays on screen.");
+		b.Fixed("This changelog window clipped its content at resolutions above 1080p.");
+		b.Gap();
 		b.Section("1.8", "2026-10-28");
 		b.Added("{orange}Context Action Menu{/}: two new actions.");
 		b.Bullet("{orange}Set scale{/}: type a size from 0.01 to 100 (1 is normal). Works on players, AI, animals, infected, building set objects and the map's own buildings, and lasts until the server restarts.");

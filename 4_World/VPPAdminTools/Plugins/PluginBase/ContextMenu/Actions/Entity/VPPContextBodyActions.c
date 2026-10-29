@@ -1,14 +1,9 @@
 /*
-	Scale and ragdoll for world entities: players, human AI, animals, infected and buildings (mission-placed and
-	static map buildings). Other static map props (trees, rocks) are not EntityAI and are never offered.
-	Network ids: 0 = none, a negative high word = static map object (stable id, e.g. vanilla
-	cfgundergroundtriggers.json ParentNetworkId), otherwise a dynamic network object.
-	- Scale: players / human AI go through the PlayerBase sync (m_VPlayerScale, same steps as
-	  PlayerManager.ChangeScale); creatures and buildings through m_VPPEntityScale (modded AnimalBase /
-	  ZombieBase / BuildingBase; static buildings are registered with RegisterNetworkStaticObject first).
-	  Session only: nothing is saved.
-	- Ragdoll: humans only (the engine has no ragdoll for living creatures). Uses the vanilla unconscious
-	  sync juncture, the same knockdown vanilla uses for vehicle ejection.
+	Scale and ragdoll for players and human AI.
+	Network ids: 0 = none, a negative high word = static map object, otherwise a dynamic network object.
+	- Scale: the PlayerBase sync (m_VPlayerScale, same steps as PlayerManager.ChangeScale). Session only:
+	  nothing is saved.
+	- Ragdoll: uses the vanilla unconscious sync juncture, the same knockdown vanilla uses for vehicle ejection.
 */
 class VPPCA_BodyOps
 {
@@ -29,36 +24,12 @@ class VPPCA_BodyOps
 		return low != 0 || high != 0;
 	}
 
-	static bool IsStatic(Object obj)
-	{
-		if (!obj)
-			return false;
-
-		int low;
-		int high;
-		obj.GetNetworkID(low, high);
-		return high < 0;
-	}
-
 	static bool IsScalable(Object obj)
 	{
-		if (!obj)
+		if (PlayerBase.Cast(obj) == null)
 			return false;
 
-		if (PlayerBase.Cast(obj) != null)
-			return IsDynamic(obj);
-
-		EntityAI ent = EntityAI.Cast(obj);
-		if (!ent || ent.GetHierarchyParent() != null)
-			return false;
-
-		if (AnimalBase.Cast(ent) != null || ZombieBase.Cast(ent) != null)
-			return IsDynamic(ent);
-
-		if (BuildingBase.Cast(ent) == null)
-			return false;
-
-		return IsDynamic(ent) || IsStatic(ent);
+		return IsDynamic(obj);
 	}
 
 	//-1 = empty or out of range
@@ -78,61 +49,22 @@ class VPPCA_BodyOps
 	static float GetCurrentScale(Object obj)
 	{
 		PlayerBase pb = PlayerBase.Cast(obj);
-		if (pb)
-		{
-			if (pb.m_VScalePlayer && pb.m_VPlayerScale > 0)
-				return pb.m_VPlayerScale;
-			return 1.0;
-		}
+		if (pb && pb.m_VScalePlayer && pb.m_VPlayerScale > 0)
+			return pb.m_VPlayerScale;
 
-		float synced = 0;
-		AnimalBase animal = AnimalBase.Cast(obj);
-		if (animal)
-			synced = animal.VPPGetEntityScale();
-
-		ZombieBase zombie = ZombieBase.Cast(obj);
-		if (zombie)
-			synced = zombie.VPPGetEntityScale();
-
-		BuildingBase building = BuildingBase.Cast(obj);
-		if (building)
-			synced = building.VPPGetEntityScale();
-
-		if (synced > 0)
-			return synced;
-
-		return obj.GetScale();
+		return 1.0;
 	}
 
 	//server
 	static void ApplyScale(Object obj, float scale)
 	{
 		PlayerBase pb = PlayerBase.Cast(obj);
-		if (pb)
-		{
-			pb.m_VScalePlayer = scale != 1.0;
-			pb.VPPSetScaleValue(scale);
-			pb.SetSynchDirty();
+		if (!pb)
 			return;
-		}
 
-		AnimalBase animal = AnimalBase.Cast(obj);
-		if (animal)
-		{
-			animal.VPPSetEntityScale(scale);
-			return;
-		}
-
-		ZombieBase zombie = ZombieBase.Cast(obj);
-		if (zombie)
-		{
-			zombie.VPPSetEntityScale(scale);
-			return;
-		}
-
-		BuildingBase building = BuildingBase.Cast(obj);
-		if (building)
-			building.VPPSetEntityScale(scale);
+		pb.m_VScalePlayer = scale != 1.0;
+		pb.VPPSetScaleValue(scale);
+		pb.SetSynchDirty();
 	}
 
 	//server: the online bodies of a player target, or the targeted human (AI or a player the client could not identify)

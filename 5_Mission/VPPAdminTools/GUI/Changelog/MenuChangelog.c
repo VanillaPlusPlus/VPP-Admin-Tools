@@ -1,12 +1,19 @@
 /*
-	Changelog window: a fixed 760x660 AdminHudSubMenu.
+	Changelog window: a fixed 760x660 AdminHudSubMenu, in layout units.
 	Opened by VPPAdminHud.OpenChangelog, both on toolbar open and from the Stats HUD button.
 	Rows come from VPPChangelogContent.Build and are measured again every frame for MEASURE_FRAMES frames after a build or show.
+	Resolution: Main is "scaled 1" (one layout unit is one pixel at 1080p, more above) but rootFrame is an exact pixel
+	size on the unscaled Panel_Content, so ApplyUiScale sizes rootFrame and the drag Header to WINDOW_W x WINDOW_H units
+	(pixels per unit measured on the 36-unit HeaderTitle). Script sizes inside Main go through VPPXEScale, like the XML
+	Editor, since the engine does not read them with the layout's scale above 1080p.
 */
 class MenuChangelog extends AdminHudSubMenu
 {
 	protected const float WINDOW_W = 760.0;
 	protected const float WINDOW_H = 660.0;
+	protected const float HEADER_H = 36.0;
+	protected const float DRAG_HEADER_W = 0.82;
+	protected const float REF_SCREEN_H = 1080.0;
 	protected const float ROW_W = 712.0;
 	protected const float BODY_Y = 4.0;
 	protected const float BODY_X_CHIP = 146.0;
@@ -45,7 +52,15 @@ class MenuChangelog extends AdminHudSubMenu
 	protected ref array<ref VPPChangelogLinkRow> m_LinkRows;	//keeps the link handlers alive
 	protected ref array<Widget> m_TextRows;
 	protected ref array<RichTextWidget> m_TextBodies;
+	protected ref array<float> m_RowHeights;	//last height set per text row, in layout units
 	protected int m_MeasureFrames;
+
+	//screen pixels per layout unit inside Main (1 at 1080p); 0 = not applied yet
+	protected Widget m_HeaderTitle;
+	protected Widget m_ScaleProbe;
+	protected float m_UnitPx;
+	//VPPXEScale ratio the rows were built with (the XML Editor can measure it first)
+	protected float m_BuiltRatio = 1.0;
 
 	//sibling of the window on Panel_Content (hides with the HUD), positions in Panel_Content pixels
 	protected ImageWidget m_Buddy;
@@ -70,6 +85,7 @@ class MenuChangelog extends AdminHudSubMenu
 		m_LinkRows = new array<ref VPPChangelogLinkRow>;
 		m_TextRows = new array<Widget>;
 		m_TextBodies = new array<RichTextWidget>;
+		m_RowHeights = new array<float>;
 	}
 
 	void ~MenuChangelog()
@@ -91,13 +107,15 @@ class MenuChangelog extends AdminHudSubMenu
 		m_WrapBody = WrapSpacerWidget.Cast(M_SUB_WIDGET.FindAnyWidget("WrapBody"));
 		m_ChkDontShow = CheckBoxWidget.Cast(M_SUB_WIDGET.FindAnyWidget("ChkDontShow"));
 		m_BtnCloseFooter = ButtonWidget.Cast(M_SUB_WIDGET.FindAnyWidget("BtnCloseFooter"));
+		m_HeaderTitle = M_SUB_WIDGET.FindAnyWidget("HeaderTitle");
+		m_ScaleProbe = M_SUB_WIDGET.FindAnyWidget("ScaleProbe");
 
-		CenterWindow();
+		ApplyUiScale();
 		Rebuild();
 		CreateBuddy();
 	}
 
-	//Panel_Content is full screen, so these pixels are screen pixels
+	//Panel_Content is full screen and unscaled, so these pixels are screen pixels
 	protected void CenterWindow()
 	{
 		if (!M_SUB_WIDGET)
@@ -106,8 +124,8 @@ class MenuChangelog extends AdminHudSubMenu
 		int sw;
 		int sh;
 		GetScreenSize(sw, sh);
-		float px = (sw - WINDOW_W) * 0.5;
-		float py = (sh - WINDOW_H) * 0.5;
+		float px = (sw - WINDOW_W * m_UnitPx) * 0.5;
+		float py = (sh - WINDOW_H * m_UnitPx) * 0.5;
 		if (px < 0)
 			px = 0;
 
@@ -117,9 +135,62 @@ class MenuChangelog extends AdminHudSubMenu
 		M_SUB_WIDGET.SetPos(px, py);
 	}
 
+	//rootFrame and the drag Header follow Main's scale; the rows are rebuilt when the script ratio changes.
+	//HeaderTitle has no size before the first layout pass, so the first call estimates from the screen height
+	protected void ApplyUiScale()
+	{
+		if (!M_SUB_WIDGET)
+			return;
+
+		float unitPx = 0;
+		float titleW;
+		float titleH;
+		if (m_HeaderTitle)
+		{
+			m_HeaderTitle.GetScreenSize(titleW, titleH);
+			if (titleH > 1)
+				unitPx = titleH / HEADER_H;
+		}
+
+		if (unitPx <= 0)
+		{
+			int sw;
+			int sh;
+			GetScreenSize(sw, sh);
+			unitPx = sh / REF_SCREEN_H;
+		}
+
+		if (unitPx <= 0)
+			unitPx = 1.0;
+
+		if (Math.AbsFloat(unitPx - m_UnitPx) >= 0.001)
+		{
+			m_UnitPx = unitPx;
+			float windowW = WINDOW_W * unitPx;
+			float windowH = WINDOW_H * unitPx;
+			M_SUB_WIDGET.SetSize(windowW, windowH);
+			if (m_TitlePanel)
+			{
+				float dragH = HEADER_H * unitPx;
+				m_TitlePanel.SetSize(DRAG_HEADER_W, dragH);
+			}
+
+			CenterWindow();
+		}
+
+		if (!m_HeaderTitle || !m_ScaleProbe)
+			return;
+
+		VPPXEScale.Measure(m_HeaderTitle, HEADER_H, m_ScaleProbe);
+		float ratio = VPPXEScale.Ratio();
+		if (Math.AbsFloat(ratio - m_BuiltRatio) >= 0.001)
+			Rebuild();
+	}
+
 	void Rebuild()
 	{
 		ClearRows();
+		m_BuiltRatio = VPPXEScale.Ratio();
 		VPPChangelogBuilder builder = new VPPChangelogBuilder();
 		VPPChangelogContent content = new VPPChangelogContent();
 		content.Build(builder);
@@ -194,6 +265,7 @@ class MenuChangelog extends AdminHudSubMenu
 		m_LinkRows.Clear();
 		m_TextRows.Clear();
 		m_TextBodies.Clear();
+		m_RowHeights.Clear();
 		m_LatestChip = null;
 		m_LatestLabel = null;
 		m_LatestVersion = null;
@@ -231,31 +303,40 @@ class MenuChangelog extends AdminHudSubMenu
 		PlaceLatestChip();
 	}
 
-	//text sizes can read 0 before the first layout pass, so MeasureRows calls this again every re-measure frame
+	//text sizes can read 0 before the first layout pass, so MeasureRows calls this again every re-measure frame.
+	//GetTextSize is in screen pixels, the chip is placed in layout units
 	protected void PlaceLatestChip()
 	{
 		if (!m_LatestChip || !m_LatestVersion)
 			return;
 
+		float unitPx = m_UnitPx;
+		if (unitPx <= 0)
+			unitPx = 1.0;
+
 		int versionW;
 		int versionH;
 		m_LatestVersion.Update();
 		m_LatestVersion.GetTextSize(versionW, versionH);
-		if (versionW <= 0)
-			versionW = 48;
+		float versionUnits = 48;
+		if (versionW > 0)
+			versionUnits = versionW / unitPx;
 
-		int labelW = 44;
+		int labelW;
 		int labelH;
+		float labelUnits = 44;
 		if (m_LatestLabel)
 		{
 			m_LatestLabel.Update();
 			m_LatestLabel.GetTextSize(labelW, labelH);
-			if (labelW <= 0)
-				labelW = 44;
+			if (labelW > 0)
+				labelUnits = labelW / unitPx;
 		}
 
-		m_LatestChip.SetSize(labelW + 16, 20);
-		m_LatestChip.SetPos(VERSION_X + versionW + LATEST_GAP, 0);
+		float chipW = labelUnits + 16;
+		float chipX = VERSION_X + versionUnits + LATEST_GAP;
+		VPPXEScale.Size(m_LatestChip, chipW, 20);
+		VPPXEScale.Pos(m_LatestChip, chipX, 0);
 	}
 
 	//chip entry (Added/Changed/Fixed/Removed/Known), bullet or paragraph; the body keeps the layout's text-primary colour
@@ -310,11 +391,12 @@ class MenuChangelog extends AdminHudSubMenu
 		}
 
 		float bodyW = (ROW_W - bodyX - BODY_RIGHT_PAD) * WRAP_FIT;
-		body.SetPos(bodyX, BODY_Y);
-		body.SetSize(bodyW, LINE_PITCH);
+		VPPXEScale.Pos(body, bodyX, BODY_Y);
+		VPPXEScale.Size(body, bodyW, LINE_PITCH);
 		body.SetText(VPPChangelogMarkup.ToRichText(text));
 		m_TextRows.Insert(row);
 		m_TextBodies.Insert(body);
+		m_RowHeights.Insert(-1);
 	}
 
 	protected void AddLinkRow(string label, string url)
@@ -358,13 +440,11 @@ class MenuChangelog extends AdminHudSubMenu
 			if (rowH < MIN_ROW_H)
 				rowH = MIN_ROW_H;
 
-			float rowW;
-			float oldH;
-			row.GetSize(rowW, oldH);
-			if (Math.AbsFloat(oldH - rowH) < 0.5)
+			if (Math.AbsFloat(m_RowHeights[i] - rowH) < 0.5)
 				continue;
 
-			row.SetSize(rowW, rowH);
+			m_RowHeights.Set(i, rowH);
+			VPPXEScale.Size(row, ROW_W, rowH);
 			changed = true;
 		}
 
@@ -385,6 +465,7 @@ class MenuChangelog extends AdminHudSubMenu
 		if (!IsSubMenuVisible())
 			return;
 
+		ApplyUiScale();
 		MoveBuddy(timeslice);
 		if (m_MeasureFrames <= 0)
 			return;

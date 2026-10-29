@@ -4,6 +4,11 @@
 	Created once at workspace root (never inside a scroller) with a high sort so it
 	draws above every HUD window. Renders a VPPContextItems page; it never builds
 	pages or executes actions - input is forwarded to the owning controller.
+
+	Sizing: the workspace root is unscaled, so every VPPContextMenuStyle metric and text size is multiplied by
+	m_Scale (screen height / 1080, never below 1). The width fits the longest label + hint of the page (the
+	confirm-again hint of a Confirm row included), from VIEW_WIDTH up to the screen width; a hint that grows later
+	(server state) widens it again. The visible row count shrinks so the menu always fits the screen height.
 */
 class VPPContextMenuView : ScriptedWidgetEventHandler
 {
@@ -21,6 +26,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 
 	protected ref VPPContextItems m_Rows;
 	protected ref array<Widget>   m_RowWidgets;
+	protected ref array<float>    m_HintWidths;   //widest hint seen per row, in screen px
 
 	protected int   m_Focus = -1;
 	protected int   m_ConfirmIndex = -1;
@@ -28,13 +34,20 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 	protected bool  m_LookMode;
 	protected int   m_PressedIndex = -1;
 	protected int   m_PressedButton = -1;
+	protected float m_Scale = 1.0;
+	protected float m_ViewW;
 	protected float m_RowWidth;
 	protected float m_Height;
+	protected int   m_MaxVisible = VPPContextMenuStyle.MAX_VISIBLE_ITEMS;
+	protected float m_NeedW;        //widest row content (label + hint + chevron + pads), screen px
+	protected bool  m_WidthDirty;   //a row needs more than m_RowWidth: FlushWidth re-lays out
 
 	void VPPContextMenuView(VPPContextMenuController owner)
 	{
 		m_Owner = owner;
 		m_RowWidgets = new array<Widget>;
+		m_HintWidths = new array<float>;
+		m_ViewW = VPPContextMenuStyle.VIEW_WIDTH;
 		m_RowWidth = VPPContextMenuStyle.VIEW_WIDTH - (2 * VPPContextMenuStyle.PAD);
 
 		m_Root = GetGame().GetWorkspace().CreateWidgets(VPPATUIConstants.VPPContextMenu, null);
@@ -76,6 +89,107 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 				w.Unlink();
 		}
 		m_RowWidgets.Clear();
+		m_HintWidths.Clear();
+	}
+
+	//metric in screen px
+	protected float Px(float metric)
+	{
+		return metric * m_Scale;
+	}
+
+	protected int TextPx(int textSize)
+	{
+		float scaled = Math.Round(textSize * m_Scale);
+		int result = scaled;
+		if (result < 1)
+			result = 1;
+
+		return result;
+	}
+
+	protected void UpdateScale()
+	{
+		int sw, sh;
+		GetScreenSize(sw, sh);
+		float scale = sh / VPPContextMenuStyle.REF_SCREEN_H;
+		if (scale < VPPContextMenuStyle.MIN_SCALE)
+			scale = VPPContextMenuStyle.MIN_SCALE;
+
+		m_Scale = scale;
+	}
+
+	//text width in screen px; widget and text size must already be set. GetTextSize can read 0 before the widget
+	//was ever laid out, then the width is estimated from the character count
+	protected float MeasureText(TextWidget w, string text, int textSize)
+	{
+		if (!w || text == "")
+			return 0;
+
+		w.SetText(text);
+		w.Update();
+		int tw, th;
+		w.GetTextSize(tw, th);
+		if (tw > 0)
+			return tw;
+
+		int chars = text.LengthUtf8();
+		float textPx = TextPx(textSize);
+		return chars * textPx * VPPContextMenuStyle.TEXT_EM_ESTIMATE;
+	}
+
+	//size and place the fixed parts (header, footer texts) for the current scale
+	protected void ApplyChromeScale()
+	{
+		int headerSize = TextPx(VPPContextMenuStyle.HEADER_TEXT_SIZE);
+		int footerSize = TextPx(VPPContextMenuStyle.FOOTER_TEXT_SIZE);
+		float iconSize = Px(VPPContextMenuStyle.ICON_SIZE);
+		float iconX = Px(VPPContextMenuStyle.HEADER_ICON_X);
+		if (m_HeaderText)
+			m_HeaderText.SetTextExactSize(headerSize);
+
+		if (m_FooterText)
+			m_FooterText.SetTextExactSize(footerSize);
+
+		if (m_HeaderIcon)
+		{
+			m_HeaderIcon.SetPos(iconX, 0);
+			m_HeaderIcon.SetSize(iconSize, iconSize);
+		}
+	}
+
+	protected void ApplyRowScale(Widget row, bool isSeparator)
+	{
+		if (!row)
+			return;
+
+		if (isSeparator)
+			return;
+
+		int labelSize = TextPx(VPPContextMenuStyle.LABEL_TEXT_SIZE);
+		int hintSize = TextPx(VPPContextMenuStyle.HINT_TEXT_SIZE);
+		float iconSize = Px(VPPContextMenuStyle.ICON_SIZE);
+		float iconX = Px(VPPContextMenuStyle.ICON_X);
+		float chevronSize = Px(VPPContextMenuStyle.CHEVRON_SIZE);
+
+		TextWidget label = TextWidget.Cast(row.FindAnyWidget("CtxRowLabel"));
+		TextWidget hint = TextWidget.Cast(row.FindAnyWidget("CtxRowHint"));
+		Widget icon = row.FindAnyWidget("CtxRowIcon");
+		Widget chevron = row.FindAnyWidget("CtxRowChevron");
+		if (label)
+			label.SetTextExactSize(labelSize);
+
+		if (hint)
+			hint.SetTextExactSize(hintSize);
+
+		if (icon)
+		{
+			icon.SetPos(iconX, 0);
+			icon.SetSize(iconSize, iconSize);
+		}
+
+		if (chevron)
+			chevron.SetSize(chevronSize, chevronSize);
 	}
 
 	void Render(string title, string titleIcon, VPPContextItems rows, bool lookMode)
@@ -94,8 +208,18 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		if (!m_Root)
 			return;
 
+		UpdateScale();
+		ApplyChromeScale();
+		m_NeedW = 0;
+
+		string headerText = Widget.TranslateString(title);
 		if (m_HeaderText)
-			m_HeaderText.SetText(Widget.TranslateString(title));
+		{
+			float headerPx = MeasureText(m_HeaderText, headerText, VPPContextMenuStyle.HEADER_TEXT_SIZE);
+			float headerNeed = Px(VPPContextMenuStyle.HEADER_TEXT_X) + headerPx + Px(VPPContextMenuStyle.TEXT_PAD) + Px(VPPContextMenuStyle.RIGHT_PAD);
+			if (headerNeed > m_NeedW)
+				m_NeedW = headerNeed;
+		}
 
 		if (m_HeaderIcon)
 		{
@@ -111,13 +235,19 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			}
 		}
 
+		if (m_FooterText && lookMode)
+		{
+			string footerKey = m_FooterText.GetText();
+			string footerText = Widget.TranslateString(footerKey);
+			float footerPx = MeasureText(m_FooterText, footerText, VPPContextMenuStyle.FOOTER_TEXT_SIZE);
+			float footerNeed = footerPx + (2 * Px(VPPContextMenuStyle.TEXT_PAD));
+			if (footerNeed > m_NeedW)
+				m_NeedW = footerNeed;
+		}
+
 		int count = 0;
 		if (m_Rows)
 			count = m_Rows.Count();
-
-		m_RowWidth = VPPContextMenuStyle.VIEW_WIDTH - (2 * VPPContextMenuStyle.PAD);
-		if (count > VPPContextMenuStyle.MAX_VISIBLE_ITEMS)
-			m_RowWidth = m_RowWidth - (VPPContextMenuStyle.SCROLL_W + 3);
 
 		for (int i = 0; i < count; i++)
 		{
@@ -135,26 +265,26 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			{
 				w.SetUserID(i);
 				w.SetHandler(this);
-				if (isSeparator)
-				{
-					Widget sepLine = w.FindAnyWidget("CtxSepLine");
-					if (sepLine)
-						sepLine.SetSize(m_RowWidth - 16, 1);
-				}
+				ApplyRowScale(w, isSeparator);
 			}
-			//keep the list index-aligned with m_Rows even if a prefab failed to load
+			//keep the lists index-aligned with m_Rows even if a prefab failed to load
 			m_RowWidgets.Insert(w);
+			m_HintWidths.Insert(0);
+			MeasureRow(i);
 		}
 
 		if (m_Footer)
 			m_Footer.Show(lookMode);
 
+		FitToScreen();
 		LayoutRows();
 
 		for (int j = 0; j < count; j++)
 		{
 			ApplyRowVisual(j);
 		}
+
+		FlushWidth();
 	}
 
 	protected bool IsSeparatorIndex(int i)
@@ -167,6 +297,138 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			return true;
 
 		return false;
+	}
+
+	protected string LabelTextOf(VPPContextItem item)
+	{
+		if (item.Kind == EVPPContextKind.BACK)
+			return Widget.TranslateString("#VSTR_CTX_BACK");
+
+		return Widget.TranslateString(item.Label);
+	}
+
+	//row content width for a label and hint of these widths
+	protected float RowNeed(VPPContextItem item, float labelPx, float hintPx)
+	{
+		float need = Px(VPPContextMenuStyle.LABEL_X) + labelPx + Px(VPPContextMenuStyle.TEXT_PAD) + Px(VPPContextMenuStyle.RIGHT_PAD);
+		if (hintPx > 0)
+			need = need + Px(VPPContextMenuStyle.LABEL_GAP) + hintPx;
+
+		if (item.Kind == EVPPContextKind.SUBMENU)
+			need = need + Px(VPPContextMenuStyle.CHEVRON_W);
+
+		return need;
+	}
+
+	//widest label + hint this row can show: its hint now and, for a Confirm row, the confirm-again hint
+	protected void MeasureRow(int i)
+	{
+		if (!m_Rows || i < 0 || i >= m_Rows.Count() || i >= m_RowWidgets.Count())
+			return;
+
+		VPPContextItem item = m_Rows.Get(i);
+		Widget row = m_RowWidgets[i];
+		if (!item || !row || item.Kind == EVPPContextKind.SEPARATOR)
+			return;
+
+		TextWidget label = TextWidget.Cast(row.FindAnyWidget("CtxRowLabel"));
+		TextWidget hint = TextWidget.Cast(row.FindAnyWidget("CtxRowHint"));
+		float rowH = Px(VPPContextMenuStyle.ROW_H);
+		float wideText = Px(VPPContextMenuStyle.VIEW_WIDTH) * 4;
+		if (label)
+			label.SetSize(wideText, rowH);
+
+		if (hint)
+			hint.SetSize(wideText, rowH);
+
+		string labelText = LabelTextOf(item);
+		float labelPx = MeasureText(label, labelText, VPPContextMenuStyle.LABEL_TEXT_SIZE);
+
+		float hintPx = 0;
+		if (item.Hint != "")
+		{
+			string hintText = Widget.TranslateString(item.Hint);
+			hintPx = MeasureText(hint, hintText, VPPContextMenuStyle.HINT_TEXT_SIZE);
+		}
+
+		if (item.Confirm)
+		{
+			string confirmText = Widget.TranslateString("#VSTR_CTX_CONFIRM_AGAIN");
+			float confirmPx = MeasureText(hint, confirmText, VPPContextMenuStyle.HINT_TEXT_SIZE);
+			if (confirmPx > hintPx)
+				hintPx = confirmPx;
+		}
+
+		if (hintPx > m_HintWidths[i])
+			m_HintWidths.Set(i, hintPx);
+
+		float storedHint = m_HintWidths[i];
+		float need = RowNeed(item, labelPx, storedHint);
+		if (need > m_NeedW)
+			m_NeedW = need;
+	}
+
+	//width from m_NeedW (min VIEW_WIDTH, max the screen) and the visible row count from the screen height
+	protected void FitToScreen()
+	{
+		int sw, sh;
+		GetScreenSize(sw, sh);
+		float margin = Px(VPPContextMenuStyle.SCREEN_MARGIN);
+		float pad = Px(VPPContextMenuStyle.PAD);
+
+		//height: header, pads, optional footer, then as many rows as fit (separators are shorter, so this is safe)
+		float fixedH = pad + Px(VPPContextMenuStyle.HEADER_H) + pad + pad;
+		if (m_LookMode)
+			fixedH = fixedH + Px(VPPContextMenuStyle.FOOTER_H) + pad;
+
+		float rowStep = Px(VPPContextMenuStyle.ROW_H) + Px(VPPContextMenuStyle.ROW_GAP);
+		float budget = sh - (2 * margin) - fixedH + Px(VPPContextMenuStyle.ROW_GAP);
+		float fitF = Math.Floor(budget / rowStep);
+		int fit = fitF;
+		if (fit > VPPContextMenuStyle.MAX_VISIBLE_ITEMS)
+			fit = VPPContextMenuStyle.MAX_VISIBLE_ITEMS;
+
+		if (fit < 1)
+			fit = 1;
+
+		m_MaxVisible = fit;
+
+		int total = m_RowWidgets.Count();
+		float scrollReserve = 0;
+		if (total > m_MaxVisible)
+			scrollReserve = Px(VPPContextMenuStyle.SCROLL_W) + Px(VPPContextMenuStyle.SCROLL_GAP);
+
+		float viewW = m_NeedW + (2 * pad) + scrollReserve;
+		float minW = Px(VPPContextMenuStyle.VIEW_WIDTH);
+		float maxW = sw - (2 * margin);
+		if (viewW < minW)
+			viewW = minW;
+
+		if (viewW > maxW)
+			viewW = maxW;
+
+		m_ViewW = Math.Ceil(viewW);
+		m_RowWidth = m_ViewW - (2 * pad) - scrollReserve;
+		m_WidthDirty = false;
+	}
+
+	//a row asked for more width since the last layout: widen, re-lay out and redraw every row (never recursive:
+	//ApplyRowVisual only raises the flag)
+	protected void FlushWidth()
+	{
+		if (!m_WidthDirty)
+			return;
+
+		FitToScreen();
+		LayoutRows();
+		int count = m_RowWidgets.Count();
+		for (int i = 0; i < count; i++)
+		{
+			ApplyRowVisual(i);
+		}
+
+		m_WidthDirty = false;
+		Reclamp();
 	}
 
 	protected void ApplyRowVisual(int i)
@@ -198,11 +460,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			row.SetColor(VPPContextMenuStyle.RowBg());
 
 		//label text is never replaced while armed: the admin always sees which action is armed
-		string labelText;
-		if (item.Kind == EVPPContextKind.BACK)
-			labelText = Widget.TranslateString("#VSTR_CTX_BACK");
-		else
-			labelText = Widget.TranslateString(item.Label);
+		string labelText = LabelTextOf(item);
 
 		int fgColor;
 		if (!item.Enabled || item.Kind == EVPPContextKind.INFO)
@@ -212,11 +470,14 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		else
 			fgColor = VPPContextMenuStyle.TextPrimary();
 
+		float rowH = Px(VPPContextMenuStyle.ROW_H);
+		float wideText = Px(VPPContextMenuStyle.VIEW_WIDTH) * 4;
 		if (label)
-		{
-			label.SetText(labelText);
+			label.SetSize(wideText, rowH);
+
+		float labelPx = MeasureText(label, labelText, VPPContextMenuStyle.LABEL_TEXT_SIZE);
+		if (label)
 			label.SetColor(fgColor);
-		}
 
 		//icon
 		if (icon)
@@ -252,7 +513,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			}
 		}
 
-		//hint
+		//hint (shown in full: the width was fitted to it)
 		string hintText = "";
 		int hintColor;
 		if (armed)
@@ -267,65 +528,85 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			hintColor = VPPContextMenuStyle.TextSecondary();
 		}
 
-		if (hintText.LengthUtf8() > VPPContextMenuStyle.HINT_MAX_CHARS)
-		{
-			string shortHint = hintText.SubstringUtf8(0, VPPContextMenuStyle.HINT_MAX_CHARS - 2);
-			hintText = shortHint + "..";
-		}
-
 		if (hint)
 		{
+			//measure at full width, then shrink to the hint column
+			hint.SetSize(wideText, rowH);
+			float hintNow = MeasureText(hint, hintText, VPPContextMenuStyle.HINT_TEXT_SIZE);
+			if (hintNow > m_HintWidths[i])
+				m_HintWidths.Set(i, hintNow);
+
 			hint.SetText(hintText);
 			hint.SetColor(hintColor);
 		}
+
+		//a hint that grew (server state) or a longer label: widen on the next FlushWidth
+		float storedHint = m_HintWidths[i];
+		float need = RowNeed(item, labelPx, storedHint);
+		if (need > m_NeedW)
+			m_NeedW = need;
+
+		if (need > m_RowWidth + 0.5)
+			m_WidthDirty = true;
 
 		//geometry
 		bool isSubmenu = (item.Kind == EVPPContextKind.SUBMENU);
 		float chevronReserve = 0;
 		if (isSubmenu)
-			chevronReserve = VPPContextMenuStyle.CHEVRON_W;
+			chevronReserve = Px(VPPContextMenuStyle.CHEVRON_W);
 
+		float rightPad = Px(VPPContextMenuStyle.RIGHT_PAD);
 		float hintW = 0;
 		if (hintText != "")
-			hintW = VPPContextMenuStyle.HINT_W;
+			hintW = storedHint + Px(VPPContextMenuStyle.TEXT_PAD);
 
 		if (hintClip)
 		{
-			float hintX = m_RowWidth - VPPContextMenuStyle.RIGHT_PAD - chevronReserve - hintW;
+			float hintX = m_RowWidth - rightPad - chevronReserve - hintW;
 			hintClip.SetPos(hintX, 0);
-			hintClip.SetSize(hintW, VPPContextMenuStyle.ROW_H);
+			hintClip.SetSize(hintW, rowH);
 			hintClip.Show(hintW > 0);
 		}
 
 		if (hint)
 		{
 			hint.SetPos(0, 0);
-			hint.SetSize(hintW, VPPContextMenuStyle.ROW_H);
+			hint.SetSize(hintW, rowH);
 		}
 
 		if (chevron)
 		{
 			//the prefab chevron is valign center_ref, so y = 0 is vertically centred
-			float chevronX = m_RowWidth - VPPContextMenuStyle.RIGHT_PAD - 12;
+			float chevronX = m_RowWidth - rightPad - Px(VPPContextMenuStyle.CHEVRON_SIZE);
 			chevron.SetPos(chevronX, 0);
 			chevron.SetRotation(0, 0, VPPContextMenuStyle.CHEVRON_SUBMENU_ROTATION, true);
 			chevron.Show(isSubmenu);
 		}
 
-		float labelW = m_RowWidth - VPPContextMenuStyle.LABEL_X - VPPContextMenuStyle.RIGHT_PAD - chevronReserve - hintW - VPPContextMenuStyle.LABEL_GAP;
-		if (labelW < 20)
-			labelW = 20;
+		float labelX = Px(VPPContextMenuStyle.LABEL_X);
+		float labelW = m_RowWidth - labelX - rightPad - chevronReserve;
+		if (hintW > 0)
+			labelW = labelW - hintW - Px(VPPContextMenuStyle.LABEL_GAP);
+
+		float minLabelW = Px(20);
+		if (labelW < minLabelW)
+			labelW = minLabelW;
 
 		if (labelClip)
 		{
-			labelClip.SetPos(VPPContextMenuStyle.LABEL_X, 0);
-			labelClip.SetSize(labelW, VPPContextMenuStyle.ROW_H);
+			labelClip.SetPos(labelX, 0);
+			labelClip.SetSize(labelW, rowH);
 		}
 
 		if (label)
 		{
+			float labelTextW = labelW;
+			float labelFull = labelPx + Px(VPPContextMenuStyle.TEXT_PAD);
+			if (labelFull > labelTextW)
+				labelTextW = labelFull;
+
 			label.SetPos(0, 0);
-			label.SetSize(VPPContextMenuStyle.LABEL_TEXT_W, VPPContextMenuStyle.ROW_H);
+			label.SetSize(labelTextW, rowH);
 		}
 	}
 
@@ -335,7 +616,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			return;
 
 		int total = m_RowWidgets.Count();
-		int maxFirst = total - VPPContextMenuStyle.MAX_VISIBLE_ITEMS;
+		int maxFirst = total - m_MaxVisible;
 		if (maxFirst < 0)
 			maxFirst = 0;
 		if (m_FirstVisible > maxFirst)
@@ -343,7 +624,11 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		if (m_FirstVisible < 0)
 			m_FirstVisible = 0;
 
-		int windowEnd = m_FirstVisible + VPPContextMenuStyle.MAX_VISIBLE_ITEMS;
+		float pad = Px(VPPContextMenuStyle.PAD);
+		float headerH = Px(VPPContextMenuStyle.HEADER_H);
+		float rowGap = Px(VPPContextMenuStyle.ROW_GAP);
+		float sepLineX = Px(VPPContextMenuStyle.SEP_LINE_X);
+		int windowEnd = m_FirstVisible + m_MaxVisible;
 		float y = 0;
 		int visibleCount = 0;
 		for (int i = 0; i < total; i++)
@@ -358,53 +643,76 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 				continue;
 			}
 
-			float h = VPPContextMenuStyle.ROW_H;
-			if (IsSeparatorIndex(i))
-				h = VPPContextMenuStyle.SEP_H;
+			float h = Px(VPPContextMenuStyle.ROW_H);
+			bool isSeparator = IsSeparatorIndex(i);
+			if (isSeparator)
+				h = Px(VPPContextMenuStyle.SEP_H);
 
 			if (visibleCount > 0)
-				y = y + VPPContextMenuStyle.ROW_GAP;
+				y = y + rowGap;
 
 			w.SetPos(0, y);
 			w.SetSize(m_RowWidth, h);
 			w.Show(true);
+			if (isSeparator)
+			{
+				Widget sepLine = w.FindAnyWidget("CtxSepLine");
+				if (sepLine)
+				{
+					float sepW = m_RowWidth - (2 * sepLineX);
+					float sepY = Math.Floor(h * 0.5);
+					sepLine.SetPos(sepLineX, sepY);
+					sepLine.SetSize(sepW, 1);
+				}
+			}
+
 			y = y + h;
 			visibleCount++;
 		}
 
 		float contentH = y;
-		float innerW = VPPContextMenuStyle.VIEW_WIDTH - (2 * VPPContextMenuStyle.PAD);
-		float hostY = VPPContextMenuStyle.PAD + VPPContextMenuStyle.HEADER_H + VPPContextMenuStyle.PAD;
+		float innerW = m_ViewW - (2 * pad);
+		float hostY = pad + headerH + pad;
 
 		if (m_Header)
 		{
-			m_Header.SetPos(VPPContextMenuStyle.PAD, VPPContextMenuStyle.PAD);
-			m_Header.SetSize(innerW, VPPContextMenuStyle.HEADER_H);
+			m_Header.SetPos(pad, pad);
+			m_Header.SetSize(innerW, headerH);
+		}
+
+		if (m_HeaderText)
+		{
+			float headerTextX = Px(VPPContextMenuStyle.HEADER_TEXT_X);
+			float headerTextW = innerW - headerTextX - Px(VPPContextMenuStyle.RIGHT_PAD);
+			m_HeaderText.SetPos(headerTextX, 0);
+			m_HeaderText.SetSize(headerTextW, headerH);
 		}
 
 		if (m_RowHost)
 		{
-			m_RowHost.SetPos(VPPContextMenuStyle.PAD, hostY);
+			m_RowHost.SetPos(pad, hostY);
 			m_RowHost.SetSize(innerW, contentH);
 		}
 
-		bool overflow = (total > VPPContextMenuStyle.MAX_VISIBLE_ITEMS);
+		bool overflow = (total > m_MaxVisible);
 		if (m_ScrollTrack)
 		{
 			m_ScrollTrack.Show(overflow);
 			if (overflow)
 			{
+				float scrollW = Px(VPPContextMenuStyle.SCROLL_W);
 				float trackH = contentH;
-				float trackX = VPPContextMenuStyle.VIEW_WIDTH - VPPContextMenuStyle.PAD - VPPContextMenuStyle.SCROLL_W;
+				float trackX = m_ViewW - pad - scrollW;
 				m_ScrollTrack.SetPos(trackX, hostY);
-				m_ScrollTrack.SetSize(VPPContextMenuStyle.SCROLL_W, trackH);
+				m_ScrollTrack.SetSize(scrollW, trackH);
 
 				float totalF = total;
 				float visibleF = visibleCount;
 				float firstF = m_FirstVisible;
 				float thumbH = trackH * visibleF / totalF;
-				if (thumbH < 12)
-					thumbH = 12;
+				float minThumb = Px(12);
+				if (thumbH < minThumb)
+					thumbH = minThumb;
 				float thumbY = trackH * firstF / totalF;
 				if (thumbY + thumbH > trackH)
 					thumbY = trackH - thumbH;
@@ -414,28 +722,37 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 				if (m_ScrollThumb)
 				{
 					m_ScrollThumb.SetPos(0, thumbY);
-					m_ScrollThumb.SetSize(VPPContextMenuStyle.SCROLL_W, thumbH);
+					m_ScrollThumb.SetSize(scrollW, thumbH);
 				}
 			}
 		}
 
-		m_Height = hostY + contentH + VPPContextMenuStyle.PAD;
+		m_Height = hostY + contentH + pad;
 		if (m_LookMode)
 		{
+			float footerH = Px(VPPContextMenuStyle.FOOTER_H);
 			if (m_Footer)
 			{
-				m_Footer.SetPos(VPPContextMenuStyle.PAD, hostY + contentH + VPPContextMenuStyle.PAD);
-				m_Footer.SetSize(innerW, VPPContextMenuStyle.FOOTER_H);
+				m_Footer.SetPos(pad, hostY + contentH + pad);
+				m_Footer.SetSize(innerW, footerH);
 			}
-			m_Height = m_Height + VPPContextMenuStyle.FOOTER_H + VPPContextMenuStyle.PAD;
+
+			if (m_FooterText)
+			{
+				m_FooterText.SetPos(0, 0);
+				m_FooterText.SetSize(innerW, footerH);
+			}
+			m_Height = m_Height + footerH + pad;
 		}
 
-		m_Root.SetSize(VPPContextMenuStyle.VIEW_WIDTH, m_Height);
+		m_Root.SetSize(m_ViewW, m_Height);
 	}
 
 	void RefreshRow(int index)
 	{
+		MeasureRow(index);
 		ApplyRowVisual(index);
+		FlushWidth();
 	}
 
 	void SetFocusIndex(int index)
@@ -448,8 +765,8 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 			int first = m_FirstVisible;
 			if (index < first)
 				first = index;
-			else if (index >= first + VPPContextMenuStyle.MAX_VISIBLE_ITEMS)
-				first = index - VPPContextMenuStyle.MAX_VISIBLE_ITEMS + 1;
+			else if (index >= first + m_MaxVisible)
+				first = index - m_MaxVisible + 1;
 
 			if (first != m_FirstVisible)
 			{
@@ -460,6 +777,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 
 		ApplyRowVisual(prev);
 		ApplyRowVisual(index);
+		FlushWidth();
 	}
 
 	int GetFocusIndex()
@@ -479,6 +797,8 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		ApplyRowVisual(m_ConfirmIndex);
 		if (!armed)
 			ApplyRowVisual(index);
+
+		FlushWidth();
 	}
 
 	protected void ClampAndSetPos(float x, float y)
@@ -489,7 +809,7 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		int sw, sh;
 		GetScreenSize(sw, sh);
 
-		float maxX = sw - VPPContextMenuStyle.VIEW_WIDTH;
+		float maxX = sw - m_ViewW;
 		float maxY = sh - m_Height;
 		if (x > maxX)
 			x = maxX;
@@ -508,8 +828,11 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		int sw, sh;
 		GetScreenSize(sw, sh);
 
-		float x = (sw / 2.0) + VPPContextMenuStyle.LOOK_OFFSET_X;
-		float y = (sh / 2.0) + VPPContextMenuStyle.LOOK_OFFSET_Y - VPPContextMenuStyle.PAD - VPPContextMenuStyle.HEADER_H;
+		float offsetX = Px(VPPContextMenuStyle.LOOK_OFFSET_X);
+		float offsetY = Px(VPPContextMenuStyle.LOOK_OFFSET_Y);
+		float headTop = Px(VPPContextMenuStyle.PAD) + Px(VPPContextMenuStyle.HEADER_H);
+		float x = (sw / 2.0) + offsetX;
+		float y = (sh / 2.0) + offsetY - headTop;
 		ClampAndSetPos(x, y);
 	}
 
@@ -518,17 +841,18 @@ class VPPContextMenuView : ScriptedWidgetEventHandler
 		int sw, sh;
 		GetScreenSize(sw, sh);
 
+		float offset = Px(VPPContextMenuStyle.CURSOR_OFFSET);
 		float px;
-		if (x + VPPContextMenuStyle.CURSOR_OFFSET + VPPContextMenuStyle.VIEW_WIDTH > sw)
-			px = x - VPPContextMenuStyle.VIEW_WIDTH - VPPContextMenuStyle.CURSOR_OFFSET;
+		if (x + offset + m_ViewW > sw)
+			px = x - m_ViewW - offset;
 		else
-			px = x + VPPContextMenuStyle.CURSOR_OFFSET;
+			px = x + offset;
 
 		float py;
-		if (y + VPPContextMenuStyle.CURSOR_OFFSET + m_Height > sh)
-			py = y - m_Height - VPPContextMenuStyle.CURSOR_OFFSET;
+		if (y + offset + m_Height > sh)
+			py = y - m_Height - offset;
 		else
-			py = y + VPPContextMenuStyle.CURSOR_OFFSET;
+			py = y + offset;
 
 		ClampAndSetPos(px, py);
 	}

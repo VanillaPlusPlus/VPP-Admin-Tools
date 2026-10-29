@@ -24,6 +24,19 @@ FrameWidgetClass rootFrame {
    style VPPPanel
    "no focus" 0
    {
+    PanelWidgetClass ScaleProbe {
+     visible 1
+     clipchildren 0
+     ignorepointer 1
+     color 0 0 0 0
+     position 0 0
+     size 100 100
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style blank
+    }
     PanelWidgetClass HeaderTitle {
      ignorepointer 1
      color 0.031 0.035 0.039 0.85
